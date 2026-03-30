@@ -1,0 +1,25 @@
+<div id="particles" class="pointer-events-none fixed inset-0 z-[5]" aria-hidden="true"></div>
+
+<script>
+  const host = document.getElementById('particles');
+  if (host && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const particles = Array.from({ length: 28 }, () => {
+      const dot = document.createElement('span');
+      dot.className = 'absolute rounded-full bg-cosmic-gold/40 twinkle';
+      dot.style.width = `${Math.random() * 3 + 1}px`;
+      dot.style.height = dot.style.width;
+      dot.style.left = `${Math.random() * 100}%`;
+      dot.style.top = `${Math.random() * 100}%`;
+      dot.style.animationDelay = `${Math.random() * 4}s`;
+      host.appendChild(dot);
+      return dot;
+    });
+
+    window.addEventListener('pointermove', (event) => {
+      particles.forEach((dot, i) => {
+        const amount = (i % 5) + 1;
+        dot.style.transform = `translate(${event.clientX / (35 * amount)}px, ${event.clientY / (35 * amount)}px)`;
+      });
+    });
+  }
+</script>

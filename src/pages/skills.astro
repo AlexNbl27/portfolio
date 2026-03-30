@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SkillOrbit from '../components/SkillOrbit.astro';
+import SkillCategory from '../components/SkillCategory.astro';
+import skills from '../data/skills.json';
+
+const categories = [...new Set(skills.map((skill) => skill.category))];
+---
+
+<BaseLayout title="Magical Odyssey | Technical Skills">
+  <section class="cosmic-container pt-8">
+    <h1 class="section-title">The Celestial <span class="highlight">Architecture of Knowledge</span></h1>
+    <p class="muted mt-4 max-w-3xl text-lg">Planetary cores represent refined technical mastery orbiting around creative intent.</p>
+
+    {categories.map((category) => (
+      <div>
+        <SkillCategory category={category} />
+        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {skills.filter((item) => item.category === category).map((skill) => <SkillOrbit skill={skill} />)}
+        </div>
+      </div>
+    ))}
+  </section>
+</BaseLayout>

@@ -1,0 +1,11 @@
+---
+const categories = ['all', 'frontend', 'ai', 'creative'];
+---
+
+<div class="mb-8 flex flex-wrap gap-3" role="toolbar" aria-label="Project filter">
+  {categories.map((category) => (
+    <button class="focus-ring filter-btn rounded-full border border-cosmic-gold/25 bg-slate-900/70 px-4 py-2 text-xs uppercase tracking-[0.2em] hover:border-cosmic-gold hover:text-cosmic-gold" data-category={category}>
+      {category}
+    </button>
+  ))}
+</div>

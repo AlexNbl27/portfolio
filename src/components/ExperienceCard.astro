@@ -1,0 +1,26 @@
+---
+interface Experience {
+  company: string;
+  role: string;
+  period: string;
+  description: string;
+  achievements: string[];
+  technologies: string[];
+  logo?: string;
+}
+
+const { item } = Astro.props as { item: Experience };
+---
+
+<article class="glass-card p-6">
+  <p class="text-xs uppercase tracking-[0.18em] text-cosmic-gold">{item.period}</p>
+  <h3 class="font-display text-4xl">{item.role}</h3>
+  <p class="text-sm italic text-cosmic-pink">{item.company}</p>
+  <p class="muted mt-3">{item.description}</p>
+  <ul class="mt-4 list-disc space-y-1 pl-5 muted">
+    {item.achievements.map((achievement) => <li>{achievement}</li>)}
+  </ul>
+  <div class="mt-4 flex flex-wrap gap-2 text-xs">
+    {item.technologies.map((tech) => <span class="rounded-full bg-slate-900/60 px-3 py-1">{tech}</span>)}
+  </div>
+</article>

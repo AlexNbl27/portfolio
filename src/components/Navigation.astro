@@ -1,0 +1,40 @@
+---
+const links = [
+  { href: '/', label: 'Star Chart' },
+  { href: '/projects', label: 'Nebulae' },
+  { href: '/skills', label: 'Orreires' },
+  { href: '/soft-skills', label: 'Artifacts' },
+  { href: '/experience', label: 'Chronicle' },
+  { href: '/ai-portal', label: 'AI Portal' }
+];
+
+const current = Astro.url.pathname;
+---
+
+<header class="relative z-20 cosmic-container">
+  <nav class="glass-card mt-2 flex items-center justify-between px-4 py-3 md:px-6" aria-label="Main navigation">
+    <a href="/" class="focus-ring font-display text-2xl font-bold italic tracking-wide text-cosmic-gold">Magical Odyssey</a>
+    <button class="focus-ring md:hidden" id="menu-toggle" aria-label="Toggle menu">☰</button>
+    <ul id="menu" class="hidden gap-5 text-xs uppercase tracking-[0.15em] md:flex">
+      {links.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            class:list={[
+              'focus-ring border-b pb-1 transition hover:text-cosmic-gold',
+              current === link.href ? 'border-cosmic-gold text-cosmic-gold' : 'border-transparent'
+            ]}
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</header>
+
+<script>
+  const menuToggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('menu');
+  menuToggle?.addEventListener('click', () => menu?.classList.toggle('hidden'));
+</script>

@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import ProjectFilter from '../components/ProjectFilter.astro';
+import ProjectModal from '../components/ProjectModal.astro';
+import projects from '../data/projects.json';
+---
+
+<BaseLayout title="Magical Odyssey | Projects">
+  <section class="cosmic-container pt-8">
+    <h1 class="section-title">The Nebula <span class="highlight">Collections</span></h1>
+    <p class="muted mt-4 max-w-3xl text-lg">Each star represents a milestone in the odyssey—interfaces, systems, and experiments designed for beautiful utility.</p>
+    <ProjectFilter />
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="project-grid">
+      {projects.map((project) => (
+        <div data-category={project.category} data-title={project.title} data-description={project.description}>
+          <ProjectCard project={project} />
+        </div>
+      ))}
+    </div>
+  </section>
+  <ProjectModal />
+</BaseLayout>
+
+<script>
+  const buttons = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('#project-grid > div');
+  const modal = document.getElementById('project-modal');
+  const close = document.getElementById('close-modal');
+  const title = document.getElementById('modal-title');
+  const desc = document.getElementById('modal-desc');
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const category = btn.getAttribute('data-category');
+      cards.forEach((card) => {
+        card.classList.toggle('hidden', !(category === 'all' || card.getAttribute('data-category') === category));
+      });
+    });
+  });
+
+  cards.forEach((card) => card.addEventListener('click', () => {
+    if (!modal || !title || !desc) return;
+    title.textContent = card.getAttribute('data-title') || '';
+    desc.textContent = card.getAttribute('data-description') || '';
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }));
+
+  close?.addEventListener('click', () => {
+    modal?.classList.add('hidden');
+    modal?.classList.remove('flex');
+  });
+</script>

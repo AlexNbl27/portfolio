@@ -1,0 +1,24 @@
+[
+  {
+    "company": "Lumina Systems",
+    "role": "Lead Astral Architect",
+    "period": "2021 - Present",
+    "description": "Designed deep-space data interfaces that merge technical precision and emotional resonance.",
+    "achievements": [
+      "Built real-time telemetry dashboard reducing analysis latency by 43%.",
+      "Established design language used across five mission-critical products."
+    ],
+    "technologies": ["Astro", "TypeScript", "D3", "AWS"]
+  },
+  {
+    "company": "Nova Design Labs",
+    "role": "Senior Interface Navigator",
+    "period": "2018 - 2021",
+    "description": "Pioneered neo-retro systems for collaborative exploratory products.",
+    "achievements": [
+      "Launched component architecture reused by 12 teams.",
+      "Improved accessibility compliance from 76 to 98 Lighthouse score."
+    ],
+    "technologies": ["React", "Node.js", "Figma"]
+  }
+]

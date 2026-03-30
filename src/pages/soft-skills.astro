@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SkillVisualization from '../components/SkillVisualization.astro';
+import SkillCard from '../components/SkillCard.astro';
+---
+
+<BaseLayout title="Magical Odyssey | Soft Skills">
+  <section class="cosmic-container pt-8">
+    <h1 class="section-title">The Celestial <span class="highlight">Geometry of Experience</span></h1>
+    <p class="muted mt-4 max-w-3xl">The points of light that define human connection, empathy, and leadership across the cosmic journey.</p>
+    <SkillVisualization />
+    <div class="mt-8 grid gap-4 md:grid-cols-3">
+      <SkillCard title="Narrative Thinking" description="Transforming abstract requirements into clear, story-driven journeys." />
+      <SkillCard title="Intentional Collaboration" description="Building trust across disciplines through clarity, curiosity, and respect." />
+      <SkillCard title="Adaptive Leadership" description="Balancing strategic vision with practical execution under changing constraints." />
+    </div>
+  </section>
+</BaseLayout>

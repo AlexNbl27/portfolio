@@ -1,0 +1,25 @@
+---
+interface Project {
+  title: string;
+  description: string;
+  technologies: string[];
+  imageUrl: string;
+  demoUrl?: string;
+  githubUrl?: string;
+  category: string;
+}
+
+const { project } = Astro.props as { project: Project };
+---
+
+<article class="glass-card group overflow-hidden transition duration-300 hover:-translate-y-1 hover:shadow-glow">
+  <img src={project.imageUrl} alt={project.title} class="h-44 w-full object-cover opacity-80 transition duration-500 group-hover:scale-105" loading="lazy" />
+  <div class="space-y-3 p-5">
+    <p class="text-xs uppercase tracking-[0.25em] text-cosmic-pink">{project.category}</p>
+    <h3 class="font-display text-3xl text-cosmic-gold">{project.title}</h3>
+    <p class="muted">{project.description}</p>
+    <div class="flex flex-wrap gap-2 text-xs">
+      {project.technologies.map((tech) => <span class="rounded-full bg-slate-900/60 px-3 py-1">{tech}</span>)}
+    </div>
+  </div>
+</article>

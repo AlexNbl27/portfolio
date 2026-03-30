@@ -1,0 +1,29 @@
+[
+  {
+    "title": "Andromeda's Gate",
+    "description": "Interactive portal design leveraging zero-gravity motion to navigate complex datasets.",
+    "technologies": ["Astro", "GSAP", "TypeScript"],
+    "imageUrl": "/images/project-andromeda.jpg",
+    "demoUrl": "#",
+    "githubUrl": "#",
+    "category": "ai"
+  },
+  {
+    "title": "Solar Web",
+    "description": "Cross-planetary communication interface built with streaming visual telemetry.",
+    "technologies": ["React", "Tailwind", "WebGL"],
+    "imageUrl": "/images/project-solar.jpg",
+    "demoUrl": "#",
+    "githubUrl": "#",
+    "category": "frontend"
+  },
+  {
+    "title": "Titan Echo",
+    "description": "Immersive soundtrack visualizer for icy moon expeditions.",
+    "technologies": ["Astro", "Canvas", "Howler"],
+    "imageUrl": "/images/project-titan.jpg",
+    "demoUrl": "#",
+    "githubUrl": "#",
+    "category": "creative"
+  }
+]

@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ExperienceTimeline from '../components/ExperienceTimeline.astro';
+import ExperienceFilter from '../components/ExperienceFilter.astro';
+import experiences from '../data/experience.json';
+---
+
+<BaseLayout title="Magical Odyssey | Experience">
+  <section class="cosmic-container pt-8">
+    <h1 class="section-title">Tracing the <span class="highlight">Celestial Geometry of Experience</span></h1>
+    <p class="muted mt-4 max-w-3xl">A timeline of roles and artifacts from visual storytelling to deep-space interface architecture.</p>
+  </section>
+  <ExperienceFilter />
+  <ExperienceTimeline experiences={experiences} />
+</BaseLayout>
