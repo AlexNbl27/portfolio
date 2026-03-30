@@ -25,8 +25,9 @@ npm run preview
 - `/experience`
 - `/ai-portal`
 
-## Notes
+## Project notes
 
-- Data-driven content stored in `src/data/*.json`
-- Motion effects are CSS-first with reduced-motion support
-- Deployment-ready for Vercel or Netlify static hosting
+- Data-driven content is in `src/data/*.json`
+- Replace placeholder links (`#`) and image paths in `src/data/projects.json`
+- Animations include reduced-motion support
+- Static output is deployment-ready for Vercel/Netlify

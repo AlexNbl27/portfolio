@@ -13,3 +13,24 @@ import experiences from '../data/experience.json';
   <ExperienceFilter />
   <ExperienceTimeline experiences={experiences} />
 </BaseLayout>
+
+<script>
+  const filters = document.querySelectorAll('.exp-filter');
+  const items = document.querySelectorAll('.experience-item');
+
+  filters.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const filter = btn.getAttribute('data-filter');
+      filters.forEach((f) => f.classList.remove('border-cosmic-gold/60', 'text-cosmic-gold'));
+      btn.classList.add('border-cosmic-gold/60', 'text-cosmic-gold');
+
+      items.forEach((item) => {
+        const period = item.getAttribute('data-period') || '';
+        let visible = true;
+        if (filter === 'recent') visible = period.includes('Present') || period.startsWith('202');
+        if (filter === 'legacy') visible = !period.includes('Present') && !period.startsWith('202');
+        item.classList.toggle('hidden', !visible);
+      });
+    });
+  });
+</script>

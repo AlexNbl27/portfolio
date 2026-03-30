@@ -46,3 +46,12 @@ body {
   outline: 2px solid var(--gold);
   outline-offset: 2px;
 }
+
+.animate-in {
+  animation: rise-fade 700ms ease-out forwards;
+}
+
+@keyframes rise-fade {
+  from { transform: translateY(14px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
