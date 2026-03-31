@@ -7,24 +7,62 @@ interface TechnicalSkill {
   proficiency: number;
   icon?: string;
   yearsOfExperience?: number;
+  isVibeOnly?: boolean;
 }
 
 const { skill } = Astro.props as { skill: TechnicalSkill };
+const boosted = Math.round(skill.proficiency + (100 - skill.proficiency) * 0.5);
 ---
 
-<Card class="p-4 transition hover:border-cosmic-gold/70">
+<Card 
+  class:list={[
+    "skill-card p-4 transition-all duration-500 hover:border-cosmic-gold/70 group",
+    skill.isVibeOnly ? "vibe-only-item hidden scale-90 opacity-0" : ""
+  ]}
+  data-proficiency={skill.proficiency}
+  data-boosted={boosted}
+>
   <div class="mb-2 flex items-center justify-between">
-    <h4 class="font-semibold">{skill.name}</h4>
-    <span class="text-xs uppercase text-cosmic-pink">{skill.category}</span>
+    <h4 class="font-semibold transition-colors group-[.vibe-boost]:text-cosmic-gold">{skill.name}</h4>
+    <span class="text-[10px] uppercase tracking-tighter text-cosmic-pink md:text-xs">{skill.category}</span>
   </div>
-  <div class="h-2 overflow-hidden rounded-full bg-slate-900">
+  
+  <div class="relative h-2 overflow-hidden rounded-full bg-slate-900/50 backdrop-blur-sm">
+    <!-- Base Progress & Gradient Overlay -->
     <div
-      class="h-full rounded-full bg-cosmic-gold"
+      class="skill-progress h-full rounded-full bg-cosmic-gold transition-all duration-1000 ease-out relative"
       style={`width: ${skill.proficiency}%`}
     >
+      <!-- The gradient is now INSIDE the progress bar so it follows its width -->
+      <div class="absolute inset-0 opacity-0 bg-gradient-to-r from-cosmic-gold via-cosmic-pink to-cyan-400 animate-vibe-gradient group-[.vibe-boost]:opacity-100 transition-opacity duration-1000"></div>
     </div>
   </div>
-  <p class="mt-2 text-xs muted">
-    {skill.proficiency}% • {skill.yearsOfExperience ?? 0} years
-  </p>
+
+  <div class="mt-2 flex items-center justify-between">
+    <p class="text-[10px] md:text-xs muted">
+      <span class="proficiency-text font-mono">{skill.proficiency}</span>% • {skill.yearsOfExperience ?? 0} ans
+    </p>
+    {skill.isVibeOnly && (
+      <span class="text-[8px] px-1.5 py-0.5 rounded-full border border-cosmic-pink/30 text-cosmic-pink bg-cosmic-pink/10 font-bold uppercase animate-pulse">AI Powered</span>
+    )}
+  </div>
 </Card>
+
+<style>
+  @keyframes vibe-gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .animate-vibe-gradient {
+    background-size: 200% auto;
+    animation: vibe-gradient 3s linear infinite;
+  }
+  
+  .skill-card.vibe-boost {
+    border-color: rgba(246, 212, 13, 0.4);
+    box-shadow: 0 0 20px rgba(246, 212, 13, 0.1);
+    transform: translateY(-2px);
+  }
+</style>

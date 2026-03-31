@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SkillOrbit from "../components/SkillOrbit.astro";
 import SkillFilter from "../components/SkillFilter.astro";
+import VibeSwitch from "../components/ui/VibeSwitch.astro";
 import skills from "../data/skills.json";
 
 const categories = [...new Set(skills.map((skill) => skill.category))];
@@ -15,7 +16,12 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
     <h1 class="section-title">
       Mes <span class="highlight">compétences</span>
     </h1>
-    <p class="muted mt-4 max-w-3xl text-lg">
+
+    <div class="my-6">
+      <VibeSwitch id="vibe-toggle" />
+    </div>
+
+    <p id="skills-desc" class="muted mt-4 max-w-2xl text-lg transition-all duration-500">
       Un socle technique construit autour du développement web et mobile, des
       bases de données, des outils DevOps et de l’automatisme industriel.
     </p>
@@ -27,7 +33,7 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
           <div
             data-category={skill.category}
             data-name={skill.name}
-            class="skill-item"
+            class:list={["skill-item", skill.isVibeOnly ? "vibe-only-item hidden" : ""]}
           >
             <SkillOrbit skill={skill} />
           </div>
@@ -53,57 +59,52 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
   document.addEventListener("astro:page-load", () => {
     const filterButtons = document.querySelectorAll(".skill-filter");
     const skillItems = document.querySelectorAll(".skill-item");
-    const searchInput = document.getElementById(
-      "badge-search-input",
-    ) as HTMLInputElement;
+    const skillGrid = document.getElementById("skill-grid");
+    const vibeToggle = document.getElementById("vibe-toggle") as HTMLInputElement;
+    const skillsDesc = document.getElementById("skills-desc");
+    const searchInput = document.getElementById("badge-search-input") as HTMLInputElement;
 
     let activeCategory = "all";
     let searchQuery = "";
+    let isVibeMode = false;
+
+    const originalDesc = "Un socle technique construit autour du développement web et mobile, des bases de données, des outils DevOps et de l’automatisme industriel.";
+    const vibeDesc = "Plus qu'un développeur, un <span class='text-cosmic-gold font-bold'>Vibe-Coder</span>. Même quand je ne suis pas expert, je 'vibe' avec n'importe quelle techno grâce à l'IA pour délivrer sans friction.";
 
     // Normalization helper
     const normalize = (str: string) =>
-      str
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .trim();
+      str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
 
-    // Fuzzy matching helper (Levenshtein distance 1 or contains)
     const matchesQuery = (target: string, query: string) => {
       const t = normalize(target);
       const q = normalize(query);
       if (t.includes(q)) return true;
-
-      // Simple 1-char typo tolerance for words longer than 3 chars
-      if (q.length > 3) {
-        if (t.length >= q.length - 1 && t.length <= q.length + 1) {
-          let dist = 0;
-          for (let i = 0; i < Math.min(t.length, q.length); i++) {
-            if (t[i] !== q[i]) dist++;
-          }
-          return dist <= 1;
+      if (q.length > 3 && t.length >= q.length - 1 && t.length <= q.length + 1) {
+        let dist = 0;
+        for (let i = 0; i < Math.min(t.length, q.length); i++) {
+          if (t[i] !== q[i]) dist++;
         }
+        return dist <= 1;
       }
       return false;
     };
 
-    const updateFilters = () => {
+    const updateUI = () => {
       let visibleCount = 0;
+      
       skillItems.forEach((item) => {
         const itemCategory = item.getAttribute("data-category") || "";
         const itemName = item.getAttribute("data-name") || "";
+        const isVibeOnly = item.classList.contains("vibe-only-item");
 
-        const matchesCategory =
-          activeCategory === "all" || itemCategory === activeCategory;
-        const matchesSearch =
-          searchQuery === "" ||
-          matchesQuery(itemName, searchQuery) ||
-          matchesQuery(itemCategory, searchQuery);
+        // Filter logic
+        const matchesCategory = activeCategory === "all" || itemCategory === activeCategory;
+        const matchesSearch = searchQuery === "" || matchesQuery(itemName, searchQuery) || matchesQuery(itemCategory, searchQuery);
+        const matchesVibe = !isVibeOnly || isVibeMode;
 
-        const visible = matchesCategory && matchesSearch;
+        const visible = matchesCategory && matchesSearch && matchesVibe;
 
         (item as HTMLElement).style.display = visible ? "block" : "none";
-
         if (visible) {
           (item as HTMLElement).classList.add("animate-in");
           visibleCount++;
@@ -111,34 +112,81 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
       });
 
       const noResults = document.getElementById("no-results");
-      if (noResults) {
-        noResults.classList.toggle("hidden", visibleCount > 0);
-      }
+      if (noResults) noResults.classList.toggle("hidden", visibleCount > 0);
     };
 
+    const animateBoost = (active: boolean) => {
+      const cards = document.querySelectorAll(".skill-card");
+      
+      cards.forEach((card) => {
+        const cardEl = card as HTMLElement;
+        const textEl = card.querySelector(".proficiency-text");
+        const progressEl = card.querySelector(".skill-progress") as HTMLElement;
+        
+        const original = parseInt(cardEl.getAttribute("data-proficiency") || "0");
+        const boosted = parseInt(cardEl.getAttribute("data-boosted") || "0");
+        const target = active ? boosted : original;
+        const start = active ? original : boosted;
+
+        // Visual class toggle
+        cardEl.classList.toggle("vibe-boost", active);
+        
+        // Counter animation
+        let current = start;
+        const duration = 1000;
+        const startTime = performance.now();
+
+        const step = (now: number) => {
+          const progress = Math.min(1, (now - startTime) / duration);
+          const value = Math.floor(start + (target - start) * progress);
+          if (textEl) textEl.textContent = value.toString();
+          if (progressEl) progressEl.style.width = `${value}%`;
+          
+          if (progress < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      });
+    };
+
+    // Vibe Toggle Listener
+    if (vibeToggle) {
+      vibeToggle.addEventListener("change", (e) => {
+        isVibeMode = (e.target as HTMLInputElement).checked;
+        
+        // Identity change
+        if (skillsDesc) {
+          skillsDesc.style.opacity = "0";
+          setTimeout(() => {
+            skillsDesc.innerHTML = isVibeMode ? vibeDesc : originalDesc;
+            skillsDesc.style.opacity = "1";
+          }, 300);
+        }
+
+        animateBoost(isVibeMode);
+        updateUI();
+      });
+    }
+
+    // Filter Listeners
     filterButtons.forEach((button) => {
       button.addEventListener("click", () => {
         activeCategory = button.getAttribute("data-category") || "all";
-
-        filterButtons.forEach((btn) =>
-          btn.classList.remove("border-cosmic-gold/60", "text-cosmic-gold"),
-        );
+        filterButtons.forEach((btn) => btn.classList.remove("border-cosmic-gold/60", "text-cosmic-gold"));
         button.classList.add("border-cosmic-gold/60", "text-cosmic-gold");
-
-        updateFilters();
+        updateUI();
       });
     });
 
     if (searchInput) {
       searchInput.addEventListener("input", (e) => {
         searchQuery = (e.target as HTMLInputElement).value;
-        updateFilters();
+        updateUI();
       });
     }
 
-    // Set initial active state
+    // Initial state
     const allBtn = document.querySelector('[data-category="all"]');
-    if (allBtn)
-      allBtn.classList.add("border-cosmic-gold/60", "text-cosmic-gold");
+    if (allBtn) allBtn.classList.add("border-cosmic-gold/60", "text-cosmic-gold");
+    updateUI();
   });
 </script>
