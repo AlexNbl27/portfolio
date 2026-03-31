@@ -2,50 +2,37 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import ProjectFilter from '../components/ProjectFilter.astro';
-import ProjectModal from '../components/ProjectModal.astro';
 import projects from '../data/projects.json';
 ---
 
-<BaseLayout title="Magical Odyssey | Projects">
+<BaseLayout title="Alexandre Noblet | Projets" description="Découvrez les projets web, mobile, desktop et SaaS d’Alexandre Noblet.">
   <section class="cosmic-container pt-8">
-    <h1 class="section-title">The Nebula <span class="highlight">Collections</span></h1>
-    <p class="muted mt-4 max-w-3xl text-lg">Each star represents a milestone in the odyssey—interfaces, systems, and experiments designed for beautiful utility.</p>
+    <h1 class="section-title">Mes <span class="highlight">projets</span></h1>
+    <p class="muted mt-4 max-w-3xl text-lg">Une sélection de projets réalisés en formation, en stage ou sur mon temps personnel, avec un intérêt constant pour les produits utiles, concrets et bien pensés.</p>
     <ProjectFilter />
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="project-grid">
       {projects.map((project) => (
         <div
           data-category={project.category}
-          data-title={project.title}
-          data-description={project.description}
-          class="project-item cursor-pointer opacity-0"
-          tabindex="0"
-          role="button"
-          aria-label={`Open details for ${project.title}`}
+          data-detail-page={project.detailPage ?? ''}
+          class:list={[
+            'project-item',
+            project.detailPage ? 'project-item--detail cursor-pointer' : 'cursor-default'
+          ]}
+          tabindex={project.detailPage ? 0 : undefined}
+          role={project.detailPage ? 'link' : undefined}
+          aria-label={project.detailPage ? `Ouvrir la page de détails du projet ${project.title}` : undefined}
         >
           <ProjectCard project={project} />
         </div>
       ))}
     </div>
   </section>
-  <ProjectModal />
 </BaseLayout>
 
 <script>
   const buttons = document.querySelectorAll('.filter-btn');
   const cards = document.querySelectorAll('.project-item');
-  const modal = document.getElementById('project-modal');
-  const close = document.getElementById('close-modal');
-  const title = document.getElementById('modal-title');
-  const desc = document.getElementById('modal-desc');
-
-  const openModal = (card) => {
-    if (!modal || !title || !desc) return;
-    title.textContent = card.getAttribute('data-title') || '';
-    desc.textContent = card.getAttribute('data-description') || '';
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-    modal.focus();
-  };
 
   buttons.forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -58,36 +45,23 @@ import projects from '../data/projects.json';
   });
 
   cards.forEach((card) => {
-    card.addEventListener('click', () => openModal(card));
+    const detailPage = card.getAttribute('data-detail-page');
+    if (!detailPage) return;
+
+    card.addEventListener('click', (event) => {
+      const target = event.target as HTMLElement | null;
+      // Allow clicks on external links (demo, github) to work normally
+      const link = target?.closest('a');
+      if (link && !link.href.includes(detailPage)) return;
+      window.location.assign(detailPage);
+    });
+
     card.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        openModal(card);
+      const keyboardEvent = event as KeyboardEvent;
+      if (keyboardEvent.key === 'Enter' || keyboardEvent.key === ' ') {
+        keyboardEvent.preventDefault();
+        window.location.assign(detailPage);
       }
     });
   });
-
-  close?.addEventListener('click', () => {
-    modal?.classList.add('hidden');
-    modal?.classList.remove('flex');
-  });
-
-  modal?.addEventListener('click', (event) => {
-    if (event.target === modal) close?.click();
-  });
-
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && modal && !modal.classList.contains('hidden')) close?.click();
-  });
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('animate-in');
-        entry.target.classList.remove('opacity-0');
-      }
-    });
-  }, { threshold: 0.15 });
-
-  cards.forEach((card) => observer.observe(card));
 </script>

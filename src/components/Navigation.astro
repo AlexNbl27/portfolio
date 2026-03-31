@@ -1,21 +1,22 @@
 ---
 const links = [
-  { href: '/', label: 'Star Chart' },
-  { href: '/projects', label: 'Nebulae' },
-  { href: '/skills', label: 'Orreries' },
-  { href: '/soft-skills', label: 'Artifacts' },
-  { href: '/experience', label: 'Chronicles' },
-  { href: '/ai-portal', label: 'AI Portal' }
+  { href: '/', label: 'Accueil' },
+  { href: '/projects', label: 'Projets' },
+  { href: '/skills', label: 'Compétences' },
+  { href: '/soft-skills', label: 'Soft skills' },
+  { href: '/experience', label: 'Parcours' },
+  { href: '/blogs', label: 'Blogs' }
 ];
 
 const current = Astro.url.pathname;
 ---
 
-<header class="relative z-20 cosmic-container">
-  <nav class="glass-card mt-2 flex flex-wrap items-center justify-between gap-3 px-4 py-3 md:px-6" aria-label="Main navigation">
-    <a href="/" class="focus-ring font-display text-2xl font-bold italic tracking-wide text-cosmic-gold">Magical Odyssey</a>
+<header class="fixed inset-x-0 top-0 z-50 pt-2">
+  <div class="cosmic-container">
+    <nav class="glass-card flex flex-wrap items-center justify-between gap-3 px-4 py-3 shadow-[0_18px_40px_rgba(4,9,22,0.28)] md:px-6" aria-label="Navigation principale">
+    <a href="/" class="focus-ring font-display text-2xl font-bold italic tracking-wide text-cosmic-gold">Alexandre Noblet</a>
 
-    <button class="focus-ring rounded-md px-2 py-1 md:hidden" id="menu-toggle" aria-expanded="false" aria-controls="menu" aria-label="Toggle menu">☰</button>
+    <button class="focus-ring rounded-md px-2 py-1 md:hidden" id="menu-toggle" aria-expanded="false" aria-controls="menu" aria-label="Ouvrir le menu">☰</button>
 
     <ul id="menu" class="hidden w-full flex-col gap-3 border-t border-cosmic-gold/20 pt-3 text-xs uppercase tracking-[0.15em] md:flex md:w-auto md:flex-row md:items-center md:border-none md:pt-0">
       {links.map((link) => (
@@ -32,10 +33,11 @@ const current = Astro.url.pathname;
         </li>
       ))}
       <li>
-        <a href="mailto:hello@magicalodyssey.dev" class="focus-ring rounded-full border border-cosmic-gold/35 bg-cosmic-gold px-4 py-2 font-bold text-black transition hover:shadow-glow">Contact</a>
+        <a href="mailto:alexandrenobletpro@gmail.com" class="focus-ring rounded-full border border-cosmic-gold/35 bg-cosmic-gold px-4 py-2 font-bold text-black transition hover:shadow-glow">Contact</a>
       </li>
     </ul>
-  </nav>
+    </nav>
+  </div>
 </header>
 
 <script>

@@ -4,15 +4,17 @@ import SkillVisualization from '../components/SkillVisualization.astro';
 import SkillCard from '../components/SkillCard.astro';
 ---
 
-<BaseLayout title="Magical Odyssey | Soft Skills">
+<BaseLayout title="Alexandre Noblet | Soft skills" description="Soft skills et qualités humaines d’Alexandre Noblet.">
   <section class="cosmic-container pt-8">
-    <h1 class="section-title">The Celestial <span class="highlight">Geometry of Experience</span></h1>
-    <p class="muted mt-4 max-w-3xl">The points of light that define human connection, empathy, and leadership across the cosmic journey.</p>
+    <h1 class="section-title">Mes <span class="highlight">soft skills</span></h1>
+    <p class="muted mt-4 max-w-3xl">Au-delà de la technique, je m’appuie sur l’organisation, l’autonomie, la créativité et l’esprit d’équipe pour faire avancer les projets efficacement.</p>
     <SkillVisualization />
-    <div class="mt-8 grid gap-4 md:grid-cols-3">
-      <SkillCard title="Narrative Thinking" description="Transforming abstract requirements into clear, story-driven journeys." />
-      <SkillCard title="Intentional Collaboration" description="Building trust across disciplines through clarity, curiosity, and respect." />
-      <SkillCard title="Adaptive Leadership" description="Balancing strategic vision with practical execution under changing constraints." />
+    <div class="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+      <SkillCard title="Sens de l’organisation" description="Structurer les tâches, prioriser et garder une vision claire sur l’avancement d’un projet." />
+      <SkillCard title="Créativité" description="Imaginer des solutions utiles, intuitives et adaptées au besoin réel de l’utilisateur." />
+      <SkillCard title="Autonomie" description="Avancer efficacement sur un sujet, apprendre vite et chercher les bonnes ressources au bon moment." />
+      <SkillCard title="Esprit d’équipe" description="Collaborer avec bienveillance, partager l’information et faire progresser le collectif." />
+      <SkillCard title="Esprit d’initiative" description="Proposer, tester et améliorer sans attendre, tout en restant aligné avec les objectifs du projet." />
     </div>
   </section>
 </BaseLayout>

@@ -5,10 +5,10 @@ import ExperienceFilter from '../components/ExperienceFilter.astro';
 import experiences from '../data/experience.json';
 ---
 
-<BaseLayout title="Magical Odyssey | Experience">
+<BaseLayout title="Alexandre Noblet | Parcours" description="Parcours académique et professionnel d’Alexandre Noblet.">
   <section class="cosmic-container pt-8">
-    <h1 class="section-title">Tracing the <span class="highlight">Celestial Geometry of Experience</span></h1>
-    <p class="muted mt-4 max-w-3xl">A timeline of roles and artifacts from visual storytelling to deep-space interface architecture.</p>
+    <h1 class="section-title">Mon <span class="highlight">parcours</span></h1>
+    <p class="muted mt-4 max-w-3xl">De la formation GEII à l’informatique, puis à l’IoT en entreprise : un parcours construit entre technique, terrain et développement produit.</p>
   </section>
   <ExperienceFilter />
   <ExperienceTimeline experiences={experiences} />
@@ -25,10 +25,8 @@ import experiences from '../data/experience.json';
       btn.classList.add('border-cosmic-gold/60', 'text-cosmic-gold');
 
       items.forEach((item) => {
-        const period = item.getAttribute('data-period') || '';
-        let visible = true;
-        if (filter === 'recent') visible = period.includes('Present') || period.startsWith('202');
-        if (filter === 'legacy') visible = !period.includes('Present') && !period.startsWith('202');
+        const type = item.getAttribute('data-type') || 'pro';
+        const visible = filter === 'all' || type === filter;
         item.classList.toggle('hidden', !visible);
       });
     });

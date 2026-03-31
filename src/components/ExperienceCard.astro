@@ -3,6 +3,7 @@ interface Experience {
   company: string;
   role: string;
   period: string;
+  type?: string;
   description: string;
   achievements: string[];
   technologies: string[];
@@ -12,15 +13,18 @@ interface Experience {
 const { item } = Astro.props as { item: Experience };
 ---
 
-<article class="glass-card p-6">
-  <p class="text-xs uppercase tracking-[0.18em] text-cosmic-gold">{item.period}</p>
-  <h3 class="font-display text-4xl">{item.role}</h3>
-  <p class="text-sm italic text-cosmic-pink">{item.company}</p>
-  <p class="muted mt-3">{item.description}</p>
-  <ul class="mt-4 list-disc space-y-1 pl-5 muted">
+<article class="experience-card glass-card p-6 md:p-7">
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <p class="text-xs uppercase tracking-[0.18em] text-cosmic-gold">{item.period}</p>
+    <span class="experience-badge">{item.type === 'formation' ? 'Formation' : 'Expérience pro'}</span>
+  </div>
+  <h3 class="font-display text-4xl text-cosmic-gold md:text-5xl">{item.role}</h3>
+  <p class="text-sm italic text-cosmic-pink md:text-base">{item.company}</p>
+  <p class="muted mt-4 text-[1.02rem] leading-8">{item.description}</p>
+  <ul class="experience-achievements mt-5 list-disc space-y-2 pl-5 muted">
     {item.achievements.map((achievement) => <li>{achievement}</li>)}
   </ul>
-  <div class="mt-4 flex flex-wrap gap-2 text-xs">
-    {item.technologies.map((tech) => <span class="rounded-full bg-slate-900/60 px-3 py-1">{tech}</span>)}
+  <div class="mt-5 flex flex-wrap gap-2 text-xs">
+    {item.technologies.map((tech) => <span class="experience-tech">{tech}</span>)}
   </div>
 </article>

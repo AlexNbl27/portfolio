@@ -7,10 +7,10 @@ import skills from '../data/skills.json';
 const categories = [...new Set(skills.map((skill) => skill.category))];
 ---
 
-<BaseLayout title="Magical Odyssey | Technical Skills">
+<BaseLayout title="Alexandre Noblet | Compétences" description="Compétences techniques d’Alexandre Noblet en développement, data, DevOps et automatisme.">
   <section class="cosmic-container pt-8">
-    <h1 class="section-title">The Celestial <span class="highlight">Architecture of Knowledge</span></h1>
-    <p class="muted mt-4 max-w-3xl text-lg">Planetary cores represent refined technical mastery orbiting around creative intent.</p>
+    <h1 class="section-title">Mes <span class="highlight">compétences</span></h1>
+    <p class="muted mt-4 max-w-3xl text-lg">Un socle technique construit autour du développement web et mobile, des bases de données, des outils DevOps et de l’automatisme industriel.</p>
 
     <SkillFilter categories={categories} />
     <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3" id="skill-grid">

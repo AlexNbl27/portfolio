@@ -6,14 +6,15 @@ interface Project {
   imageUrl: string;
   demoUrl?: string;
   githubUrl?: string;
+  detailPage?: string;
   category: string;
 }
 
 const { project } = Astro.props as { project: Project };
 ---
 
-<article class="glass-card group overflow-hidden transition duration-300 hover:-translate-y-1 hover:shadow-glow">
-  <div class="relative h-44 w-full overflow-hidden">
+<article class="glass-card group flex flex-col h-full overflow-hidden transition duration-300 hover:-translate-y-1 hover:shadow-glow">
+  <div class="relative w-full overflow-hidden flex-shrink-0 aspect-video">
     <img
       src={project.imageUrl}
       alt={project.title}
@@ -22,25 +23,30 @@ const { project } = Astro.props as { project: Project };
       onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
     />
     <div class="hidden h-full w-full place-items-center bg-gradient-to-br from-cosmic-700 to-cosmic-900 text-sm uppercase tracking-[0.2em] text-cosmic-pink">
-      Add project image
+      Aperçu du projet
     </div>
   </div>
 
-  <div class="space-y-3 p-5">
-    <p class="text-xs uppercase tracking-[0.25em] text-cosmic-pink">{project.category}</p>
-    <h3 class="font-display text-3xl text-cosmic-gold">{project.title}</h3>
-    <p class="muted">{project.description}</p>
+  <div class="flex flex-col flex-grow p-5">
+    <div class="space-y-3 flex-grow">
+      <p class="text-xs uppercase tracking-[0.25em] text-cosmic-pink">{project.category}</p>
+      <h3 class="font-display text-3xl text-cosmic-gold">{project.title}</h3>
+      <p class="muted line-clamp-3">{project.description}</p>
 
-    <div class="flex flex-wrap gap-2 text-xs">
-      {project.technologies.map((tech) => <span class="rounded-full bg-slate-900/60 px-3 py-1">{tech}</span>)}
+      <div class="flex flex-wrap gap-2 text-xs">
+        {project.technologies.map((tech) => <span class="rounded-full bg-slate-900/60 px-3 py-1">{tech}</span>)}
+      </div>
     </div>
 
-    <div class="flex gap-3 pt-2">
+    <div class="flex gap-3 pt-4 mt-auto">
+      {project.detailPage && (
+        <a href={project.detailPage} class="focus-ring rounded-full bg-cosmic-gold px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-black hover:brightness-110">En savoir plus</a>
+      )}
       {project.demoUrl && (
-        <a href={project.demoUrl} class="focus-ring rounded-full border border-cosmic-gold/30 px-3 py-1 text-xs uppercase tracking-[0.15em] hover:border-cosmic-gold">Live</a>
+        <a href={project.demoUrl} target="_blank" rel="noreferrer" class="focus-ring rounded-full border border-cosmic-gold/30 px-3 py-1 text-xs uppercase tracking-[0.15em] hover:border-cosmic-gold">Démo</a>
       )}
       {project.githubUrl && (
-        <a href={project.githubUrl} class="focus-ring rounded-full border border-cosmic-gold/30 px-3 py-1 text-xs uppercase tracking-[0.15em] hover:border-cosmic-gold">Code</a>
+        <a href={project.githubUrl} target="_blank" rel="noreferrer" class="focus-ring rounded-full border border-cosmic-gold/30 px-3 py-1 text-xs uppercase tracking-[0.15em] hover:border-cosmic-gold">GitHub</a>
       )}
     </div>
   </div>

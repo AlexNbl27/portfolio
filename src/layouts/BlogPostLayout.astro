@@ -1,0 +1,48 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Frontmatter {
+  title: string;
+  description?: string;
+  date?: string;
+  heroImage?: string;
+  blogTitle?: string;
+  parentLink?: string;
+}
+
+const { frontmatter } = Astro.props as { frontmatter: Frontmatter };
+const {
+  title,
+  description = '',
+  date,
+  heroImage,
+  blogTitle,
+  parentLink = '/blogs'
+} = frontmatter;
+---
+
+<BaseLayout title={`Alexandre Noblet | ${title}`} description={description}>
+  <article class="cosmic-container pt-8">
+    <a href={parentLink} class="focus-ring inline-flex items-center gap-2 rounded-full border border-cosmic-gold/25 px-4 py-2 text-xs uppercase tracking-[0.2em] hover:border-cosmic-gold hover:text-cosmic-gold">
+      ← Retour
+    </a>
+
+    <header class="mt-6">
+      {blogTitle && <p class="text-sm uppercase tracking-[0.25em] text-cosmic-pink">{blogTitle}</p>}
+      <h1 class="section-title mt-3">{title}</h1>
+      {date && <p class="muted mt-3">Publié le {date}</p>}
+    </header>
+
+    {heroImage && (
+      <div class="glass-card mt-6 overflow-hidden">
+        <img src={heroImage} alt={title} class="h-auto w-full object-cover" />
+      </div>
+    )}
+
+    <div class="glass-card mt-6 p-6 md:p-8">
+      <div class="article-content">
+        <slot />
+      </div>
+    </div>
+  </article>
+</BaseLayout>

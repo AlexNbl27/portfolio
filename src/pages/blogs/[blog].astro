@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import blogs, { type BlogMeta } from '../../data/blogs';
+
+export function getStaticPaths() {
+  return blogs.map((blog) => ({
+    params: { blog: blog.slug },
+    props: { blog }
+  }));
+}
+
+const { blog } = Astro.props as { blog: BlogMeta };
+---
+
+<BaseLayout title={`Alexandre Noblet | ${blog.title}`} description={blog.summary}>
+  <section class="cosmic-container pt-8">
+    <a href="/blogs" class="focus-ring inline-flex items-center gap-2 rounded-full border border-cosmic-gold/25 px-4 py-2 text-xs uppercase tracking-[0.2em] hover:border-cosmic-gold hover:text-cosmic-gold">
+      ← Retour aux blogs
+    </a>
+
+    <div class="mt-6 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+      <div class="space-y-5">
+        <p class="text-xs uppercase tracking-[0.25em] text-cosmic-pink">{blog.subtitle}</p>
+        <h1 class="section-title">{blog.title}</h1>
+        <p class="muted text-lg">{blog.summary}</p>
+
+        <div class="flex flex-wrap gap-2 text-xs">
+          {blog.skills.map((skill) => <span class="rounded-full bg-slate-900/60 px-3 py-1">{skill}</span>)}
+        </div>
+      </div>
+
+      {blog.coverImage && (
+        <div class="glass-card overflow-hidden">
+          <img src={blog.coverImage} alt={blog.title} class="h-full w-full object-cover" />
+        </div>
+      )}
+    </div>
+
+    <section class="mt-8">
+      <h2 class="font-display text-4xl text-cosmic-gold">Toutes les publications</h2>
+      <div class="mt-4 grid gap-4 md:grid-cols-2">
+        {blog.posts.map((post) => (
+          <article class="glass-card p-5">
+            <p class="text-xs uppercase tracking-[0.2em] text-cosmic-pink">{post.date}</p>
+            <h3 class="mt-2 font-display text-3xl">{post.title}</h3>
+            <p class="muted mt-2">{post.excerpt}</p>
+            <a href={`/blogs/${blog.slug}/${post.slug}`} class="focus-ring mt-4 inline-block rounded-full border border-cosmic-gold/30 px-4 py-2 text-xs uppercase tracking-[0.15em] hover:border-cosmic-gold">Lire l’article</a>
+          </article>
+        ))}
+      </div>
+    </section>
+  </section>
+</BaseLayout>

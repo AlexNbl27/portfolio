@@ -1,4 +1,5 @@
 ---
+import { ViewTransitions } from 'astro:transitions';
 import '../styles/global.css';
 import '../styles/animations.css';
 import Navigation from '../components/Navigation.astro';
@@ -10,22 +11,23 @@ interface Props {
   description?: string;
 }
 
-const { title, description = 'Retro-futuristic magical odyssey portfolio.' } = Astro.props;
+const { title, description = 'Portfolio d’Alexandre Noblet, développeur et intégrateur IoT.' } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="view-transition" content="same-origin" />
+    <ViewTransitions />
   </head>
   <body>
     <CosmicBackground />
-    <Navigation />
-    <main class="relative z-10 py-8 md:py-12">
+    <Navigation transition:persist />
+    <main class="page-shell relative z-10 pt-28 pb-8 md:pt-32 md:pb-12">
       <slot />
     </main>
     <Footer />
