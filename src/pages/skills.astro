@@ -1,42 +1,144 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import SkillOrbit from '../components/SkillOrbit.astro';
-import SkillFilter from '../components/SkillFilter.astro';
-import skills from '../data/skills.json';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SkillOrbit from "../components/SkillOrbit.astro";
+import SkillFilter from "../components/SkillFilter.astro";
+import skills from "../data/skills.json";
 
 const categories = [...new Set(skills.map((skill) => skill.category))];
 ---
 
-<BaseLayout title="Alexandre Noblet | Compétences" description="Compétences techniques d’Alexandre Noblet en développement, data, DevOps et automatisme.">
+<BaseLayout
+  title="Alexandre Noblet | Compétences"
+  description="Compétences techniques d’Alexandre Noblet en développement, data, DevOps et automatisme."
+>
   <section class="cosmic-container pt-8">
-    <h1 class="section-title">Mes <span class="highlight">compétences</span></h1>
-    <p class="muted mt-4 max-w-3xl text-lg">Un socle technique construit autour du développement web et mobile, des bases de données, des outils DevOps et de l’automatisme industriel.</p>
+    <h1 class="section-title">
+      Mes <span class="highlight">compétences</span>
+    </h1>
+    <p class="muted mt-4 max-w-3xl text-lg">
+      Un socle technique construit autour du développement web et mobile, des
+      bases de données, des outils DevOps et de l’automatisme industriel.
+    </p>
 
     <SkillFilter categories={categories} />
     <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3" id="skill-grid">
-      {skills.map((skill) => (
-        <div data-category={skill.category} class="skill-item">
-          <SkillOrbit skill={skill} />
-        </div>
-      ))}
+      {
+        skills.map((skill) => (
+          <div
+            data-category={skill.category}
+            data-name={skill.name}
+            class="skill-item"
+          >
+            <SkillOrbit skill={skill} />
+          </div>
+        ))
+      }
+    </div>
+
+    <div
+      id="no-results"
+      class="hidden mt-12 py-12 text-center rounded-[2.5rem] border border-cosmic-gold/10 bg-slate-900/20 backdrop-blur-sm"
+    >
+      <p class="text-cosmic-gold/60 text-lg italic font-display">
+        Aucune compétence ne correspond à votre recherche... 🌌
+      </p>
+      <p class="muted text-sm mt-2">
+        Réessayez avec d'autres mots-clés ou filtres.
+      </p>
     </div>
   </section>
 </BaseLayout>
 
 <script>
-  const filterButtons = document.querySelectorAll('.skill-filter');
-  const skillItems = document.querySelectorAll('.skill-item');
+  document.addEventListener("astro:page-load", () => {
+    const filterButtons = document.querySelectorAll(".skill-filter");
+    const skillItems = document.querySelectorAll(".skill-item");
+    const searchInput = document.getElementById(
+      "badge-search-input",
+    ) as HTMLInputElement;
 
-  filterButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      const category = button.getAttribute('data-category');
-      filterButtons.forEach((btn) => btn.classList.remove('border-cosmic-gold/60', 'text-cosmic-gold'));
-      button.classList.add('border-cosmic-gold/60', 'text-cosmic-gold');
+    let activeCategory = "all";
+    let searchQuery = "";
 
+    // Normalization helper
+    const normalize = (str: string) =>
+      str
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+
+    // Fuzzy matching helper (Levenshtein distance 1 or contains)
+    const matchesQuery = (target: string, query: string) => {
+      const t = normalize(target);
+      const q = normalize(query);
+      if (t.includes(q)) return true;
+
+      // Simple 1-char typo tolerance for words longer than 3 chars
+      if (q.length > 3) {
+        if (t.length >= q.length - 1 && t.length <= q.length + 1) {
+          let dist = 0;
+          for (let i = 0; i < Math.min(t.length, q.length); i++) {
+            if (t[i] !== q[i]) dist++;
+          }
+          return dist <= 1;
+        }
+      }
+      return false;
+    };
+
+    const updateFilters = () => {
+      let visibleCount = 0;
       skillItems.forEach((item) => {
-        const visible = category === 'all' || item.getAttribute('data-category') === category;
-        item.classList.toggle('hidden', !visible);
+        const itemCategory = item.getAttribute("data-category") || "";
+        const itemName = item.getAttribute("data-name") || "";
+
+        const matchesCategory =
+          activeCategory === "all" || itemCategory === activeCategory;
+        const matchesSearch =
+          searchQuery === "" ||
+          matchesQuery(itemName, searchQuery) ||
+          matchesQuery(itemCategory, searchQuery);
+
+        const visible = matchesCategory && matchesSearch;
+
+        (item as HTMLElement).style.display = visible ? "block" : "none";
+
+        if (visible) {
+          (item as HTMLElement).classList.add("animate-in");
+          visibleCount++;
+        }
+      });
+
+      const noResults = document.getElementById("no-results");
+      if (noResults) {
+        noResults.classList.toggle("hidden", visibleCount > 0);
+      }
+    };
+
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeCategory = button.getAttribute("data-category") || "all";
+
+        filterButtons.forEach((btn) =>
+          btn.classList.remove("border-cosmic-gold/60", "text-cosmic-gold"),
+        );
+        button.classList.add("border-cosmic-gold/60", "text-cosmic-gold");
+
+        updateFilters();
       });
     });
+
+    if (searchInput) {
+      searchInput.addEventListener("input", (e) => {
+        searchQuery = (e.target as HTMLInputElement).value;
+        updateFilters();
+      });
+    }
+
+    // Set initial active state
+    const allBtn = document.querySelector('[data-category="all"]');
+    if (allBtn)
+      allBtn.classList.add("border-cosmic-gold/60", "text-cosmic-gold");
   });
 </script>

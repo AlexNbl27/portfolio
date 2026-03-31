@@ -1,51 +1,76 @@
 ---
+import Card from "./ui/Card.astro";
+import Button from "./ui/Button.astro";
+
 const accentStars = [
-  { left: '10%', top: '17%', size: '0.32rem', opacity: 0.8 },
-  { left: '20%', top: '26%', size: '0.18rem', opacity: 0.45 },
-  { left: '38%', top: '22%', size: '0.22rem', opacity: 0.5 },
-  { left: '55%', top: '13%', size: '0.24rem', opacity: 0.55 },
-  { left: '74%', top: '17%', size: '0.34rem', opacity: 0.82 },
-  { left: '86%', top: '32%', size: '0.18rem', opacity: 0.42 },
-  { left: '79%', top: '57%', size: '0.22rem', opacity: 0.6 },
-  { left: '61%', top: '72%', size: '0.3rem', opacity: 0.75 },
-  { left: '34%', top: '78%', size: '0.18rem', opacity: 0.4 },
-  { left: '13%', top: '69%', size: '0.28rem', opacity: 0.7 },
-  { left: '47%', top: '58%', size: '0.16rem', opacity: 0.35 }
+  { left: "10%", top: "17%", size: "0.32rem", opacity: 0.8 },
+  { left: "20%", top: "26%", size: "0.18rem", opacity: 0.45 },
+  { left: "38%", top: "22%", size: "0.22rem", opacity: 0.5 },
+  { left: "55%", top: "13%", size: "0.24rem", opacity: 0.55 },
+  { left: "74%", top: "17%", size: "0.34rem", opacity: 0.82 },
+  { left: "86%", top: "32%", size: "0.18rem", opacity: 0.42 },
+  { left: "79%", top: "57%", size: "0.22rem", opacity: 0.6 },
+  { left: "61%", top: "72%", size: "0.3rem", opacity: 0.75 },
+  { left: "34%", top: "78%", size: "0.18rem", opacity: 0.4 },
+  { left: "13%", top: "69%", size: "0.28rem", opacity: 0.7 },
+  { left: "47%", top: "58%", size: "0.16rem", opacity: 0.35 },
 ];
 ---
 
-<section class="glass-card relative mx-auto mt-10 grid max-w-5xl overflow-hidden md:grid-cols-[1.2fr_0.8fr]">
+<Card
+  as="section"
+  class="relative mt-10 grid overflow-hidden md:grid-cols-[1.2fr_0.8fr] w-full"
+>
   <div class="relative min-h-[390px] px-4 py-5 md:px-6 md:py-6">
-    <div class="soft-constellation relative h-full min-h-[340px] overflow-hidden rounded-[2rem] border border-cosmic-gold/20 bg-[radial-gradient(circle_at_center,rgba(39,46,86,0.45),rgba(15,20,42,0.7)_42%,rgba(8,12,26,0.95)_100%)]">
+    <div
+      class="soft-constellation relative h-full min-h-[340px] overflow-hidden rounded-[2rem] border border-cosmic-gold/20 bg-[radial-gradient(circle_at_center,rgba(39,46,86,0.45),rgba(15,20,42,0.7)_42%,rgba(8,12,26,0.95)_100%)]"
+    >
       <div class="soft-constellation__nebula"></div>
 
-      {accentStars.map((star, index) => (
-        <span
-          class:list={['soft-constellation__star', index % 3 === 0 ? 'twinkle' : '']}
-          style={`left:${star.left};top:${star.top};width:${star.size};height:${star.size};opacity:${star.opacity};animation-delay:${index * 280}ms;`}
-          aria-hidden="true"
-        ></span>
-      ))}
+      {
+        accentStars.map((star, index) => (
+          <span
+            class:list={[
+              "soft-constellation__star",
+              index % 3 === 0 ? "twinkle" : "",
+            ]}
+            style={`left:${star.left};top:${star.top};width:${star.size};height:${star.size};opacity:${star.opacity};animation-delay:${index * 280}ms;`}
+            aria-hidden="true"
+          />
+        ))
+      }
 
-      <div class="soft-skill-node soft-skill-node--pink" style="left: 20%; top: 18%;">
+      <div
+        class="soft-skill-node soft-skill-node--pink"
+        style="left: 20%; top: 18%;"
+      >
         <span class="soft-skill-node__aura"></span>
         <span class="soft-skill-node__dot"></span>
         <span class="soft-skill-node__label">Organisation</span>
       </div>
 
-      <div class="soft-skill-node soft-skill-node--gold" style="left: 66%; top: 20%;">
+      <div
+        class="soft-skill-node soft-skill-node--gold"
+        style="left: 66%; top: 20%;"
+      >
         <span class="soft-skill-node__aura"></span>
         <span class="soft-skill-node__dot"></span>
         <span class="soft-skill-node__label">Créativité</span>
       </div>
 
-      <div class="soft-skill-node soft-skill-node--blue" style="left: 63%; top: 72%;">
+      <div
+        class="soft-skill-node soft-skill-node--blue"
+        style="left: 63%; top: 72%;"
+      >
         <span class="soft-skill-node__aura"></span>
         <span class="soft-skill-node__dot"></span>
         <span class="soft-skill-node__label">Autonomie</span>
       </div>
 
-      <div class="soft-skill-node soft-skill-node--teal" style="left: 26%; top: 69%;">
+      <div
+        class="soft-skill-node soft-skill-node--teal"
+        style="left: 26%; top: 69%;"
+      >
         <span class="soft-skill-node__aura"></span>
         <span class="soft-skill-node__dot"></span>
         <span class="soft-skill-node__label">Esprit d'équipe</span>
@@ -59,18 +84,34 @@ const accentStars = [
   </div>
 
   <div class="space-y-6 p-5 md:p-6">
-    <div class="glass-card p-5">
+    <Card class="p-5">
       <h3 class="font-display text-4xl text-cosmic-gold">Repères clés</h3>
       <ul class="mt-4 space-y-3 muted">
-        <li class="flex justify-between"><span>Adaptabilité</span><strong class="text-cosmic-pink">Très forte</strong></li>
-        <li class="flex justify-between"><span>Collaboration</span><strong class="text-cosmic-pink">Au quotidien</strong></li>
-        <li class="flex justify-between"><span>Prise d’initiative</span><strong class="text-cosmic-pink">Naturelle</strong></li>
+        <li class="flex justify-between">
+          <span>Adaptabilité</span><strong class="text-cosmic-pink"
+            >Très forte</strong
+          >
+        </li>
+        <li class="flex justify-between">
+          <span>Collaboration</span><strong class="text-cosmic-pink"
+            >Au quotidien</strong
+          >
+        </li>
+        <li class="flex justify-between">
+          <span>Prise d’initiative</span><strong class="text-cosmic-pink"
+            >Naturelle</strong
+          >
+        </li>
       </ul>
-    </div>
-    <div class="glass-card p-5">
+    </Card>
+    <Card class="p-5">
       <h3 class="font-display text-3xl">Échanger sur un projet</h3>
-      <p class="muted mb-4 mt-2">Je suis toujours partant pour discuter produit, développement et IoT.</p>
-      <a href="mailto:alexandrenobletpro@gmail.com" class="focus-ring inline-block rounded-full bg-cosmic-gold px-5 py-3 text-xs font-bold uppercase tracking-[0.2em] text-black">Me contacter</a>
-    </div>
+      <p class="muted mb-4 mt-2">
+        Je suis toujours partant pour discuter produit, développement et IoT.
+      </p>
+      <Button href="mailto:alexandrenobletpro@gmail.com" variant="primary"
+        >Me contacter</Button
+      >
+    </Card>
   </div>
-</section>
+</Card>

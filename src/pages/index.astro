@@ -1,54 +1,72 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/Hero.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import Card from "../components/ui/Card.astro";
 
 const homeSections = [
   {
-    href: '/projects',
-    title: 'Mes projets',
-    description: 'Retrouvez une sélection de réalisations web, mobile, desktop et SaaS menées en formation, en stage ou sur mon temps personnel.'
+    href: "/projects",
+    title: "Mes projets",
+    description:
+      "Retrouvez une sélection de réalisations web, mobile, desktop et SaaS menées en formation, en stage ou sur mon temps personnel.",
   },
   {
-    href: '/skills',
-    title: 'Mes compétences',
-    description: 'Développement, bases de données, DevOps, automatisme et outils : un profil polyvalent orienté produit et terrain.'
+    href: "/skills",
+    title: "Mes compétences",
+    description:
+      "Développement, bases de données, DevOps, automatisme et outils : un profil polyvalent orienté produit et terrain.",
   },
   {
-    href: '/experience',
-    title: 'Mon parcours',
-    description: 'Découvrez mon évolution, de la formation GEII à l’alternance chez Orange Business Services.'
+    href: "/experience",
+    title: "Mon parcours",
+    description:
+      "Découvrez mon évolution, de la formation GEII à l’alternance chez Orange Business Services.",
   },
   {
-    href: '/blogs',
-    title: 'Mes blogs',
-    description: 'Retrouve mes retours d’expérience, articles de stage et billets d’alternance dans des sous-pages dédiées.'
-  }
+    href: "/blogs",
+    title: "Mes blogs",
+    description:
+      "Retrouve mes retours d’expérience, articles de stage et billets d’alternance dans des sous-pages dédiées.",
+  },
 ];
 
-const homeSectionRows = homeSections.reduce<typeof homeSections[]>((rows, section, index) => {
-  if (index % 2 === 0) {
-    rows.push([section]);
-  } else {
-    rows[rows.length - 1].push(section);
-  }
+const homeSectionRows = homeSections.reduce<(typeof homeSections)[]>(
+  (rows, section, index) => {
+    if (index % 2 === 0) {
+      rows.push([section]);
+    } else {
+      rows[rows.length - 1].push(section);
+    }
 
-  return rows;
-}, []);
+    return rows;
+  },
+  [],
+);
 ---
 
-<BaseLayout title="Alexandre Noblet | Accueil" description="Portfolio d’Alexandre Noblet, développeur et intégrateur IoT à Lyon.">
+<BaseLayout
+  title="Alexandre Noblet | Accueil"
+  description="Portfolio d’Alexandre Noblet, développeur et intégrateur IoT à Lyon."
+>
   <Hero />
-  <section class="cosmic-container home-portal-grid mt-10">
-    {homeSectionRows.map((row) => (
-      <div class="home-portal-row">
-        {row.map((section) => (
-          <a href={section.href} class="glass-card home-portal-card focus-ring p-7">
-            <p class="mb-3 text-cosmic-pink">✦</p>
-            <h2 class="font-display text-5xl text-cosmic-gold">{section.title}</h2>
-            <p class="muted mt-3">{section.description}</p>
-          </a>
-        ))}
-      </div>
-    ))}
+  <section class="cosmic-container mt-10 grid gap-6 md:grid-cols-2">
+    {
+      homeSections.map((section) => (
+        <Card
+          as="a"
+          href={section.href}
+          interactive
+          class="p-6 md:p-8 flex flex-col group hover:no-underline"
+        >
+          <p class="mb-3 text-cosmic-pink transition-transform group-hover:scale-110 origin-left">
+            ✦
+          </p>
+          <h2 class="font-display text-4xl md:text-5xl text-cosmic-gold transition-colors">
+            {section.title}
+          </h2>
+          <p class="muted mt-3">{section.description}</p>
+        </Card>
+      ))
+    }
   </section>
 </BaseLayout>

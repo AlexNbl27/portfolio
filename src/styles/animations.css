@@ -1,74 +1,95 @@
 @keyframes drift {
-  0%, 100% { transform: translateY(0) translateX(0); }
-  50% { transform: translateY(-14px) translateX(8px); }
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-14px) translateX(8px);
+  }
 }
 
 @keyframes twinkle {
-  0%, 100% { opacity: 0.25; transform: scale(1); }
-  50% { opacity: 0.95; transform: scale(1.15); }
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.15);
+  }
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 rgba(246, 212, 13, 0.1); }
-  50% { box-shadow: 0 0 36px rgba(246, 212, 13, 0.35); }
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(246, 212, 13, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 36px rgba(246, 212, 13, 0.35);
+  }
 }
 
-@keyframes shooting {
-  0% { transform: translate(-20vw, -20vh) rotate(25deg); opacity: 0; }
-  20% { opacity: 1; }
-  100% { transform: translate(100vw, 70vh) rotate(25deg); opacity: 0; }
+.float {
+  animation: drift 6s ease-in-out infinite;
+}
+.twinkle {
+  animation: twinkle 3.5s ease-in-out infinite;
+}
+.pulse-glow {
+  animation: pulse-glow 3.4s ease-in-out infinite;
 }
 
-.float { animation: drift 6s ease-in-out infinite; }
-.twinkle { animation: twinkle 3.5s ease-in-out infinite; }
-.pulse-glow { animation: pulse-glow 3.4s ease-in-out infinite; }
-.shooting-star {
-  position: absolute;
-  width: 130px;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #f6d40d);
-  animation: shooting 8s linear infinite;
-}
-
+/* Supprime la transition par défaut sur toute la page pour éviter les doublons/chevauchements */
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation-duration: 180ms;
-  animation-timing-function: ease;
+  animation: none;
+  mix-blend-mode: normal;
 }
 
-::view-transition-old(root) {
+::view-transition-old(page-content) {
+  animation-duration: 300ms;
+  animation-timing-function: ease-out;
   animation-name: page-fade-out;
 }
 
-::view-transition-new(root) {
+::view-transition-new(page-content) {
+  animation-duration: 650ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
   animation-name: page-fade-in;
 }
 
 @keyframes page-fade-in {
   from {
     opacity: 0;
+    transform: translateY(20px) scale(0.98);
   }
   to {
     opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
 @keyframes page-fade-out {
   from {
     opacity: 1;
+    transform: translateY(0);
   }
   to {
-    opacity: 0.35;
+    opacity: 0;
+    transform: translateY(-20px);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
+  ::view-transition-old(page-content),
+  ::view-transition-new(page-content) {
     animation: none !important;
   }
 
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

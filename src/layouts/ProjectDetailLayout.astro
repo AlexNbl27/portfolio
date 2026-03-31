@@ -1,10 +1,13 @@
 ---
-import BaseLayout from './BaseLayout.astro';
+import BaseLayout from "./BaseLayout.astro";
+import Card from "../components/ui/Card.astro";
+import Button from "../components/ui/Button.astro";
+import Badge from "../components/ui/Badge.astro";
 
 interface ProjectLink {
   label: string;
   url: string;
-  variant?: 'primary' | 'ghost';
+  variant?: "primary" | "ghost";
 }
 
 interface ProjectTheme {
@@ -31,77 +34,115 @@ interface Frontmatter {
 const { frontmatter } = Astro.props as { frontmatter: Frontmatter };
 const {
   title,
-  description = '',
+  description = "",
   heroImage,
   logo,
   projectCategory,
   technologies = [],
   links = [],
-  parentLink = '/projects',
-  theme
+  parentLink = "/projects",
+  theme,
 } = frontmatter;
 
 const themeStyle = [
-  theme?.accent ? `--project-accent:${theme.accent}` : '',
-  theme?.accentSoft ? `--project-accent-soft:${theme.accentSoft}` : '',
-  theme?.glowA ? `--project-glow-a:${theme.glowA}` : '',
-  theme?.glowB ? `--project-glow-b:${theme.glowB}` : '',
-  theme?.titleFont ? `--project-title-font:${theme.titleFont}` : '',
-  theme?.bodyFont ? `--project-body-font:${theme.bodyFont}` : ''
+  theme?.accent ? `--project-accent:${theme.accent}` : "",
+  theme?.accentSoft ? `--project-accent-soft:${theme.accentSoft}` : "",
+  theme?.glowA ? `--project-glow-a:${theme.glowA}` : "",
+  theme?.glowB ? `--project-glow-b:${theme.glowB}` : "",
+  theme?.titleFont ? `--project-title-font:${theme.titleFont}` : "",
+  theme?.bodyFont ? `--project-body-font:${theme.bodyFont}` : "",
 ]
   .filter(Boolean)
-  .join(';');
+  .join(";");
 
 const showHero = Boolean(heroImage) && heroImage !== logo;
+
+import { Image } from "astro:assets";
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/images/*.{jpeg,jpg,png,gif,webp,avif}",
+  { eager: true },
+);
+const resolveImage = (path?: string) =>
+  path && images[`/src/assets${path}`]
+    ? images[`/src/assets${path}`].default
+    : null;
+
+const heroImageSrc = resolveImage(heroImage);
+const logoSrc = resolveImage(logo);
 ---
 
 <BaseLayout title={`Alexandre Noblet | ${title}`} description={description}>
-  <article class="project-detail cosmic-container pt-8" style={themeStyle || undefined}>
-    <a href={parentLink} class="focus-ring inline-flex items-center gap-2 rounded-full border border-cosmic-gold/25 px-4 py-2 text-xs uppercase tracking-[0.2em] hover:border-cosmic-gold hover:text-cosmic-gold">
-      ← Retour aux projets
-    </a>
+  <article
+    class="project-detail cosmic-container pt-8"
+    style={themeStyle || undefined}
+  >
+    <Button href={parentLink} variant="outline" icon="lucide:arrow-left">
+      Retour aux projets
+    </Button>
 
     <header class="mt-6">
       {projectCategory && <p class="project-detail-meta">{projectCategory}</p>}
-      {logo && (
-        <img src={logo} alt={`Logo ${title}`} class="project-detail-logo mt-3" />
-      )}
+      {
+        logoSrc && (
+          <Image
+            src={logoSrc}
+            alt={`Logo ${title}`}
+            class="project-detail-logo mt-3"
+          />
+        )
+      }
       <h1 class="project-detail-title section-title mt-3">{title}</h1>
       {description && <p class="muted mt-4 max-w-3xl text-lg">{description}</p>}
     </header>
 
-    {showHero && heroImage && (
-      <div class="project-detail-hero glass-card mt-6 overflow-hidden">
-        <img src={heroImage} alt={title} class="h-full w-full object-cover" />
-      </div>
-    )}
+    {
+      showHero && heroImageSrc && (
+        <Card class="project-detail-hero mt-6 overflow-hidden">
+          <Image
+            src={heroImageSrc}
+            alt={title}
+            class="h-full w-full object-cover"
+          />
+        </Card>
+      )
+    }
 
     <div class="mt-6 flex flex-wrap gap-3">
-      {links.map((link) => (
-        <a
-          href={link.url}
-          target="_blank"
-          rel="noreferrer"
-          class:list={[
-            'focus-ring project-detail-link rounded-full px-4 py-2 text-xs font-bold uppercase tracking-[0.18em]',
-            link.variant === 'ghost' ? 'project-detail-link--ghost' : 'project-detail-link--primary'
-          ]}
-        >
-          {link.label}
-        </a>
-      ))}
+      {
+        links.map((link) => (
+          <Button
+            href={link.url}
+            target="_blank"
+            rel="noreferrer"
+            variant={link.variant === "ghost" ? "ghost" : "primary"}
+            icon={
+              link.label.toLowerCase().includes("github")
+                ? "lucide:github"
+                : link.label.toLowerCase().includes("site")
+                  ? "lucide:external-link"
+                  : undefined
+            }
+          >
+            {link.label}
+          </Button>
+        ))
+      }
     </div>
 
-    {technologies.length > 0 && (
-      <div class="mt-5 flex flex-wrap gap-2 text-xs">
-        {technologies.map((tech) => <span class="project-detail-tech rounded-full px-3 py-1">{tech}</span>)}
-      </div>
-    )}
+    {
+      technologies.length > 0 && (
+        <div class="mt-5 flex flex-wrap gap-2 text-xs relative z-10">
+          {technologies.map((tech) => (
+            <Badge variant="tech">{tech}</Badge>
+          ))}
+        </div>
+      )
+    }
 
-    <div class="glass-card mt-6 p-6 md:p-8">
+    <Card class="mt-6 p-6 md:p-8 relative z-10">
       <div class="article-content">
         <slot />
       </div>
-    </div>
+    </Card>
   </article>
 </BaseLayout>

@@ -1,0 +1,44 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  as?: "a" | "button" | "span" | "div";
+  variant?: "primary" | "ghost" | "outline";
+  href?: string;
+  class?: string;
+  icon?: string;
+  [key: string]: any;
+}
+
+const {
+  as: Component = Astro.props.href ? "a" : "button",
+  variant = "primary",
+  class: className,
+  icon,
+  ...rest
+} = Astro.props;
+
+const baseClasses =
+  "focus-ring inline-flex gap-2 items-center justify-center rounded-btn px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] transition duration-200 outline-none";
+
+const variants = {
+  primary: "bg-cosmic-gold text-black hover:brightness-110",
+  ghost:
+    "border border-cosmic-gold/35 text-[#fff1b3] bg-gradient-to-br from-[#0b1023]/80 to-[#0d1429]/70 hover:-translate-y-[1px] hover:shadow-[0_12px_28px_rgba(246,212,13,0.24)]",
+  outline:
+    "border border-cosmic-gold/30 text-cosmic-gold hover:border-cosmic-gold",
+};
+---
+
+<Component
+  class:list={[
+    baseClasses,
+    variants[variant as keyof typeof variants],
+    className,
+  ]}
+  {...rest}
+>
+  {icon && <Icon name={icon} class="w-4 h-4" />}
+  <slot />
+</Component>

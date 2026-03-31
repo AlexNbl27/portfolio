@@ -1,4 +1,7 @@
 ---
+import Card from "./ui/Card.astro";
+import Badge from "./ui/Badge.astro";
+
 interface Experience {
   company: string;
   role: string;
@@ -13,18 +16,26 @@ interface Experience {
 const { item } = Astro.props as { item: Experience };
 ---
 
-<article class="experience-card glass-card p-6 md:p-7">
+<Card as="article" class="experience-card p-6 md:p-7">
   <div class="flex flex-wrap items-center justify-between gap-3">
-    <p class="text-xs uppercase tracking-[0.18em] text-cosmic-gold">{item.period}</p>
-    <span class="experience-badge">{item.type === 'formation' ? 'Formation' : 'Expérience pro'}</span>
+    <time class="text-xs uppercase tracking-[0.18em] text-cosmic-gold"
+      >{item.period}</time
+    >
+    <Badge variant={item.type === "formation" ? "pink" : "outline"}
+      >{item.type === "formation" ? "Formation" : "Expérience pro"}</Badge
+    >
   </div>
-  <h3 class="font-display text-4xl text-cosmic-gold md:text-5xl">{item.role}</h3>
-  <p class="text-sm italic text-cosmic-pink md:text-base">{item.company}</p>
+  <h3 class="font-display text-4xl text-cosmic-gold md:text-5xl mt-2">
+    {item.role}
+  </h3>
+  <p class="mt-1.5 text-sm italic text-cosmic-pink md:text-base">
+    {item.company}
+  </p>
   <p class="muted mt-4 text-[1.02rem] leading-8">{item.description}</p>
   <ul class="experience-achievements mt-5 list-disc space-y-2 pl-5 muted">
     {item.achievements.map((achievement) => <li>{achievement}</li>)}
   </ul>
   <div class="mt-5 flex flex-wrap gap-2 text-xs">
-    {item.technologies.map((tech) => <span class="experience-tech">{tech}</span>)}
+    {item.technologies.map((tech) => <Badge variant="tech">{tech}</Badge>)}
   </div>
-</article>
+</Card>

@@ -1,4 +1,6 @@
 ---
+import Card from "./ui/Card.astro";
+
 interface TechnicalSkill {
   name: string;
   category: string;
@@ -10,13 +12,19 @@ interface TechnicalSkill {
 const { skill } = Astro.props as { skill: TechnicalSkill };
 ---
 
-<div class="glass-card p-4 transition hover:border-cosmic-gold/70">
+<Card class="p-4 transition hover:border-cosmic-gold/70">
   <div class="mb-2 flex items-center justify-between">
     <h4 class="font-semibold">{skill.name}</h4>
     <span class="text-xs uppercase text-cosmic-pink">{skill.category}</span>
   </div>
   <div class="h-2 overflow-hidden rounded-full bg-slate-900">
-    <div class="h-full rounded-full bg-cosmic-gold" style={`width: ${skill.proficiency}%`}></div>
+    <div
+      class="h-full rounded-full bg-cosmic-gold"
+      style={`width: ${skill.proficiency}%`}
+    >
+    </div>
   </div>
-  <p class="mt-2 text-xs muted">{skill.proficiency}% • {skill.yearsOfExperience ?? 0} years</p>
-</div>
+  <p class="mt-2 text-xs muted">
+    {skill.proficiency}% • {skill.yearsOfExperience ?? 0} years
+  </p>
+</Card>

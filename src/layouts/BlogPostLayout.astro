@@ -1,5 +1,7 @@
 ---
-import BaseLayout from './BaseLayout.astro';
+import BaseLayout from "./BaseLayout.astro";
+import Button from "../components/ui/Button.astro";
+import Card from "../components/ui/Card.astro";
 
 interface Frontmatter {
   title: string;
@@ -13,36 +15,60 @@ interface Frontmatter {
 const { frontmatter } = Astro.props as { frontmatter: Frontmatter };
 const {
   title,
-  description = '',
+  description = "",
   date,
   heroImage,
   blogTitle,
-  parentLink = '/blogs'
+  parentLink = "/blogs",
 } = frontmatter;
+
+import { Image } from "astro:assets";
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/images/*.{jpeg,jpg,png,gif,webp,avif}",
+  { eager: true },
+);
+const resolveImage = (path?: string) =>
+  path && images[`/src/assets${path}`]
+    ? images[`/src/assets${path}`].default
+    : null;
+
+const heroImageSrc = resolveImage(heroImage);
 ---
 
 <BaseLayout title={`Alexandre Noblet | ${title}`} description={description}>
   <article class="cosmic-container pt-8">
-    <a href={parentLink} class="focus-ring inline-flex items-center gap-2 rounded-full border border-cosmic-gold/25 px-4 py-2 text-xs uppercase tracking-[0.2em] hover:border-cosmic-gold hover:text-cosmic-gold">
-      ← Retour
-    </a>
+    <Button href={parentLink} variant="outline" icon="lucide:arrow-left">
+      Retour
+    </Button>
 
     <header class="mt-6">
-      {blogTitle && <p class="text-sm uppercase tracking-[0.25em] text-cosmic-pink">{blogTitle}</p>}
+      {
+        blogTitle && (
+          <p class="text-sm uppercase tracking-[0.25em] text-cosmic-pink">
+            {blogTitle}
+          </p>
+        )
+      }
       <h1 class="section-title mt-3">{title}</h1>
       {date && <p class="muted mt-3">Publié le {date}</p>}
     </header>
 
-    {heroImage && (
-      <div class="glass-card mt-6 overflow-hidden">
-        <img src={heroImage} alt={title} class="h-auto w-full object-cover" />
-      </div>
-    )}
+    {
+      heroImageSrc && (
+        <Card class="mt-6 overflow-hidden">
+          <Image
+            src={heroImageSrc}
+            alt={title}
+            class="h-auto w-full object-cover"
+          />
+        </Card>
+      )
+    }
 
-    <div class="glass-card mt-6 p-6 md:p-8">
+    <Card class="mt-6 p-6 md:p-8">
       <div class="article-content">
         <slot />
       </div>
-    </div>
+    </Card>
   </article>
 </BaseLayout>
