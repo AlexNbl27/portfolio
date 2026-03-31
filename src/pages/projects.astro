@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import ProjectFilter from '../components/ProjectFilter.astro';
+import ProjectModal from '../components/ProjectModal.astro';
+import projects from '../data/projects.json';
+---
+
+<BaseLayout title="Magical Odyssey | Projects">
+  <section class="cosmic-container pt-8">
+    <h1 class="section-title">The Nebula <span class="highlight">Collections</span></h1>
+    <p class="muted mt-4 max-w-3xl text-lg">Each star represents a milestone in the odyssey—interfaces, systems, and experiments designed for beautiful utility.</p>
+    <ProjectFilter />
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="project-grid">
+      {projects.map((project) => (
+        <div
+          data-category={project.category}
+          data-title={project.title}
+          data-description={project.description}
+          class="project-item cursor-pointer opacity-0"
+          tabindex="0"
+          role="button"
+          aria-label={`Open details for ${project.title}`}
+        >
+          <ProjectCard project={project} />
+        </div>
+      ))}
+    </div>
+  </section>
+  <ProjectModal />
+</BaseLayout>
+
+<script>
+  const buttons = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.project-item');
+  const modal = document.getElementById('project-modal');
+  const close = document.getElementById('close-modal');
+  const title = document.getElementById('modal-title');
+  const desc = document.getElementById('modal-desc');
+
+  const openModal = (card) => {
+    if (!modal || !title || !desc) return;
+    title.textContent = card.getAttribute('data-title') || '';
+    desc.textContent = card.getAttribute('data-description') || '';
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    modal.focus();
+  };
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const category = btn.getAttribute('data-category');
+      cards.forEach((card) => {
+        const visible = category === 'all' || card.getAttribute('data-category') === category;
+        card.classList.toggle('hidden', !visible);
+      });
+    });
+  });
+
+  cards.forEach((card) => {
+    card.addEventListener('click', () => openModal(card));
+    card.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openModal(card);
+      }
+    });
+  });
+
+  close?.addEventListener('click', () => {
+    modal?.classList.add('hidden');
+    modal?.classList.remove('flex');
+  });
+
+  modal?.addEventListener('click', (event) => {
+    if (event.target === modal) close?.click();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && modal && !modal.classList.contains('hidden')) close?.click();
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animate-in');
+        entry.target.classList.remove('opacity-0');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  cards.forEach((card) => observer.observe(card));
+</script>

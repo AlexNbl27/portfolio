@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+---
+
+<BaseLayout title="Magical Odyssey | Home">
+  <Hero />
+  <section class="cosmic-container mt-10 grid gap-5 md:grid-cols-3">
+    <a href="/projects" class="glass-card focus-ring p-7 transition hover:border-cosmic-gold/60">
+      <p class="mb-3 text-cosmic-pink">✦</p>
+      <h2 class="font-display text-5xl text-cosmic-gold">Project Constellations</h2>
+      <p class="muted mt-3">Traverse the celestial expanse of previous work and milestones.</p>
+    </a>
+    <a href="/skills" class="glass-card focus-ring p-7 transition hover:border-cosmic-gold/60">
+      <p class="mb-3 text-cosmic-pink">✦</p>
+      <h2 class="font-display text-5xl text-cosmic-gold">Cosmic Skills</h2>
+      <p class="muted mt-3">Navigate technical and creative mastery in orbital systems.</p>
+    </a>
+    <a href="/experience" class="glass-card focus-ring p-7 transition hover:border-cosmic-gold/60">
+      <p class="mb-3 text-cosmic-pink">✦</p>
+      <h2 class="font-display text-5xl text-cosmic-gold">About the Voyager</h2>
+      <p class="muted mt-3">Trace the narrative behind craft, intention, and growth.</p>
+    </a>
+  </section>
+</BaseLayout>

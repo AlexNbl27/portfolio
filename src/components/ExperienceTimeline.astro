@@ -1,0 +1,17 @@
+---
+import ExperienceCard from './ExperienceCard.astro';
+const { experiences } = Astro.props;
+---
+
+<section class="cosmic-container mt-10" id="experience-timeline">
+  <div class="relative space-y-8 before:absolute before:left-4 before:top-0 before:h-full before:w-px before:bg-cosmic-gold/30 md:before:left-1/2">
+    {experiences.map((item: any, idx: number) => (
+      <div class:list={['experience-item grid items-start md:grid-cols-2', idx % 2 === 0 ? '' : 'md:[&>*:first-child]:order-2']} data-period={item.period}>
+        <div class="relative p-4 before:absolute before:left-[9px] before:top-10 before:h-3 before:w-3 before:rounded-full before:bg-cosmic-gold md:before:left-auto md:before:right-[-6px]">
+          <ExperienceCard item={item} />
+        </div>
+        <div class="hidden md:block"></div>
+      </div>
+    ))}
+  </div>
+</section>

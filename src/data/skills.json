@@ -1,0 +1,8 @@
+[
+  { "name": "Astro", "category": "Frontend", "proficiency": 96, "yearsOfExperience": 3 },
+  { "name": "TypeScript", "category": "Frontend", "proficiency": 94, "yearsOfExperience": 6 },
+  { "name": "Node.js", "category": "Backend", "proficiency": 87, "yearsOfExperience": 7 },
+  { "name": "Python", "category": "AI", "proficiency": 90, "yearsOfExperience": 8 },
+  { "name": "GSAP", "category": "Creative", "proficiency": 89, "yearsOfExperience": 4 },
+  { "name": "Three.js", "category": "3D", "proficiency": 82, "yearsOfExperience": 3 }
+]

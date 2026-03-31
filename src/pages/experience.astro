@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ExperienceTimeline from '../components/ExperienceTimeline.astro';
+import ExperienceFilter from '../components/ExperienceFilter.astro';
+import experiences from '../data/experience.json';
+---
+
+<BaseLayout title="Magical Odyssey | Experience">
+  <section class="cosmic-container pt-8">
+    <h1 class="section-title">Tracing the <span class="highlight">Celestial Geometry of Experience</span></h1>
+    <p class="muted mt-4 max-w-3xl">A timeline of roles and artifacts from visual storytelling to deep-space interface architecture.</p>
+  </section>
+  <ExperienceFilter />
+  <ExperienceTimeline experiences={experiences} />
+</BaseLayout>
+
+<script>
+  const filters = document.querySelectorAll('.exp-filter');
+  const items = document.querySelectorAll('.experience-item');
+
+  filters.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const filter = btn.getAttribute('data-filter');
+      filters.forEach((f) => f.classList.remove('border-cosmic-gold/60', 'text-cosmic-gold'));
+      btn.classList.add('border-cosmic-gold/60', 'text-cosmic-gold');
+
+      items.forEach((item) => {
+        const period = item.getAttribute('data-period') || '';
+        let visible = true;
+        if (filter === 'recent') visible = period.includes('Present') || period.startsWith('202');
+        if (filter === 'legacy') visible = !period.includes('Present') && !period.startsWith('202');
+        item.classList.toggle('hidden', !visible);
+      });
+    });
+  });
+</script>

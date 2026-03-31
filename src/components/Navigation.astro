@@ -1,0 +1,50 @@
+---
+const links = [
+  { href: '/', label: 'Star Chart' },
+  { href: '/projects', label: 'Nebulae' },
+  { href: '/skills', label: 'Orreries' },
+  { href: '/soft-skills', label: 'Artifacts' },
+  { href: '/experience', label: 'Chronicles' },
+  { href: '/ai-portal', label: 'AI Portal' }
+];
+
+const current = Astro.url.pathname;
+---
+
+<header class="relative z-20 cosmic-container">
+  <nav class="glass-card mt-2 flex flex-wrap items-center justify-between gap-3 px-4 py-3 md:px-6" aria-label="Main navigation">
+    <a href="/" class="focus-ring font-display text-2xl font-bold italic tracking-wide text-cosmic-gold">Magical Odyssey</a>
+
+    <button class="focus-ring rounded-md px-2 py-1 md:hidden" id="menu-toggle" aria-expanded="false" aria-controls="menu" aria-label="Toggle menu">☰</button>
+
+    <ul id="menu" class="hidden w-full flex-col gap-3 border-t border-cosmic-gold/20 pt-3 text-xs uppercase tracking-[0.15em] md:flex md:w-auto md:flex-row md:items-center md:border-none md:pt-0">
+      {links.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            class:list={[
+              'focus-ring border-b pb-1 transition hover:text-cosmic-gold',
+              current === link.href ? 'border-cosmic-gold text-cosmic-gold' : 'border-transparent'
+            ]}
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+      <li>
+        <a href="mailto:hello@magicalodyssey.dev" class="focus-ring rounded-full border border-cosmic-gold/35 bg-cosmic-gold px-4 py-2 font-bold text-black transition hover:shadow-glow">Contact</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<script>
+  const menuToggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('menu');
+
+  menuToggle?.addEventListener('click', () => {
+    if (!menu) return;
+    const isHidden = menu.classList.toggle('hidden');
+    menuToggle.setAttribute('aria-expanded', String(!isHidden));
+  });
+</script>
