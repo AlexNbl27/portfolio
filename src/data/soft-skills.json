@@ -1,0 +1,81 @@
+{
+  "page": {
+    "title": "Alexandre Noblet | Soft skills",
+    "description": "Soft skills et qualités humaines d'Alexandre Noblet.",
+    "heading": "Mes soft skills",
+    "intro": "Au-delà de la technique, je m'appuie sur l'organisation, l'autonomie, la créativité et l'esprit d'équipe pour faire avancer les projets efficacement."
+  },
+  "planets": [
+    {
+      "label": "Organisation",
+      "planetClass": "planet-mars",
+      "theme": "mars",
+      "movieRef": "Seul sur Mars",
+      "left": "18%",
+      "top": "32%",
+      "example": "Planification de projets IoT en sprints, roadmaps hebdomadaires et suivi d'avancement via des tableaux Kanban."
+    },
+    {
+      "label": "Créativité",
+      "planetClass": "planet-saturn",
+      "theme": "saturn",
+      "movieRef": "Interstellar",
+      "left": "72%",
+      "top": "25%",
+      "leftMobile": "72%",
+      "topMobile": "16%",
+      "example": "Écriture de scénarios de longs métrages de science-fiction."
+    },
+    {
+      "label": "Autonomie",
+      "planetClass": "planet-neptune",
+      "theme": "neptune",
+      "movieRef": "Valérian",
+      "left": "72%",
+      "top": "72%",
+      "leftMobile": "72%",
+      "topMobile": "76%",
+      "example": "Développement en solo d'un système de monitoring IoT complet, de l'architecture à la mise en production."
+    },
+    {
+      "label": "Esprit d'équipe",
+      "planetClass": "planet-earth",
+      "theme": "earth",
+      "movieRef": "Le Cinquième Élément",
+      "left": "22%",
+      "top": "72%",
+      "example": "Animation de rétrospectives et sessions de partage de connaissances au sein d'équipes agiles pluridisciplinaires."
+    },
+    {
+      "label": "Communication",
+      "planetClass": "planet-venus",
+      "theme": "venus",
+      "movieRef": "Gardiens de la Galaxie",
+      "left": "85%",
+      "top": "44%",
+      "example": "Présentation de démos produit à des clients non-techniques et rédaction de documentations claires pour des équipes pluridisciplinaires."
+    },
+    {
+      "label": "Curiosité",
+      "planetClass": "planet-uranus",
+      "theme": "uranus",
+      "movieRef": "Elio",
+      "left": "34%",
+      "top": "22%",
+      "leftMobile": "42%",
+      "topMobile": "16%",
+      "example": "Veille technologique hebdomadaire et exploration de domaines variés : IA, embedded systems, UX design."
+    }
+  ],
+  "reperes": [
+    { "label": "Adaptabilité", "value": "Très forte" },
+    { "label": "Collaboration", "value": "Au quotidien" },
+    { "label": "Prise d'initiative", "value": "Naturelle" }
+  ],
+  "contact": {
+    "title": "Échanger sur un projet",
+    "description": "Je suis toujours partant pour discuter produit, développement et IoT.",
+    "email": "alexandrenobletpro@gmail.com",
+    "buttonText": "Me contacter"
+  }
+}

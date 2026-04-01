@@ -27,5 +27,10 @@
   { "name": "Siemens TIA Portal", "category": "Automatisme & industrie", "proficiency": 84, "yearsOfExperience": 2 },
   { "name": "Schneider Control Expert", "category": "Automatisme & industrie", "proficiency": 82, "yearsOfExperience": 2 },
   { "name": "Node-RED", "category": "Automatisme & industrie", "proficiency": 76, "yearsOfExperience": 1 },
-  { "name": "PlanetTogether", "category": "Automatisme & industrie", "proficiency": 65, "yearsOfExperience": 1 }
+  { "name": "PlanetTogether", "category": "Automatisme & industrie", "proficiency": 65, "yearsOfExperience": 1 },
+  { "name": "Gemini", "category": "AI & Agentic Coding", "proficiency": 80, "yearsOfExperience": 1, "isVibeOnly": true },
+  { "name": "Antigravity", "category": "AI & Agentic Coding", "proficiency": 85, "yearsOfExperience": 1, "isVibeOnly": true },
+  { "name": "Claude Code", "category": "AI & Agentic Coding", "proficiency": 85, "yearsOfExperience": 1, "isVibeOnly": true },
+  { "name": "Cursor", "category": "AI & Agentic Coding", "proficiency": 82, "yearsOfExperience": 1, "isVibeOnly": true },
+  { "name": "GitHub Copilot", "category": "AI & Agentic Coding", "proficiency": 88, "yearsOfExperience": 2, "isVibeOnly": true }
 ]

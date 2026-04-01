@@ -30,6 +30,34 @@
   }
 }
 
+@keyframes sun-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 18px rgba(255, 220, 40, 0.9),
+      0 0 42px rgba(246, 212, 13, 0.55),
+      0 0 80px rgba(246, 150, 0, 0.25);
+  }
+  50% {
+    box-shadow:
+      0 0 28px rgba(255, 240, 60, 1),
+      0 0 65px rgba(246, 212, 13, 0.75),
+      0 0 120px rgba(246, 150, 0, 0.4);
+  }
+}
+
+@keyframes ray-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: rotate(var(--ray-angle)) scaleY(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: rotate(var(--ray-angle)) scaleY(1.15);
+  }
+}
+
 .float {
   animation: drift 6s ease-in-out infinite;
 }
@@ -38,6 +66,42 @@
 }
 .pulse-glow {
   animation: pulse-glow 3.4s ease-in-out infinite;
+}
+.sun-glow {
+  animation: sun-glow 3s ease-in-out infinite;
+}
+
+@keyframes planet-invite {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.65;
+    transform: scale(1.3);
+  }
+}
+
+@keyframes hint-breathe {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.85; }
+}
+
+@keyframes skill-card-flash {
+  0% {
+    border-color: rgba(203, 191, 132, 0.2);
+    box-shadow: none;
+  }
+  35% {
+    border-color: rgba(246, 212, 13, 0.7);
+    box-shadow:
+      0 0 0 1px rgba(246, 212, 13, 0.35),
+      0 0 30px rgba(246, 212, 13, 0.25);
+  }
+  100% {
+    border-color: rgba(203, 191, 132, 0.2);
+    box-shadow: none;
+  }
 }
 
 /* Supprime la transition par défaut sur toute la page pour éviter les doublons/chevauchements */

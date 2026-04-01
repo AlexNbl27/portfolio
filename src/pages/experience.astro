@@ -2,22 +2,40 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ExperienceTimeline from "../components/ExperienceTimeline.astro";
 import ExperienceFilter from "../components/ExperienceFilter.astro";
+import ScrollPortrait from "../components/ScrollPortrait.astro";
+import ScrollAge from "../components/ScrollAge.astro";
 import experiences from "../data/experience.json";
+
+const portraitImages = [
+  "/images/portrait/2026.jpg",
+  // "/images/portrait/2025.jpg",
+  "/images/portrait/2024.jpg",
+  "/images/portrait/2023.jpg",
+  "/images/portrait/2021.jpg",
+];
 ---
 
 <BaseLayout
   title="Alexandre Noblet | Parcours"
   description="Parcours académique et professionnel d’Alexandre Noblet."
 >
-  <section class="cosmic-container pt-8">
-    <h1 class="section-title">Mon <span class="highlight">parcours</span></h1>
-    <p class="muted mt-4 max-w-3xl">
-      De la formation GEII à l’informatique, puis à l’IoT en entreprise : un
-      parcours construit entre technique, terrain et développement produit.
-    </p>
+  <div slot="fixed-layer">
+    <ScrollPortrait images={portraitImages} />
+    <ScrollAge />
+  </div>
+
+  <section class="cosmic-container pt-8 lg:pr-[8rem]">
+    <div class="timeline-content">
+      <h1 class="section-title">Mon <span class="highlight">parcours</span></h1>
+      <p class="muted mt-4 max-w-3xl">
+        De la formation GEII à l’informatique, puis à l’IoT en entreprise : un
+        parcours construit entre technique, terrain et développement produit.
+      </p>
+
+      <ExperienceFilter />
+      <ExperienceTimeline experiences={experiences} />
+    </div>
   </section>
-  <ExperienceFilter />
-  <ExperienceTimeline experiences={experiences} />
 
   <div
     id="no-results-exp"

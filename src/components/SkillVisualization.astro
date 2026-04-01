@@ -1,31 +1,30 @@
 ---
 import Card from "./ui/Card.astro";
 import Button from "./ui/Button.astro";
+import softSkillsData from "../data/soft-skills.json";
+
+const { planets, reperes, contact } = softSkillsData;
 
 const accentStars = [
-  { left: "10%", top: "17%", size: "0.32rem", opacity: 0.8 },
-  { left: "20%", top: "26%", size: "0.18rem", opacity: 0.45 },
-  { left: "38%", top: "22%", size: "0.22rem", opacity: 0.5 },
-  { left: "55%", top: "13%", size: "0.24rem", opacity: 0.55 },
-  { left: "74%", top: "17%", size: "0.34rem", opacity: 0.82 },
-  { left: "86%", top: "32%", size: "0.18rem", opacity: 0.42 },
-  { left: "79%", top: "57%", size: "0.22rem", opacity: 0.6 },
-  { left: "61%", top: "72%", size: "0.3rem", opacity: 0.75 },
-  { left: "34%", top: "78%", size: "0.18rem", opacity: 0.4 },
-  { left: "13%", top: "69%", size: "0.28rem", opacity: 0.7 },
-  { left: "47%", top: "58%", size: "0.16rem", opacity: 0.35 },
+  { left: "5%", top: "20%", size: "0.28rem", opacity: 0.7 },
+  { left: "12%", top: "60%", size: "0.18rem", opacity: 0.45 },
+  { left: "25%", top: "14%", size: "0.22rem", opacity: 0.5 },
+  { left: "35%", top: "75%", size: "0.18rem", opacity: 0.4 },
+  { left: "42%", top: "30%", size: "0.2rem", opacity: 0.5 },
+  { left: "48%", top: "80%", size: "0.16rem", opacity: 0.35 },
+  { left: "58%", top: "18%", size: "0.24rem", opacity: 0.55 },
+  { left: "65%", top: "68%", size: "0.18rem", opacity: 0.42 },
+  { left: "78%", top: "25%", size: "0.3rem", opacity: 0.75 },
+  { left: "85%", top: "70%", size: "0.22rem", opacity: 0.6 },
+  { left: "92%", top: "40%", size: "0.34rem", opacity: 0.8 },
 ];
 ---
 
-<Card
-  as="section"
-  class="relative mt-10 grid overflow-hidden md:grid-cols-[1.2fr_0.8fr] w-full"
->
-  <div class="relative min-h-[390px] px-4 py-5 md:px-6 md:py-6">
-    <div
-      class="soft-constellation relative h-full min-h-[340px] overflow-hidden rounded-[2rem] border border-cosmic-gold/20 bg-[radial-gradient(circle_at_center,rgba(39,46,86,0.45),rgba(15,20,42,0.7)_42%,rgba(8,12,26,0.95)_100%)]"
-    >
-      <div class="soft-constellation__nebula"></div>
+<div class="soft-viz-wrapper">
+  <!-- Constellation -->
+  <div class="soft-constellation-container">
+    <div class="soft-constellation-banner">
+      <div class="soft-constellation__nebula" aria-hidden="true"></div>
 
       {
         accentStars.map((star, index) => (
@@ -40,78 +39,160 @@ const accentStars = [
         ))
       }
 
-      <div
-        class="soft-skill-node soft-skill-node--pink"
-        style="left: 20%; top: 18%;"
-      >
-        <span class="soft-skill-node__aura"></span>
-        <span class="soft-skill-node__dot"></span>
-        <span class="soft-skill-node__label">Organisation</span>
-      </div>
+      {
+        planets.map((skill) => (
+          <button
+            class={`soft-skill-node ${skill.planetClass}`}
+            style={`--left: ${skill.left}; --top: ${skill.top};${"leftMobile" in skill ? ` --left-mobile: ${(skill as any).leftMobile};` : ""}${"topMobile" in skill ? ` --top-mobile: ${(skill as any).topMobile};` : ""}`}
+            data-skill-label={skill.label}
+            data-skill-example={skill.example}
+            data-skill-theme={skill.theme}
+            data-skill-movie={skill.movieRef}
+            aria-label={`Voir l'exemple pour ${skill.label}`}
+            type="button"
+          >
+            <span class="soft-skill-node__planet-wrap">
+              <span class="soft-skill-node__aura" aria-hidden="true" />
+              <span class="soft-skill-node__planet" aria-hidden="true" />
+            </span>
+            <span class="soft-skill-node__label">{skill.label}</span>
+          </button>
+        ))
+      }
 
-      <div
-        class="soft-skill-node soft-skill-node--gold"
-        style="left: 66%; top: 20%;"
+      <button
+        class="soft-skill-core sun-glow"
+        id="skill-core-btn"
+        type="button"
+        aria-label="Réinitialiser les repères clés"
       >
-        <span class="soft-skill-node__aura"></span>
-        <span class="soft-skill-node__dot"></span>
-        <span class="soft-skill-node__label">Créativité</span>
-      </div>
-
-      <div
-        class="soft-skill-node soft-skill-node--blue"
-        style="left: 63%; top: 72%;"
-      >
-        <span class="soft-skill-node__aura"></span>
-        <span class="soft-skill-node__dot"></span>
-        <span class="soft-skill-node__label">Autonomie</span>
-      </div>
-
-      <div
-        class="soft-skill-node soft-skill-node--teal"
-        style="left: 26%; top: 69%;"
-      >
-        <span class="soft-skill-node__aura"></span>
-        <span class="soft-skill-node__dot"></span>
-        <span class="soft-skill-node__label">Esprit d'équipe</span>
-      </div>
-
-      <div class="soft-skill-core pulse-glow">
-        <span class="soft-skill-core__ring"></span>
+        {
+          Array.from({ length: 8 }).map((_, i) => (
+            <span
+              class="soft-skill-core__ray"
+              style={`--ray-angle: ${i * 45}deg; animation-delay: ${i * 180}ms;`}
+              aria-hidden="true"
+            />
+          ))
+        }
+        <span class="soft-skill-core__ring" aria-hidden="true"></span>
         <span class="soft-skill-core__label">Humain</span>
-      </div>
+      </button>
+
+      <p class="constellation-hint">
+        ✦ Cliquez sur une planète pour découvrir un exemple
+      </p>
     </div>
   </div>
 
-  <div class="space-y-6 p-5 md:p-6">
-    <Card class="p-5">
-      <h3 class="font-display text-4xl text-cosmic-gold">Repères clés</h3>
-      <ul class="mt-4 space-y-3 muted">
-        <li class="flex justify-between">
-          <span>Adaptabilité</span><strong class="text-cosmic-pink"
-            >Très forte</strong
-          >
-        </li>
-        <li class="flex justify-between">
-          <span>Collaboration</span><strong class="text-cosmic-pink"
-            >Au quotidien</strong
-          >
-        </li>
-        <li class="flex justify-between">
-          <span>Prise d’initiative</span><strong class="text-cosmic-pink"
-            >Naturelle</strong
-          >
-        </li>
-      </ul>
+  <!-- Deux cards côte à côte -->
+  <div class="soft-viz-cards">
+    <Card id="skill-info-card" class="skill-info-card p-5">
+      <div class="skill-info-content">
+        <div class="skill-info-default">
+          <h3 class="font-display text-3xl text-cosmic-gold">Repères clés</h3>
+          <ul class="mt-3 space-y-2 muted">
+            {
+              reperes.map((r) => (
+                <li class="flex justify-between">
+                  <span>{r.label}</span>
+                  <strong class="text-cosmic-pink">{r.value}</strong>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="skill-info-detail" aria-hidden="true">
+          <div class="flex items-center justify-between gap-4 mb-2">
+            <p class="skill-info-detail__tag m-0">✦ Exemple concret</p>
+            <p class="skill-info-detail__movie m-0 text-[10px] uppercase tracking-widest text-cosmic-gold/60 italic"></p>
+          </div>
+          <h3 class="skill-info-detail__title font-display"></h3>
+          <p class="skill-info-detail__text muted"></p>
+        </div>
+      </div>
     </Card>
+
     <Card class="p-5">
-      <h3 class="font-display text-3xl">Échanger sur un projet</h3>
-      <p class="muted mb-4 mt-2">
-        Je suis toujours partant pour discuter produit, développement et IoT.
-      </p>
-      <Button href="mailto:alexandrenobletpro@gmail.com" variant="primary"
-        >Me contacter</Button
-      >
+      <h3 class="font-display text-3xl">{contact.title}</h3>
+      <p class="muted mb-4 mt-2">{contact.description}</p>
+      <Button href={`mailto:${contact.email}`} variant="primary">
+        {contact.buttonText}
+      </Button>
     </Card>
   </div>
-</Card>
+</div>
+
+<script>
+  function initSoftSkills() {
+    const infoCard = document.getElementById("skill-info-card") as HTMLElement | null;
+    const coreBtn = document.getElementById("skill-core-btn") as HTMLElement | null;
+    const detailTitle = infoCard?.querySelector<HTMLElement>(".skill-info-detail__title");
+    const detailText = infoCard?.querySelector<HTMLElement>(".skill-info-detail__text");
+    const detailMovie = infoCard?.querySelector<HTMLElement>(".skill-info-detail__movie");
+    const detailEl = infoCard?.querySelector<HTMLElement>(".skill-info-detail");
+
+    let activeNode: HTMLElement | null = null;
+
+    function flashCard() {
+      if (!infoCard) return;
+      infoCard.classList.remove("is-flashing");
+      void infoCard.offsetWidth;
+      infoCard.classList.add("is-flashing");
+    }
+
+    function showSkill(label: string, example: string, theme: string, movie: string) {
+      if (!infoCard || !detailTitle || !detailText || !detailEl) return;
+      
+      console.log(`[SoftSkills] Switching to theme: ${theme}`);
+      detailTitle.textContent = label;
+      detailText.textContent = example;
+      if (detailMovie) detailMovie.textContent = movie ? `Inspiration : ${movie}` : "";
+      
+      detailEl.setAttribute("aria-hidden", "false");
+      infoCard.classList.add("is-detail");
+      
+      // Update global theme
+      document.body.dataset.softSkillTheme = theme;
+      
+      flashCard();
+    }
+
+    function resetToDefault() {
+      if (!infoCard || !detailEl) return;
+      console.log(`[SoftSkills] Resetting to default theme`);
+      detailEl.setAttribute("aria-hidden", "true");
+      infoCard.classList.remove("is-detail");
+      
+      // Reset global theme
+      delete document.body.dataset.softSkillTheme;
+      
+      flashCard();
+      activeNode?.classList.remove("is-active");
+      activeNode = null;
+    }
+
+    document.querySelectorAll<HTMLElement>(".soft-skill-node[data-skill-label]").forEach((node) => {
+      node.addEventListener("click", () => {
+        activeNode?.classList.remove("is-active");
+        activeNode = node;
+        node.classList.add("is-active");
+        showSkill(
+          node.dataset.skillLabel ?? "",
+          node.dataset.skillExample ?? "",
+          node.dataset.skillTheme ?? "",
+          node.dataset.skillMovie ?? ""
+        );
+      });
+    });
+
+    coreBtn?.addEventListener("click", resetToDefault);
+  }
+
+  // Initial load
+  initSoftSkills();
+
+  // Page changes (Astro ClientRouter)
+  document.addEventListener("astro:page-load", initSoftSkills);
+</script>
