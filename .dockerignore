@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.astro/
+.git/
+.vscode/
+.claude/
+*.log
+.env
+.env.*
+.DS_Store
+Thumbs.db
+README.md
