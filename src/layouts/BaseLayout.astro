@@ -1,5 +1,5 @@
 ---
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 import "../styles/animations.css";
 import Navigation from "../components/Navigation.astro";
@@ -25,9 +25,8 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="view-transition" content="same-origin" />
-    <ViewTransitions />
+    <ClientRouter />
     <style is:global>
-      /* Prevent white flash before styles load */
       html {
         background-color: #040916 !important;
       }
@@ -37,7 +36,7 @@ const {
     <CosmicBackground transition:persist />
     <Navigation transition:persist />
     <main
-      class="page-shell relative z-10 pt-24 pb-8 md:pt-40 md:pb-12"
+      class="page-shell relative z-10 pt-20 pb-8 md:pt-32 md:pb-12"
       transition:name="page-content"
     >
       <slot />

@@ -12,8 +12,9 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
   title="Alexandre Noblet | Compétences"
   description="Compétences techniques d’Alexandre Noblet en développement, data, DevOps et automatisme."
 >
-  <section class="cosmic-container pt-8">
-    <h1 class="section-title">
+  <section class="cosmic-container pt-8 relative">
+    <div class="vibe-active-bg rounded-3xl pointer-events-none"></div>
+    <h1 class="section-title relative z-10">
       Mes <span class="highlight">compétences</span>
     </h1>
 
@@ -21,7 +22,10 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
       <VibeSwitch id="vibe-toggle" />
     </div>
 
-    <p id="skills-desc" class="muted mt-4 max-w-2xl text-lg transition-all duration-500">
+    <p
+      id="skills-desc"
+      class="muted mt-4 max-w-2xl text-lg transition-all duration-500 min-h-[4rem]"
+    >
       Un socle technique construit autour du développement web et mobile, des
       bases de données, des outils DevOps et de l’automatisme industriel.
     </p>
@@ -33,7 +37,12 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
           <div
             data-category={skill.category}
             data-name={skill.name}
-            class:list={["skill-item", skill.isVibeOnly ? "vibe-only-item hidden" : ""]}
+            class:list={[
+              "skill-item flex flex-col",
+              skill.isVibeOnly
+                ? "vibe-only-item hidden order-first"
+                : "order-last",
+            ]}
           >
             <SkillOrbit skill={skill} />
           </div>
@@ -60,26 +69,40 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
     const filterButtons = document.querySelectorAll(".skill-filter");
     const skillItems = document.querySelectorAll(".skill-item");
     const skillGrid = document.getElementById("skill-grid");
-    const vibeToggle = document.getElementById("vibe-toggle") as HTMLInputElement;
+    const vibeToggle = document.getElementById(
+      "vibe-toggle",
+    ) as HTMLInputElement;
     const skillsDesc = document.getElementById("skills-desc");
-    const searchInput = document.getElementById("badge-search-input") as HTMLInputElement;
+    const searchInput = document.getElementById(
+      "badge-search-input",
+    ) as HTMLInputElement;
 
     let activeCategory = "all";
     let searchQuery = "";
     let isVibeMode = false;
 
-    const originalDesc = "Un socle technique construit autour du développement web et mobile, des bases de données, des outils DevOps et de l’automatisme industriel.";
-    const vibeDesc = "Plus qu'un développeur, un <span class='text-cosmic-gold font-bold'>Vibe-Coder</span>. Même quand je ne suis pas expert, je 'vibe' avec n'importe quelle techno grâce à l'IA pour délivrer sans friction.";
+    const originalDesc =
+      "Un socle technique construit autour du développement web et mobile, des bases de données, des outils DevOps et de l’automatisme industriel.";
+    const vibeDesc =
+      "Plus qu'un développeur, un <span class='text-red-500 font-bold'>Vibe-Coder</span>. Même quand je ne suis pas expert, je 'vibe' avec n'importe quelle techno grâce à l'IA pour délivrer sans friction.";
 
     // Normalization helper
     const normalize = (str: string) =>
-      str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+      str
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
 
     const matchesQuery = (target: string, query: string) => {
       const t = normalize(target);
       const q = normalize(query);
       if (t.includes(q)) return true;
-      if (q.length > 3 && t.length >= q.length - 1 && t.length <= q.length + 1) {
+      if (
+        q.length > 3 &&
+        t.length >= q.length - 1 &&
+        t.length <= q.length + 1
+      ) {
         let dist = 0;
         for (let i = 0; i < Math.min(t.length, q.length); i++) {
           if (t[i] !== q[i]) dist++;
@@ -91,23 +114,30 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
 
     const updateUI = () => {
       let visibleCount = 0;
-      
+
       skillItems.forEach((item) => {
         const itemCategory = item.getAttribute("data-category") || "";
         const itemName = item.getAttribute("data-name") || "";
         const isVibeOnly = item.classList.contains("vibe-only-item");
 
         // Filter logic
-        const matchesCategory = activeCategory === "all" || itemCategory === activeCategory;
-        const matchesSearch = searchQuery === "" || matchesQuery(itemName, searchQuery) || matchesQuery(itemCategory, searchQuery);
+        const matchesCategory =
+          activeCategory === "all" || itemCategory === activeCategory;
+        const matchesSearch =
+          searchQuery === "" ||
+          matchesQuery(itemName, searchQuery) ||
+          matchesQuery(itemCategory, searchQuery);
         const matchesVibe = !isVibeOnly || isVibeMode;
 
         const visible = matchesCategory && matchesSearch && matchesVibe;
 
-        (item as HTMLElement).style.display = visible ? "block" : "none";
         if (visible) {
-          (item as HTMLElement).classList.add("animate-in");
+          item.classList.remove("hidden");
+          (item as HTMLElement).style.display = ""; // Nettoyer le style inline résiduel
+          // Suppression temporaire de l'animation de slide-up pour plus de fluidité
           visibleCount++;
+        } else {
+          item.classList.add("hidden");
         }
       });
 
@@ -117,20 +147,22 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
 
     const animateBoost = (active: boolean) => {
       const cards = document.querySelectorAll(".skill-card");
-      
+
       cards.forEach((card) => {
         const cardEl = card as HTMLElement;
         const textEl = card.querySelector(".proficiency-text");
         const progressEl = card.querySelector(".skill-progress") as HTMLElement;
-        
-        const original = parseInt(cardEl.getAttribute("data-proficiency") || "0");
+
+        const original = parseInt(
+          cardEl.getAttribute("data-proficiency") || "0",
+        );
         const boosted = parseInt(cardEl.getAttribute("data-boosted") || "0");
         const target = active ? boosted : original;
         const start = active ? original : boosted;
 
         // Visual class toggle
         cardEl.classList.toggle("vibe-boost", active);
-        
+
         // Counter animation
         let current = start;
         const duration = 1000;
@@ -141,7 +173,7 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
           const value = Math.floor(start + (target - start) * progress);
           if (textEl) textEl.textContent = value.toString();
           if (progressEl) progressEl.style.width = `${value}%`;
-          
+
           if (progress < 1) requestAnimationFrame(step);
         };
         requestAnimationFrame(step);
@@ -149,21 +181,95 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
     };
 
     // Vibe Toggle Listener
+    let activeTypeInterval: any = null;
+    let revelationTimeouts: number[] = [];
+
     if (vibeToggle) {
       vibeToggle.addEventListener("change", (e) => {
         isVibeMode = (e.target as HTMLInputElement).checked;
-        
-        // Identity change
+        document.body.classList.toggle("vibe-mode-on", isVibeMode);
+
+        // Nettoyage des timers précédents si l'utilisateur change d'avis rapidement
+        if (activeTypeInterval) clearInterval(activeTypeInterval);
+        revelationTimeouts.forEach((t) => clearTimeout(t));
+        revelationTimeouts = [];
+
+        // Toutes les cartes en mode génération
+        skillItems.forEach((item) => item.classList.add("is-generating"));
+        updateUI();
+
         if (skillsDesc) {
           skillsDesc.style.opacity = "0";
-          setTimeout(() => {
-            skillsDesc.innerHTML = isVibeMode ? vibeDesc : originalDesc;
-            skillsDesc.style.opacity = "1";
-          }, 300);
+
+          revelationTimeouts.push(
+            window.setTimeout(() => {
+              if (isVibeMode) {
+                // Mode Vibe : Animation mot par mot
+                skillsDesc.innerHTML = `
+                <div class="flex flex-col gap-2">
+                  <div class="flex items-center gap-4">
+                    <span class="text-red-500 animate-pulse font-mono tracking-widest text-xs opacity-90">⚡ SÉQUENCE VIBE-CODER — PROJET HAIL MARY</span>
+                    <span class="text-white/40 font-mono text-[10px] animate-bounce delay-700">Amaze! Amaze! Amaze!</span>
+                  </div>
+                  <div id="vibe-typewriter" class="text-lg leading-relaxed text-red-50/90"></div>
+                </div>`;
+                skillsDesc.style.opacity = "1";
+
+                const container = document.getElementById("vibe-typewriter");
+                if (container) {
+                  const words = vibeDesc.split(/\s+(?![^<]*>)/g);
+                  let wordIdx = 0;
+
+                  activeTypeInterval = setInterval(() => {
+                    if (wordIdx < words.length) {
+                      container.innerHTML +=
+                        (wordIdx === 0 ? "" : " ") + words[wordIdx];
+                      wordIdx++;
+                    } else {
+                      clearInterval(activeTypeInterval);
+                      activeTypeInterval = null;
+                      revealCards();
+                    }
+                  }, 100);
+                }
+              } else {
+                // Mode Normal : Révélation immédiate
+                skillsDesc.innerHTML = originalDesc;
+                skillsDesc.style.opacity = "1";
+                revealCards();
+              }
+            }, 300),
+          );
         }
 
-        animateBoost(isVibeMode);
-        updateUI();
+        function revealCards() {
+          const visibleItems = Array.from(skillItems)
+            .filter((item) => !item.classList.contains("hidden"))
+            .sort((a, b) => {
+              const aTop = a.classList.contains("order-first") ? 0 : 1;
+              const bTop = b.classList.contains("order-first") ? 0 : 1;
+              return aTop - bTop;
+            });
+
+          let maxDelay = 0;
+          const stagger = isVibeMode ? 80 : 30;
+
+          visibleItems.forEach((item, index) => {
+            const delay = index * stagger;
+            revelationTimeouts.push(
+              window.setTimeout(() => {
+                item.classList.remove("is-generating");
+              }, delay),
+            );
+            maxDelay = Math.max(maxDelay, delay);
+          });
+
+          revelationTimeouts.push(
+            window.setTimeout(() => {
+              animateBoost(isVibeMode);
+            }, maxDelay + 100),
+          );
+        }
       });
     }
 
@@ -171,7 +277,9 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
     filterButtons.forEach((button) => {
       button.addEventListener("click", () => {
         activeCategory = button.getAttribute("data-category") || "all";
-        filterButtons.forEach((btn) => btn.classList.remove("border-cosmic-gold/60", "text-cosmic-gold"));
+        filterButtons.forEach((btn) =>
+          btn.classList.remove("border-cosmic-gold/60", "text-cosmic-gold"),
+        );
         button.classList.add("border-cosmic-gold/60", "text-cosmic-gold");
         updateUI();
       });
@@ -186,7 +294,8 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
 
     // Initial state
     const allBtn = document.querySelector('[data-category="all"]');
-    if (allBtn) allBtn.classList.add("border-cosmic-gold/60", "text-cosmic-gold");
+    if (allBtn)
+      allBtn.classList.add("border-cosmic-gold/60", "text-cosmic-gold");
     updateUI();
   });
 </script>

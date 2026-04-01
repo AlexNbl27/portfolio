@@ -6,45 +6,308 @@ interface Props {
 const { id = "vibe-switch" } = Astro.props;
 ---
 
+<!-- Filtre SVG : turbulence organique animée sur les blobs -->
+<svg class="absolute w-0 h-0 overflow-hidden" aria-hidden="true">
+  <defs>
+    <filter id="magma-morph" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency="0.018"
+        numOctaves="3"
+        seed="5"
+        result="noise"
+      >
+        <animate
+          attributeName="baseFrequency"
+          values="0.018;0.030;0.022;0.018"
+          dur="10s"
+          repeatCount="indefinite"></animate>
+      </feTurbulence>
+      <feDisplacementMap
+        in="SourceGraphic"
+        in2="noise"
+        scale="14"
+        xChannelSelector="R"
+        yChannelSelector="G"></feDisplacementMap>
+    </filter>
+  </defs>
+</svg>
+
 <div class="flex items-center">
-  <label class="relative inline-flex h-14 w-64 cursor-pointer items-center overflow-hidden rounded-full p-[3px] transition-all hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(246,212,13,0.15)] border border-white/10 bg-slate-900/80 backdrop-blur-md group">
+  <label
+    class="relative inline-flex h-14 w-64 cursor-pointer select-none items-center overflow-hidden rounded-full p-[3px] transition-all hover:scale-105 active:scale-95 border border-white/10 bg-slate-900/80 backdrop-blur-md group"
+  >
     <input type="checkbox" id={id} class="peer sr-only" />
-    
-    <!-- Track Gradient Background -->
-    <div class="absolute inset-0 rounded-full bg-slate-800 transition-all duration-500 peer-checked:bg-gradient-to-r peer-checked:from-cosmic-gold peer-checked:via-cosmic-pink peer-checked:to-cyan-400 peer-checked:bg-[length:200%_auto] peer-checked:animate-vibe-gradient"></div>
 
-    <!-- Labels Container -->
-    <div class="relative h-full w-full z-10 flex items-center justify-center">
-      <!-- Label when OFF (placed right) -->
-      <span class="absolute right-6 text-sm font-bold tracking-wider text-cosmic-gold transition-all duration-500 whitespace-nowrap peer-checked:opacity-0 peer-checked:translate-x-4">
-        activer l'ia
-      </span>
-      
-      <!-- Label when ON (placed left) -->
-      <span class="absolute left-6 text-sm font-bold tracking-wider text-white opacity-0 transition-all duration-500 whitespace-nowrap -translate-x-4 peer-checked:opacity-100 peer-checked:translate-x-0">
-        vibe code activé
-      </span>
+    <!-- Track OFF : espace profond + nébuleuse + étoiles -->
+    <div
+      class="track-off absolute inset-0 rounded-full transition-opacity duration-700 peer-checked:opacity-0"
+    >
+      <div class="nebula-off absolute inset-0 rounded-full"></div>
+      <div class="stars"></div>
     </div>
-    
+
+    <!-- Track ON : magma astral fluid -->
+    <div
+      class="absolute inset-0 rounded-full overflow-hidden opacity-0 transition-opacity duration-700 peer-checked:opacity-100"
+    >
+      <div class="magma-base absolute inset-0"></div>
+      <div class="magma-blob magma-blob-violet"></div>
+      <div class="magma-blob magma-blob-1"></div>
+      <div class="magma-blob magma-blob-2"></div>
+      <div class="magma-blob magma-blob-3"></div>
+    </div>
+
+    <!-- Label when OFF (placed right) -->
+    <span
+      class="absolute right-6 z-10 text-xs font-bold tracking-widest uppercase text-white transition-all duration-500 whitespace-nowrap peer-checked:opacity-0 peer-checked:translate-x-4"
+    >
+      activer l'ia
+    </span>
+
+    <!-- Label when ON (placed left) -->
+    <span
+      class="absolute left-6 z-10 text-xs font-bold tracking-widest uppercase text-slate-900 opacity-0 transition-all duration-500 whitespace-nowrap -translate-x-4 peer-checked:opacity-100 peer-checked:translate-x-0"
+    >
+      vibe code activé
+    </span>
+
     <!-- Knob -->
-    <div class="absolute left-1.5 top-1.5 h-11 w-11 rounded-full bg-white transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] peer-checked:left-[calc(100%-48px)] shadow-[0_0_20px_rgba(255,255,255,0.9)] z-20">
-       <!-- Minimal icon / dot on knob -->
-       <div class="absolute inset-[30%] rounded-full bg-slate-100/50"></div>
+    <div
+      class="absolute left-1.5 top-1.5 h-11 w-11 rounded-full bg-white transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] peer-checked:left-[calc(100%-48px)] shadow-[0_0_20px_rgba(255,255,255,0.9)] z-20"
+    >
+      <div class="absolute inset-[30%] rounded-full bg-slate-100/50"></div>
     </div>
 
-    <!-- Glow effect behind -->
-    <div class="absolute inset-0 -z-10 rounded-full opacity-0 blur-2xl transition-opacity duration-500 peer-checked:opacity-40 bg-gradient-to-r from-cosmic-gold via-cosmic-pink to-cyan-400 bg-[length:200%_auto] animate-vibe-gradient"></div>
+    <!-- Outer glow : orange-violet -->
+    <div
+      class="outer-glow absolute inset-0 -z-10 rounded-full opacity-0 blur-2xl transition-opacity duration-700 peer-checked:opacity-70"
+    >
+    </div>
   </label>
 </div>
 
 <style>
-  @keyframes vibe-gradient {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+  /* ── OFF : cosmos ── */
+  .track-off {
+    background: radial-gradient(ellipse at 55% 45%, #0f0a1e 0%, #04040f 100%);
   }
 
-  .animate-vibe-gradient {
-    animation: vibe-gradient 3s ease infinite;
+  .nebula-off {
+    background:
+      radial-gradient(
+        ellipse 65% 90% at 15% 50%,
+        rgba(100, 0, 220, 0.22) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 55% 70% at 85% 50%,
+        rgba(0, 50, 200, 0.14) 0%,
+        transparent 70%
+      );
+    animation: nebula-breathe 6s ease-in-out infinite;
+  }
+
+  @keyframes nebula-breathe {
+    0%,
+    100% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  /* Étoiles via box-shadow sur un seul pixel */
+  .stars {
+    position: absolute;
+    top: 13px;
+    left: 0;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background: white;
+    box-shadow:
+      18px 5px 0 0 rgba(255, 255, 255, 0.9),
+      40px 16px 0 0 rgba(255, 255, 255, 0.5),
+      60px 3px 0 0 rgba(255, 255, 255, 0.8),
+      82px 19px 0 0 rgba(255, 255, 255, 0.6),
+      104px 9px 0 0 rgba(255, 255, 255, 0.95),
+      126px 22px 0 0 rgba(255, 255, 255, 0.4),
+      148px 5px 0 0 rgba(255, 255, 255, 0.7),
+      170px 17px 0 0 rgba(255, 255, 255, 0.85),
+      202px 11px 0 0 rgba(255, 255, 255, 0.55),
+      230px 6px 0 0 rgba(255, 255, 255, 0.65),
+      30px 27px 0 0 rgba(255, 255, 255, 0.3),
+      70px 29px 0 0 rgba(255, 255, 255, 0.5),
+      112px 25px 0 0 rgba(255, 255, 255, 0.35),
+      188px 28px 0 0 rgba(255, 255, 255, 0.6),
+      242px 23px 0 0 rgba(200, 180, 255, 0.5);
+    animation: twinkle 4s ease-in-out infinite;
+  }
+
+  @keyframes twinkle {
+    0%,
+    100% {
+      opacity: 0.35;
+    }
+    25% {
+      opacity: 1;
+    }
+    55% {
+      opacity: 0.55;
+    }
+    80% {
+      opacity: 0.9;
+    }
+  }
+
+  /* ── ON : magma astral ── */
+  .magma-base {
+    background: radial-gradient(ellipse at 50% 50%, #180010 0%, #250400 100%);
+  }
+
+  .magma-blob {
+    position: absolute;
+    border-radius: 40%;
+    will-change: transform;
+    filter: url(#magma-morph) blur(9px);
+  }
+
+  /* Violet cosmique — fond lent, socle astral */
+  .magma-blob-violet {
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background: radial-gradient(
+      ellipse at 50% 50%,
+      #8b00ff 0%,
+      #3a006e 45%,
+      transparent 65%
+    );
+    animation: drift-violet 9s ease-in-out infinite;
+    opacity: 0.65;
+    filter: blur(16px);
+  }
+
+  /* Rouge — lent, large */
+  .magma-blob-1 {
+    width: 160%;
+    height: 160%;
+    top: -30%;
+    left: -30%;
+    background: radial-gradient(
+      ellipse at 45% 55%,
+      #ff3300 0%,
+      #bb1500 40%,
+      transparent 68%
+    );
+    animation: drift1 4.3s ease-in-out infinite;
+    mix-blend-mode: screen;
+  }
+
+  /* Orange — vitesse moyenne */
+  .magma-blob-2 {
+    width: 150%;
+    height: 150%;
+    top: -25%;
+    left: -15%;
+    background: radial-gradient(
+      ellipse at 55% 45%,
+      #ff8800 0%,
+      #ff4400 45%,
+      transparent 68%
+    );
+    animation: drift2 5.9s ease-in-out infinite;
+    mix-blend-mode: screen;
+    opacity: 0.9;
+  }
+
+  /* Jaune-or — rapide, poche de chaleur */
+  .magma-blob-3 {
+    width: 110%;
+    height: 110%;
+    top: -5%;
+    left: -5%;
+    background: radial-gradient(
+      ellipse at 50% 50%,
+      #ffcc00 0%,
+      #ff8800 35%,
+      transparent 62%
+    );
+    animation: drift3 3.1s ease-in-out infinite;
+    mix-blend-mode: screen;
+    opacity: 0.55;
+  }
+
+  @keyframes drift-violet {
+    0%,
+    100% {
+      transform: translate(0%, 0%) scale(1);
+    }
+    25% {
+      transform: translate(5%, -8%) scale(1.06);
+    }
+    50% {
+      transform: translate(-8%, 5%) scale(0.94);
+    }
+    75% {
+      transform: translate(4%, 9%) scale(1.03);
+    }
+  }
+
+  @keyframes drift1 {
+    0%,
+    100% {
+      transform: translate(0%, 0%) scale(1);
+    }
+    20% {
+      transform: translate(7%, -10%) scale(1.04);
+    }
+    45% {
+      transform: translate(-6%, 8%) scale(0.96);
+    }
+    70% {
+      transform: translate(11%, 4%) scale(1.07);
+    }
+  }
+
+  @keyframes drift2 {
+    0%,
+    100% {
+      transform: translate(0%, 0%) scale(1);
+    }
+    30% {
+      transform: translate(-9%, 9%) scale(1.08);
+    }
+    55% {
+      transform: translate(8%, -7%) scale(0.93);
+    }
+    80% {
+      transform: translate(-4%, -11%) scale(1.03);
+    }
+  }
+
+  @keyframes drift3 {
+    0%,
+    100% {
+      transform: translate(0%, 0%) scale(1);
+    }
+    35% {
+      transform: translate(9%, 11%) scale(1.12);
+    }
+    65% {
+      transform: translate(-7%, -5%) scale(0.94);
+    }
+  }
+
+  .outer-glow {
+    background: radial-gradient(
+      ellipse at center,
+      #ff5500 0%,
+      #9900cc 55%,
+      transparent 75%
+    );
   }
 </style>

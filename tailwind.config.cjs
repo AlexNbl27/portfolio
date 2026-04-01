@@ -17,7 +17,8 @@ module.exports = {
       },
       fontFamily: {
         display: ['"Cormorant Garamond"', 'serif'],
-        body: ['"Manrope"', 'sans-serif']
+        body: ['"Manrope"', 'sans-serif'],
+        blanka: ['"Blanka"', 'sans-serif']
       },
       boxShadow: {
         glow: '0 0 24px rgba(246, 212, 13, 0.35)',
