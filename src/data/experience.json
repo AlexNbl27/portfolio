@@ -1,24 +1,62 @@
 [
   {
-    "company": "Lumina Systems",
-    "role": "Lead Astral Architect",
-    "period": "2021 - Present",
-    "description": "Designed deep-space data interfaces that merge technical precision and emotional resonance.",
+    "company": "Orange Business Services",
+    "role": "Intégrateur et développeur fullstack",
+    "period": "2024 - Aujourd’hui",
+    "type": "pro",
+    "description": "Je poursuis mon parcours chez Orange Business Services en alternance autour de projets IoT et de développement applicatif, avec une montée en compétences continue sur les outils d’entreprise et les environnements industriels.",
     "achievements": [
-      "Built real-time telemetry dashboard reducing analysis latency by 43%.",
-      "Established design language used across five mission-critical products."
+      "Poursuite des travaux autour de Live Tag et de l’écosystème IoT.",
+      "Découverte et prise en main de PlanetTogether, outil de planification et d’ordonnancement de production."
     ],
-    "technologies": ["Astro", "TypeScript", "D3", "AWS"]
+    "technologies": ["Flutter", "Python", "PlanetTogether", "GitLab", "JIRA"]
   },
   {
-    "company": "Nova Design Labs",
-    "role": "Senior Interface Navigator",
-    "period": "2018 - 2021",
-    "description": "Pioneered neo-retro systems for collaborative exploratory products.",
+    "company": "Orange Business Services",
+    "role": "Intégrateur IoT et développeur mobile",
+    "period": "Juil. 2024 - Août 2024",
+    "type": "pro",
+    "description": "Stage de 6 semaines à Lyon Bellecour autour du développement d’une application Flutter pour réaliser des inventaires rapides dans des entrepôts de stockage.",
     "achievements": [
-      "Launched component architecture reused by 12 teams.",
-      "Improved accessibility compliance from 76 to 98 Lighthouse score."
+      "Finalisation d’une application mobile Flutter pour le projet Live Tag.",
+      "Développement d’une API Python et déploiement dans un conteneur Red Hat OpenShift avec CI/CD."
     ],
-    "technologies": ["React", "Node.js", "Figma"]
+    "technologies": ["Flutter", "Python", "CI/CD", "Red Hat OpenShift", "GitLab", "JIRA"]
+  },
+  {
+    "company": "REEL",
+    "role": "Automaticien en bureau d’études",
+    "period": "Printemps 2023",
+    "type": "pro",
+    "description": "Stage de fin de DUT en environnement industriel, orienté automatisme et monitoring 4.0 pour une installation nucléaire.",
+    "achievements": [
+      "Conception d’un système de monitoring IoT pour une installation industrielle sensible.",
+      "Validation du stage par un rapport et une soutenance avec une moyenne de 16/20."
+    ],
+    "technologies": ["Grafcet", "Siemens TIA Portal", "Schneider Control Expert", "IoT"]
+  },
+  {
+    "company": "Ynov Lyon",
+    "role": "Étudiant en informatique",
+    "period": "2023 - 2026",
+    "type": "formation",
+    "description": "Après un DUT GEII, j’ai choisi de me spécialiser pleinement en informatique afin de développer des compétences solides en développement web, mobile et fullstack.",
+    "achievements": [
+      "Réalisation de plusieurs projets d’équipe et projets personnels orientés produit.",
+      "Approfondissement des compétences en développement, UX et outils collaboratifs."
+    ],
+    "technologies": ["Vue.js", "TypeScript", "Flutter", "Laravel", "Figma"]
+  },
+  {
+    "company": "IUT de Saint-Étienne",
+    "role": "DUT GEII obtenu",
+    "period": "2021 - 2023",
+    "type": "formation",
+    "description": "Formation en Génie Électrique et Informatique Industrielle, qui m’a apporté une base technique solide en automatisme, programmation et systèmes industriels.",
+    "achievements": [
+      "Obtention du DUT GEII (Bac+2).",
+      "Développement d’un profil hybride entre informatique et automatisme."
+    ],
+    "technologies": ["C++", "C#", "VHDL", "Automatisme", "Programmation industrielle"]
   }
 ]

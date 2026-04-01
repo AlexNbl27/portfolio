@@ -1,11 +1,17 @@
 ---
-const categories = ['all', 'frontend', 'ai', 'creative'];
+const categories = [
+  { value: 'all', label: 'Tous' },
+  { value: 'saas', label: 'SaaS' },
+  { value: 'web', label: 'Web' },
+  { value: 'mobile', label: 'Mobile' },
+  { value: 'desktop', label: 'Desktop' }
+];
 ---
 
-<div class="mb-8 flex flex-wrap gap-3" role="toolbar" aria-label="Project filter">
+<div class="mb-8 pt-4 flex flex-wrap gap-3" role="toolbar" aria-label="Filtrer les projets">
   {categories.map((category) => (
-    <button class="focus-ring filter-btn rounded-full border border-cosmic-gold/25 bg-slate-900/70 px-4 py-2 text-xs uppercase tracking-[0.2em] hover:border-cosmic-gold hover:text-cosmic-gold" data-category={category}>
-      {category}
+    <button class="focus-ring filter-btn rounded-full border border-cosmic-gold/25 bg-slate-900/70 px-4 py-2 text-xs uppercase tracking-[0.2em] hover:border-cosmic-gold hover:text-cosmic-gold" data-category={category.value}>
+      {category.label}
     </button>
   ))}
 </div>

@@ -1,57 +1,1481 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Manrope:wght@400;500;700&display=swap');
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url("https://fonts.cdnfonts.com/css/blanka");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Manrope:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap");
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
-:root {
-  --bg: #040916;
-  --card: rgba(28, 35, 63, 0.7);
-  --text: #f3f0e2;
-  --muted: #b4b8ca;
-  --gold: #f6d40d;
-  --pink: #e3a4d6;
+@layer base {
+  :root {
+    --bg: #040916;
+    --card: rgba(28, 35, 63, 0.7);
+    --text: #f3f0e2;
+    --muted: #b4b8ca;
+    --gold: #f6d40d;
+    --pink: #e3a4d6;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+  html {
+    scroll-behavior: smooth;
+    background-color: #040916;
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+    pointer-events: none;
+  }
+
+  body {
+    margin: 0;
+    color: var(--text);
+    background:
+      radial-gradient(
+        circle at 20% 20%,
+        rgba(105, 72, 165, 0.25),
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 60%,
+        rgba(38, 83, 130, 0.26),
+        transparent 45%
+      ),
+      linear-gradient(160deg, #040916 0%, #050d22 45%, #060a18 100%);
+    font-family: "Manrope", sans-serif;
+    min-height: 100vh;
+  }
 }
 
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  margin: 0;
-  color: var(--text);
-  background:
-    radial-gradient(circle at 20% 20%, rgba(105, 72, 165, 0.25), transparent 50%),
-    radial-gradient(circle at 80% 60%, rgba(38, 83, 130, 0.26), transparent 45%),
-    linear-gradient(160deg, #040916 0%, #050d22 45%, #060a18 100%);
-  font-family: 'Manrope', sans-serif;
-  min-height: 100vh;
-}
+@layer components {
+  .cosmic-container {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 72rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .cosmic-container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
 
-.cosmic-container { @apply mx-auto max-w-6xl px-5 md:px-8; }
-.glass-card {
-  background: linear-gradient(120deg, rgba(41, 45, 67, 0.78), rgba(29, 33, 52, 0.58));
-  border: 1px solid rgba(203, 191, 132, 0.2);
-  border-radius: 1.6rem;
-  backdrop-filter: blur(8px);
-}
+  .glass-card {
+    background: linear-gradient(
+      120deg,
+      rgba(41, 45, 67, 0.78),
+      rgba(29, 33, 52, 0.58)
+    );
+    border: 1px solid rgba(203, 191, 132, 0.2);
+    border-radius: 1.6rem;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
 
-.section-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2rem, 4vw, 4rem);
-  line-height: 0.95;
-}
+  .section-title {
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(2rem, 4vw, 4rem);
+    line-height: 0.95;
+  }
 
-.highlight { color: var(--gold); font-style: italic; }
-.muted { color: var(--muted); }
+  .highlight {
+    color: var(--gold);
+    font-style: italic;
+  }
+  .muted {
+    color: var(--muted);
+  }
 
-.focus-ring:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 2px;
-}
+  .focus-ring:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
 
-.animate-in {
-  animation: rise-fade 700ms ease-out forwards;
+  .animate-in {
+    animation: rise-fade 700ms ease-out forwards;
+  }
+
+  .home-portal-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .home-portal-row {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .home-portal-card {
+    min-height: 100%;
+    transition:
+      border-color 240ms ease,
+      box-shadow 240ms ease,
+      background 240ms ease;
+  }
+
+  @media (min-width: 768px) {
+    .home-portal-row {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      transition: grid-template-columns 240ms ease;
+    }
+
+    .home-portal-card:hover {
+      z-index: 2;
+      border-color: rgba(246, 212, 13, 0.55);
+      box-shadow: 0 24px 60px rgba(4, 9, 22, 0.35);
+    }
+
+    .home-portal-row:has(.home-portal-card:first-child:hover) {
+      grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    }
+
+    .home-portal-row:has(.home-portal-card:last-child:hover) {
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    }
+  }
+
+  .experience-timeline-track::before {
+    left: calc(1rem - 0.5px);
+    background: linear-gradient(
+      180deg,
+      rgba(246, 212, 13, 0.12),
+      rgba(246, 212, 13, 0.7),
+      rgba(227, 164, 214, 0.2)
+    );
+    box-shadow: 0 0 22px rgba(246, 212, 13, 0.18);
+  }
+
+  .experience-timeline-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .experience-item {
+    position: relative;
+    opacity: 0;
+    animation: rise-fade 720ms ease-out forwards;
+  }
+
+  .experience-item::before {
+    content: "";
+    position: absolute;
+    top: 2.5rem;
+    left: calc(1rem - 0.375rem);
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 999px;
+    background: var(--gold);
+    box-shadow: 0 0 0 0 rgba(246, 212, 13, 0.25);
+    transition:
+      transform 240ms ease,
+      box-shadow 240ms ease,
+      background-color 240ms ease;
+  }
+
+  .experience-item:hover {
+    z-index: 3;
+  }
+
+  @media (min-width: 768px) {
+    .experience-timeline-track::before {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .experience-timeline-stack {
+      gap: 0;
+    }
+
+    .experience-item + .experience-item {
+      margin-top: -5.75rem;
+    }
+
+    .experience-item::before {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
+  .experience-item:hover::before {
+    transform: translateX(-50%) scale(1.3);
+    background-color: #fff5bf;
+    box-shadow:
+      0 0 0 8px rgba(246, 212, 13, 0.12),
+      0 0 20px rgba(246, 212, 13, 0.35);
+  }
+
+  @media (max-width: 767px) {
+    .experience-item:hover::before {
+      transform: scale(1.3); /* Restore non-translated scale for mobile */
+    }
+  }
+
+  .experience-card {
+    position: relative;
+    overflow: hidden;
+    transition:
+      transform 260ms ease,
+      border-color 260ms ease,
+      box-shadow 260ms ease,
+      background 260ms ease;
+  }
+
+  .experience-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(246, 212, 13, 0.18),
+        transparent 32%
+      ),
+      linear-gradient(135deg, rgba(255, 255, 255, 0.06), transparent 34%);
+    opacity: 0.9;
+    pointer-events: none;
+  }
+
+  .experience-card::after,
+  .shine-effect::after {
+    content: "";
+    position: absolute;
+    inset: -40% auto -40% -35%;
+    width: 38%;
+    transform: rotate(14deg) translateX(-180%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.18),
+      transparent
+    );
+    opacity: 0;
+    transition:
+      transform 420ms ease,
+      opacity 420ms ease;
+    pointer-events: none;
+  }
+
+  .experience-card > *,
+  .shine-effect > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .experience-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(246, 212, 13, 0.48);
+    box-shadow:
+      0 26px 56px rgba(4, 9, 22, 0.4),
+      0 0 32px rgba(246, 212, 13, 0.1);
+  }
+
+  .experience-card:hover::after,
+  .shine-effect:hover::after {
+    opacity: 1;
+    transform: rotate(14deg) translateX(420%);
+  }
+
+  .experience-badge {
+    border: 1px solid rgba(246, 212, 13, 0.22);
+    background: rgba(8, 13, 31, 0.45);
+    border-radius: 999px;
+    color: var(--text);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    padding: 0.5rem 0.8rem;
+    text-transform: uppercase;
+  }
+
+  .experience-achievements li::marker {
+    color: var(--gold);
+  }
+
+  .experience-tech {
+    border: 1px solid rgba(246, 212, 13, 0.14);
+    background: linear-gradient(
+      180deg,
+      rgba(10, 15, 34, 0.84),
+      rgba(14, 22, 45, 0.7)
+    );
+    border-radius: 999px;
+    color: #efe7c4;
+    padding: 0.5rem 0.85rem;
+    transition:
+      transform 200ms ease,
+      border-color 200ms ease,
+      background 200ms ease;
+  }
+
+  .experience-tech:hover {
+    transform: translateY(-2px);
+    border-color: rgba(246, 212, 13, 0.4);
+    background: linear-gradient(
+      180deg,
+      rgba(26, 34, 66, 0.92),
+      rgba(18, 26, 49, 0.84)
+    );
+  }
+
+  /* ── Soft skills page layout ── */
+  .soft-viz-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .soft-constellation-banner {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    height: 38vh;
+    min-height: 320px;
+    max-height: 480px;
+    overflow: hidden;
+    border-radius: 2rem;
+    border: 1px solid rgba(246, 212, 13, 0.25);
+    background: radial-gradient(
+      ellipse at 50% 100%,
+      rgba(39, 46, 86, 0.4),
+      rgba(15, 20, 42, 0.75) 45%,
+      rgba(8, 12, 26, 0.98) 100%
+    );
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+      0 12px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  .soft-viz-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  @media (max-width: 767px) {
+    .soft-viz-cards {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .page-shell {
+    will-change: transform, opacity;
+  }
+
+  .project-item--detail {
+    transition: transform 200ms ease;
+  }
+
+  .project-item--detail:hover {
+    transform: translateY(-2px);
+  }
+
+  .project-detail {
+    --project-accent: var(--gold);
+    --project-accent-soft: #fff1b3;
+    --project-glow-a: rgba(246, 212, 13, 0.24);
+    --project-glow-b: rgba(227, 164, 214, 0.2);
+    --project-title-font: "Cormorant Garamond", serif;
+    --project-body-font: "Manrope", sans-serif;
+    font-family: var(--project-body-font);
+  }
+
+  .project-detail-meta {
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--project-accent-soft);
+  }
+
+  .project-detail-title {
+    color: var(--project-accent);
+    font-family: var(--project-title-font);
+  }
+
+  .project-detail-logo {
+    width: clamp(84px, 14vw, 138px);
+    height: auto;
+    border-radius: 1rem;
+    border: 1px solid var(--project-glow-a);
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 14px 30px var(--project-glow-a);
+    padding: 0.35rem;
+  }
+
+  .project-detail-hero {
+    border-color: var(--project-glow-a);
+    box-shadow:
+      0 18px 45px var(--project-glow-a),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  }
+
+  .project-detail-link {
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease,
+      border-color 180ms ease;
+  }
+
+  .project-detail-link--primary {
+    background: var(--project-accent);
+    color: #050913;
+  }
+
+  .project-detail-link--ghost {
+    border: 1px solid var(--project-glow-a);
+    color: var(--project-accent-soft);
+    background: linear-gradient(
+      160deg,
+      rgba(11, 16, 35, 0.84),
+      rgba(13, 20, 41, 0.68)
+    );
+  }
+
+  .project-detail-link:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px var(--project-glow-a);
+  }
+
+  .project-detail-tech {
+    border: 1px solid var(--project-glow-a);
+    color: var(--project-accent-soft);
+    background: linear-gradient(
+      180deg,
+      rgba(13, 19, 40, 0.9),
+      rgba(10, 15, 33, 0.72)
+    );
+  }
+
+  .project-detail .glass-card:last-child {
+    background:
+      radial-gradient(
+        circle at 82% 12%,
+        var(--project-glow-b),
+        transparent 34%
+      ),
+      linear-gradient(120deg, rgba(41, 45, 67, 0.78), rgba(29, 33, 52, 0.58));
+  }
+
+  .soft-constellation__nebula {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        circle at 20% 22%,
+        rgba(227, 164, 214, 0.18),
+        transparent 24%
+      ),
+      radial-gradient(
+        circle at 76% 28%,
+        rgba(246, 212, 13, 0.14),
+        transparent 22%
+      ),
+      radial-gradient(
+        circle at 30% 74%,
+        rgba(68, 193, 255, 0.12),
+        transparent 18%
+      ),
+      radial-gradient(
+        circle at 72% 74%,
+        rgba(99, 102, 241, 0.14),
+        transparent 20%
+      );
+    pointer-events: none;
+  }
+
+  .soft-constellation__star {
+    position: absolute;
+    border-radius: 999px;
+    background: radial-gradient(
+      circle,
+      rgba(255, 248, 210, 0.95),
+      rgba(246, 212, 13, 0.7) 55%,
+      rgba(246, 212, 13, 0) 100%
+    );
+    box-shadow: 0 0 18px rgba(246, 212, 13, 0.28);
+    pointer-events: none;
+  }
+
+  .soft-skill-core {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: grid;
+    place-items: center;
+    width: 6.8rem;
+    height: 6.8rem;
+    transform: translate(-50%, -50%);
+    border-radius: 999px;
+    border: 2px solid rgba(255, 230, 60, 0.85);
+    background: radial-gradient(
+      circle at 35% 30%,
+      rgba(255, 248, 180, 0.98) 0%,
+      rgba(255, 220, 40, 0.95) 40%,
+      rgba(246, 170, 0, 0.88) 75%,
+      rgba(200, 100, 0, 0.7) 100%
+    );
+    box-shadow:
+      0 0 18px rgba(255, 220, 40, 0.9),
+      0 0 42px rgba(246, 212, 13, 0.55),
+      0 0 80px rgba(246, 150, 0, 0.25);
+    overflow: visible;
+    z-index: 10;
+  }
+
+  .soft-skill-core__ray {
+    position: absolute;
+    width: 0.15rem;
+    height: 1.15rem;
+    left: calc(50% - 0.075rem);
+    top: calc(50% - 4.55rem);
+    background: linear-gradient(to top, rgba(255, 220, 40, 0.9), transparent);
+    border-radius: 2px;
+    transform-origin: 50% 4.55rem;
+    transform: rotate(var(--ray-angle));
+    animation: ray-pulse 2.8s ease-in-out infinite;
+  }
+
+  .soft-skill-core__ring {
+    position: absolute;
+    inset: -0.9rem;
+    border: 1px solid rgba(246, 212, 13, 0.3);
+    border-radius: 999px;
+    animation: ray-pulse 3.4s ease-in-out infinite reverse;
+  }
+
+  .soft-skill-core__label {
+    font-size: 1.1rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #2a1200;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+  }
+
+  button.soft-skill-node {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .soft-skill-node {
+    position: absolute;
+    left: var(--left-mobile, var(--left));
+    top: var(--top-mobile, var(--top));
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+  }
+
+  @media (min-width: 768px) {
+    .soft-skill-node {
+      left: var(--left);
+      top: var(--top);
+    }
+  }
+
+  .soft-skill-node__planet-wrap {
+    position: relative;
+    display: block;
+    width: 3.5rem;
+    height: 3.5rem;
+    flex: none;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .soft-skill-node:hover .soft-skill-node__planet-wrap {
+    transform: scale(1.15) rotate(5deg);
+  }
+
+  .soft-skill-node__aura {
+    position: absolute;
+    inset: -0.8rem;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      currentColor 0%,
+      rgba(255, 255, 255, 0) 70%
+    );
+    opacity: 0.35;
+    filter: blur(8px);
+  }
+
+  .soft-skill-node__planet {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    position: relative;
+    z-index: 2;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Mars — Organisation */
+  .planet-mars {
+    color: #e07050;
+  }
+  .planet-mars .soft-skill-node__planet {
+    background:
+      radial-gradient(
+        ellipse 25% 20% at 72% 58%,
+        rgba(140, 60, 30, 0.5) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 18% 12% at 38% 72%,
+        rgba(160, 70, 35, 0.35) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        circle at 33% 28%,
+        #f0a888 0%,
+        #c85838 38%,
+        #8b2e18 72%,
+        #5a1a0a 100%
+      );
+    box-shadow:
+      0 0 10px rgba(200, 88, 56, 0.7),
+      0 0 22px rgba(200, 88, 56, 0.3),
+      inset -4px -4px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Saturn — Créativité */
+  .planet-saturn {
+    color: #d4a84b;
+  }
+  .planet-saturn .soft-skill-node__planet-wrap {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+  .planet-saturn .soft-skill-node__planet {
+    background:
+      radial-gradient(
+        ellipse 80% 18% at 50% 38%,
+        rgba(240, 210, 120, 0.4) 0%,
+        transparent 100%
+      ),
+      radial-gradient(
+        ellipse 80% 14% at 50% 62%,
+        rgba(180, 130, 40, 0.35) 0%,
+        transparent 100%
+      ),
+      radial-gradient(
+        circle at 33% 28%,
+        #f5e6a3 0%,
+        #d4a848 35%,
+        #a07828 68%,
+        #6a4e18 100%
+      );
+    box-shadow:
+      0 0 10px rgba(212, 168, 72, 0.7),
+      0 0 24px rgba(212, 168, 72, 0.3),
+      inset -4px -4px 8px rgba(0, 0, 0, 0.35);
+  }
+  /* Saturn ring */
+  .planet-saturn .soft-skill-node__planet::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 4.4rem;
+    height: 1rem;
+    border-radius: 50%;
+    border: 2.5px solid rgba(212, 168, 72, 0.65);
+    box-shadow:
+      0 0 6px rgba(212, 168, 72, 0.3),
+      inset 0 0 4px rgba(212, 168, 72, 0.15);
+    transform: translate(-50%, -50%);
+    z-index: -1;
+  }
+  /* Front half of ring (in front of planet) */
+  .planet-saturn .soft-skill-node__planet::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 4.4rem;
+    height: 1rem;
+    border-radius: 50%;
+    border: 2.5px solid rgba(212, 168, 72, 0.65);
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+  }
+
+  /* Neptune — Autonomie */
+  .planet-neptune {
+    color: #5080e0;
+  }
+  .planet-neptune .soft-skill-node__planet {
+    background:
+      radial-gradient(
+        ellipse 40% 25% at 30% 42%,
+        rgba(120, 170, 240, 0.5) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 30% 18% at 70% 60%,
+        rgba(30, 60, 160, 0.5) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        circle at 33% 28%,
+        #7aacf8 0%,
+        #2e5cc8 38%,
+        #1432a0 70%,
+        #0a1a70 100%
+      );
+    box-shadow:
+      0 0 10px rgba(46, 92, 200, 0.8),
+      0 0 24px rgba(46, 92, 200, 0.35),
+      inset -4px -4px 8px rgba(0, 0, 0, 0.45);
+  }
+
+  /* Earth — Esprit d'équipe */
+  .planet-earth {
+    color: #4ab8c8;
+  }
+  .planet-earth .soft-skill-node__planet {
+    background:
+      radial-gradient(
+        ellipse 35% 30% at 62% 38%,
+        rgba(34, 140, 60, 0.75) 0%,
+        transparent 65%
+      ),
+      radial-gradient(
+        ellipse 22% 20% at 28% 65%,
+        rgba(34, 130, 50, 0.55) 0%,
+        transparent 65%
+      ),
+      radial-gradient(
+        ellipse 18% 14% at 72% 70%,
+        rgba(34, 120, 50, 0.4) 0%,
+        transparent 65%
+      ),
+      radial-gradient(
+        circle at 33% 28%,
+        #a8e0f8 0%,
+        #2a8ad0 35%,
+        #1060a8 68%,
+        #083a70 100%
+      );
+    box-shadow:
+      0 0 10px rgba(42, 138, 208, 0.7),
+      0 0 22px rgba(42, 138, 208, 0.3),
+      inset -4px -4px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Jupiter — bandes orangées */
+  .planet-jupiter {
+    color: #d4874a;
+  }
+  .planet-jupiter .soft-skill-node__planet {
+    background:
+      radial-gradient(
+        ellipse 85% 7% at 50% 32%,
+        rgba(215, 155, 90, 0.65) 0%,
+        transparent 100%
+      ),
+      radial-gradient(
+        ellipse 85% 7% at 50% 52%,
+        rgba(170, 100, 50, 0.55) 0%,
+        transparent 100%
+      ),
+      radial-gradient(
+        ellipse 85% 6% at 50% 68%,
+        rgba(200, 130, 70, 0.45) 0%,
+        transparent 100%
+      ),
+      radial-gradient(
+        circle at 33% 28%,
+        #f0c090 0%,
+        #c87840 35%,
+        #a05828 68%,
+        #703818 100%
+      );
+    box-shadow:
+      0 0 10px rgba(200, 120, 60, 0.7),
+      0 0 24px rgba(200, 120, 60, 0.3),
+      inset -4px -4px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Venus — voile nuageux crème */
+  .planet-venus {
+    color: #e8c860;
+  }
+  .planet-venus .soft-skill-node__planet {
+    background:
+      radial-gradient(
+        ellipse 55% 40% at 38% 38%,
+        rgba(255, 245, 190, 0.55) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 40% 25% at 65% 60%,
+        rgba(220, 180, 80, 0.35) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        circle at 35% 30%,
+        #fef5c8 0%,
+        #e8c858 38%,
+        #c8a030 70%,
+        #906010 100%
+      );
+    box-shadow:
+      0 0 10px rgba(232, 200, 80, 0.8),
+      0 0 24px rgba(232, 200, 80, 0.35),
+      inset -4px -4px 8px rgba(0, 0, 0, 0.25);
+  }
+
+  /* Uranus — bleu pâle, anneau vertical */
+  .planet-uranus {
+    color: #7de8d8;
+  }
+  .planet-uranus .soft-skill-node__planet {
+    background: radial-gradient(
+      circle at 35% 30%,
+      #c8f4f4 0%,
+      #58d0d0 38%,
+      #26a0b0 70%,
+      #0e6878 100%
+    );
+    box-shadow:
+      0 0 10px rgba(88, 208, 208, 0.7),
+      0 0 24px rgba(88, 208, 208, 0.3),
+      inset -4px -4px 8px rgba(0, 0, 0, 0.4);
+  }
+  .planet-uranus .soft-skill-node__planet::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0.85rem;
+    height: 4.2rem;
+    border-radius: 50%;
+    border: 2px solid rgba(88, 208, 208, 0.6);
+    transform: translate(-50%, -50%);
+    z-index: -1;
+  }
+
+  /* Mercury — gris cratérisé */
+  .planet-mercury {
+    color: #a0a0b8;
+  }
+  .planet-mercury .soft-skill-node__planet {
+    background:
+      radial-gradient(
+        ellipse 14% 10% at 65% 32%,
+        rgba(60, 60, 80, 0.7) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 10% 8% at 32% 62%,
+        rgba(60, 60, 80, 0.6) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 8% 6% at 55% 68%,
+        rgba(50, 50, 70, 0.5) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        circle at 35% 30%,
+        #d0d0e0 0%,
+        #909098 38%,
+        #606070 70%,
+        #3c3c50 100%
+      );
+    box-shadow:
+      0 0 8px rgba(144, 144, 152, 0.55),
+      0 0 18px rgba(144, 144, 152, 0.2),
+      inset -4px -4px 8px rgba(0, 0, 0, 0.55);
+  }
+
+  /* Label under planet */
+  .soft-skill-node__label {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.72rem;
+    line-height: 1;
+    white-space: nowrap;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(8, 12, 28, 0.75);
+    color: rgba(220, 232, 255, 0.88);
+    box-shadow: 0 4px 12px rgba(4, 9, 22, 0.35);
+  }
+
+  @media (min-width: 768px) {
+    .soft-skill-node {
+      transition: transform 220ms ease;
+    }
+
+    .soft-skill-node:hover {
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .soft-constellation-banner {
+      height: 48vh;
+      min-height: 380px;
+    }
+
+    .soft-skill-node__planet-wrap {
+      width: 2.8rem;
+      height: 2.8rem;
+    }
+
+    .soft-skill-node__label {
+      font-size: 0.62rem;
+      padding: 0.2rem 0.5rem;
+    }
+
+    .planet-saturn .soft-skill-node__planet::before,
+    .planet-saturn .soft-skill-node__planet::after {
+      width: 4.2rem;
+    }
+
+    .soft-skill-core {
+      width: 5.5rem;
+      height: 5.5rem;
+    }
+
+    .soft-skill-core__label {
+      font-size: 0.9rem;
+    }
+
+    .soft-viz-cards {
+      gap: 0.75rem;
+    }
+  }
+
+  .exp-filter {
+    transition:
+      transform 200ms ease,
+      border-color 200ms ease,
+      color 200ms ease,
+      background 200ms ease;
+  }
+
+  .exp-filter:hover {
+    transform: translateY(-2px);
+    border-color: rgba(246, 212, 13, 0.45);
+    color: var(--gold);
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .featured-soft-skill {
+    position: relative;
+    overflow: hidden;
+    transition:
+      transform 220ms ease,
+      border-color 220ms ease,
+      box-shadow 220ms ease;
+  }
+
+  .featured-soft-skill::after {
+    content: "";
+    position: absolute;
+    inset: -50% auto -50% -30%;
+    width: 34%;
+    transform: rotate(18deg) translateX(-220%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.18),
+      transparent
+    );
+    opacity: 0;
+    transition:
+      transform 360ms ease,
+      opacity 360ms ease;
+    pointer-events: none;
+  }
+
+  .featured-soft-skill:hover {
+    transform: translateY(-6px);
+    border-color: rgba(246, 212, 13, 0.45);
+    box-shadow:
+      0 18px 40px rgba(4, 9, 22, 0.34),
+      0 0 28px rgba(246, 212, 13, 0.12);
+  }
+
+  .featured-soft-skill:hover::after {
+    opacity: 1;
+    transform: rotate(18deg) translateX(420%);
+  }
+
+  /* Skill info card — deux états */
+  .skill-info-content {
+    display: grid;
+    grid-template: auto / 1fr;
+  }
+
+  .skill-info-default,
+  .skill-info-detail {
+    grid-area: 1 / 1;
+    transition:
+      opacity 230ms ease,
+      transform 230ms ease,
+      visibility 230ms ease;
+  }
+
+  .skill-info-detail {
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  .skill-info-card.is-detail .skill-info-default {
+    opacity: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  .skill-info-card.is-detail .skill-info-detail {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    visibility: visible;
+  }
+
+  .skill-info-detail__tag {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(246, 212, 13, 0.6);
+    margin-bottom: 0.5rem;
+  }
+
+  .skill-info-detail__title {
+    font-size: 2rem;
+    color: #f6d40d;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+  }
+
+  .skill-info-detail__text {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    margin-bottom: 1.2rem;
+  }
+
+  /* Flash animation on card switch */
+  .skill-info-card.is-flashing {
+    animation: skill-card-flash 0.65s ease-out forwards;
+  }
+
+  /* Constellation hint text */
+  .constellation-hint {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    text-align: center;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: rgba(246, 212, 13, 0.45);
+    z-index: 3;
+    pointer-events: none;
+    animation: hint-breathe 3s ease-in-out infinite;
+  }
+
+  /* Planet invite glow — staggered per planet */
+  .soft-skill-node:nth-child(2) .soft-skill-node__aura {
+    animation-delay: 0s;
+  }
+  .soft-skill-node:nth-child(3) .soft-skill-node__aura {
+    animation-delay: 0.6s;
+  }
+  .soft-skill-node:nth-child(4) .soft-skill-node__aura {
+    animation-delay: 1.2s;
+  }
+  .soft-skill-node:nth-child(5) .soft-skill-node__aura {
+    animation-delay: 1.8s;
+  }
+
+  /* Active node ring */
+  .soft-skill-node.is-active .soft-skill-node__planet {
+    box-shadow:
+      0 0 0 2px rgba(255, 255, 255, 0.5),
+      0 0 18px currentColor,
+      0 0 32px currentColor;
+  }
+
+  /* Sun button reset */
+  button.soft-skill-core {
+    padding: 0;
+    cursor: pointer;
+    font: inherit;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .experience-item {
+      opacity: 1;
+    }
+
+    .experience-card,
+    .experience-node::before,
+    .experience-tech,
+    .exp-filter {
+      transition: none;
+    }
+  }
+
+  .article-content {
+    font-size: 1.08rem;
+    line-height: 1.8;
+  }
+
+  .article-content > * + * {
+    margin-top: 1rem;
+  }
+
+  .article-content p,
+  .article-content li {
+    font-size: clamp(1.04rem, 0.98rem + 0.25vw, 1.18rem);
+  }
+
+  .article-content h2,
+  .article-content h3 {
+    font-family: var(--project-title-font);
+    color: var(--project-accent);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-top: 1.75rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .article-content h2 {
+    font-size: clamp(1.9rem, 1.55rem + 1vw, 2.6rem);
+  }
+
+  .article-content h3 {
+    font-size: clamp(1.45rem, 1.2rem + 0.7vw, 1.95rem);
+  }
+
+  .article-content a {
+    color: var(--project-accent);
+    text-decoration: underline;
+  }
+
+  .article-content ul,
+  .article-content ol {
+    list-style: disc;
+    padding-left: 1.5rem;
+  }
+
+  .article-content li + li {
+    margin-top: 0.45rem;
+  }
+
+  .article-content strong {
+    color: var(--project-accent-soft);
+    font-weight: 700;
+  }
+
+  .article-content img {
+    width: 100%;
+    border-radius: 1rem;
+    border: 1px solid rgba(203, 191, 132, 0.25);
+  }
+
+  .article-content blockquote {
+    border-left: 3px solid rgba(246, 212, 13, 0.6);
+    padding-left: 1rem;
+    color: var(--muted);
+  }
 }
 
 @keyframes rise-fade {
-  from { transform: translateY(14px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(14px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* --- Vibe AI Generative Magic Styles --- */
+body.vibe-mode-on {
+  /* Astrophage Mode: Deep charcoal to black background with subtle blood-red core */
+  background: radial-gradient(
+    circle at 50% 50%,
+    #1a0808 0%,
+    #02040a 100%
+  ) !important;
+  transition: background 2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.vibe-active-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 2s ease;
+  overflow: hidden;
+}
+
+/* Dense Astrophage Nebulae: Large blurry crimson masses */
+.vibe-active-bg::after {
+  content: "";
+  position: absolute;
+  inset: -100%;
+  background:
+    radial-gradient(
+      circle at 30% 40%,
+      rgba(220, 20, 20, 0.15),
+      transparent 35%
+    ),
+    radial-gradient(circle at 70% 30%, rgba(255, 0, 0, 0.12), transparent 40%),
+    radial-gradient(circle at 45% 75%, rgba(139, 0, 0, 0.18), transparent 45%),
+    radial-gradient(circle at 85% 85%, rgba(180, 10, 10, 0.14), transparent 30%);
+  filter: blur(100px);
+  animation: vibe-bg-drift 40s linear infinite;
+  opacity: 0.9;
+}
+
+body.vibe-mode-on .vibe-active-bg {
+  opacity: 1;
+}
+
+/* Astrophage Particles: Thousands of red glowing points */
+.vibe-active-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    /* Layer 1: Dense, tiny red shimmering */
+    radial-gradient(1.2px 1.2px at 5% 12%, #ff4444 95%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 28% 28%, #ff0000 90%, transparent 100%),
+    radial-gradient(1px 1px at 48% 42%, #ff3333 95%, transparent 100%),
+    radial-gradient(1.8px 1.8px at 68% 18%, #ff0000 90%, transparent 100%),
+    radial-gradient(1.2px 1.2px at 88% 33%, #ff2222 95%, transparent 100%),
+    /* Layer 2: Medium glowing crimson */
+    radial-gradient(
+        3.5px 3.5px at 18% 78%,
+        rgba(255, 0, 0, 0.9) 25%,
+        transparent 100%
+      ),
+    radial-gradient(
+      4.5px 4.5px at 38% 63%,
+      rgba(230, 20, 20, 0.8) 15%,
+      transparent 100%
+    ),
+    radial-gradient(
+      4px 4px at 58% 88%,
+      rgba(255, 10, 10, 0.85) 20%,
+      transparent 100%
+    ),
+    radial-gradient(
+      5px 5px at 78% 53%,
+      rgba(255, 40, 40, 0.7) 12%,
+      transparent 100%
+    ),
+    radial-gradient(
+      3.5px 3.5px at 98% 73%,
+      rgba(255, 0, 0, 0.9) 25%,
+      transparent 100%
+    ),
+    /* Layer 3: Large Astrophage flares */
+    radial-gradient(
+        9px 9px at 12% 22%,
+        rgba(255, 20, 20, 0.5) 0%,
+        transparent 100%
+      ),
+    radial-gradient(
+      7px 7px at 45% 75%,
+      rgba(200, 0, 0, 0.6) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      10px 10px at 85% 45%,
+      rgba(255, 30, 30, 0.4) 0%,
+      transparent 100%
+    );
+  background-size:
+    200px 200px,
+    350px 350px,
+    500px 500px;
+  animation: vibe-stars 10s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 1;
+  mix-blend-mode: screen;
+}
+
+@keyframes vibe-bg-drift {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+@keyframes vibe-stars {
+  0% {
+    opacity: 0.4;
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateY(-10px) scale(1.05);
+  }
+  100% {
+    opacity: 0.4;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Skeleton animation */
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.is-generating .skill-content {
+  opacity: 0 !important;
+  transform: scale(0.98);
+}
+
+.is-generating .skill-skeleton {
+  opacity: 1 !important;
+  visibility: visible;
+  animation: skeleton-shimmer 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 25%,
+    rgba(255, 190, 80, 0.15) 50%,
+    rgba(255, 255, 255, 0.03) 75%
+  );
+  background-size: 200% 100%;
+}
+
+.skill-skeleton {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease;
+  z-index: 10;
+  box-shadow: inset 0 0 20px rgba(255, 190, 80, 0.05);
+}
+
+/* Force all cards to look identical during the generative phase */
+.is-generating .skill-card {
+  background: rgba(15, 20, 35, 0.4) !important;
+  border-color: rgba(255, 190, 80, 0.2) !important;
+  box-shadow: none !important;
+}
+
+.skill-content {
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+
+/* Premium AI Card Style: Astrophage Crimson */
+.vibe-only-card {
+  border-color: rgba(255, 50, 50, 0.4) !important;
+  background: linear-gradient(
+    145deg,
+    rgba(45, 15, 15, 0.8),
+    rgba(20, 10, 10, 0.7)
+  ) !important;
+  box-shadow:
+    0 8px 32px rgba(255, 0, 0, 0.15),
+    inset 0 0 20px rgba(255, 100, 100, 0.05) !important;
+  transition: all 0.5s ease;
+}
+
+.vibe-only-card:hover {
+  box-shadow:
+    0 12px 40px rgba(255, 0, 0, 0.25),
+    inset 0 0 30px rgba(255, 100, 100, 0.1) !important;
+  border-color: rgba(255, 100, 100, 0.7) !important;
+  transform: translateY(-4px);
+}
+
+/* --- CINEMATIC SOFT SKILL THEMES (DYNAMIC COLOR TRANSITION) --- */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 1.6s ease,
+    background-color 0.8s ease-in-out;
+  -webkit-mask-image: radial-gradient(
+    circle at 50% 45%,
+    black 0%,
+    transparent 75%
+  );
+  mask-image: radial-gradient(circle at 50% 45%, black 0%, transparent 75%);
+}
+
+body[data-soft-skill-theme]::after {
+  opacity: 1 !important;
+}
+
+body[data-soft-skill-theme="mars"]::after {
+  background-color: rgba(220, 40, 20, 0.7) !important;
+}
+body[data-soft-skill-theme="saturn"]::after {
+  background-color: rgba(246, 212, 13, 0.6) !important;
+}
+body[data-soft-skill-theme="earth"]::after {
+  background-color: rgba(20, 80, 255, 0.7) !important;
+}
+body[data-soft-skill-theme="neptune"]::after {
+  background-color: rgba(38, 160, 176, 0.7) !important;
+}
+body[data-soft-skill-theme="venus"]::after {
+  background-color: rgba(255, 50, 200, 0.65) !important;
+}
+body[data-soft-skill-theme="uranus"]::after {
+  background-color: rgba(0, 245, 255, 0.6) !important;
+}
+body[data-soft-skill-theme="mercury"]::after {
+  background-color: rgba(160, 160, 184, 0.5) !important;
+}
+body[data-soft-skill-theme="jupiter"]::after {
+  background-color: rgba(255, 120, 0, 0.6) !important;
 }

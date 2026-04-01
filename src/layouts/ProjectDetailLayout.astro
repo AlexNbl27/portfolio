@@ -1,0 +1,148 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Card from "../components/ui/Card.astro";
+import Button from "../components/ui/Button.astro";
+import Badge from "../components/ui/Badge.astro";
+
+interface ProjectLink {
+  label: string;
+  url: string;
+  variant?: "primary" | "ghost";
+}
+
+interface ProjectTheme {
+  accent?: string;
+  accentSoft?: string;
+  glowA?: string;
+  glowB?: string;
+  titleFont?: string;
+  bodyFont?: string;
+}
+
+interface Frontmatter {
+  title: string;
+  description?: string;
+  heroImage?: string;
+  logo?: string;
+  projectCategory?: string;
+  technologies?: string[];
+  links?: ProjectLink[];
+  parentLink?: string;
+  theme?: ProjectTheme;
+}
+
+const { frontmatter } = Astro.props as { frontmatter: Frontmatter };
+const {
+  title,
+  description = "",
+  heroImage,
+  logo,
+  projectCategory,
+  technologies = [],
+  links = [],
+  parentLink = "/projects",
+  theme,
+} = frontmatter;
+
+const themeStyle = [
+  theme?.accent ? `--project-accent:${theme.accent}` : "",
+  theme?.accentSoft ? `--project-accent-soft:${theme.accentSoft}` : "",
+  theme?.glowA ? `--project-glow-a:${theme.glowA}` : "",
+  theme?.glowB ? `--project-glow-b:${theme.glowB}` : "",
+  theme?.titleFont ? `--project-title-font:${theme.titleFont}` : "",
+  theme?.bodyFont ? `--project-body-font:${theme.bodyFont}` : "",
+]
+  .filter(Boolean)
+  .join(";");
+
+const showHero = Boolean(heroImage) && heroImage !== logo;
+
+import { Image } from "astro:assets";
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/images/*.{jpeg,jpg,png,gif,webp,avif}",
+  { eager: true },
+);
+const resolveImage = (path?: string) =>
+  path && images[`/src/assets${path}`]
+    ? images[`/src/assets${path}`].default
+    : null;
+
+const heroImageSrc = resolveImage(heroImage);
+const logoSrc = resolveImage(logo);
+---
+
+<BaseLayout title={`Alexandre Noblet | ${title}`} description={description}>
+  <article
+    class="project-detail cosmic-container pt-8"
+    style={themeStyle || undefined}
+  >
+    <Button href={parentLink} variant="outline" icon="lucide:arrow-left">
+      Retour aux projets
+    </Button>
+
+    <header class="mt-6">
+      {projectCategory && <p class="project-detail-meta">{projectCategory}</p>}
+      {
+        logoSrc && (
+          <Image
+            src={logoSrc}
+            alt={`Logo ${title}`}
+            class="project-detail-logo mt-3"
+          />
+        )
+      }
+      <h1 class="project-detail-title section-title mt-3">{title}</h1>
+      {description && <p class="muted mt-4 max-w-3xl text-lg">{description}</p>}
+    </header>
+
+    {
+      showHero && heroImageSrc && (
+        <Card class="project-detail-hero mt-6 overflow-hidden">
+          <Image
+            src={heroImageSrc}
+            alt={title}
+            class="h-full w-full object-cover"
+          />
+        </Card>
+      )
+    }
+
+    <div class="mt-6 flex flex-wrap gap-3">
+      {
+        links.map((link) => (
+          <Button
+            href={link.url}
+            target="_blank"
+            rel="noreferrer"
+            variant={link.variant === "ghost" ? "ghost" : "primary"}
+            icon={
+              link.label.toLowerCase().includes("github")
+                ? "lucide:github"
+                : link.label.toLowerCase().includes("site")
+                  ? "lucide:external-link"
+                  : undefined
+            }
+          >
+            {link.label}
+          </Button>
+        ))
+      }
+    </div>
+
+    {
+      technologies.length > 0 && (
+        <div class="mt-5 flex flex-wrap gap-2 text-xs relative z-10">
+          {technologies.map((tech) => (
+            <Badge variant="tech">{tech}</Badge>
+          ))}
+        </div>
+      )
+    }
+
+    <Card class="mt-6 p-6 md:p-8 relative z-10">
+      <div class="article-content">
+        <slot />
+      </div>
+    </Card>
+  </article>
+</BaseLayout>

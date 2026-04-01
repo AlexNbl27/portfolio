@@ -1,8 +1,129 @@
-<div class="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
-  <div class="absolute left-[8%] top-[15%] h-80 w-80 rounded-full bg-violet-600/20 blur-3xl float"></div>
-  <div class="absolute right-[5%] top-[35%] h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl float" style="animation-delay:1.5s"></div>
-  <div class="absolute left-[42%] top-[70%] h-64 w-64 rounded-full bg-amber-300/10 blur-3xl float" style="animation-delay:3s"></div>
-  <div class="shooting-star" style="top:15%; left:12%;"></div>
-  <div class="shooting-star" style="top:35%; left:-8%; animation-delay:4s;"></div>
-  <div class="absolute left-1/2 top-24 h-2 w-2 -translate-x-1/2 rounded-full bg-cosmic-gold twinkle"></div>
+<div
+  id="cosmic-bg-container"
+  class="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+  aria-hidden="true"
+>
+  <div
+    class="absolute left-[8%] top-[15%] h-80 w-80 rounded-full bg-violet-600/20 blur-3xl float"
+  >
+  </div>
+  <div
+    class="absolute right-[5%] top-[35%] h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl float"
+    style="animation-delay:1.5s"
+  >
+  </div>
+  <div
+    class="absolute left-[42%] top-[70%] h-64 w-64 rounded-full bg-amber-300/10 blur-3xl float"
+    style="animation-delay:3s"
+  >
+  </div>
+  
+  <!-- Les étoiles filantes seront générées ici par le script -->
+  <div id="shooting-stars-layer" class="absolute inset-0"></div>
+
+  <div
+    class="absolute left-1/2 top-24 h-2 w-2 -translate-x-1/2 rounded-full bg-cosmic-gold twinkle"
+  >
+  </div>
 </div>
+
+<script>
+  /**
+   * Shooting Stars Manager
+   * Uses a persistent script execution since the component has transition:persist
+   */
+  const initShootingStars = () => {
+    // Global guard to prevent multiple loops
+    if ((window as any).__shootingStarsInitialized) return;
+    (window as any).__shootingStarsInitialized = true;
+
+    const layer = document.getElementById('shooting-stars-layer');
+    if (!layer) return;
+
+    const createStar = () => {
+      const star = document.createElement('div');
+      star.className = 'shooting-star-dynamic';
+      
+      // Randomize position and trajectory
+      const startX = Math.random() * 80 - 20; // -20% to 60%
+      const startY = Math.random() * 50 - 10; // -10% to 40%
+      const duration = 2000 + Math.random() * 3000; // 2s to 5s
+      const delay = Math.random() * 5000; // Random spawn delay
+      
+      star.style.left = `${startX}%`;
+      star.style.top = `${startY}%`;
+      star.style.setProperty('--star-duration', `${duration}ms`);
+      
+      // Multi-color trail surprise
+      const colors = ['#f6d40d', '#e3a4d6', '#6948a5', '#06b6d4'];
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      star.style.setProperty('--star-color', color);
+
+      setTimeout(() => {
+        layer.appendChild(star);
+        
+        // Remove after animation finishes
+        star.addEventListener('animationend', () => {
+          star.remove();
+        });
+      }, delay);
+    };
+
+    // Continuous spawn loop
+    const spawnLoop = () => {
+      if (document.hidden) {
+        setTimeout(spawnLoop, 2000);
+        return;
+      }
+      
+      // Spawn 1 or 2 stars
+      createStar();
+      if (Math.random() > 0.7) createStar();
+      
+      // Next spawn in 4-10 seconds
+      setTimeout(spawnLoop, 4000 + Math.random() * 6000);
+    };
+
+    spawnLoop();
+  };
+
+  // Run on first load
+  initShootingStars();
+  
+  // Also run on page load just in case Astro replaces the script context 
+  // (though transition:persist helps)
+  document.addEventListener('astro:page-load', initShootingStars);
+</script>
+
+<style is:global>
+  .shooting-star-dynamic {
+    position: absolute;
+    width: 150px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--star-color, #f6d40d));
+    filter: drop-shadow(0 0 5px var(--star-color, #f6d40d));
+    opacity: 0;
+    transform: rotate(25deg);
+    pointer-events: none;
+    animation: shooting-dynamic var(--star-duration) linear forwards;
+  }
+
+  @keyframes shooting-dynamic {
+    0% {
+      transform: translate(0, 0) rotate(25deg) scaleX(0.1);
+      opacity: 0;
+    }
+    15% {
+      opacity: 1;
+      transform: translate(15vw, 10vh) rotate(25deg) scaleX(1);
+    }
+    85% {
+      opacity: 1;
+      transform: translate(85vw, 60vh) rotate(25deg) scaleX(1);
+    }
+    100% {
+      transform: translate(100vw, 70vh) rotate(25deg) scaleX(0.1);
+      opacity: 0;
+    }
+  }
+</style>

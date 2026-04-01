@@ -1,0 +1,3 @@
+[static]
+  # Tell Nixpacks to use our custom Nginx configuration
+  nginxConfig = "nginx.conf"

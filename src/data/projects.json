@@ -1,29 +1,53 @@
 [
   {
-    "title": "Andromeda's Gate",
-    "description": "Interactive portal design leveraging zero-gravity motion to navigate complex datasets.",
-    "technologies": ["Astro", "GSAP", "TypeScript"],
-    "imageUrl": "/images/project-andromeda.jpg",
-    "demoUrl": "#",
-    "githubUrl": "#",
-    "category": "ai"
+    "title": "Kaniot",
+    "description": "Une cagnotte de groupe simple, équitable et sans pression sociale.",
+    "details": "Projet réalisé dans le cadre de ma formation à Ynov, puis poussé plus loin pour être mis à disposition du grand public. Kaniot permet à chaque participant d’indiquer le montant maximal qu’il est prêt à donner, puis calcule automatiquement la répartition la plus juste pour atteindre l’objectif sans surplus.",
+    "technologies": ["Vue.js 3", "TypeScript", "Supabase"],
+    "imageUrl": "/images/digital-art-neon-bubbles.jpg",
+    "demoUrl": "https://kaniot.alexnbl27.com",
+    "detailPage": "/projects/kaniot",
+    "category": "saas"
   },
   {
-    "title": "Solar Web",
-    "description": "Cross-planetary communication interface built with streaming visual telemetry.",
-    "technologies": ["React", "Tailwind", "WebGL"],
-    "imageUrl": "/images/project-solar.jpg",
-    "demoUrl": "#",
-    "githubUrl": "#",
-    "category": "frontend"
+    "title": "Azygo",
+    "description": "Un ERP étudiant et une application mobile pour simplifier la gestion d’un BDE.",
+    "details": "Projet en cours porté par A³ Studio. L’objectif est d’aider les associations étudiantes à mieux gérer leur organisation, leurs événements et leur logistique grâce à un ERP intuitif et une application mobile pensée par des étudiants, pour des étudiants.",
+    "technologies": ["Flutter", "Laravel", "Firebase", "Figma"],
+    "imageUrl": "/images/azygo.png",
+    "detailPage": "/projects/azygo",
+    "category": "mobile"
   },
   {
-    "title": "Titan Echo",
-    "description": "Immersive soundtrack visualizer for icy moon expeditions.",
-    "technologies": ["Astro", "Canvas", "Howler"],
-    "imageUrl": "/images/project-titan.jpg",
-    "demoUrl": "#",
-    "githubUrl": "#",
-    "category": "creative"
+    "title": "Mindcares",
+    "description": "Une application et un site web pour apporter un soutien psychologique bienveillant.",
+    "details": "Projet d’année inter-filières réalisé en équipe à Ynov. L’idée est de proposer une safe place où les utilisateurs peuvent trouver du soutien, des ressources utiles et échanger avec des personnes ayant vécu des expériences similaires.",
+    "technologies": ["Flutter", "Firebase", "Laravel", "Symfony", "Figma"],
+    "imageUrl": "/images/digital-art-neon-bubbles.jpg",
+    "category": "mobile"
+  },
+  {
+    "title": "TrouveTaLoc",
+    "description": "Un site de location immobilière développé en PHP natif avec MySQL.",
+    "details": "Projet réalisé à Ynov avec une contrainte forte : concevoir un site web en PHP natif, sans framework, en seulement quatre semaines. Il permet à une agence immobilière de publier ses biens et à ses clients de créer un compte puis de réserver facilement un logement.",
+    "technologies": ["PHP", "MySQL", "Bootstrap", "Twig", "HTML"],
+    "imageUrl": "/images/digital-art-neon-bubbles.webp",
+    "category": "web"
+  },
+  {
+    "title": "SoundSphere",
+    "description": "Une file d’attente musicale collaborative pour organiser des soirées à distance.",
+    "details": "Projet d’équipe réalisé autour de la musique. L’application permet de créer des files d’attente collaboratives et même des espaces publics pour faire découvrir sa sélection musicale à d’autres utilisateurs partout dans le monde.",
+    "technologies": ["Flutter", "Firebase", "Bootstrap", "HTML"],
+    "imageUrl": "/images/digital-art-neon-bubbles.jpg",
+    "category": "mobile"
+  },
+  {
+    "title": "Moodvie",
+    "description": "Une application desktop qui recommande un film ou une série selon l’humeur.",
+    "details": "Projet réalisé en DUT GEII en C# / XAML. L’utilisateur choisit son humeur puis l’application suggère un film ou une série adaptée, avec plusieurs combinaisons possibles comme joyeux, stressé, nostalgique ou en famille.",
+    "technologies": ["C#", "XAML", "Visual Studio"],
+    "imageUrl": "/images/digital-art-neon-bubbles.webp",
+    "category": "desktop"
   }
 ]

@@ -1,50 +1,185 @@
 ---
+import Card from "./ui/Card.astro";
+import Button from "./ui/Button.astro";
+
 const links = [
-  { href: '/', label: 'Star Chart' },
-  { href: '/projects', label: 'Nebulae' },
-  { href: '/skills', label: 'Orreries' },
-  { href: '/soft-skills', label: 'Artifacts' },
-  { href: '/experience', label: 'Chronicles' },
-  { href: '/ai-portal', label: 'AI Portal' }
+  { href: "/", label: "Accueil" },
+  { href: "/projects", label: "Projets" },
+  { href: "/skills", label: "Compétences" },
+  { href: "/soft-skills", label: "Soft skills" },
+  { href: "/experience", label: "Parcours" },
+  { href: "/blogs", label: "Blogs" },
 ];
 
 const current = Astro.url.pathname;
 ---
 
-<header class="relative z-20 cosmic-container">
-  <nav class="glass-card mt-2 flex flex-wrap items-center justify-between gap-3 px-4 py-3 md:px-6" aria-label="Main navigation">
-    <a href="/" class="focus-ring font-display text-2xl font-bold italic tracking-wide text-cosmic-gold">Magical Odyssey</a>
-
-    <button class="focus-ring rounded-md px-2 py-1 md:hidden" id="menu-toggle" aria-expanded="false" aria-controls="menu" aria-label="Toggle menu">☰</button>
-
-    <ul id="menu" class="hidden w-full flex-col gap-3 border-t border-cosmic-gold/20 pt-3 text-xs uppercase tracking-[0.15em] md:flex md:w-auto md:flex-row md:items-center md:border-none md:pt-0">
-      {links.map((link) => (
-        <li>
-          <a
-            href={link.href}
-            class:list={[
-              'focus-ring border-b pb-1 transition hover:text-cosmic-gold',
-              current === link.href ? 'border-cosmic-gold text-cosmic-gold' : 'border-transparent'
-            ]}
+<header class="fixed inset-x-0 top-0 z-50 pt-0 md:pt-4">
+  <div class="w-full mx-auto md:max-w-6xl">
+    <Card
+      as="nav"
+      id="nav-card"
+      class="flex flex-col items-center justify-between px-5 py-4 shadow-[0_18px_40px_rgba(4,9,22,0.28)] !rounded-none border-x-0 border-t-0 transition-all duration-500 ease-in-out data-[mobile-open=true]:h-[100dvh] data-[mobile-open=true]:overflow-y-auto md:py-5 md:!rounded-card md:border-x md:border-t md:flex-row md:data-[mobile-open=true]:h-auto md:data-[mobile-open=true]:overflow-visible"
+      aria-label="Navigation principale"
+    >
+      <div class="flex w-full items-center justify-between md:w-auto shrink-0">
+        <a
+          href="/"
+          class="focus-ring font-blanka text-2xl tracking-widest text-white transition-colors duration-300 hover:text-cosmic-gold -translate-y-[5px]"
+          >Alexandre Noblet</a
+        >
+        <button
+          class="focus-ring group relative h-10 w-10 md:hidden"
+          id="menu-toggle"
+          aria-expanded="false"
+          aria-controls="menu"
+          aria-label="Menu"
+        >
+          <div
+            class="absolute left-1/2 top-1/2 w-6 -translate-x-1/2 -translate-y-1/2 transform"
           >
-            {link.label}
-          </a>
+            <span
+              id="burger-top"
+              class="absolute block h-0.5 w-6 transition-all duration-300 ease-in-out bg-white -translate-y-2"
+            ></span>
+            <span
+              id="burger-mid"
+              class="absolute block h-0.5 w-6 transition-all duration-300 ease-in-out bg-white"
+            ></span>
+            <span
+              id="burger-bot"
+              class="absolute block h-0.5 w-6 transition-all duration-300 ease-in-out bg-white translate-y-2"
+            ></span>
+          </div>
+        </button>
+      </div>
+
+      <ul
+        id="menu"
+        class="hidden w-full flex-1 flex-col items-center justify-center gap-8 pt-4 pb-12 text-lg uppercase tracking-[0.2em] md:!flex md:w-auto md:flex-none md:flex-row md:ml-auto md:gap-5 md:p-0 md:text-xs md:tracking-[0.15em] data-[mobile-open=true]:flex"
+      >
+        {
+          links.map((link, index) => (
+            <li
+              class="nav-item opacity-0 translate-y-8 md:opacity-100 md:translate-y-0"
+              style={`transition-delay: ${index * 70}ms`}
+            >
+              <a
+                href={link.href}
+                aria-current={current === link.href ? "page" : undefined}
+                class:list={[
+                  "focus-ring border-b pb-1 transition hover:text-cosmic-gold",
+                  current === link.href
+                    ? "border-cosmic-gold text-cosmic-gold"
+                    : "border-transparent",
+                ]}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+        <li
+          class="nav-item opacity-0 translate-y-8 md:opacity-100 md:translate-y-0 mt-4 md:mt-0"
+          style={`transition-delay: ${links.length * 70}ms`}
+        >
+          <Button href="mailto:alexandrenobletpro@gmail.com" variant="primary">
+            Contact
+          </Button>
         </li>
-      ))}
-      <li>
-        <a href="mailto:hello@magicalodyssey.dev" class="focus-ring rounded-full border border-cosmic-gold/35 bg-cosmic-gold px-4 py-2 font-bold text-black transition hover:shadow-glow">Contact</a>
-      </li>
-    </ul>
-  </nav>
+      </ul>
+    </Card>
+  </div>
 </header>
 
 <script>
-  const menuToggle = document.getElementById('menu-toggle');
-  const menu = document.getElementById('menu');
+  document.addEventListener("astro:page-load", () => {
+    const menuToggle = document.getElementById("menu-toggle");
+    const menu = document.getElementById("menu");
+    const navCard = document.getElementById("nav-card");
+    const bTop = document.getElementById("burger-top");
+    const bMid = document.getElementById("burger-mid");
+    const bBot = document.getElementById("burger-bot");
 
-  menuToggle?.addEventListener('click', () => {
-    if (!menu) return;
-    const isHidden = menu.classList.toggle('hidden');
-    menuToggle.setAttribute('aria-expanded', String(!isHidden));
+    if (menuToggle && menu && navCard) {
+      menuToggle.onclick = () => {
+        const isOpen = navCard.getAttribute("data-mobile-open") === "true";
+
+        if (isOpen) {
+          navCard.removeAttribute("data-mobile-open");
+          menu.removeAttribute("data-mobile-open");
+          document.body.style.overflow = "";
+
+          bTop?.classList.remove("rotate-45", "translate-y-0");
+          bTop?.classList.add("-translate-y-2");
+          bMid?.classList.remove("opacity-0");
+          bBot?.classList.remove("-rotate-45", "translate-y-0");
+          bBot?.classList.add("translate-y-2");
+
+          menuToggle.setAttribute("aria-expanded", "false");
+        } else {
+          navCard.setAttribute("data-mobile-open", "true");
+          menu.setAttribute("data-mobile-open", "true");
+          document.body.style.overflow = "hidden";
+
+          bTop?.classList.remove("-translate-y-2");
+          bTop?.classList.add("rotate-45", "translate-y-0");
+          bMid?.classList.add("opacity-0");
+          bBot?.classList.remove("translate-y-2");
+          bBot?.classList.add("-rotate-45", "translate-y-0");
+
+          menuToggle.setAttribute("aria-expanded", "true");
+        }
+      };
+    }
+
+    // Prevent navigation to the current page
+    const navLinks = document.querySelectorAll("#menu a");
+    navLinks.forEach((link) => {
+      link.addEventListener("click", (e) => {
+        const href = (link as HTMLAnchorElement).getAttribute("href");
+        const currentPath = window.location.pathname;
+        const normalize = (p: string) => (p === "/" ? p : p.replace(/\/$/, ""));
+        if (normalize(href || "") === normalize(currentPath)) {
+          e.preventDefault();
+          if (navCard?.getAttribute("data-mobile-open") === "true") {
+            menuToggle?.click();
+          }
+        }
+      });
+    });
   });
 </script>
+
+<style>
+  @media (max-width: 767px) {
+    #nav-card[data-mobile-open="true"] .nav-item {
+      animation: navItemFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  }
+
+  @keyframes navItemFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(2rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .nav-item {
+    transition:
+      opacity 0.4s ease,
+      transform 0.4s ease;
+  }
+
+  @media (min-width: 768px) {
+    .nav-item {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+  }
+</style>

@@ -1,10 +1,29 @@
 ---
+import SearchBadge from './ui/SearchBadge.astro';
 const { categories } = Astro.props as { categories: string[] };
 ---
 
-<div class="mb-4 mt-8 flex flex-wrap gap-2" role="toolbar" aria-label="Skill category filter">
-  <button class="focus-ring skill-filter rounded-full border border-cosmic-gold/50 px-4 py-2 text-xs uppercase tracking-[0.2em]" data-category="all">All</button>
-  {categories.map((category) => (
-    <button class="focus-ring skill-filter rounded-full border border-cosmic-gold/20 px-4 py-2 text-xs uppercase tracking-[0.2em]" data-category={category}>{category}</button>
-  ))}
+<div
+  class="mb-8 pt-4 flex flex-wrap items-center gap-3"
+  role="toolbar"
+  aria-label="Filtrer les compétences"
+>
+  <button
+    class="focus-ring skill-filter rounded-full border border-cosmic-gold/50 px-4 py-2 text-xs uppercase tracking-[0.2em] transition-all"
+    data-category="all">Toutes</button
+  >
+  {
+    categories.map((category) => (
+      <button
+        class="focus-ring skill-filter rounded-full border border-cosmic-gold/20 px-4 py-2 text-xs uppercase tracking-[0.2em] transition-all"
+        data-category={category}
+      >
+        {category}
+      </button>
+    ))
+  }
+  
+  <div class="ml-auto md:ml-0">
+    <SearchBadge />
+  </div>
 </div>

@@ -1,4 +1,9 @@
 ---
+import { Image } from "astro:assets";
+import Badge from "./ui/Badge.astro";
+import Button from "./ui/Button.astro";
+import Card from "./ui/Card.astro";
+
 interface Project {
   title: string;
   description: string;
@@ -6,42 +11,97 @@ interface Project {
   imageUrl: string;
   demoUrl?: string;
   githubUrl?: string;
+  detailPage?: string;
   category: string;
 }
 
 const { project } = Astro.props as { project: Project };
+
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/images/*.{jpeg,jpg,png,gif,webp,avif}",
+);
+const imagePath = `/src/assets${project.imageUrl}`;
+const imageSrc = images[imagePath];
 ---
 
-<article class="glass-card group overflow-hidden transition duration-300 hover:-translate-y-1 hover:shadow-glow">
-  <div class="relative h-44 w-full overflow-hidden">
-    <img
-      src={project.imageUrl}
-      alt={project.title}
-      class="h-full w-full object-cover opacity-80 transition duration-500 group-hover:scale-105"
-      loading="lazy"
-      onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
-    />
-    <div class="hidden h-full w-full place-items-center bg-gradient-to-br from-cosmic-700 to-cosmic-900 text-sm uppercase tracking-[0.2em] text-cosmic-pink">
-      Add project image
-    </div>
+<Card
+  as="article"
+  interactive
+  class="group flex flex-col h-full object-cover project-card"
+  data-category={project.category}
+  data-detail-page={project.detailPage}
+>
+  <div class="relative w-full overflow-hidden flex-shrink-0 aspect-video">
+    {
+      imageSrc ? (
+        <Image
+          src={imageSrc()}
+          alt={project.title}
+          class="h-full w-full object-cover opacity-80 transition duration-500 group-hover:scale-105"
+        />
+      ) : (
+        <div class="h-full w-full object-cover bg-slate-800" />
+      )
+    }
   </div>
 
-  <div class="space-y-3 p-5">
-    <p class="text-xs uppercase tracking-[0.25em] text-cosmic-pink">{project.category}</p>
-    <h3 class="font-display text-3xl text-cosmic-gold">{project.title}</h3>
-    <p class="muted">{project.description}</p>
+  <div class="flex flex-col flex-grow p-5">
+    <div class="space-y-3 flex-grow z-10">
+      <p class="text-xs uppercase tracking-[0.25em] text-cosmic-pink">
+        {project.category}
+      </p>
+      <h3 class="font-display text-3xl text-cosmic-gold">{project.title}</h3>
+      <p class="muted line-clamp-3">{project.description}</p>
 
-    <div class="flex flex-wrap gap-2 text-xs">
-      {project.technologies.map((tech) => <span class="rounded-full bg-slate-900/60 px-3 py-1">{tech}</span>)}
+      <div class="flex flex-wrap gap-2 text-xs">
+        {
+          project.technologies.map((tech) => (
+            <Badge variant="tech">{tech}</Badge>
+          ))
+        }
+      </div>
     </div>
 
-    <div class="flex gap-3 pt-2">
-      {project.demoUrl && (
-        <a href={project.demoUrl} class="focus-ring rounded-full border border-cosmic-gold/30 px-3 py-1 text-xs uppercase tracking-[0.15em] hover:border-cosmic-gold">Live</a>
-      )}
-      {project.githubUrl && (
-        <a href={project.githubUrl} class="focus-ring rounded-full border border-cosmic-gold/30 px-3 py-1 text-xs uppercase tracking-[0.15em] hover:border-cosmic-gold">Code</a>
-      )}
+    <div class="flex flex-wrap gap-3 pt-4 mt-auto z-10 relative">
+      {
+        project.detailPage && (
+          <Button
+            href={project.detailPage}
+            variant="primary"
+            aria-label={`En savoir plus sur le projet ${project.title}`}
+          >
+            En savoir plus
+          </Button>
+        )
+      }
+      {
+        project.demoUrl && (
+          <Button
+            href={project.demoUrl}
+            target="_blank"
+            rel="noreferrer"
+            variant="outline"
+            icon="lucide:external-link"
+            aria-label={`Démo live du projet ${project.title}`}
+          >
+            Démo
+          </Button>
+        )
+      }
+      {
+        project.githubUrl && (
+          <Button
+            href={project.githubUrl}
+            target="_blank"
+            rel="noreferrer"
+            variant="outline"
+            icon="lucide:github"
+            aria-label={`Code source du projet ${project.title}`}
+          >
+            GitHub
+          </Button>
+        )
+      }
     </div>
   </div>
-</article>
+</Card>

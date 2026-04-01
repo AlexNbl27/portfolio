@@ -1,36 +1,150 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import ExperienceTimeline from '../components/ExperienceTimeline.astro';
-import ExperienceFilter from '../components/ExperienceFilter.astro';
-import experiences from '../data/experience.json';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ExperienceTimeline from "../components/ExperienceTimeline.astro";
+import ExperienceFilter from "../components/ExperienceFilter.astro";
+import ScrollPortrait from "../components/ScrollPortrait.astro";
+import ScrollAge from "../components/ScrollAge.astro";
+import experiences from "../data/experience.json";
+
+const portraitImages = [
+  "/images/portrait/2026.jpg",
+  // "/images/portrait/2025.jpg",
+  "/images/portrait/2024.jpg",
+  "/images/portrait/2023.jpg",
+  "/images/portrait/2021.jpg",
+];
 ---
 
-<BaseLayout title="Magical Odyssey | Experience">
-  <section class="cosmic-container pt-8">
-    <h1 class="section-title">Tracing the <span class="highlight">Celestial Geometry of Experience</span></h1>
-    <p class="muted mt-4 max-w-3xl">A timeline of roles and artifacts from visual storytelling to deep-space interface architecture.</p>
+<BaseLayout
+  title="Alexandre Noblet | Parcours"
+  description="Parcours académique et professionnel d’Alexandre Noblet."
+>
+  <div slot="fixed-layer">
+    <ScrollPortrait images={portraitImages} />
+    <ScrollAge />
+  </div>
+
+  <section class="cosmic-container pt-8 lg:pr-[8rem]">
+    <div class="timeline-content">
+      <h1 class="section-title">Mon <span class="highlight">parcours</span></h1>
+      <p class="muted mt-4 max-w-3xl">
+        De la formation GEII à l’informatique, puis à l’IoT en entreprise : un
+        parcours construit entre technique, terrain et développement produit.
+      </p>
+
+      <ExperienceFilter />
+      <ExperienceTimeline experiences={experiences} />
+    </div>
   </section>
-  <ExperienceFilter />
-  <ExperienceTimeline experiences={experiences} />
+
+  <div
+    id="no-results-exp"
+    class="cosmic-container hidden mt-2 py-16 text-center rounded-[3rem] border border-cosmic-gold/10 bg-slate-900/10"
+  >
+    <p class="text-cosmic-gold/60 text-xl italic font-display">
+      Il semble que ce chemin n'existe pas encore... 🛸
+    </p>
+    <p class="muted text-sm mt-3">
+      Aucun parcours trouvé pour cette recherche.
+    </p>
+  </div>
 </BaseLayout>
 
 <script>
-  const filters = document.querySelectorAll('.exp-filter');
-  const items = document.querySelectorAll('.experience-item');
+  document.addEventListener("astro:page-load", () => {
+    const filters = document.querySelectorAll(".exp-filter");
+    const items = document.querySelectorAll(".experience-item");
+    const searchInput = document.getElementById(
+      "badge-search-input",
+    ) as HTMLInputElement;
 
-  filters.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const filter = btn.getAttribute('data-filter');
-      filters.forEach((f) => f.classList.remove('border-cosmic-gold/60', 'text-cosmic-gold'));
-      btn.classList.add('border-cosmic-gold/60', 'text-cosmic-gold');
+    let activeFilter = "all";
+    let searchQuery = "";
 
+    // Reuse the same robust normalization and fuzzy logic
+    const normalize = (str: string) =>
+      str
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+
+    const matchesQuery = (target: string, query: string) => {
+      const t = normalize(target);
+      const q = normalize(query);
+      if (t.includes(q)) return true;
+      if (
+        q.length > 3 &&
+        t.length >= q.length - 1 &&
+        t.length <= q.length + 1
+      ) {
+        let dist = 0;
+        for (let i = 0; i < Math.min(t.length, q.length); i++) {
+          if (t[i] !== q[i]) dist++;
+        }
+        return dist <= 1;
+      }
+      return false;
+    };
+
+    const updateUI = () => {
+      let visibleCount = 0;
       items.forEach((item) => {
-        const period = item.getAttribute('data-period') || '';
-        let visible = true;
-        if (filter === 'recent') visible = period.includes('Present') || period.startsWith('202');
-        if (filter === 'legacy') visible = !period.includes('Present') && !period.startsWith('202');
-        item.classList.toggle('hidden', !visible);
+        const type = item.getAttribute("data-type") || "pro";
+        const role = item.getAttribute("data-role") || "";
+        const company = item.getAttribute("data-company") || "";
+        const desc = item.getAttribute("data-description") || "";
+
+        const matchesType = activeFilter === "all" || type === activeFilter;
+        const matchesSearch =
+          searchQuery === "" ||
+          matchesQuery(role, searchQuery) ||
+          matchesQuery(company, searchQuery) ||
+          matchesQuery(desc, searchQuery);
+
+        const visible = matchesType && matchesSearch;
+
+        (item as HTMLElement).style.display = visible ? "grid" : "none";
+
+        if (visible) {
+          (item as HTMLElement).classList.add("animate-in");
+          visibleCount++;
+        }
+      });
+
+      const noResults = document.getElementById("no-results-exp");
+      const timeline = document.querySelector(".experience-timeline-track");
+
+      if (noResults) {
+        noResults.classList.toggle("hidden", visibleCount > 0);
+      }
+
+      if (timeline) {
+        (timeline as HTMLElement).style.opacity = visibleCount > 0 ? "1" : "0";
+      }
+    };
+
+    filters.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        activeFilter = btn.getAttribute("data-filter") || "all";
+        filters.forEach((f) =>
+          f.classList.remove("border-cosmic-gold/60", "text-cosmic-gold"),
+        );
+        btn.classList.add("border-cosmic-gold/60", "text-cosmic-gold");
+        updateUI();
       });
     });
+
+    if (searchInput) {
+      searchInput.addEventListener("input", (e) => {
+        searchQuery = (e.target as HTMLInputElement).value;
+        updateUI();
+      });
+    }
+
+    // Initial state setup
+    const allBtn = document.querySelector('[data-filter="all"]');
+    if (allBtn)
+      allBtn.classList.add("border-cosmic-gold/60", "text-cosmic-gold");
   });
 </script>

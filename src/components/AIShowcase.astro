@@ -1,14 +1,30 @@
+---
+import Card from "./ui/Card.astro";
+---
+
 <section class="cosmic-container mt-10 grid gap-5 md:grid-cols-3">
-  <article class="glass-card p-5">
-    <h3 class="font-display text-3xl text-cosmic-gold">Co-Creation</h3>
-    <p class="muted mt-2">Prototype interfaces with language models and iterate rapidly with visual feedback loops.</p>
-  </article>
-  <article class="glass-card p-5">
-    <h3 class="font-display text-3xl text-cosmic-gold">Signal Mining</h3>
-    <p class="muted mt-2">Extract product insights from usage constellations and shape clearer decisions.</p>
-  </article>
-  <article class="glass-card p-5">
-    <h3 class="font-display text-3xl text-cosmic-gold">Ritual Automation</h3>
-    <p class="muted mt-2">Automate repetitive coding rituals while preserving intent and quality standards.</p>
-  </article>
+  <Card as="article" class="p-5">
+    <h3 class="font-display text-3xl text-cosmic-gold">Stage chez OBS</h3>
+    <p class="muted mt-2">
+      Pendant l’été 2024, j’ai contribué au projet Live Tag en finalisant une
+      application mobile Flutter dédiée aux inventaires rapides en environnement
+      logistique.
+    </p>
+  </Card>
+  <Card as="article" class="p-5">
+    <h3 class="font-display text-3xl text-cosmic-gold">Alternance</h3>
+    <p class="muted mt-2">
+      Depuis octobre 2024, je poursuis l’aventure chez Orange Business Services
+      avec une dimension plus fullstack et la découverte de PlanetTogether.
+    </p>
+  </Card>
+  <Card as="article" class="p-5">
+    <h3 class="font-display text-3xl text-cosmic-gold">
+      Compétences renforcées
+    </h3>
+    <p class="muted mt-2">
+      Ces expériences m’ont fait progresser sur Python, GitLab, JIRA, OpenShift,
+      la collaboration d’équipe et les attentes du monde professionnel.
+    </p>
+  </Card>
 </section>

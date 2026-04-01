@@ -1,31 +1,45 @@
 ---
-import '../styles/global.css';
-import '../styles/animations.css';
-import Navigation from '../components/Navigation.astro';
-import CosmicBackground from '../components/CosmicBackground.astro';
-import Footer from '../components/Footer.astro';
+import { ClientRouter } from "astro:transitions";
+import "../styles/global.css";
+import "../styles/animations.css";
+import Navigation from "../components/Navigation.astro";
+import CosmicBackground from "../components/CosmicBackground.astro";
+import Footer from "../components/Footer.astro";
 
 interface Props {
   title: string;
   description?: string;
 }
 
-const { title, description = 'Retro-futuristic magical odyssey portfolio.' } = Astro.props;
+const {
+  title,
+  description = "Portfolio d’Alexandre Noblet, développeur et intégrateur IoT.",
+} = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="view-transition" content="same-origin" />
+    <ClientRouter />
+    <style is:global>
+      html {
+        background-color: #040916 !important;
+      }
+    </style>
   </head>
   <body>
-    <CosmicBackground />
-    <Navigation />
-    <main class="relative z-10 py-8 md:py-12">
+    <CosmicBackground transition:persist />
+    <Navigation transition:persist />
+    <slot name="fixed-layer" />
+    <main
+      class="page-shell relative z-10 pt-20 pb-8 md:pt-32 md:pb-12"
+      transition:name="page-content"
+    >
       <slot />
     </main>
     <Footer />
