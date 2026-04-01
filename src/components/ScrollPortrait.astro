@@ -1,0 +1,271 @@
+---
+interface Props {
+  images: string[];
+}
+
+const { images } = Astro.props;
+---
+
+<div class="astral-portrait-container group" id="scroll-portrait">
+  <div class="astral-frame-rings" aria-hidden="true">
+    <div class="ring-outer"></div>
+    <div class="ring-middle"></div>
+    <div class="ring-inner">
+      <div class="orbiting-dot"></div>
+    </div>
+  </div>
+
+  <!-- Portrait Stack -->
+  <div class="portrait-stack">
+    {
+      images.map((src, index) => (
+        <img
+          src={src}
+          alt={`Portrait phase ${index}`}
+          class:list={["portrait-image", index === 0 ? "is-active" : ""]}
+          data-index={index}
+        />
+      ))
+    }
+    <div class="portrait-overlay" aria-hidden="true"></div>
+  </div>
+</div>
+
+<script>
+  function initPortrait() {
+    const container = document.getElementById("scroll-portrait");
+    const timeline = document.getElementById("experience-timeline");
+    const images = container?.querySelectorAll(".portrait-image");
+
+    if (!container || !timeline || !images || images.length === 0) return;
+
+    let ticking = false;
+
+    function handleScroll() {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updatePortraitState();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+
+    function updatePortraitState() {
+      if (window.innerWidth < 1024) return;
+
+      const rect = timeline!.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const scrollY = window.scrollY;
+
+      const morphStart = viewportHeight * 0.3;
+      const morphEnd = viewportHeight * 0.6;
+
+      const totalDist = rect.height + (morphStart - morphEnd);
+      const currentDist = morphStart - rect.top;
+
+      let progress = Math.min(1, Math.max(0, currentDist / totalDist));
+
+      if (scrollY < 20) progress = 0;
+
+      const scrollMax = document.documentElement.scrollHeight;
+      if (window.innerHeight + scrollY > scrollMax - 80) progress = 1;
+
+      const numImages = images!.length;
+      const rawIndex = progress * (numImages - 1);
+      const activeIdx = Math.floor(rawIndex);
+      const nextIdx = Math.min(activeIdx + 1, numImages - 1);
+      const subProgress = rawIndex % 1;
+
+      images!.forEach((img, i) => {
+        const imgEl = img as HTMLElement;
+        if (i === activeIdx) {
+          imgEl.style.opacity = (1 - subProgress).toString();
+          imgEl.style.transform = `scale(${1.05 - subProgress * 0.1}) rotate(${subProgress * 2}deg)`;
+          imgEl.style.zIndex = "2";
+        } else if (i === nextIdx) {
+          imgEl.style.opacity = subProgress.toString();
+          imgEl.style.transform = `scale(${0.95 + subProgress * 0.1}) rotate(${(subProgress - 1) * 2}deg)`;
+          imgEl.style.zIndex = "3";
+        } else {
+          imgEl.style.opacity = "0";
+          imgEl.style.zIndex = "1";
+        }
+      });
+    }
+
+    // Initial handleScroll call
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+  }
+
+  // Support ClientRouter
+  document.addEventListener("astro:page-load", initPortrait);
+</script>
+
+<style>
+  .astral-portrait-container {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    margin: 2rem auto;
+    perspective: 1000px;
+    z-index: 10;
+  }
+
+  @media (min-width: 1024px) {
+    .astral-portrait-container {
+      position: fixed;
+      right: max(2rem, calc(50vw - 550px - 285px));
+      top: 14rem;
+      width: 260px;
+      height: 260px;
+      margin: 0;
+      z-index: 40;
+      pointer-events: none;
+    }
+
+    /* Fade out on medium screens to avoid overlap with content */
+    @media (max-width: 1600px) {
+      .astral-portrait-container {
+        opacity: 0.15;
+        filter: grayscale(1) blur(2px);
+      }
+    }
+  }
+
+  .portrait-stack {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    z-index: 10;
+    box-shadow: 0 0 30px rgba(105, 72, 165, 0.3);
+    mask-image: radial-gradient(circle, black 65%, transparent 100%);
+  }
+
+  .portrait-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: filter 0.5s ease;
+    will-change: opacity, transform;
+    filter: saturate(1.1) contrast(1.1);
+  }
+
+  .portrait-image.is-active {
+    opacity: 1;
+  }
+
+  .astral-portrait-container:hover .portrait-image.is-active {
+    filter: drop-shadow(2px 0px 0px rgba(255, 0, 0, 0.2))
+      drop-shadow(-2px 0px 0px rgba(0, 0, 255, 0.2));
+  }
+
+  .portrait-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at 30% 30%,
+      rgba(139, 92, 246, 0.1),
+      transparent 60%
+    );
+    mix-blend-mode: screen;
+    pointer-events: none;
+    z-index: 15;
+  }
+
+  .astral-frame-rings {
+    position: absolute;
+    inset: -35px;
+    pointer-events: none;
+  }
+
+  .ring-outer {
+    position: absolute;
+    inset: 0;
+    border: 1px dashed rgba(246, 212, 13, 0.3);
+    border-radius: 50%;
+    animation: rotate 60s linear infinite;
+    will-change: transform;
+  }
+
+  .ring-outer::before {
+    content: "✦";
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    color: var(--gold);
+    font-size: 12px;
+    text-shadow: 0 0 10px var(--gold);
+  }
+
+  .ring-middle {
+    position: absolute;
+    inset: 15px;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 50%;
+    animation: rotate 45s linear infinite reverse;
+    will-change: transform;
+  }
+
+  .ring-inner {
+    position: absolute;
+    inset: 32px;
+    border: 2px solid rgba(246, 212, 13, 0.4);
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(246, 212, 13, 0.15);
+    z-index: 5;
+    transition: all 0.5s ease;
+  }
+
+  .orbiting-dot {
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    background: #f6d40d;
+    border-radius: 50%;
+    box-shadow: 0 0 15px #f6d40d;
+    transform: translateX(-50%);
+    animation: orbit 15s linear infinite;
+    transform-origin: center 175px;
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes orbit {
+    from {
+      transform: translateX(-50%) rotate(0deg);
+    }
+    to {
+      transform: translateX(-50%) rotate(360deg);
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .astral-portrait-container {
+      width: 220px;
+      height: 220px;
+    }
+    .orbiting-dot {
+      transform-origin: center 145px;
+    }
+    .astral-frame-rings {
+      inset: -25px;
+    }
+  }
+</style>

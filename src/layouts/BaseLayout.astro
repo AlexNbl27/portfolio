@@ -35,6 +35,7 @@ const {
   <body>
     <CosmicBackground transition:persist />
     <Navigation transition:persist />
+    <slot name="fixed-layer" />
     <main
       class="page-shell relative z-10 pt-20 pb-8 md:pt-32 md:pb-12"
       transition:name="page-content"

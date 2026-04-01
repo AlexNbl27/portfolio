@@ -46,6 +46,8 @@ const accentStars = [
             style={`--left: ${skill.left}; --top: ${skill.top};${"leftMobile" in skill ? ` --left-mobile: ${(skill as any).leftMobile};` : ""}${"topMobile" in skill ? ` --top-mobile: ${(skill as any).topMobile};` : ""}`}
             data-skill-label={skill.label}
             data-skill-example={skill.example}
+            data-skill-theme={skill.theme}
+            data-skill-movie={skill.movieRef}
             aria-label={`Voir l'exemple pour ${skill.label}`}
             type="button"
           >
@@ -102,7 +104,10 @@ const accentStars = [
         </div>
 
         <div class="skill-info-detail" aria-hidden="true">
-          <p class="skill-info-detail__tag">✦ Exemple concret</p>
+          <div class="flex items-center justify-between gap-4 mb-2">
+            <p class="skill-info-detail__tag m-0">✦ Exemple concret</p>
+            <p class="skill-info-detail__movie m-0 text-[10px] uppercase tracking-widest text-cosmic-gold/60 italic"></p>
+          </div>
           <h3 class="skill-info-detail__title font-display"></h3>
           <p class="skill-info-detail__text muted"></p>
         </div>
@@ -120,55 +125,55 @@ const accentStars = [
 </div>
 
 <script>
-  const infoCard = document.getElementById(
-    "skill-info-card",
-  ) as HTMLElement | null;
-  const coreBtn = document.getElementById(
-    "skill-core-btn",
-  ) as HTMLElement | null;
-  const detailTitle = infoCard?.querySelector<HTMLElement>(
-    ".skill-info-detail__title",
-  );
-  const detailText = infoCard?.querySelector<HTMLElement>(
-    ".skill-info-detail__text",
-  );
-  const detailEl = infoCard?.querySelector<HTMLElement>(".skill-info-detail");
+  function initSoftSkills() {
+    const infoCard = document.getElementById("skill-info-card") as HTMLElement | null;
+    const coreBtn = document.getElementById("skill-core-btn") as HTMLElement | null;
+    const detailTitle = infoCard?.querySelector<HTMLElement>(".skill-info-detail__title");
+    const detailText = infoCard?.querySelector<HTMLElement>(".skill-info-detail__text");
+    const detailMovie = infoCard?.querySelector<HTMLElement>(".skill-info-detail__movie");
+    const detailEl = infoCard?.querySelector<HTMLElement>(".skill-info-detail");
 
-  let activeNode: HTMLElement | null = null;
+    let activeNode: HTMLElement | null = null;
 
-  function flashCard() {
-    if (!infoCard) return;
-    infoCard.classList.remove("is-flashing");
-    void infoCard.offsetWidth;
-    infoCard.classList.add("is-flashing");
-    infoCard.addEventListener(
-      "animationend",
-      () => infoCard.classList.remove("is-flashing"),
-      { once: true },
-    );
-  }
+    function flashCard() {
+      if (!infoCard) return;
+      infoCard.classList.remove("is-flashing");
+      void infoCard.offsetWidth;
+      infoCard.classList.add("is-flashing");
+    }
 
-  function showSkill(label: string, example: string) {
-    if (!infoCard || !detailTitle || !detailText || !detailEl) return;
-    detailTitle.textContent = label;
-    detailText.textContent = example;
-    detailEl.setAttribute("aria-hidden", "false");
-    infoCard.classList.add("is-detail");
-    flashCard();
-  }
+    function showSkill(label: string, example: string, theme: string, movie: string) {
+      if (!infoCard || !detailTitle || !detailText || !detailEl) return;
+      
+      console.log(`[SoftSkills] Switching to theme: ${theme}`);
+      detailTitle.textContent = label;
+      detailText.textContent = example;
+      if (detailMovie) detailMovie.textContent = movie ? `Inspiration : ${movie}` : "";
+      
+      detailEl.setAttribute("aria-hidden", "false");
+      infoCard.classList.add("is-detail");
+      
+      // Update global theme
+      document.body.dataset.softSkillTheme = theme;
+      
+      flashCard();
+    }
 
-  function resetToDefault() {
-    if (!infoCard || !detailEl) return;
-    detailEl.setAttribute("aria-hidden", "true");
-    infoCard.classList.remove("is-detail");
-    flashCard();
-    activeNode?.classList.remove("is-active");
-    activeNode = null;
-  }
+    function resetToDefault() {
+      if (!infoCard || !detailEl) return;
+      console.log(`[SoftSkills] Resetting to default theme`);
+      detailEl.setAttribute("aria-hidden", "true");
+      infoCard.classList.remove("is-detail");
+      
+      // Reset global theme
+      delete document.body.dataset.softSkillTheme;
+      
+      flashCard();
+      activeNode?.classList.remove("is-active");
+      activeNode = null;
+    }
 
-  document
-    .querySelectorAll<HTMLElement>(".soft-skill-node[data-skill-label]")
-    .forEach((node) => {
+    document.querySelectorAll<HTMLElement>(".soft-skill-node[data-skill-label]").forEach((node) => {
       node.addEventListener("click", () => {
         activeNode?.classList.remove("is-active");
         activeNode = node;
@@ -176,9 +181,18 @@ const accentStars = [
         showSkill(
           node.dataset.skillLabel ?? "",
           node.dataset.skillExample ?? "",
+          node.dataset.skillTheme ?? "",
+          node.dataset.skillMovie ?? ""
         );
       });
     });
 
-  coreBtn?.addEventListener("click", resetToDefault);
+    coreBtn?.addEventListener("click", resetToDefault);
+  }
+
+  // Initial load
+  initSoftSkills();
+
+  // Page changes (Astro ClientRouter)
+  document.addEventListener("astro:page-load", initSoftSkills);
 </script>
