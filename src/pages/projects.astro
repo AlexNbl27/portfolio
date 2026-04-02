@@ -39,7 +39,16 @@ import projects from '../data/projects.json';
       const category = btn.getAttribute('data-category');
       cards.forEach((card) => {
         const visible = category === 'all' || card.getAttribute('data-category') === category;
+        const wasHidden = card.classList.contains('hidden');
         card.classList.toggle('hidden', !visible);
+        if (visible && wasHidden) {
+          const img = card.querySelector('.project-card-img') as HTMLElement | null;
+          if (img) {
+            img.style.animation = 'none';
+            void img.offsetWidth;
+            img.style.animation = '';
+          }
+        }
       });
     });
   });

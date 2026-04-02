@@ -120,11 +120,11 @@
 <style>
   .astral-age-container {
     position: fixed;
-    right: max(calc(2rem + 40px), calc(50vw - 550px - 285px + 40px));
-    top: 36rem;
+    right: max(calc(2rem + 40px), calc(50vw - 450px - 285px + 40px));
+    top: clamp(calc(5.5rem + 290px), calc(50vh + 110px), calc(100vh - 200px));
     width: 180px;
     height: 180px;
-    z-index: 40;
+    z-index: 100;
     pointer-events: none;
   }
 
@@ -198,8 +198,7 @@
   /* Fade out on medium screens like the portrait */
   @media (max-width: 1600px) {
     .astral-age-container {
-      opacity: 0.2;
-      filter: grayscale(0.5) blur(1px);
+      opacity: 0.75;
     }
   }
 </style>

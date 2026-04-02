@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+
 import Badge from "./ui/Badge.astro";
 import Button from "./ui/Button.astro";
 import Card from "./ui/Card.astro";
@@ -31,13 +32,13 @@ const imageSrc = images[imagePath];
   data-category={project.category}
   data-detail-page={project.detailPage}
 >
-  <div class="relative w-full overflow-hidden flex-shrink-0 aspect-video">
+  <div class="relative w-full overflow-hidden flex-shrink-0 aspect-video bg-slate-800/60">
     {
       imageSrc ? (
         <Image
           src={imageSrc()}
           alt={project.title}
-          class="h-full w-full object-cover opacity-80 transition duration-500 group-hover:scale-105"
+          class="project-card-img h-full w-full object-cover opacity-80 transition duration-500 group-hover:scale-105"
         />
       ) : (
         <div class="h-full w-full object-cover bg-slate-800" />
@@ -105,3 +106,4 @@ const imageSrc = images[imagePath];
     </div>
   </div>
 </Card>
+

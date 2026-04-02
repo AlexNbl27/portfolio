@@ -67,6 +67,19 @@
     }
   }
 
+  .project-card-img {
+    animation: imgFadeIn 0.5s ease forwards;
+  }
+
+  @keyframes imgFadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 0.8;
+    }
+  }
+
   .glass-card {
     background: linear-gradient(
       120deg,
