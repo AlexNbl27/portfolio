@@ -19,59 +19,59 @@ export interface BlogMeta {
 const blogs: BlogMeta[] = [
   {
     slug: 'stage-obs',
-    title: 'Blog de stage chez Orange Business Services',
+    title: 'Journal de bord : Stage chez Orange Business Services',
     subtitle: 'Intégrateur IoT et développeur mobile',
     summary:
-      'Retour sur mon stage de 6 semaines chez Orange Business Services autour du projet Live Tag, du développement Flutter, d’une API Python et de la découverte des pratiques CI/CD en environnement pro.',
+      'Retour sur six semaines d’immersion au cœur du projet Live Tag : entre développement Flutter, conception d’API Python et automatisation via CI/CD en environnement professionnel.',
     skills: ['Flutter', 'Python', 'CI/CD', 'JIRA', 'Red Hat OpenShift', 'GitLab'],
     coverImage: '/images/livetag.png',
     posts: [
       {
         slug: 'mission',
-        title: 'Découverte du projet',
+        title: 'Immersion et enjeux du projet Live Tag',
         date: '03/07/2024',
-        excerpt: 'Mes premiers jours chez OBS et la découverte du projet Live Tag.'
+        excerpt: 'Premier contact avec Orange Business Services et découverte de la mission Live Tag : un défi logistique et technique.'
       },
       {
         slug: 'team',
-        title: 'Intégration dans l’équipe',
+        title: 'Culture agile et dynamique d’équipe',
         date: '09/07/2024',
-        excerpt: 'Une équipe accueillante, la découverte de JIRA et la réalité du travail en entreprise.'
+        excerpt: 'Intégration au sein d’une équipe OBS, gestion de projet via JIRA et réalité opérationnelle du travail collaboratif.'
       },
       {
         slug: 'campus-du-numerique',
-        title: 'Visite du campus du numérique',
+        title: 'Innovation : Visite du Campus du Numérique',
         date: '20/07/2024',
-        excerpt: 'Préparation d’un stand et immersion dans un écosystème d’innovation régional.'
+        excerpt: 'Mise en avant des projets et importance de la communication technique lors de la préparation d’un stand d’innovation.'
       },
       {
         slug: 'new-skills',
-        title: 'Acquérir de nouvelles compétences',
+        title: 'Pivot technique : Python, Conteneurs et CI/CD',
         date: '30/07/2024',
-        excerpt: 'Développement d’une API Python et premiers déploiements sur OpenShift avec GitLab CI/CD.'
+        excerpt: 'Au-delà du mobile : conception d’une API Python et orchestration de conteneurs sur Red Hat OpenShift.'
       },
       {
         slug: 'end',
-        title: 'Fin du stage',
+        title: 'Bilan de stage et perspectives',
         date: '10/08/2024',
-        excerpt: 'Bilan de stage, démonstration finale et apprentissages retenus.'
+        excerpt: 'Démonstration finale, bilan des acquis techniques et transition vers un engagement de long terme (alternance).'
       }
     ]
   },
   {
     slug: 'alternance-obs',
-    title: 'Blog d’alternance chez Orange Business Services',
+    title: 'Journal de bord : Alternance chez Orange Business Services',
     subtitle: 'Intégrateur et développeur fullstack',
     summary:
-      'Journal de bord de mon alternance chez OBS, entre continuité sur les sujets IoT et découverte de PlanetTogether et d’un environnement fullstack plus large.',
+      'Suivi de mon alternance chez OBS : approfondissement de l’écosystème IoT et déploiement opérationnel de solutions de planification industrielle (PlanetTogether).',
     skills: ['Flutter', 'Python', 'PlanetTogether', 'JIRA', 'GitLab'],
     coverImage: '/images/orangebusinessservices.jpg',
     posts: [
       {
         slug: 'mission',
-        title: 'Découverte du projet PlanetTogether',
+        title: 'L’ordonnancement industriel avec PlanetTogether',
         date: '01/10/2024',
-        excerpt: 'Début de l’alternance et premières découvertes autour de la planification industrielle.'
+        excerpt: 'Début de l’alternance et immersion dans les problématiques complexes de planification de production.'
       }
     ]
   }

@@ -8,23 +8,23 @@ blogTitle: "Blog de stage chez Orange Business Services"
 parentLink: "/blogs/stage-obs"
 ---
 
-À mon arrivée chez **Orange Business Services** à Bellecour, on m’a présenté le projet sur lequel j’allais travailler pendant six semaines : **Live Tag**.
+Pour mon premier contact avec **Orange Business Services** à Lyon Bellecour, j'ai été immédiatement plongé dans la mission qui allait rythmer mes six semaines de stage : le projet **Live Tag**.
 
-## Le contexte
+## Un défi logistique : le projet Live Tag
 
-Live Tag est une application mobile en **Flutter** pensée pour faciliter les inventaires rapides dans des environnements logistiques comme les entrepôts de stockage. Le projet avait déjà été amorcé, mais il avait été mis en pause par manque d’effectif.
+Live Tag est une application mobile développée sous **Flutter**, conçue pour automatiser les inventaires rapides dans des environnements logistiques complexes, tels que les entrepôts de stockage. Le projet, bien qu'initié, était en phase de relance au moment de mon arrivée.
 
-Reprendre un sujet déjà existant en cours de route a été très formateur. Cela m’a obligé à comprendre rapidement :
+Reprendre un développement en cours de route s'est avéré être un exercice particulièrement formateur. Cette immersion m'a imposé une montée en compétence rapide sur plusieurs fronts :
 
-- l’historique du projet,
-- les choix techniques déjà faits,
-- les priorités de l’équipe,
-- et les attentes concrètes du client.
+- **L'analyse de l'existant** : Comprendre l'architecture et les choix techniques passés.
+- **L'alignement métier** : Saisir les priorités de l'équipe et les besoins critiques du client final.
+- **La flexibilité technique** : S'adapter rapidement à une base de code héritée pour y apporter une valeur ajoutée immédiate.
 
-## Mes premières impressions
+## Premières impressions
 
-J’étais particulièrement motivé à l’idée de travailler sur **Flutter**, une technologie que j’apprécie beaucoup pour sa capacité à cibler **Android** et **iOS** avec une seule base de code.
+L'utilisation de **Flutter** a été un point fort de cette mission. La capacité du framework à adresser **Android** et **iOS** avec une base de code unique répond parfaitement aux exigences de rapidité et de maintenabilité du projet.
 
-Au-delà de l’aspect technique, ce début de stage m’a surtout permis de découvrir le fonctionnement d’un vrai projet en entreprise, avec ses contraintes, son rythme et ses enjeux.
+Au-delà du code, ces premiers jours ont surtout été une immersion dans la réalité d'un projet d'entreprise d'envergure, avec ses cycles de décision, ses enjeux budgétaires et sa dynamique humaine.
 
-> Ce premier contact avec Live Tag a donné le ton : un stage concret, technique et très enrichissant.
+> Cette première phase au cœur de Live Tag a donné le ton du stage : une mission concrète, exigeante et résolument tournée vers le terrain.
+

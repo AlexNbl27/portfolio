@@ -8,25 +8,23 @@ blogTitle: "Blog de stage chez Orange Business Services"
 parentLink: "/blogs/stage-obs"
 ---
 
-Après un peu plus d’une semaine chez **Orange Business Services**, j’ai commencé à mieux comprendre le fonctionnement de l’équipe et du projet.
+Dès mon intégration chez **Orange Business Services**, j'ai été frappé par la fluidité de la communication et l'organisation rigoureuse de l'équipe projet.
 
-## Une intégration très positive
+## Une intégration structurée et bienveillante
 
-L’accueil a été excellent. J’ai été accompagné par mon tuteur tout en gardant une vraie marge d’autonomie sur mes tâches. L’ambiance de travail était à la fois sérieuse et bienveillante, ce qui a beaucoup facilité mon intégration.
+J'ai bénéficié d'un accueil exemplaire : un accompagnement de proximité par mon tuteur, tout en jouissant d'une autonomie réelle dans la gestion de mes tickets. Cette culture du travail, mêlant exigence technique et bienveillance, a été un catalyseur pour mon intégration.
 
-## Découverte de JIRA
+## Pilotage de projet avec JIRA
 
-J’ai aussi découvert **JIRA**, un outil central dans le suivi des projets en entreprise. J’y ai appris à :
+J'ai rapidement été initié à **JIRA**, l'outil pivot dans le suivi des projets agiles. Cette immersion m'a permis de maîtriser les fondamentaux du pilotage opérationnel :
 
-- suivre les tickets,
-- comprendre les priorités,
-- estimer le temps passé,
-- et visualiser l’avancement global du projet.
+- **Suivi des sprints** : Compréhension du cycle de vie d'un ticket, de sa création à la validation finale.
+- **Priorisation** : Apprendre à arbitrer entre les tâches selon les urgences du projet.
+- **Gestion du temps** : Analyse du reste à faire (RAF) et suivi précis de la charge consommée.
 
-Cette découverte m’a fait prendre conscience d’un point important : en entreprise, **le temps passé sur une tâche a un vrai impact sur le budget et l’organisation**.
+Ce passage par JIRA a été une véritable prise de conscience : en entreprise, **la transparence sur l'avancement technique est indissociable de la santé budgétaire et stratégique d'un projet**.
 
-## Ce que j’en retiens
+## Ce que j'en retiens
 
-Au-delà du code, cette première phase m’a appris l’importance de la communication, de la rigueur et de la coordination entre collègues.
+Au-delà de l'écriture du code, j'ai découvert l'importance vitale de la coordination et de la rigueur documentaire. Travailler dans une équipe d'envergure demande une discipline qui dépasse le cadre purement informatique ; c'est une compétence humaine et organisationnelle que je compte bien cultiver.
 
-C’est aussi ce qui rend l’expérience en entreprise aussi formatrice que motivante.

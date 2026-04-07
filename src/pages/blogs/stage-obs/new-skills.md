@@ -8,30 +8,28 @@ blogTitle: "Blog de stage chez Orange Business Services"
 parentLink: "/blogs/stage-obs"
 ---
 
-À mesure que l’application mobile avançait, de nouvelles problématiques sont apparues. Pour aller plus loin, nous avons dû développer un **moteur de calcul de position** via une **API en Python**.
+Alors que le socle mobile se consolidait, les besoins ont évolué vers un défi plus complexe : la conception d'un moteur de calcul de position déporté, nécessitant l'implémentation d'une **API Python**.
 
-## Un vrai saut technique
+## Un saut vers l'ingénierie Backend
 
-Je n’avais encore jamais conçu d’API dans un contexte professionnel. J’ai donc dû rapidement apprendre à :
+N'ayant jamais conçu d'API dans un cadre professionnel, cette mission a été une opportunité de montée en compétence fulgurante. J'ai dû rapidement appréhender les fondamentaux du développement backend :
 
-- structurer une API Python,
-- comprendre ses échanges avec l’application mobile,
-- préparer son déploiement,
-- puis l’intégrer dans un environnement conteneurisé.
+- **Structuration de l'API** : Choix des frameworks et organisation de la logique de calcul.
+- **Interopérabilité** : Gestion des flux de données entre l'application Flutter et le moteur Python.
+- **Processus de déploiement** : Préparation de l'environnement pour une exécution fiable en production.
 
-## Déploiement et CI/CD
+## Maîtrise des conteneurs et du CI/CD
 
-La partie la plus difficile n’a pas été le code lui-même, mais son **hébergement**. Après plusieurs jours de recherches, j’ai réussi à faire fonctionner l’API dans un conteneur sur **Red Hat OpenShift**.
+Le défi majeur a été l'hébergement de cette solution. Après une phase de recherche intensive, j'ai réussi à orchestrer le déploiement de l'API sous forme de **conteneur** sur la plateforme **Red Hat OpenShift**.
 
-J’ai également mis en place une logique **CI/CD** avec **GitLab** pour reconstruire automatiquement l’image de l’API à chaque modification.
+Pour pérenniser ce travail, j'ai implémenté une pipeline **CI/CD** via **GitLab**. Désormais, chaque modification du code déclenche automatiquement la reconstruction de l'image et sa mise à jour en environnement de test/prod.
 
-## Ce que cette étape m’a appris
+## Bilan de cette étape charnière
 
-Cette mission a été l’une des plus marquantes du stage. Elle m’a permis de progresser sur :
+Cette mission a sans doute été la plus formatrice de mon stage. Elle m'a permis de transformer des concepts théoriques en expertises opérationnelles :
+- **Développement Python** appliqué aux services web.
+- **Automatisation industrielle** via GitLab CI/CD.
+- **Orchestration Cloud** avec OpenShift.
 
-- **Python**,
-- **GitLab CI/CD**,
-- **OpenShift**,
-- et la logique d’intégration continue en entreprise.
+> C’est dans cette phase de pivot technique que j'ai réalisé la puissance de l'approche Fullstack : être capable de maîtriser la chaîne de valeur du mobile jusqu'à l'infrastructure.
 
-> C’est probablement la partie du stage qui m’a le plus fait monter en compétence en très peu de temps.

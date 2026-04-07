@@ -8,29 +8,27 @@ blogTitle: "Blog d’alternance chez Orange Business Services"
 parentLink: "/blogs/alternance-obs"
 ---
 
-Le **1er octobre 2024**, j’ai débuté mon alternance chez **Orange Business Services** en tant qu’**intégrateur et développeur fullstack**.
+Le **1er octobre 2024** a marqué une étape majeure dans mon parcours : le début de mon alternance chez **Orange Business Services**, désormais en qualité d’**intégrateur et développeur fullstack**.
 
-## Une continuité… avec une nouvelle dimension
+## Une continuité stratégique, une dimension nouvelle
 
-Après un premier stage très positif, cette alternance s’inscrit dans la continuité, mais avec un périmètre plus large. En plus de poursuivre certains sujets autour de l’écosystème **Live Tag**, j’ai commencé à découvrir **PlanetTogether**.
+Après un stage initial probant, cette alternance s'inscrit dans une dynamique de montée en puissance. Si je poursuis mes contributions sur l'écosystème **Live Tag**, mon périmètre s'élargit considérablement avec la découverte et l'intégration de **PlanetTogether**.
 
-## PlanetTogether, c’est quoi ?
+## L'ordonnancement industriel avec PlanetTogether
 
-PlanetTogether est un logiciel de **planification et d’ordonnancement de production** utilisé pour aider les usines à optimiser leur fonctionnement.
+PlanetTogether est une solution de pointe dédiée à la **planification et à l’ordonnancement de production** (APS). Son rôle est d'optimiser les flux des usines en temps réel pour accroître leur efficacité opérationnelle.
 
-Cette découverte est particulièrement intéressante car elle me permet de mieux comprendre :
+L'immersion dans cet outil m'ouvre les portes de problématiques industrielles passionnantes :
+- **Logique métier complexe** : Comprendre comment traduire des contraintes de production en algorithmes de planification.
+- **Intégration de données** : Gérer les flux d'informations entre les systèmes de production et l'outil d'ordonnancement.
+- **Enjeux opérationnels** : Appréhender l'impact direct de nos solutions techniques sur la performance des usines clientes.
 
-- les besoins métier de l’industrie,
-- les contraintes de production,
-- les outils utilisés dans des contextes à fort enjeu opérationnel.
+## Objectifs de cette immersion de long terme
 
-## Objectif de cette nouvelle phase
+Ces trois années d'alternance représentent une opportunité unique de parfaire mon expertise sur toute la chaîne de valeur :
+1. **Fullstack** : Consolider la maîtrise des architectures web et mobiles.
+2. **IoT Industriel** : Approfondir l'interconnexion entre les capteurs terrain et les systèmes de décision.
+3. **Vision Client** : Renforcer ma capacité à porter une parole technique auprès des décideurs métiers.
 
-Cette alternance représente pour moi une belle opportunité de continuer à progresser sur :
+C'est le début d'un chapitre ambitieux au sein d'OBS, que j'aurai à cœur de partager ici au fil de mes découvertes.
 
-- le **fullstack**,
-- l’**IoT**,
-- les outils professionnels,
-- et la collaboration au sein d’une équipe sur le long terme.
-
-C’est le début d’un nouveau chapitre, que j’aurai plaisir à documenter au fil des prochains articles.

@@ -8,24 +8,23 @@ blogTitle: "Blog de stage chez Orange Business Services"
 parentLink: "/blogs/stage-obs"
 ---
 
-La fin de stage a été l’occasion de prendre du recul sur tout ce qui avait été accompli en six semaines.
+L'heure du bilan a sonné. Ces six semaines chez **Orange Business Services** se clôturent par une phase de recul essentielle sur les objectifs atteints et les compétences consolidées.
 
-## Une démonstration finale valorisante
+## Une validation opérationnelle valorisante
 
-J’ai pu présenter l’application **Live Tag** à l’équipe une fois le développement finalisé. Les retours ont été très positifs, aussi bien sur le résultat que sur le travail fourni pendant le stage.
+Le point d'orgue de ce stage a été la démonstration finale de l'application **Live Tag** devant l'équipe. Présenter un produit fonctionnel, stable et répondant aux exigences initiales a été une source de grande satisfaction. Les retours positifs reçus valident non seulement la qualité technique du code produit, mais aussi ma capacité à m'intégrer dans un cycle de développement professionnel.
 
-## Ce que j’ai appris
+## Synthèse des acquis
 
-Ce stage m’a permis de consolider et de découvrir de nombreuses compétences :
+Ce stage m'a permis de transformer des connaissances académiques en expertises terrain :
+- **Maîtrise de Flutter** : Développement d'interfaces complexes et gestion d'état.
+- **Ingénierie Backend** : Conception et déploiement d'API Python.
+- **Automatisation** : Mise en œuvre de pipelines CI/CD sous GitLab.
+- **Agilité** : Adoption des rituels et outils (JIRA) de la gestion de projet moderne.
 
-- amélioration de mes pratiques en **Flutter**,
-- progression en **Python**,
-- découverte du **CI/CD**,
-- utilisation quotidienne de **JIRA**,
-- et meilleure compréhension du fonctionnement d’une équipe projet en entreprise.
+## Un tremplin vers l'alternance
 
-## Un tremplin pour la suite
+Plus qu'une simple fin de stage, cette expérience a été le socle d'une collaboration durable. Elle se prolonge désormais par une **alternance de trois ans** au sein de la même équipe dès octobre 2024. 
 
-Cette expérience m’a donné beaucoup de confiance pour la suite, d’autant plus qu’elle s’est prolongée avec une **alternance de trois ans** dans la même équipe à partir d’octobre 2024.
+Je quitte cette phase de stage avec une confiance renforcée et la certitude d'avoir trouvé un environnement stimulant pour la suite de mon parcours.
 
-Je garde un excellent souvenir de cette période, autant pour la qualité du travail réalisé que pour l’accueil de l’équipe OBS.
