@@ -68,9 +68,18 @@
     }
   ],
   "reperes": [
-    { "label": "Adaptabilité", "value": "Très forte" },
-    { "label": "Collaboration", "value": "Au quotidien" },
-    { "label": "Prise d'initiative", "value": "Naturelle" }
+    {
+      "label": "Adaptabilité",
+      "value": "Très forte"
+    },
+    {
+      "label": "Collaboration",
+      "value": "Au quotidien"
+    },
+    {
+      "label": "Prise d'initiative",
+      "value": "Naturelle"
+    }
   ],
   "contact": {
     "title": "Échanger sur un projet",

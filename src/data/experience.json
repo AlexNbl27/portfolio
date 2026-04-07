@@ -4,36 +4,55 @@
     "role": "Intégrateur et développeur fullstack",
     "period": "2024 - Aujourd’hui",
     "type": "pro",
-    "description": "Je poursuis mon parcours chez Orange Business Services en alternance autour de projets IoT et de développement applicatif, avec une montée en compétences continue sur les outils d’entreprise et les environnements industriels.",
+    "description": "Au sein de l'équipe OBS, j'interviens sur des projets critiques mêlant Industrie 4.0 et IoT. Dans un contexte où l'IA transforme nos métiers, j'oriente mon expertise vers le versant fonctionnel : j'accompagne nos clients pour traduire leurs enjeux métiers en spécifications techniques précises. En parallèle, j'assure le rôle de référent sur les problématiques de développement mobile liées à l'écosystème IoT.",
     "achievements": [
-      "Poursuite des travaux autour de Live Tag et de l’écosystème IoT.",
-      "Découverte et prise en main de PlanetTogether, outil de planification et d’ordonnancement de production."
+      "Pilotage de la solution PlanetTogether pour la planification et l’ordonnancement de production.",
+      "Accompagnement stratégique des clients lors des phases d'intégration et de recueil de besoins.",
+      "Nouveau référent technique pour les applications mobiles dédiées à l'écosystème IoT."
     ],
-    "technologies": ["Flutter", "Python", "PlanetTogether", "GitLab", "JIRA"]
+    "technologies": [
+      "Flutter",
+      "Python",
+      "PlanetTogether",
+      "GitLab",
+      "JIRA"
+    ]
   },
   {
     "company": "Orange Business Services",
     "role": "Intégrateur IoT et développeur mobile",
     "period": "Juil. 2024 - Août 2024",
     "type": "pro",
-    "description": "Stage de 6 semaines à Lyon Bellecour autour du développement d’une application Flutter pour réaliser des inventaires rapides dans des entrepôts de stockage.",
+    "description": "Stage intensif de 6 semaines dédié au développement d'une solution mobile d'inventaire, visant à optimiser la gestion de stock via la technologie Flutter.",
     "achievements": [
-      "Finalisation d’une application mobile Flutter pour le projet Live Tag.",
-      "Développement d’une API Python et déploiement dans un conteneur Red Hat OpenShift avec CI/CD."
+      "Finalisation et déploiement d’une application mobile Flutter pour le projet Live Tag.",
+      "Conception d’une API Python et orchestration de conteneurs sur Red Hat OpenShift via CI/CD."
     ],
-    "technologies": ["Flutter", "Python", "CI/CD", "Red Hat OpenShift", "GitLab", "JIRA"]
+    "technologies": [
+      "Flutter",
+      "Python",
+      "CI/CD",
+      "Red Hat OpenShift",
+      "GitLab",
+      "JIRA"
+    ]
   },
   {
     "company": "REEL",
     "role": "Automaticien en bureau d’études",
     "period": "Printemps 2023",
     "type": "pro",
-    "description": "Stage de fin de DUT en environnement industriel, orienté automatisme et monitoring 4.0 pour une installation nucléaire.",
+    "description": "Immersion en milieu industriel contraint pour la conception d’un système de monitoring 4.0 et d'automatisme destiné à une installation nucléaire sensible.",
     "achievements": [
-      "Conception d’un système de monitoring IoT pour une installation industrielle sensible.",
-      "Validation du stage par un rapport et une soutenance avec une moyenne de 16/20."
+      "Architecture d’un système de surveillance IoT pour une infrastructure critique.",
+      "Validation académique de l'expertise technique avec une moyenne de 16/20."
     ],
-    "technologies": ["Grafcet", "Siemens TIA Portal", "Schneider Control Expert", "IoT"]
+    "technologies": [
+      "Grafcet",
+      "Siemens TIA Portal",
+      "Schneider Control Expert",
+      "IoT"
+    ]
   },
   {
     "company": "Ynov Lyon",
@@ -45,7 +64,13 @@
       "Réalisation de plusieurs projets d’équipe et projets personnels orientés produit.",
       "Approfondissement des compétences en développement, UX et outils collaboratifs."
     ],
-    "technologies": ["Vue.js", "TypeScript", "Flutter", "Laravel", "Figma"]
+    "technologies": [
+      "Vue.js",
+      "TypeScript",
+      "Flutter",
+      "Laravel",
+      "Figma"
+    ]
   },
   {
     "company": "IUT de Saint-Étienne",
@@ -57,6 +82,12 @@
       "Obtention du DUT GEII (Bac+2).",
       "Développement d’un profil hybride entre informatique et automatisme."
     ],
-    "technologies": ["C++", "C#", "VHDL", "Automatisme", "Programmation industrielle"]
+    "technologies": [
+      "C++",
+      "C#",
+      "VHDL",
+      "Automatisme",
+      "Programmation industrielle"
+    ]
   }
 ]

@@ -31,6 +31,8 @@ import projects from '../data/projects.json';
 </BaseLayout>
 
 <script>
+  import { navigate } from 'astro:transitions/client';
+
   const buttons = document.querySelectorAll('.filter-btn');
   const cards = document.querySelectorAll('.project-item');
 
@@ -62,14 +64,14 @@ import projects from '../data/projects.json';
       // Allow clicks on external links (demo, github) to work normally
       const link = target?.closest('a');
       if (link && !link.href.includes(detailPage)) return;
-      window.location.assign(detailPage);
+      navigate(detailPage);
     });
 
     card.addEventListener('keydown', (event) => {
       const keyboardEvent = event as KeyboardEvent;
       if (keyboardEvent.key === 'Enter' || keyboardEvent.key === ' ') {
         keyboardEvent.preventDefault();
-        window.location.assign(detailPage);
+        navigate(detailPage);
       }
     });
   });
