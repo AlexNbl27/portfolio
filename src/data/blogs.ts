@@ -74,6 +74,48 @@ const blogs: BlogMeta[] = [
         excerpt: 'Début de l’alternance et immersion dans les problématiques complexes de planification de production.'
       }
     ]
+  },
+  {
+    slug: 'stage-reel',
+    title: 'Journal de bord : Stage chez REEL (Division Nucléaire)',
+    subtitle: 'Automaticien en bureau d’études',
+    summary:
+      'Immersion au sein de la division nucléaire de REEL pour la conception d’un système de monitoring IoT 4.0 révolutionnaire, destiné à superviser les infrastructures critiques d’EDF.',
+    skills: [
+      'MQTT',
+      'Modbus TCP',
+      'Schneider Control Expert',
+      'IoT',
+      'Cybersécurité',
+      'Linux'
+    ],
+    coverImage: '/images/reel-mission.png',
+    posts: [
+      {
+        slug: 'mission',
+        title: 'L’Automatisme au cœur du Nucléaire : Le Projet REEL',
+        date: '20/04/2023',
+        excerpt: 'Découverte du défi technique : automatiser et superviser les dégrilleurs de la centrale nucléaire du Bugey.'
+      },
+      {
+        slug: 'technical',
+        title: 'IoT & Protocoles : Du Modbus au MQTT',
+        date: '15/05/2023',
+        excerpt: 'Plongée technique dans l’extraction des indicateurs et l’implémentation de la passerelle IoT Schneider M262.'
+      },
+      {
+        slug: 'security',
+        title: 'Cybersécurité : Connecter l’Ultra-Sensible',
+        date: '10/06/2023',
+        excerpt: 'Stratégies et argumentaires pour garantir la souveraineté et la sécurité des données IoT dans le secteur nucléaire.'
+      },
+      {
+        slug: 'conclusion',
+        title: 'Bilan : De l’Automatisme à l’Ingénierie Informatique',
+        date: '23/06/2023',
+        excerpt: 'Réflexions sur 10 semaines d’immersion en milieu contraint et l’évolution de ma vision du métier.'
+      }
+    ]
   }
 ];
 

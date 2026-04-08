@@ -49,8 +49,7 @@ const resolveImage = (path?: string) =>
                       {blog.subtitle}
                     </p>
                     <Badge variant="outline" class="text-[10px] text-slate-300">
-                      {blog.posts.length} article
-                      {blog.posts.length > 1 ? "s" : ""}
+                      {blog.posts.length} article{blog.posts.length > 1 ? "s" : ""}
                     </Badge>
                   </div>
 
