@@ -112,6 +112,10 @@
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleScroll);
     handleScroll();
+
+    // Fade in after page transition completes
+    container.style.transition = "opacity 300ms ease-out";
+    container.style.opacity = "1";
   }
 
   document.addEventListener("astro:page-load", initTemporalCompass);
@@ -126,6 +130,7 @@
     height: 180px;
     z-index: 100;
     pointer-events: none;
+    opacity: 0;
   }
 
   /* Astral Rings (Copied/Adapted from Portrait) */

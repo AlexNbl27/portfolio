@@ -98,6 +98,10 @@ const { images } = Astro.props;
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleScroll);
+
+    // Fade in after page transition completes
+    container.style.transition = "opacity 300ms ease-out";
+    container.style.opacity = "1";
   }
 
   // Support ClientRouter
@@ -112,6 +116,7 @@ const { images } = Astro.props;
     margin: 2rem auto;
     perspective: 1000px;
     z-index: 10;
+    opacity: 0;
   }
 
   @media (min-width: 1024px) {
