@@ -16,13 +16,7 @@ const { id = "vibe-switch" } = Astro.props;
         numOctaves="3"
         seed="5"
         result="noise"
-      >
-        <animate
-          attributeName="baseFrequency"
-          values="0.018;0.030;0.022;0.018"
-          dur="10s"
-          repeatCount="indefinite"></animate>
-      </feTurbulence>
+      ></feTurbulence>
       <feDisplacementMap
         in="SourceGraphic"
         in2="noise"

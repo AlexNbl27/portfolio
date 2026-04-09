@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+
 import Badge from "./ui/Badge.astro";
 import Button from "./ui/Button.astro";
 import Card from "./ui/Card.astro";
@@ -19,6 +20,7 @@ const { project } = Astro.props as { project: Project };
 
 const images = import.meta.glob<{ default: ImageMetadata }>(
   "/src/assets/images/*.{jpeg,jpg,png,gif,webp,avif}",
+  { eager: true }
 );
 const imagePath = `/src/assets${project.imageUrl}`;
 const imageSrc = images[imagePath];
@@ -31,13 +33,14 @@ const imageSrc = images[imagePath];
   data-category={project.category}
   data-detail-page={project.detailPage}
 >
-  <div class="relative w-full overflow-hidden flex-shrink-0 aspect-video">
+  <div class="relative w-full overflow-hidden flex-shrink-0 aspect-video bg-slate-800/60">
     {
       imageSrc ? (
         <Image
-          src={imageSrc()}
+          src={imageSrc.default}
           alt={project.title}
-          class="h-full w-full object-cover opacity-80 transition duration-500 group-hover:scale-105"
+          class="project-card-img h-full w-full object-cover opacity-80 transition duration-700 group-hover:scale-115 rounded-card"
+          transition:name={`project-image-${project.title}`}
         />
       ) : (
         <div class="h-full w-full object-cover bg-slate-800" />
@@ -50,7 +53,9 @@ const imageSrc = images[imagePath];
       <p class="text-xs uppercase tracking-[0.25em] text-cosmic-pink">
         {project.category}
       </p>
-      <h3 class="font-display text-3xl text-cosmic-gold">{project.title}</h3>
+      <h3 class="font-display text-3xl text-cosmic-gold">
+        {project.title}
+      </h3>
       <p class="muted line-clamp-3">{project.description}</p>
 
       <div class="flex flex-wrap gap-2 text-xs">
@@ -105,3 +110,4 @@ const imageSrc = images[imagePath];
     </div>
   </div>
 </Card>
+

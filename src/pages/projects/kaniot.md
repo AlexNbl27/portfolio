@@ -9,12 +9,9 @@ technologies:
   - TypeScript
   - Supabase
 links:
-  - label: "Consulter le site"
-    url: "https://kaniot.alexnbl27.com"
+  - label: "Voir sur GitHub"
+    url: "https://github.com/AlexNbl27/kaniot"
     variant: "primary"
-  - label: "Voir la maquette"
-    url: "https://www.figma.com/"
-    variant: "ghost"
 theme:
   accent: "#8ee7ff"
   accentSoft: "#c4f3ff"
@@ -22,16 +19,23 @@ theme:
   glowB: "rgba(75, 155, 255, 0.22)"
 ---
 
-## Problème adressé
+## L'Enjeu
 
-Dans beaucoup de cagnottes, certains participants donnent trop alors que d'autres ne participent pas assez. Kaniot propose un mode de contribution plus juste, basé sur les limites réelles de chacun.
+Dans l'organisation de cagnottes de groupe, un déséquilibre s'installe souvent : certains participants donnent au-delà de leurs moyens par pression sociale, tandis que d'autres sont freinés par le montant suggéré. **Kaniot** propose une alternative équitable, basée sur la transparence et le respect des capacités financières de chacun.
 
-## Approche produit
+## Le Concept
 
-- chaque participant renseigne son plafond de contribution,
-- l'algorithme calcule une répartition qui atteint l'objectif sans surplus,
-- l'interface reste simple pour ne pas freiner l'usage en groupe.
+Le projet repose sur un algorithme de contribution intelligent :
+- **Liberté totale** : Chaque participant renseigne confidentiellement le montant maximal qu'il souhaite ou peut investir.
+- **Répartition Juste** : L'algorithme calcule automatiquement la quote-part la plus équilibrée pour atteindre l'objectif, sans jamais dépasser les plafonds individuels.
+- **Transparence** : L'interface simplifiée permet de suivre l'avancée de la cagnotte en temps réel, garantissant une expérience sans friction.
 
-## Résultat
+## Parcours Technique
 
-Le projet est utilisable en conditions réelles et sert de base pour expérimenter des mécaniques de contribution plus transparentes.
+Développé dans le cadre de ma formation chez Ynov, Kaniot a été l'occasion d'explorer des technologies modernes et performantes :
+- **Frontend** : Vue.js 3 couplé à TypeScript pour une interface robuste et typée.
+- **Backend as a Service** : Utilisation de **Supabase** pour la gestion de l'authentification et de la base de données en temps réel.
+
+## État Actuel
+
+Bien que le projet soit aujourd'hui archivé, il reste une étude de cas précieuse sur l'application de la logique algorithmique à des problématiques sociales concrètes. Le code source est disponible en libre accès sur GitHub pour toute exploration ou fork.

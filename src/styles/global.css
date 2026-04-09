@@ -67,6 +67,19 @@
     }
   }
 
+  .project-card-img {
+    animation: imgFadeIn 0.5s ease forwards;
+  }
+
+  @keyframes imgFadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 0.8;
+    }
+  }
+
   .glass-card {
     background: linear-gradient(
       120deg,
@@ -99,7 +112,7 @@
   }
 
   .animate-in {
-    animation: rise-fade 700ms ease-out forwards;
+    animation: rise-fade 400ms ease-out forwards;
   }
 
   .home-portal-grid {
@@ -161,7 +174,7 @@
   .experience-item {
     position: relative;
     opacity: 0;
-    animation: rise-fade 720ms ease-out forwards;
+    animation: rise-fade 400ms ease-out forwards;
   }
 
   .experience-item::before {
@@ -1213,11 +1226,9 @@
 
 @keyframes rise-fade {
   from {
-    transform: translateY(14px);
     opacity: 0;
   }
   to {
-    transform: translateY(0);
     opacity: 1;
   }
 }

@@ -98,6 +98,10 @@ const { images } = Astro.props;
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleScroll);
+
+    // Fade in after page transition completes
+    container.style.transition = "opacity 300ms ease-out";
+    container.style.opacity = "1";
   }
 
   // Support ClientRouter
@@ -112,25 +116,25 @@ const { images } = Astro.props;
     margin: 2rem auto;
     perspective: 1000px;
     z-index: 10;
+    opacity: 0;
   }
 
   @media (min-width: 1024px) {
     .astral-portrait-container {
       position: fixed;
-      right: max(2rem, calc(50vw - 550px - 285px));
-      top: 14rem;
+      right: max(4rem, calc(50vw - 450px - 285px));
+      top: clamp(5.5rem, calc(50vh - 210px), calc(100vh - 520px));
       width: 260px;
       height: 260px;
       margin: 0;
-      z-index: 40;
+      z-index: 100;
       pointer-events: none;
     }
 
     /* Fade out on medium screens to avoid overlap with content */
     @media (max-width: 1600px) {
       .astral-portrait-container {
-        opacity: 0.15;
-        filter: grayscale(1) blur(2px);
+        opacity: 0.75;
       }
     }
   }

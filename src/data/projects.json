@@ -1,53 +1,84 @@
 [
   {
-    "title": "Kaniot",
-    "description": "Une cagnotte de groupe simple, équitable et sans pression sociale.",
-    "details": "Projet réalisé dans le cadre de ma formation à Ynov, puis poussé plus loin pour être mis à disposition du grand public. Kaniot permet à chaque participant d’indiquer le montant maximal qu’il est prêt à donner, puis calcule automatiquement la répartition la plus juste pour atteindre l’objectif sans surplus.",
-    "technologies": ["Vue.js 3", "TypeScript", "Supabase"],
-    "imageUrl": "/images/digital-art-neon-bubbles.jpg",
-    "demoUrl": "https://kaniot.alexnbl27.com",
-    "detailPage": "/projects/kaniot",
-    "category": "saas"
-  },
-  {
     "title": "Azygo",
-    "description": "Un ERP étudiant et une application mobile pour simplifier la gestion d’un BDE.",
-    "details": "Projet en cours porté par A³ Studio. L’objectif est d’aider les associations étudiantes à mieux gérer leur organisation, leurs événements et leur logistique grâce à un ERP intuitif et une application mobile pensée par des étudiants, pour des étudiants.",
-    "technologies": ["Flutter", "Laravel", "Firebase", "Figma"],
+    "description": "La suite logicielle (ERP & Mobile) qui automatise la gestion des BDE pour libérer l’énergie associative.",
+    "details": "AZYGO simplifie la vie associative en automatisant les tâches administratives complexes (billetterie, adhésions, comptabilité). Conçue par des passionnés, cette solution allie un ERP Laravel/Vue.js robuste à une application mobile Flutter intuitive pour redonner aux étudiants leur mission première : l’animation du campus.",
+    "technologies": [
+      "Laravel",
+      "Vue.js",
+      "Flutter",
+      "Docker Swarm"
+    ],
     "imageUrl": "/images/azygo.png",
     "detailPage": "/projects/azygo",
     "category": "mobile"
   },
   {
-    "title": "Mindcares",
-    "description": "Une application et un site web pour apporter un soutien psychologique bienveillant.",
-    "details": "Projet d’année inter-filières réalisé en équipe à Ynov. L’idée est de proposer une safe place où les utilisateurs peuvent trouver du soutien, des ressources utiles et échanger avec des personnes ayant vécu des expériences similaires.",
-    "technologies": ["Flutter", "Firebase", "Laravel", "Symfony", "Figma"],
+    "title": "Kaniot",
+    "description": "Une solution de cagnotte solidaire privilégiant l'équité et la transparence.",
+    "details": "Né d'un projet académique chez Ynov, Kaniot repense la contribution de groupe. L'algorithme permet à chaque participant de définir sa limite réelle, puis calcule automatiquement la répartition la plus juste pour atteindre l'objectif sans surplus, éliminant ainsi toute pression sociale.",
+    "technologies": [
+      "Vue.js 3",
+      "TypeScript",
+      "Supabase"
+    ],
     "imageUrl": "/images/digital-art-neon-bubbles.jpg",
+    "demoUrl": "https://github.com/AlexNbl27/kaniot",
+    "detailPage": "/projects/kaniot",
+    "category": "saas"
+  },
+  {
+    "title": "Mindcares",
+    "description": "Une plateforme d'entraide dédiée au bien-être mental et à l'écoute bienveillante.",
+    "details": "Projet d’année interdisciplinaire réalisé en équipe. Mindcares propose une 'safe place' numérique où les utilisateurs accèdent à du soutien, des ressources qualifiées et des espaces d'échange avec des pairs partageant des expériences de vie similaires.",
+    "technologies": [
+      "Flutter",
+      "Firebase",
+      "Laravel",
+      "Symfony",
+      "Figma"
+    ],
+    "imageUrl": "/images/mindcares.png",
     "category": "mobile"
   },
   {
     "title": "TrouveTaLoc",
-    "description": "Un site de location immobilière développé en PHP natif avec MySQL.",
-    "details": "Projet réalisé à Ynov avec une contrainte forte : concevoir un site web en PHP natif, sans framework, en seulement quatre semaines. Il permet à une agence immobilière de publier ses biens et à ses clients de créer un compte puis de réserver facilement un logement.",
-    "technologies": ["PHP", "MySQL", "Bootstrap", "Twig", "HTML"],
+    "description": "Plateforme de gestion locative développée en PHP natif, alliant robustesse et simplicité.",
+    "details": "Défi technique réalisé chez Ynov : concevoir un site immobilier complet en PHP natif sans framework en seulement 4 semaines. Le projet intègre un moteur de template Twig et une gestion de base de données MySQL pour offrir une expérience fluide de publication et de réservation de biens.",
+    "technologies": [
+      "PHP",
+      "MySQL",
+      "Bootstrap",
+      "Twig",
+      "HTML"
+    ],
     "imageUrl": "/images/digital-art-neon-bubbles.webp",
     "category": "web"
   },
   {
     "title": "SoundSphere",
-    "description": "Une file d’attente musicale collaborative pour organiser des soirées à distance.",
-    "details": "Projet d’équipe réalisé autour de la musique. L’application permet de créer des files d’attente collaboratives et même des espaces publics pour faire découvrir sa sélection musicale à d’autres utilisateurs partout dans le monde.",
-    "technologies": ["Flutter", "Firebase", "Bootstrap", "HTML"],
+    "description": "L'application sociale qui transforme l'écoute musicale en une expérience collaborative.",
+    "details": "SoundSphere permet de créer des files d'attente musicales partagées en temps réel. Que ce soit pour organiser une soirée à distance ou explorer des espaces publics, l'application synchronise les goûts de tous les participants via une stack Flutter/Firebase performante.",
+    "technologies": [
+      "Flutter",
+      "Firebase",
+      "Bootstrap",
+      "HTML"
+    ],
     "imageUrl": "/images/digital-art-neon-bubbles.jpg",
     "category": "mobile"
   },
   {
     "title": "Moodvie",
-    "description": "Une application desktop qui recommande un film ou une série selon l’humeur.",
-    "details": "Projet réalisé en DUT GEII en C# / XAML. L’utilisateur choisit son humeur puis l’application suggère un film ou une série adaptée, avec plusieurs combinaisons possibles comme joyeux, stressé, nostalgique ou en famille.",
-    "technologies": ["C#", "XAML", "Visual Studio"],
-    "imageUrl": "/images/digital-art-neon-bubbles.webp",
+    "description": "Interface desktop innovante suggérant des contenus selon l'état émotionnel de l'utilisateur.",
+    "details": "Développé en architecture C# / XAML (WPF), Moodvie analyse l'humeur sélectionnée pour filtrer et recommander les films ou séries les plus adaptés. Un projet qui explore la psychologie utilisateur au service du divertissement.",
+    "technologies": [
+      "C#",
+      "XAML",
+      "Visual Studio"
+    ],
+    "imageUrl": "/images/moodvie.png",
+    "detailPage": "/projects/moodvie",
     "category": "desktop"
   }
 ]

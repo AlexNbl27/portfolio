@@ -112,6 +112,10 @@
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleScroll);
     handleScroll();
+
+    // Fade in after page transition completes
+    container.style.transition = "opacity 300ms ease-out";
+    container.style.opacity = "1";
   }
 
   document.addEventListener("astro:page-load", initTemporalCompass);
@@ -120,12 +124,13 @@
 <style>
   .astral-age-container {
     position: fixed;
-    right: max(calc(2rem + 40px), calc(50vw - 550px - 285px + 40px));
-    top: 36rem;
+    right: max(calc(4rem + 40px), calc(50vw - 450px - 285px + 40px));
+    top: clamp(calc(5.5rem + 290px), calc(50vh + 110px), calc(100vh - 200px));
     width: 180px;
     height: 180px;
-    z-index: 40;
+    z-index: 100;
     pointer-events: none;
+    opacity: 0;
   }
 
   /* Astral Rings (Copied/Adapted from Portrait) */
@@ -198,8 +203,7 @@
   /* Fade out on medium screens like the portrait */
   @media (max-width: 1600px) {
     .astral-age-container {
-      opacity: 0.2;
-      filter: grayscale(0.5) blur(1px);
+      opacity: 0.75;
     }
   }
 </style>

@@ -55,15 +55,23 @@ const heroImageSrc = resolveImage(heroImage);
 
     {
       heroImageSrc && (
-        <Card class="mt-6 overflow-hidden">
+        <Card class="relative mt-6 overflow-hidden">
+          <div class="hero-img-skeleton absolute inset-0 animate-pulse bg-white/5" />
           <Image
             src={heroImageSrc}
             alt={title}
-            class="h-auto w-full object-cover"
+            class="hero-img relative h-auto w-full object-cover opacity-0 transition-opacity duration-700"
+            onload="this.classList.add('loaded'); this.previousElementSibling.style.display='none';"
           />
         </Card>
       )
     }
+
+    <style>
+      .hero-img.loaded {
+        opacity: 1;
+      }
+    </style>
 
     <Card class="mt-6 p-6 md:p-8">
       <div class="article-content">
