@@ -43,5 +43,17 @@ const {
       <slot />
     </main>
     <Footer />
+    <script>
+      document.addEventListener("astro:page-load", () => {
+        const isRecruiterPage = window.location.pathname === "/recruiter";
+        const nextMode = isRecruiterPage ? "on" : "off";
+        document.body.setAttribute("data-recruiter-mode", nextMode);
+        document.dispatchEvent(
+          new CustomEvent("portfolio:recruiter-mode", {
+            detail: { mode: nextMode },
+          }),
+        );
+      });
+    </script>
   </body>
 </html>
