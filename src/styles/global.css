@@ -49,6 +49,7 @@
       linear-gradient(160deg, #040916 0%, #050d22 45%, #060a18 100%);
     font-family: "Manrope", sans-serif;
     min-height: 100vh;
+    transition: background 320ms ease;
   }
 }
 
@@ -109,6 +110,15 @@
   .focus-ring:focus-visible {
     outline: 2px solid var(--gold);
     outline-offset: 2px;
+  }
+
+  @media (max-width: 767px) {
+    a,
+    button,
+    [role="button"],
+    [role="link"] {
+      min-height: 44px;
+    }
   }
 
   .animate-in {
@@ -1489,4 +1499,36 @@ body[data-soft-skill-theme="mercury"]::after {
 }
 body[data-soft-skill-theme="jupiter"]::after {
   background-color: rgba(255, 120, 0, 0.6) !important;
+}
+
+body[data-recruiter-mode="on"] {
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(150, 112, 220, 0.32),
+      transparent 52%
+    ),
+    radial-gradient(
+      circle at 80% 60%,
+      rgba(74, 132, 190, 0.34),
+      transparent 48%
+    ),
+    linear-gradient(160deg, #0a1430 0%, #0b1735 45%, #0c1732 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .project-card-img,
+  .experience-item,
+  .nav-item {
+    animation: none !important;
+  }
 }

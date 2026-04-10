@@ -3,7 +3,6 @@ import Card from "./ui/Card.astro";
 import Button from "./ui/Button.astro";
 
 const links = [
-  { href: "/", label: "Accueil" },
   { href: "/projects", label: "Projets" },
   { href: "/skills", label: "Compétences" },
   { href: "/soft-skills", label: "Soft skills" },
@@ -83,6 +82,23 @@ const current = Astro.url.pathname;
           class="nav-item opacity-0 translate-y-8 md:opacity-100 md:translate-y-0 mt-4 md:mt-0"
           style={`transition-delay: ${links.length * 70}ms`}
         >
+          <button
+            type="button"
+            id="recruiter-mode-nav-toggle"
+            class="focus-ring inline-flex items-center gap-2 rounded-xl border border-cosmic-gold/30 px-3 py-2 text-xs tracking-[0.12em] text-cosmic-gold transition hover:bg-cosmic-gold/10"
+            aria-pressed="false"
+          >
+            <span
+              id="recruiter-mode-indicator"
+              class="h-1.5 w-1.5 rounded-full bg-cosmic-gold/50 transition"
+            ></span>
+            Mode recruteur
+          </button>
+        </li>
+        <li
+          class="nav-item opacity-0 translate-y-8 md:opacity-100 md:translate-y-0 mt-4 md:mt-0"
+          style={`transition-delay: ${(links.length + 1) * 70}ms`}
+        >
           <Button href="mailto:alexandrenobletpro@gmail.com" variant="primary">
             Contact
           </Button>
@@ -100,6 +116,35 @@ const current = Astro.url.pathname;
     const bTop = document.getElementById("burger-top");
     const bMid = document.getElementById("burger-mid");
     const bBot = document.getElementById("burger-bot");
+    const recruiterModeToggle = document.getElementById(
+      "recruiter-mode-nav-toggle",
+    ) as HTMLButtonElement | null;
+    const recruiterModeIndicator = document.getElementById(
+      "recruiter-mode-indicator",
+    );
+
+    const syncRecruiterUI = (active: boolean) => {
+      if (!recruiterModeToggle) return;
+      recruiterModeToggle.setAttribute("aria-pressed", active ? "true" : "false");
+      recruiterModeToggle.classList.toggle("bg-cosmic-gold/10", active);
+      recruiterModeToggle.setAttribute(
+        "aria-label",
+        active
+          ? "Désactiver le mode recruteur"
+          : "Activer le mode recruteur",
+      );
+      recruiterModeIndicator?.classList.toggle("bg-cosmic-gold", active);
+      recruiterModeIndicator?.classList.toggle("shadow-[0_0_10px_rgba(246,212,13,0.8)]", active);
+      recruiterModeIndicator?.classList.toggle("bg-cosmic-gold/50", !active);
+    };
+
+    const storedRecruiterMode =
+      localStorage.getItem("portfolio-recruiter-mode") === "on";
+    document.body.setAttribute(
+      "data-recruiter-mode",
+      storedRecruiterMode ? "on" : "off",
+    );
+    syncRecruiterUI(storedRecruiterMode);
 
     if (menuToggle && menu && navCard) {
       menuToggle.onclick = () => {
@@ -131,6 +176,21 @@ const current = Astro.url.pathname;
           menuToggle.setAttribute("aria-expanded", "true");
         }
       };
+    }
+
+    if (recruiterModeToggle) {
+      recruiterModeToggle.addEventListener("click", () => {
+        const currentMode = document.body.getAttribute("data-recruiter-mode");
+        const nextMode = currentMode === "on" ? "off" : "on";
+        document.body.setAttribute("data-recruiter-mode", nextMode);
+        localStorage.setItem("portfolio-recruiter-mode", nextMode);
+        syncRecruiterUI(nextMode === "on");
+        document.dispatchEvent(
+          new CustomEvent("portfolio:recruiter-mode", {
+            detail: { mode: nextMode },
+          }),
+        );
+      });
     }
 
     // Prevent navigation to the current page

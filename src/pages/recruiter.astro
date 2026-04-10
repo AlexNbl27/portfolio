@@ -1,0 +1,79 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Card from "../components/ui/Card.astro";
+import Button from "../components/ui/Button.astro";
+---
+
+<BaseLayout
+  title="Alexandre Noblet | Parcours recruteur 60 secondes"
+  description="Vue rapide du portfolio d’Alexandre Noblet : projets clés, compétences essentielles et parcours en 60 secondes."
+>
+  <section class="cosmic-container pt-8">
+    <p class="text-xs uppercase tracking-[0.24em] text-cosmic-pink">
+      Mode recruteur
+    </p>
+    <h1 class="section-title mt-2">
+      Vue <span class="highlight">60 secondes</span>
+    </h1>
+    <p class="muted mt-4 max-w-3xl text-base md:text-lg">
+      Cette page regroupe les éléments clés pour une lecture rapide : impact
+      produit, stack technique, et progression du parcours.
+    </p>
+
+    <div class="mt-6 flex flex-wrap gap-3">
+      <Button href="/projects" variant="primary">3 projets phares</Button>
+      <Button href="/skills" variant="outline">Compétences clés</Button>
+      <Button href="/experience" variant="outline">Parcours synthèse</Button>
+      <Button href="mailto:alexandrenobletpro@gmail.com" variant="ghost">
+        Contact direct
+      </Button>
+    </div>
+  </section>
+
+  <section class="cosmic-container mt-8 grid gap-5 md:grid-cols-3">
+    <Card class="p-5" data-recruiter-priority="true">
+      <p class="text-xs uppercase tracking-[0.18em] text-cosmic-pink">
+        Produit
+      </p>
+      <h2 class="mt-2 text-cosmic-gold font-display text-3xl">Azygo</h2>
+      <p class="muted mt-2 text-sm">
+        ERP + mobile pour automatiser la gestion associative et améliorer
+        l’expérience terrain.
+      </p>
+    </Card>
+
+    <Card class="p-5" data-recruiter-priority="true">
+      <p class="text-xs uppercase tracking-[0.18em] text-cosmic-pink">
+        SaaS
+      </p>
+      <h2 class="mt-2 text-cosmic-gold font-display text-3xl">Kaniot</h2>
+      <p class="muted mt-2 text-sm">
+        Répartition équitable des contributions avec logique métier claire et
+        UX lisible.
+      </p>
+    </Card>
+
+    <Card class="p-5" data-recruiter-priority="true">
+      <p class="text-xs uppercase tracking-[0.18em] text-cosmic-pink">
+        Desktop
+      </p>
+      <h2 class="mt-2 text-cosmic-gold font-display text-3xl">Moodvie</h2>
+      <p class="muted mt-2 text-sm">
+        App desktop orientée recommandation émotionnelle (C#/XAML) avec UI
+        structurée.
+      </p>
+    </Card>
+  </section>
+</BaseLayout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    document.body.setAttribute("data-recruiter-mode", "on");
+    localStorage.setItem("portfolio-recruiter-mode", "on");
+    document.dispatchEvent(
+      new CustomEvent("portfolio:recruiter-mode", {
+        detail: { mode: "on" },
+      }),
+    );
+  });
+</script>
