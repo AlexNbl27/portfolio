@@ -3,17 +3,49 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import ProjectFilter from '../components/ProjectFilter.astro';
 import projects from '../data/projects.json';
+
+const recruiterSpotlight = [
+  "Azygo",
+  "Kaniot",
+  "Moodvie",
+];
 ---
 
 <BaseLayout title="Alexandre Noblet | Projets" description="Découvrez les projets web, mobile, desktop et SaaS d’Alexandre Noblet.">
   <section class="cosmic-container pt-8">
     <h1 class="section-title">Mes <span class="highlight">projets</span></h1>
     <p class="muted mt-4 max-w-3xl text-lg">Une sélection de projets réalisés en formation, en stage ou sur mon temps personnel, avec un intérêt constant pour les produits utiles, concrets et bien pensés.</p>
+    <div class="mt-6 rounded-2xl border border-cosmic-gold/20 bg-slate-900/20 p-4 md:p-5">
+      <p class="text-xs uppercase tracking-[0.24em] text-cosmic-pink">
+        Parcours recruteur
+      </p>
+      <h2 class="mt-2 font-display text-2xl md:text-3xl text-cosmic-gold">
+        60 secondes pour voir l’essentiel
+      </h2>
+      <p class="muted mt-2 max-w-2xl text-sm md:text-base">
+        Activez le mode rapide pour afficher seulement 3 projets clés :
+        impact produit, stack technique et exécution.
+      </p>
+      <div class="mt-4 flex flex-wrap items-center gap-2">
+        <button
+          id="recruiter-mode-toggle"
+          type="button"
+          class="focus-ring rounded-xl border border-cosmic-gold/35 px-4 py-2 text-sm text-cosmic-gold transition hover:bg-cosmic-gold/10"
+          aria-pressed="false"
+        >
+          Activer le mode recruteur
+        </button>
+        <p class="text-xs text-cosmic-gold/70">
+          Projets mis en avant : {recruiterSpotlight.join(" • ")}
+        </p>
+      </div>
+    </div>
     <ProjectFilter />
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="project-grid">
       {projects.map((project) => (
         <div
           data-category={project.category}
+          data-featured={recruiterSpotlight.includes(project.title) ? 'true' : 'false'}
           data-detail-page={project.detailPage ?? ''}
           class:list={[
             'project-item',
@@ -35,25 +67,56 @@ import projects from '../data/projects.json';
 
   const buttons = document.querySelectorAll('.filter-btn');
   const cards = document.querySelectorAll('.project-item');
+  const recruiterModeToggle = document.getElementById(
+    "recruiter-mode-toggle",
+  ) as HTMLButtonElement | null;
+
+  let activeCategory = "all";
+  let recruiterMode = false;
+
+  const applyVisibility = () => {
+    cards.forEach((card) => {
+      const matchesCategory =
+        activeCategory === "all" ||
+        card.getAttribute("data-category") === activeCategory;
+      const isFeatured = card.getAttribute("data-featured") === "true";
+      const visible = matchesCategory && (!recruiterMode || isFeatured);
+
+      const wasHidden = card.classList.contains("hidden");
+      card.classList.toggle("hidden", !visible);
+
+      if (visible && wasHidden) {
+        const img = card.querySelector('.project-card-img') as HTMLElement | null;
+        if (img) {
+          img.style.animation = 'none';
+          void img.offsetWidth;
+          img.style.animation = '';
+        }
+      }
+    });
+  };
 
   buttons.forEach((btn) => {
     btn.addEventListener('click', () => {
-      const category = btn.getAttribute('data-category');
-      cards.forEach((card) => {
-        const visible = category === 'all' || card.getAttribute('data-category') === category;
-        const wasHidden = card.classList.contains('hidden');
-        card.classList.toggle('hidden', !visible);
-        if (visible && wasHidden) {
-          const img = card.querySelector('.project-card-img') as HTMLElement | null;
-          if (img) {
-            img.style.animation = 'none';
-            void img.offsetWidth;
-            img.style.animation = '';
-          }
-        }
-      });
+      activeCategory = btn.getAttribute('data-category') ?? 'all';
+      applyVisibility();
     });
   });
+
+  if (recruiterModeToggle) {
+    recruiterModeToggle.addEventListener("click", () => {
+      recruiterMode = !recruiterMode;
+      recruiterModeToggle.setAttribute(
+        "aria-pressed",
+        recruiterMode ? "true" : "false",
+      );
+      recruiterModeToggle.textContent = recruiterMode
+        ? "Désactiver le mode recruteur"
+        : "Activer le mode recruteur";
+      recruiterModeToggle.classList.toggle("bg-cosmic-gold/10", recruiterMode);
+      applyVisibility();
+    });
+  }
 
   cards.forEach((card) => {
     const detailPage = card.getAttribute('data-detail-page');
