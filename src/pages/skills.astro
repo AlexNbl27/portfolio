@@ -6,15 +6,6 @@ import VibeSwitch from "../components/ui/VibeSwitch.astro";
 import skills from "../data/skills.json";
 
 const categories = [...new Set(skills.map((skill) => skill.category))];
-const recruiterCoreSkills = [
-  "Flutter",
-  "PHP",
-  "TypeScript",
-  "Laravel",
-  "MySQL",
-  "Git",
-  "Docker",
-];
 ---
 
 <BaseLayout
@@ -46,7 +37,7 @@ const recruiterCoreSkills = [
           <div
             data-category={skill.category}
             data-name={skill.name}
-            data-recruiter-core={recruiterCoreSkills.includes(skill.name) ? "true" : "false"}
+            data-recruiter-core={skill.recruiterCore ? "true" : "false"}
             class:list={[
               "skill-item flex flex-col",
               skill.isVibeOnly

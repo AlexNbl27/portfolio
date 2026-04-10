@@ -3,12 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import ProjectFilter from '../components/ProjectFilter.astro';
 import projects from '../data/projects.json';
-
-const recruiterSpotlight = [
-  "Azygo",
-  "Kaniot",
-  "Moodvie",
-];
 ---
 
 <BaseLayout title="Alexandre Noblet | Projets" description="Découvrez les projets web, mobile, desktop et SaaS d’Alexandre Noblet.">
@@ -20,7 +14,7 @@ const recruiterSpotlight = [
       {projects.map((project) => (
         <div
           data-category={project.category}
-          data-featured={recruiterSpotlight.includes(project.title) ? 'true' : 'false'}
+          data-featured={project.recruiterFeatured ? 'true' : 'false'}
           data-detail-page={project.detailPage ?? ''}
           class:list={[
             'project-item',

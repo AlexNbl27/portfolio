@@ -93,12 +93,14 @@ const portraitImages = [
       let visibleCount = 0;
       items.forEach((item) => {
         const type = item.getAttribute("data-type") || "pro";
+        const recruiterVisible =
+          item.getAttribute("data-recruiter-visible") === "true";
         const role = item.getAttribute("data-role") || "";
         const company = item.getAttribute("data-company") || "";
         const desc = item.getAttribute("data-description") || "";
 
         const matchesType = activeFilter === "all" || type === activeFilter;
-        const matchesRecruiter = !isRecruiterMode || type === "pro";
+        const matchesRecruiter = !isRecruiterMode || recruiterVisible;
         const matchesSearch =
           searchQuery === "" ||
           matchesQuery(role, searchQuery) ||

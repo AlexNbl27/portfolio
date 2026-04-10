@@ -11,7 +11,8 @@
     ],
     "imageUrl": "/images/azygo.png",
     "detailPage": "/projects/azygo",
-    "category": "mobile"
+    "category": "mobile",
+    "recruiterFeatured": true
   },
   {
     "title": "Kaniot",
@@ -25,7 +26,8 @@
     "imageUrl": "/images/digital-art-neon-bubbles.jpg",
     "demoUrl": "https://github.com/AlexNbl27/kaniot",
     "detailPage": "/projects/kaniot",
-    "category": "saas"
+    "category": "saas",
+    "recruiterFeatured": true
   },
   {
     "title": "Mindcares",
@@ -39,7 +41,8 @@
       "Figma"
     ],
     "imageUrl": "/images/mindcares.png",
-    "category": "mobile"
+    "category": "mobile",
+    "recruiterFeatured": false
   },
   {
     "title": "TrouveTaLoc",
@@ -53,7 +56,8 @@
       "HTML"
     ],
     "imageUrl": "/images/digital-art-neon-bubbles.webp",
-    "category": "web"
+    "category": "web",
+    "recruiterFeatured": false
   },
   {
     "title": "SoundSphere",
@@ -66,7 +70,8 @@
       "HTML"
     ],
     "imageUrl": "/images/digital-art-neon-bubbles.jpg",
-    "category": "mobile"
+    "category": "mobile",
+    "recruiterFeatured": false
   },
   {
     "title": "Moodvie",
@@ -79,6 +84,7 @@
     ],
     "imageUrl": "/images/moodvie.png",
     "detailPage": "/projects/moodvie",
-    "category": "desktop"
+    "category": "desktop",
+    "recruiterFeatured": true
   }
 ]

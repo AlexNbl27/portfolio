@@ -4,6 +4,7 @@
     "role": "Intégrateur et développeur fullstack",
     "period": "2024 - Aujourd’hui",
     "type": "pro",
+    "recruiterVisible": true,
     "description": "Au sein de l'équipe OBS, j'interviens sur des projets critiques mêlant Industrie 4.0 et IoT. Dans un contexte où l'IA transforme nos métiers, j'oriente mon expertise vers le versant fonctionnel : j'accompagne nos clients pour traduire leurs enjeux métiers en spécifications techniques précises. En parallèle, j'assure le rôle de référent sur les problématiques de développement mobile liées à l'écosystème IoT.",
     "achievements": [
       "Pilotage de la solution PlanetTogether pour la planification et l’ordonnancement de production.",
@@ -23,6 +24,7 @@
     "role": "Intégrateur IoT et développeur mobile",
     "period": "Juil. 2024 - Août 2024",
     "type": "pro",
+    "recruiterVisible": true,
     "description": "Stage intensif de 6 semaines dédié au développement d'une solution mobile d'inventaire, visant à optimiser la gestion de stock via la technologie Flutter.",
     "achievements": [
       "Finalisation et déploiement d’une application mobile Flutter pour le projet Live Tag.",
@@ -42,6 +44,7 @@
     "role": "Automaticien en bureau d’études",
     "period": "Printemps 2023",
     "type": "pro",
+    "recruiterVisible": true,
     "description": "Immersion en milieu industriel contraint pour la conception d’un système de monitoring 4.0 et d'automatisme destiné à une installation nucléaire sensible.",
     "achievements": [
       "Architecture d’un système de surveillance IoT pour une infrastructure critique.",
@@ -59,6 +62,7 @@
     "role": "Étudiant en informatique",
     "period": "2023 - 2026",
     "type": "formation",
+    "recruiterVisible": false,
     "description": "Après un DUT GEII, j’ai choisi de me spécialiser pleinement en informatique afin de développer des compétences solides en développement web, mobile et fullstack.",
     "achievements": [
       "Réalisation de plusieurs projets d’équipe et projets personnels orientés produit.",
@@ -77,6 +81,7 @@
     "role": "DUT GEII obtenu",
     "period": "2021 - 2023",
     "type": "formation",
+    "recruiterVisible": false,
     "description": "Formation en Génie Électrique et Informatique Industrielle, qui m’a apporté une base technique solide en automatisme, programmation et systèmes industriels.",
     "achievements": [
       "Obtention du DUT GEII (Bac+2).",
