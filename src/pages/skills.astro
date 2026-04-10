@@ -6,6 +6,15 @@ import VibeSwitch from "../components/ui/VibeSwitch.astro";
 import skills from "../data/skills.json";
 
 const categories = [...new Set(skills.map((skill) => skill.category))];
+const recruiterCoreSkills = [
+  "Flutter",
+  "PHP",
+  "TypeScript",
+  "Laravel",
+  "MySQL",
+  "Git",
+  "Docker",
+];
 ---
 
 <BaseLayout
@@ -37,6 +46,7 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
           <div
             data-category={skill.category}
             data-name={skill.name}
+            data-recruiter-core={recruiterCoreSkills.includes(skill.name) ? "true" : "false"}
             class:list={[
               "skill-item flex flex-col",
               skill.isVibeOnly
@@ -80,6 +90,8 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
     let activeCategory = "all";
     let searchQuery = "";
     let isVibeMode = false;
+    let isRecruiterMode =
+      document.body.getAttribute("data-recruiter-mode") === "on";
     const isReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -122,6 +134,8 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
         const itemCategory = item.getAttribute("data-category") || "";
         const itemName = item.getAttribute("data-name") || "";
         const isVibeOnly = item.classList.contains("vibe-only-item");
+        const isRecruiterCore =
+          item.getAttribute("data-recruiter-core") === "true";
 
         // Filter logic
         const matchesCategory =
@@ -131,8 +145,10 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
           matchesQuery(itemName, searchQuery) ||
           matchesQuery(itemCategory, searchQuery);
         const matchesVibe = !isVibeOnly || isVibeMode;
+        const matchesRecruiter = !isRecruiterMode || isRecruiterCore;
 
-        const visible = matchesCategory && matchesSearch && matchesVibe;
+        const visible =
+          matchesCategory && matchesSearch && matchesVibe && matchesRecruiter;
 
         if (visible) {
           item.classList.remove("hidden");
@@ -301,6 +317,12 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
         updateUI();
       });
     }
+
+    document.addEventListener("portfolio:recruiter-mode", (event) => {
+      const customEvent = event as CustomEvent<{ mode: "on" | "off" }>;
+      isRecruiterMode = customEvent.detail?.mode === "on";
+      updateUI();
+    });
 
     // Initial state
     const allBtn = document.querySelector('[data-category="all"]');

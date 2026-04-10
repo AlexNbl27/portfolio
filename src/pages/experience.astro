@@ -60,6 +60,8 @@ const portraitImages = [
 
     let activeFilter = "all";
     let searchQuery = "";
+    let isRecruiterMode =
+      document.body.getAttribute("data-recruiter-mode") === "on";
 
     // Reuse the same robust normalization and fuzzy logic
     const normalize = (str: string) =>
@@ -96,13 +98,14 @@ const portraitImages = [
         const desc = item.getAttribute("data-description") || "";
 
         const matchesType = activeFilter === "all" || type === activeFilter;
+        const matchesRecruiter = !isRecruiterMode || type === "pro";
         const matchesSearch =
           searchQuery === "" ||
           matchesQuery(role, searchQuery) ||
           matchesQuery(company, searchQuery) ||
           matchesQuery(desc, searchQuery);
 
-        const visible = matchesType && matchesSearch;
+        const visible = matchesType && matchesSearch && matchesRecruiter;
 
         (item as HTMLElement).style.display = visible ? "grid" : "none";
 
@@ -142,9 +145,16 @@ const portraitImages = [
       });
     }
 
+    document.addEventListener("portfolio:recruiter-mode", (event) => {
+      const customEvent = event as CustomEvent<{ mode: "on" | "off" }>;
+      isRecruiterMode = customEvent.detail?.mode === "on";
+      updateUI();
+    });
+
     // Initial state setup
     const allBtn = document.querySelector('[data-filter="all"]');
     if (allBtn)
       allBtn.classList.add("border-cosmic-gold/60", "text-cosmic-gold");
+    updateUI();
   });
 </script>
