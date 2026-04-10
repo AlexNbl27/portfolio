@@ -71,3 +71,24 @@ const featuredExperience = experiences.filter((item) => item.recruiterVisible);
     </Card>
   </section>
 </BaseLayout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const projectLinks = document.querySelectorAll(
+      '#projets-phares a[href^="/projects/"]',
+    ) as NodeListOf<HTMLAnchorElement>;
+
+    projectLinks.forEach((link) => {
+      const url = new URL(link.href, window.location.origin);
+      url.searchParams.set("from", "recruiter");
+      link.href = `${url.pathname}${url.search}`;
+
+      link.addEventListener("click", () => {
+        sessionStorage.setItem(
+          "project-detail-back-link",
+          "/recruiter#projets-phares",
+        );
+      });
+    });
+  });
+</script>
