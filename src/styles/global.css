@@ -111,6 +111,15 @@
     outline-offset: 2px;
   }
 
+  @media (max-width: 767px) {
+    a,
+    button,
+    [role="button"],
+    [role="link"] {
+      min-height: 44px;
+    }
+  }
+
   .animate-in {
     animation: rise-fade 400ms ease-out forwards;
   }
@@ -1489,4 +1498,21 @@ body[data-soft-skill-theme="mercury"]::after {
 }
 body[data-soft-skill-theme="jupiter"]::after {
   background-color: rgba(255, 120, 0, 0.6) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .project-card-img,
+  .experience-item,
+  .nav-item {
+    animation: none !important;
+  }
 }

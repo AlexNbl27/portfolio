@@ -30,18 +30,6 @@ const homeSections = [
   },
 ];
 
-const homeSectionRows = homeSections.reduce<(typeof homeSections)[]>(
-  (rows, section, index) => {
-    if (index % 2 === 0) {
-      rows.push([section]);
-    } else {
-      rows[rows.length - 1].push(section);
-    }
-
-    return rows;
-  },
-  [],
-);
 ---
 
 <BaseLayout
@@ -49,6 +37,25 @@ const homeSectionRows = homeSections.reduce<(typeof homeSections)[]>(
   description="Portfolio d’Alexandre Noblet, développeur et intégrateur IoT à Lyon."
 >
   <Hero />
+  <section class="cosmic-container mt-8">
+    <Card class="p-5 md:p-6">
+      <p class="text-xs uppercase tracking-[0.26em] text-cosmic-pink">
+        Parcours rapide
+      </p>
+      <h2 class="mt-2 font-display text-3xl md:text-4xl text-cosmic-gold">
+        Recruteur ? Commence ici en 60 secondes.
+      </h2>
+      <p class="muted mt-3 max-w-2xl">
+        Si vous voulez l'essentiel rapidement : mes projets concrets, mes
+        compétences clés et mon parcours.
+      </p>
+      <div class="mt-4 flex flex-wrap gap-3">
+        <a class="focus-ring rounded-xl border border-cosmic-gold/35 px-4 py-2 text-sm text-cosmic-gold hover:bg-cosmic-gold/10 transition" href="/projects">Voir les projets</a>
+        <a class="focus-ring rounded-xl border border-cosmic-gold/35 px-4 py-2 text-sm text-cosmic-gold hover:bg-cosmic-gold/10 transition" href="/skills">Voir les compétences</a>
+        <a class="focus-ring rounded-xl border border-cosmic-gold/35 px-4 py-2 text-sm text-cosmic-gold hover:bg-cosmic-gold/10 transition" href="/experience">Voir le parcours</a>
+      </div>
+    </Card>
+  </section>
   <section class="cosmic-container mt-10 grid gap-6 md:grid-cols-2">
     {
       homeSections.map((section) => (
