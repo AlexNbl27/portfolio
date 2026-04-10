@@ -11,12 +11,41 @@ import experiences from "../data/experience.json";
 const featuredProjects = projects.filter((project) => project.recruiterFeatured);
 const featuredSkills = skills.filter((skill) => skill.recruiterCore);
 const featuredExperience = experiences.filter((item) => item.recruiterVisible);
+const skillNarratives = Object.fromEntries(
+  featuredSkills.map((skill) => {
+    const relatedProjects = featuredProjects.filter((project) =>
+      project.technologies.some((tech) =>
+        tech.toLowerCase().includes(skill.name.toLowerCase()),
+      ),
+    );
+    const relatedExperience = featuredExperience.filter((item) =>
+      item.technologies.some((tech) =>
+        tech.toLowerCase().includes(skill.name.toLowerCase()),
+      ),
+    );
+
+    return [
+      skill.name,
+      {
+        projects: relatedProjects.map((project) => ({
+          title: project.title,
+          detailPage: project.detailPage,
+        })),
+        experience: relatedExperience.map((item) => ({
+          role: item.role,
+          company: item.company,
+        })),
+      },
+    ];
+  }),
+);
 ---
 
 <BaseLayout
   title="Alexandre Noblet | Parcours recruteur 60 secondes"
   description="Parcours recruteur en une seule page : projets, compétences et expériences clés."
 >
+  <div class="recruiter-scanline" aria-hidden="true"></div>
   <section class="cosmic-container pt-8">
     <p class="text-xs uppercase tracking-[0.24em] text-cosmic-pink">
       Parcours 60 secondes
@@ -29,30 +58,57 @@ const featuredExperience = experiences.filter((item) => item.recruiterVisible);
       projets phares, les compétences clés et le parcours professionnel.
     </p>
 
-    <div class="mt-6 flex flex-wrap gap-3">
+    <div class="mt-6 flex flex-wrap items-center gap-3">
       <a class="focus-ring rounded-xl border border-cosmic-gold/35 px-4 py-2 text-sm text-cosmic-gold transition hover:bg-cosmic-gold/10" href="#projets-phares">Projets</a>
       <a class="focus-ring rounded-xl border border-cosmic-gold/35 px-4 py-2 text-sm text-cosmic-gold transition hover:bg-cosmic-gold/10" href="#competences-cles">Compétences</a>
       <a class="focus-ring rounded-xl border border-cosmic-gold/35 px-4 py-2 text-sm text-cosmic-gold transition hover:bg-cosmic-gold/10" href="#parcours-pro">Parcours</a>
       <a class="focus-ring rounded-xl border border-cosmic-gold/35 px-4 py-2 text-sm text-cosmic-gold transition hover:bg-cosmic-gold/10" href="mailto:alexandrenobletpro@gmail.com">Contact</a>
+      <span
+        id="reading-time-badge"
+        class="ml-auto rounded-full border border-cosmic-gold/35 px-3 py-1 text-xs text-cosmic-gold/90"
+      >
+        Temps restant ~ 60s
+      </span>
     </div>
   </section>
 
   <section id="projets-phares" class="cosmic-container mt-10">
-    <h2 class="font-display text-4xl text-cosmic-gold">Projets phares</h2>
+    <p class="text-xs uppercase tracking-[0.22em] text-cosmic-pink">Section 1</p>
+    <h2 class="font-display text-4xl md:text-5xl text-cosmic-gold">Projets phares</h2>
     <div class="mt-5 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {featuredProjects.map((project) => <ProjectCard project={project} />)}
     </div>
   </section>
 
   <section id="competences-cles" class="cosmic-container mt-12">
-    <h2 class="font-display text-4xl text-cosmic-gold">Compétences clés</h2>
+    <p class="text-xs uppercase tracking-[0.22em] text-cosmic-pink">Section 2</p>
+    <h2 class="font-display text-4xl md:text-5xl text-cosmic-gold">Compétences clés</h2>
     <div class="mt-5 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {featuredSkills.map((skill) => <SkillOrbit skill={skill} />)}
+      {
+        featuredSkills.map((skill) => (
+          <button
+            type="button"
+            class="text-left"
+            data-skill-focus={skill.name}
+            aria-label={`Voir la narration liée à la compétence ${skill.name}`}
+          >
+            <SkillOrbit skill={skill} />
+          </button>
+        ))
+      }
+    </div>
+    <Card id="skill-focus-panel" class="mt-6 p-5 hidden">
+      <p class="text-xs uppercase tracking-[0.22em] text-cosmic-pink">
+        Narration compétence
+      </p>
+      <h3 id="skill-focus-title" class="mt-2 font-display text-3xl text-cosmic-gold"></h3>
+      <div id="skill-focus-content" class="mt-3 muted text-sm"></div>
     </div>
   </section>
 
   <section id="parcours-pro" class="cosmic-container mt-12">
-    <h2 class="font-display text-4xl text-cosmic-gold">Parcours professionnel</h2>
+    <p class="text-xs uppercase tracking-[0.22em] text-cosmic-pink">Section 3</p>
+    <h2 class="font-display text-4xl md:text-5xl text-cosmic-gold">Parcours professionnel</h2>
     <div class="mt-5 space-y-5">
       {featuredExperience.map((item) => <ExperienceCard item={item} />)}
     </div>
@@ -74,6 +130,13 @@ const featuredExperience = experiences.filter((item) => item.recruiterVisible);
 
 <script>
   document.addEventListener("astro:page-load", () => {
+    const readingTimeBadge = document.getElementById("reading-time-badge");
+    const sections = [
+      document.getElementById("projets-phares"),
+      document.getElementById("competences-cles"),
+      document.getElementById("parcours-pro"),
+    ].filter(Boolean) as HTMLElement[];
+
     const projectLinks = document.querySelectorAll(
       '#projets-phares a[href^="/projects/"]',
     ) as NodeListOf<HTMLAnchorElement>;
@@ -90,5 +153,106 @@ const featuredExperience = experiences.filter((item) => item.recruiterVisible);
         );
       });
     });
+
+    const updateReadingTime = () => {
+      if (!readingTimeBadge || sections.length === 0) return;
+      const remainingSections = sections.filter((section) => {
+        const rect = section.getBoundingClientRect();
+        return rect.bottom > window.innerHeight * 0.25;
+      }).length;
+      const seconds = Math.max(10, remainingSections * 20);
+      readingTimeBadge.textContent = `Temps restant ~ ${seconds}s`;
+    };
+    updateReadingTime();
+    window.addEventListener("scroll", updateReadingTime, { passive: true });
+
+    const skillFocusButtons = document.querySelectorAll(
+      "[data-skill-focus]",
+    ) as NodeListOf<HTMLButtonElement>;
+    const focusPanel = document.getElementById("skill-focus-panel");
+    const focusTitle = document.getElementById("skill-focus-title");
+    const focusContent = document.getElementById("skill-focus-content");
+    const narratives = JSON.parse(
+      document.getElementById("skill-focus-data")?.textContent || "{}",
+    );
+
+    skillFocusButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const skillName = button.getAttribute("data-skill-focus") || "";
+        const data = narratives[skillName];
+        if (!focusPanel || !focusTitle || !focusContent || !data) return;
+
+        const projects = data.projects
+          .map(
+            (project) =>
+              `<li><a class="underline decoration-cosmic-gold/60" href="${project.detailPage || "#"}">${project.title}</a></li>`,
+          )
+          .join("");
+        const experiences = data.experience
+          .map(
+            (item) =>
+              `<li>${item.role} — <span class="text-cosmic-gold/80">${item.company}</span></li>`,
+          )
+          .join("");
+
+        focusTitle.textContent = skillName;
+        focusContent.innerHTML = `
+          <p class="mb-3">Cette compétence est reliée aux preuves suivantes :</p>
+          <p class="text-xs uppercase tracking-[0.16em] text-cosmic-pink mb-1">Projets</p>
+          <ul class="mb-4 list-disc pl-5">${projects || "<li>Aucune correspondance directe.</li>"}</ul>
+          <p class="text-xs uppercase tracking-[0.16em] text-cosmic-pink mb-1">Expériences</p>
+          <ul class="list-disc pl-5">${experiences || "<li>Aucune correspondance directe.</li>"}</ul>
+        `;
+
+        focusPanel.classList.remove("hidden");
+        focusPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      });
+    });
   });
 </script>
+
+<script type="application/json" id="skill-focus-data">
+  {JSON.stringify(skillNarratives)}
+</script>
+
+<style>
+  .recruiter-scanline {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(246, 212, 13, 0.08) 48%,
+      rgba(246, 212, 13, 0.16) 50%,
+      rgba(246, 212, 13, 0.08) 52%,
+      transparent 100%
+    );
+    animation: recruiterScan 8s linear infinite;
+    mix-blend-mode: screen;
+  }
+
+  @keyframes recruiterScan {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(100%);
+    }
+  }
+
+  @media (max-width: 767px) {
+    #reading-time-badge {
+      margin-left: 0;
+      width: 100%;
+      text-align: center;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .recruiter-scanline {
+      animation: none;
+      opacity: 0.4;
+    }
+  }
+</style>
