@@ -3,7 +3,6 @@ layout: ../../../layouts/BlogPostLayout.astro
 title: "Bilan : De l’Automatisme à l’Ingénierie Informatique"
 description: "Réflexions sur 10 semaines d'immersion chez REEL et l'évolution de ma vision du métier d'ingénieur."
 date: "23/06/2023"
-heroImage: "/images/reel-conclusion.png"
 blogTitle: "Journal de bord : Stage chez REEL (Division Nucléaire)"
 parentLink: "/blogs/stage-reel"
 ---

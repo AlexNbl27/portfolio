@@ -3,7 +3,7 @@ layout: ../../../layouts/BlogPostLayout.astro
 title: "Cybersécurité : Connecter l’Ultra-Sensible"
 description: "Comment garantir l'intégrité et la sécurité des données IoT dans un environnement nucléaire."
 date: "10/06/2023"
-heroImage: "/images/reel-security.png"
+heroImage: "/images/reel-security.jpg"
 blogTitle: "Journal de bord : Stage chez REEL (Division Nucléaire)"
 parentLink: "/blogs/stage-reel"
 ---

@@ -48,10 +48,11 @@ const { blog } = Astro.props as { blog: BlogMeta };
       </div>
 
       {
-        blog.coverImage && resolveImage(blog.coverImage) && (
+        (blog.detailImage ?? blog.coverImage) &&
+          resolveImage(blog.detailImage ?? blog.coverImage) && (
           <Card class="overflow-hidden">
             <Image
-              src={resolveImage(blog.coverImage)!}
+              src={resolveImage(blog.detailImage ?? blog.coverImage)!}
               alt={blog.title}
               class="h-full w-full object-cover"
             />
@@ -83,7 +84,7 @@ const { blog } = Astro.props as { blog: BlogMeta };
               <Button
                 as="span"
                 variant="outline"
-                class="mt-auto pointer-events-none group-hover/card:bg-cosmic-gold group-hover/card:text-black mt-auto"
+                class="mt-auto pointer-events-none group-hover/card:bg-cosmic-gold group-hover/card:text-black"
               >
                 Lire l’article
               </Button>
