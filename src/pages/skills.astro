@@ -143,6 +143,7 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
 
         if (visible) {
           item.classList.remove("hidden");
+          item.classList.remove("is-generating");
           (item as HTMLElement).style.display = ""; // Nettoyer le style inline résiduel
           // Suppression temporaire de l'animation de slide-up pour plus de fluidité
           visibleCount++;
@@ -312,7 +313,15 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
     document.addEventListener("portfolio:recruiter-mode", (event) => {
       const customEvent = event as CustomEvent<{ mode: "on" | "off" }>;
       isRecruiterMode = customEvent.detail?.mode === "on";
+
+      // Stabiliser l'état UI si le switch vibe est déjà actif
+      if (activeTypeInterval) clearInterval(activeTypeInterval);
+      revelationTimeouts.forEach((t) => clearTimeout(t));
+      revelationTimeouts = [];
+      skillItems.forEach((item) => item.classList.remove("is-generating"));
+
       updateUI();
+      if (isVibeMode) animateBoost(true);
     });
 
     // Initial state
