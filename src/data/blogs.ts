@@ -13,6 +13,7 @@ export interface BlogMeta {
   summary: string;
   skills: string[];
   coverImage?: string;
+  detailImage?: string;
   posts: BlogPostMeta[];
 }
 
@@ -89,7 +90,8 @@ const blogs: BlogMeta[] = [
       'Cybersécurité',
       'Linux'
     ],
-    coverImage: '/images/reel-mission.png',
+    coverImage: '/images/reel-mission.jpg',
+    detailImage: '/images/reel-logo.png',
     posts: [
       {
         slug: 'mission',

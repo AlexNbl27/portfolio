@@ -3,7 +3,7 @@ layout: ../../../layouts/BlogPostLayout.astro
 title: "L’Automatisme au cœur du Nucléaire : Le Projet REEL"
 description: "Découverte de l'enjeu du monitoring 4.0 pour les infrastructures critiques de la centrale du Bugey."
 date: "20/04/2023"
-heroImage: "/images/reel-mission.png"
+heroImage: "/images/reel-mission.jpg"
 blogTitle: "Journal de bord : Stage chez REEL (Division Nucléaire)"
 parentLink: "/blogs/stage-reel"
 ---

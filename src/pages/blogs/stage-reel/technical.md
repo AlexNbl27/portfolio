@@ -3,7 +3,6 @@ layout: ../../../layouts/BlogPostLayout.astro
 title: "IoT & Protocoles : Du Modbus au MQTT"
 description: "Plongée dans l'implémentation technique de la passerelle IoT entre les automates Schneider et le cloud."
 date: "15/05/2023"
-heroImage: "/images/reel-technical.png"
 blogTitle: "Journal de bord : Stage chez REEL (Division Nucléaire)"
 parentLink: "/blogs/stage-reel"
 ---
