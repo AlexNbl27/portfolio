@@ -141,6 +141,16 @@
   }
 }
 
+@property --light-pos {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes light-orbit {
+  to { --light-pos: 360deg; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(page-content),
   ::view-transition-new(page-content) {

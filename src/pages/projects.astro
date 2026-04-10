@@ -86,6 +86,7 @@ import projects from '../data/projects.json';
       // Allow clicks on external links (demo, github) to work normally
       const link = target?.closest('a');
       if (link && !link.href.includes(detailPage)) return;
+      sessionStorage.setItem('project-detail-back-link', '/projects');
       navigate(detailPage);
     });
 
@@ -93,6 +94,7 @@ import projects from '../data/projects.json';
       const keyboardEvent = event as KeyboardEvent;
       if (keyboardEvent.key === 'Enter' || keyboardEvent.key === ' ') {
         keyboardEvent.preventDefault();
+        sessionStorage.setItem('project-detail-back-link', '/projects');
         navigate(detailPage);
       }
     });

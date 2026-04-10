@@ -165,6 +165,7 @@ const logoSrc = resolveImage(logo);
     const params = new URLSearchParams(window.location.search);
     const from = params.get("from");
     const storedBackLink = sessionStorage.getItem("project-detail-back-link");
+    sessionStorage.removeItem("project-detail-back-link");
     const recruiterBackLink = "/recruiter#projets-phares";
 
     if (from === "recruiter" || storedBackLink === recruiterBackLink) {

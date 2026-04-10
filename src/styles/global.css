@@ -1,8 +1,29 @@
 @import url("https://fonts.cdnfonts.com/css/blanka");
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Manrope:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap");
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import "tailwindcss";
+
+@theme {
+  --color-cosmic-900: #030713;
+  --color-cosmic-800: #090f24;
+  --color-cosmic-700: #0f1735;
+  --color-cosmic-600: #1a2347;
+  --color-cosmic-500: #2c2a5f;
+  --color-cosmic-gold: #f6d40d;
+  --color-cosmic-pink: #f2b4df;
+  --color-cosmic-nebula: #6a4fb2;
+
+  --font-display: "Cormorant Garamond", serif;
+  --font-body: "Manrope", sans-serif;
+  --font-blanka: "Blanka", sans-serif;
+
+  --shadow-glow: 0 0 24px rgba(246, 212, 13, 0.35);
+  --shadow-glow-hover: 0 24px 60px rgba(4, 9, 22, 0.35), 0 0 32px rgba(246, 212, 13, 0.1);
+  --shadow-glass-card: 0 8px 32px 0 rgba(4, 9, 22, 0.37);
+
+  --radius-card: 1.6rem;
+  --radius-badge: 999px;
+  --radius-btn: 999px;
+}
 
 @layer base {
   :root {
@@ -304,6 +325,60 @@
   .shine-effect:hover::after {
     opacity: 1;
     transform: rotate(14deg) translateX(420%);
+  }
+
+  /* Moving light source orbiting around the card border */
+  .recruiter-cta-wrap {
+    position: relative;
+    border-radius: var(--radius-card);
+  }
+
+  .recruiter-cta-wrap::before,
+  .recruiter-cta-wrap::after {
+    --light-pos: 0deg;
+    content: '';
+    position: absolute;
+    border-radius: calc(var(--radius-card) + 1px);
+    pointer-events: none;
+    animation: light-orbit 7s linear infinite;
+  }
+
+  /* Conic border: bright spot that fades all the way around */
+  .recruiter-cta-wrap::before {
+    inset: -1px;
+    background: conic-gradient(
+      from var(--light-pos),
+      rgba(246, 212, 13, 0.04) 0deg,
+      rgba(246, 212, 13, 0.03) 200deg,
+      rgba(246, 212, 13, 0.12) 280deg,
+      rgba(246, 212, 13, 0.75) 350deg,
+      rgba(246, 212, 13, 0.04) 360deg
+    );
+    padding: 1px;
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+  }
+
+  /* Diffuse outer halo that follows the light source */
+  .recruiter-cta-wrap::after {
+    inset: -12px;
+    border-radius: calc(var(--radius-card) + 12px);
+    background: conic-gradient(
+      from var(--light-pos),
+      transparent 0deg,
+      transparent 250deg,
+      rgba(246, 212, 13, 0.06) 310deg,
+      rgba(246, 212, 13, 0.22) 355deg,
+      transparent 360deg
+    );
+    filter: blur(14px);
+    z-index: -1;
   }
 
   .experience-badge {
