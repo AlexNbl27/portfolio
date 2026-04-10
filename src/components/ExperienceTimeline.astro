@@ -18,6 +18,7 @@ const { experiences } = Astro.props;
           ]}
           data-period={item.period}
           data-type={item.type ?? "pro"}
+          data-recruiter-visible={item.recruiterVisible ? "true" : "false"}
           data-role={item.role}
           data-company={item.company}
           data-description={item.description}

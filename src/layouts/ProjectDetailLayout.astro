@@ -76,7 +76,12 @@ const logoSrc = resolveImage(logo);
     class="project-detail cosmic-container pt-8"
     style={themeStyle || undefined}
   >
-    <Button href={parentLink} variant="outline" icon="lucide:arrow-left">
+    <Button
+      id="project-back-link"
+      href={parentLink}
+      variant="outline"
+      icon="lucide:arrow-left"
+    >
       Retour aux projets
     </Button>
 
@@ -149,3 +154,25 @@ const logoSrc = resolveImage(logo);
     </Card>
   </article>
 </BaseLayout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const backLink = document.getElementById(
+      "project-back-link",
+    ) as HTMLAnchorElement | null;
+    if (!backLink) return;
+
+    const params = new URLSearchParams(window.location.search);
+    const from = params.get("from");
+    const storedBackLink = sessionStorage.getItem("project-detail-back-link");
+    sessionStorage.removeItem("project-detail-back-link");
+    const recruiterBackLink = "/recruiter#projets-phares";
+
+    if (from === "recruiter" || storedBackLink === recruiterBackLink) {
+      backLink.href = recruiterBackLink;
+      return;
+    }
+
+    backLink.href = "/projects";
+  });
+</script>

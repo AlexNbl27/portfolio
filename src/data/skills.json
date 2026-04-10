@@ -3,7 +3,8 @@
     "name": "Flutter",
     "category": "Mobile & logiciel",
     "proficiency": 95,
-    "yearsOfExperience": 3
+    "yearsOfExperience": 3,
+    "recruiterCore": true
   },
   {
     "name": "C#",
@@ -27,7 +28,8 @@
     "name": "PHP",
     "category": "Développement web",
     "proficiency": 85,
-    "yearsOfExperience": 3
+    "yearsOfExperience": 3,
+    "recruiterCore": true
   },
   {
     "name": "JavaScript",
@@ -39,7 +41,8 @@
     "name": "TypeScript",
     "category": "Développement web",
     "proficiency": 74,
-    "yearsOfExperience": 2
+    "yearsOfExperience": 2,
+    "recruiterCore": true
   },
   {
     "name": "HTML",
@@ -69,7 +72,8 @@
     "name": "Laravel",
     "category": "Backend & frameworks",
     "proficiency": 70,
-    "yearsOfExperience": 1
+    "yearsOfExperience": 1,
+    "recruiterCore": true
   },
   {
     "name": "Symfony",
@@ -81,7 +85,8 @@
     "name": "MySQL",
     "category": "Base de données",
     "proficiency": 84,
-    "yearsOfExperience": 3
+    "yearsOfExperience": 3,
+    "recruiterCore": true
   },
   {
     "name": "PostgreSQL",
@@ -105,13 +110,15 @@
     "name": "Git",
     "category": "DevOps & outils",
     "proficiency": 84,
-    "yearsOfExperience": 4
+    "yearsOfExperience": 4,
+    "recruiterCore": true
   },
   {
     "name": "Docker",
     "category": "DevOps & outils",
     "proficiency": 70,
-    "yearsOfExperience": 1
+    "yearsOfExperience": 1,
+    "recruiterCore": true
   },
   {
     "name": "GitLab",

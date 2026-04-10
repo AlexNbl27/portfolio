@@ -37,6 +37,7 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
           <div
             data-category={skill.category}
             data-name={skill.name}
+            data-recruiter-core={skill.recruiterCore ? "true" : "false"}
             class:list={[
               "skill-item flex flex-col",
               skill.isVibeOnly
@@ -80,6 +81,11 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
     let activeCategory = "all";
     let searchQuery = "";
     let isVibeMode = false;
+    let isRecruiterMode =
+      document.body.getAttribute("data-recruiter-mode") === "on";
+    const isReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
     const originalDesc =
       "Un socle technique construit autour du développement web et mobile, des bases de données, des outils DevOps et de l’automatisme industriel.";
@@ -112,15 +118,17 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
       return false;
     };
 
-    const updateUI = () => {
+    // keepGenerating=true: don't strip is-generating (skeleton stays until revealCards clears it)
+    const updateUI = (keepGenerating = false) => {
       let visibleCount = 0;
 
       skillItems.forEach((item) => {
         const itemCategory = item.getAttribute("data-category") || "";
         const itemName = item.getAttribute("data-name") || "";
         const isVibeOnly = item.classList.contains("vibe-only-item");
+        const isRecruiterCore =
+          item.getAttribute("data-recruiter-core") === "true";
 
-        // Filter logic
         const matchesCategory =
           activeCategory === "all" || itemCategory === activeCategory;
         const matchesSearch =
@@ -128,16 +136,19 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
           matchesQuery(itemName, searchQuery) ||
           matchesQuery(itemCategory, searchQuery);
         const matchesVibe = !isVibeOnly || isVibeMode;
+        const matchesRecruiter = !isRecruiterMode || isRecruiterCore;
 
-        const visible = matchesCategory && matchesSearch && matchesVibe;
+        const visible =
+          matchesCategory && matchesSearch && matchesVibe && matchesRecruiter;
 
         if (visible) {
           item.classList.remove("hidden");
-          (item as HTMLElement).style.display = ""; // Nettoyer le style inline résiduel
-          // Suppression temporaire de l'animation de slide-up pour plus de fluidité
+          (item as HTMLElement).style.display = "";
+          if (!keepGenerating) item.classList.remove("is-generating");
           visibleCount++;
         } else {
           item.classList.add("hidden");
+          item.classList.remove("is-generating");
         }
       });
 
@@ -146,7 +157,8 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
     };
 
     const animateBoost = (active: boolean) => {
-      const cards = document.querySelectorAll(".skill-card");
+      // Scope to #skill-grid to avoid touching cards on other pages (e.g. recruiter)
+      const cards = document.querySelectorAll("#skill-grid .skill-card");
 
       cards.forEach((card) => {
         const cardEl = card as HTMLElement;
@@ -194,9 +206,9 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
         revelationTimeouts.forEach((t) => clearTimeout(t));
         revelationTimeouts = [];
 
-        // Toutes les cartes en mode génération
+        // Mark all visible items as generating — skeleton stays until revealCards
         skillItems.forEach((item) => item.classList.add("is-generating"));
-        updateUI();
+        updateUI(true); // true = don't strip is-generating yet
 
         if (skillsDesc) {
           skillsDesc.style.opacity = "0";
@@ -205,6 +217,13 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
             window.setTimeout(() => {
               if (isVibeMode) {
                 // Mode Vibe : Animation mot par mot
+                if (isReducedMotion) {
+                  skillsDesc.innerHTML = vibeDesc;
+                  skillsDesc.style.opacity = "1";
+                  revealCards();
+                  return;
+                }
+
                 skillsDesc.innerHTML = `
                 <div class="flex flex-col gap-2">
                   <div class="flex items-center gap-4">
@@ -252,7 +271,7 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
             });
 
           let maxDelay = 0;
-          const stagger = isVibeMode ? 80 : 30;
+          const stagger = isReducedMotion ? 0 : isVibeMode ? 80 : 30;
 
           visibleItems.forEach((item, index) => {
             const delay = index * stagger;
@@ -291,6 +310,22 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
         updateUI();
       });
     }
+
+    document.addEventListener(
+      "portfolio:recruiter-mode",
+      (event) => {
+        const customEvent = event as CustomEvent<{ mode: "on" | "off" }>;
+        isRecruiterMode = customEvent.detail?.mode === "on";
+
+        if (activeTypeInterval) clearInterval(activeTypeInterval);
+        revelationTimeouts.forEach((t) => clearTimeout(t));
+        revelationTimeouts = [];
+        skillItems.forEach((item) => item.classList.remove("is-generating"));
+
+        updateUI();
+        if (isVibeMode) animateBoost(true);
+      },
+    );
 
     // Initial state
     const allBtn = document.querySelector('[data-category="all"]');
