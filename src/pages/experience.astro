@@ -32,7 +32,22 @@ const portraitImages = [
         parcours construit entre technique, terrain et développement produit.
       </p>
 
-      <ExperienceFilter />
+      <div
+        data-recruiter-priority="true"
+        class="mt-6 rounded-2xl border border-cosmic-gold/20 bg-slate-900/20 p-4"
+      >
+        <p class="text-xs uppercase tracking-[0.22em] text-cosmic-pink">
+          Focus recruteur
+        </p>
+        <p class="muted mt-2 text-sm">
+          En mode recruteur, le parcours affiche uniquement l’essentiel pour une
+          lecture rapide.
+        </p>
+      </div>
+
+      <div data-recruiter-optional="true">
+        <ExperienceFilter />
+      </div>
       <ExperienceTimeline experiences={experiences} />
     </div>
   </section>

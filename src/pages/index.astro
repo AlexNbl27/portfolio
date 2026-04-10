@@ -7,24 +7,28 @@ const homeSections = [
   {
     href: "/projects",
     title: "Mes projets",
+    priority: true,
     description:
       "Retrouvez une sélection de réalisations web, mobile, desktop et SaaS menées en formation, en stage ou sur mon temps personnel.",
   },
   {
     href: "/skills",
     title: "Mes compétences",
+    priority: true,
     description:
       "Développement, bases de données, DevOps, automatisme et outils : un profil polyvalent orienté produit et terrain.",
   },
   {
     href: "/experience",
     title: "Mon parcours",
+    priority: true,
     description:
       "Découvrez mon évolution, de la formation GEII à l’alternance chez Orange Business Services.",
   },
   {
     href: "/blogs",
     title: "Mes blogs",
+    priority: false,
     description:
       "Retrouve mes retours d’expérience, articles de stage et billets d’alternance dans des sous-pages dédiées.",
   },
@@ -64,6 +68,8 @@ const homeSections = [
           href={section.href}
           interactive
           class="p-6 md:p-8 flex flex-col group hover:no-underline"
+          data-recruiter-priority={section.priority ? "true" : undefined}
+          data-recruiter-optional={section.priority ? undefined : "true"}
         >
           <p class="mb-3 text-cosmic-pink transition-transform group-hover:scale-110 origin-left">
             ✦

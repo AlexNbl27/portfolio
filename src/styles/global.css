@@ -1500,6 +1500,15 @@ body[data-soft-skill-theme="jupiter"]::after {
   background-color: rgba(255, 120, 0, 0.6) !important;
 }
 
+body[data-recruiter-mode="on"] [data-recruiter-optional="true"] {
+  display: none !important;
+}
+
+body[data-recruiter-mode="on"] [data-recruiter-priority="true"] {
+  border-color: rgba(246, 212, 13, 0.45) !important;
+  box-shadow: 0 0 0 1px rgba(246, 212, 13, 0.18) inset;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

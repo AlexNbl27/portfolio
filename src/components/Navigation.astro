@@ -83,6 +83,19 @@ const current = Astro.url.pathname;
           class="nav-item opacity-0 translate-y-8 md:opacity-100 md:translate-y-0 mt-4 md:mt-0"
           style={`transition-delay: ${links.length * 70}ms`}
         >
+          <button
+            type="button"
+            id="recruiter-mode-nav-toggle"
+            class="focus-ring rounded-xl border border-cosmic-gold/30 px-3 py-2 text-xs tracking-[0.12em] text-cosmic-gold transition hover:bg-cosmic-gold/10"
+            aria-pressed="false"
+          >
+            Mode recruteur
+          </button>
+        </li>
+        <li
+          class="nav-item opacity-0 translate-y-8 md:opacity-100 md:translate-y-0 mt-4 md:mt-0"
+          style={`transition-delay: ${(links.length + 1) * 70}ms`}
+        >
           <Button href="mailto:alexandrenobletpro@gmail.com" variant="primary">
             Contact
           </Button>
@@ -100,6 +113,26 @@ const current = Astro.url.pathname;
     const bTop = document.getElementById("burger-top");
     const bMid = document.getElementById("burger-mid");
     const bBot = document.getElementById("burger-bot");
+    const recruiterModeToggle = document.getElementById(
+      "recruiter-mode-nav-toggle",
+    ) as HTMLButtonElement | null;
+
+    const syncRecruiterUI = (active: boolean) => {
+      if (!recruiterModeToggle) return;
+      recruiterModeToggle.setAttribute("aria-pressed", active ? "true" : "false");
+      recruiterModeToggle.classList.toggle("bg-cosmic-gold/10", active);
+      recruiterModeToggle.textContent = active
+        ? "Mode recruteur actif"
+        : "Mode recruteur";
+    };
+
+    const storedRecruiterMode =
+      localStorage.getItem("portfolio-recruiter-mode") === "on";
+    document.body.setAttribute(
+      "data-recruiter-mode",
+      storedRecruiterMode ? "on" : "off",
+    );
+    syncRecruiterUI(storedRecruiterMode);
 
     if (menuToggle && menu && navCard) {
       menuToggle.onclick = () => {
@@ -131,6 +164,21 @@ const current = Astro.url.pathname;
           menuToggle.setAttribute("aria-expanded", "true");
         }
       };
+    }
+
+    if (recruiterModeToggle) {
+      recruiterModeToggle.addEventListener("click", () => {
+        const currentMode = document.body.getAttribute("data-recruiter-mode");
+        const nextMode = currentMode === "on" ? "off" : "on";
+        document.body.setAttribute("data-recruiter-mode", nextMode);
+        localStorage.setItem("portfolio-recruiter-mode", nextMode);
+        syncRecruiterUI(nextMode === "on");
+        document.dispatchEvent(
+          new CustomEvent("portfolio:recruiter-mode", {
+            detail: { mode: nextMode },
+          }),
+        );
+      });
     }
 
     // Prevent navigation to the current page

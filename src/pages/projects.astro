@@ -46,6 +46,8 @@ const recruiterSpotlight = [
         <div
           data-category={project.category}
           data-featured={recruiterSpotlight.includes(project.title) ? 'true' : 'false'}
+          data-recruiter-optional={recruiterSpotlight.includes(project.title) ? undefined : 'true'}
+          data-recruiter-priority={recruiterSpotlight.includes(project.title) ? 'true' : undefined}
           data-detail-page={project.detailPage ?? ''}
           class:list={[
             'project-item',
@@ -72,7 +74,7 @@ const recruiterSpotlight = [
   ) as HTMLButtonElement | null;
 
   let activeCategory = "all";
-  let recruiterMode = false;
+  let recruiterMode = document.body.getAttribute("data-recruiter-mode") === "on";
 
   const applyVisibility = () => {
     cards.forEach((card) => {
@@ -104,8 +106,22 @@ const recruiterSpotlight = [
   });
 
   if (recruiterModeToggle) {
+    recruiterModeToggle.setAttribute(
+      "aria-pressed",
+      recruiterMode ? "true" : "false",
+    );
+    recruiterModeToggle.textContent = recruiterMode
+      ? "Désactiver le mode recruteur"
+      : "Activer le mode recruteur";
+    recruiterModeToggle.classList.toggle("bg-cosmic-gold/10", recruiterMode);
+
     recruiterModeToggle.addEventListener("click", () => {
       recruiterMode = !recruiterMode;
+      document.body.setAttribute("data-recruiter-mode", recruiterMode ? "on" : "off");
+      localStorage.setItem(
+        "portfolio-recruiter-mode",
+        recruiterMode ? "on" : "off",
+      );
       recruiterModeToggle.setAttribute(
         "aria-pressed",
         recruiterMode ? "true" : "false",
@@ -117,6 +133,21 @@ const recruiterSpotlight = [
       applyVisibility();
     });
   }
+
+  document.addEventListener("portfolio:recruiter-mode", (event) => {
+    const customEvent = event as CustomEvent<{ mode: "on" | "off" }>;
+    recruiterMode = customEvent.detail?.mode === "on";
+    applyVisibility();
+    if (!recruiterModeToggle) return;
+    recruiterModeToggle.setAttribute(
+      "aria-pressed",
+      recruiterMode ? "true" : "false",
+    );
+    recruiterModeToggle.textContent = recruiterMode
+      ? "Désactiver le mode recruteur"
+      : "Activer le mode recruteur";
+    recruiterModeToggle.classList.toggle("bg-cosmic-gold/10", recruiterMode);
+  });
 
   cards.forEach((card) => {
     const detailPage = card.getAttribute('data-detail-page');
