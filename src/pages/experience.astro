@@ -6,9 +6,11 @@ import ScrollPortrait from "../components/ScrollPortrait.astro";
 import ScrollAge from "../components/ScrollAge.astro";
 import experiences from "../data/experience.json";
 
+// Portrait images are in public/images/portrait/ (not src/assets/images/) because
+// ScrollPortrait uses plain <img> tags with dynamic src strings for its JS scroll
+// animation. Astro's <Image> component cannot be used here.
 const portraitImages = [
   "/images/portrait/2026.jpg",
-  // "/images/portrait/2025.jpg",
   "/images/portrait/2024.jpg",
   "/images/portrait/2023.jpg",
   "/images/portrait/2021.jpg",

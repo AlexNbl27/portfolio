@@ -17,6 +17,7 @@ interface ProjectTheme {
   glowB?: string;
   titleFont?: string;
   bodyFont?: string;
+  bodyWeight?: number | string;
 }
 
 interface Frontmatter {
@@ -29,6 +30,7 @@ interface Frontmatter {
   links?: ProjectLink[];
   parentLink?: string;
   theme?: ProjectTheme;
+  fontImports?: string[];
 }
 
 const { frontmatter } = Astro.props as { frontmatter: Frontmatter };
@@ -42,6 +44,7 @@ const {
   links = [],
   parentLink = "/projects",
   theme,
+  fontImports = [],
 } = frontmatter;
 
 const themeStyle = [
@@ -51,6 +54,7 @@ const themeStyle = [
   theme?.glowB ? `--project-glow-b:${theme.glowB}` : "",
   theme?.titleFont ? `--project-title-font:${theme.titleFont}` : "",
   theme?.bodyFont ? `--project-body-font:${theme.bodyFont}` : "",
+  theme?.bodyWeight ? `--project-body-weight:${theme.bodyWeight}` : "",
 ]
   .filter(Boolean)
   .join(";");
@@ -72,6 +76,9 @@ const logoSrc = resolveImage(logo);
 ---
 
 <BaseLayout title={`Alexandre Noblet | ${title}`} description={description}>
+  {fontImports.map((href) => (
+    <link rel="stylesheet" href={href} slot="head" />
+  ))}
   <article
     class="project-detail cosmic-container pt-8"
     style={themeStyle || undefined}

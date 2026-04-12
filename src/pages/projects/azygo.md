@@ -21,6 +21,8 @@ theme:
   glowB: "rgba(255, 138, 92, 0.26)"
   titleFont: "Roundo, 'Poppins', 'Manrope', sans-serif"
   bodyFont: "'Poppins', 'Manrope', sans-serif"
+fontImports:
+  - "https://fonts.cdnfonts.com/css/roundo"
 ---
 
 ## La Mission
@@ -39,13 +41,17 @@ Développé par une équipe de trois développeurs passionnés, AZYGO s'appuie s
 ## Fonctionnalités Clés
 
 ### Pour les Responsables (ERP)
+
 L'interface d'administration permet d'automatiser les tâches les plus chronophages :
+
 - **Billetterie & Adhésions** : Gestion simplifiée des flux et des membres.
 - **Comptabilité** : Suivi rigoureux des finances en temps réel.
 - **Coordination** : Centralisation des besoins et des planning d'événements.
 
 ### Pour les Étudiants (App)
+
 Une application moderne pensée pour l'engagement :
+
 - **Fil d'actualité** dédié à la vie du campus.
 - **Boutique en ligne** intégrée pour le merchandising du BDE.
 - **Notifications ciblées** pour ne rien rater des événements importants.
@@ -53,6 +59,7 @@ Une application moderne pensée pour l'engagement :
 ## Méthodologie Produit
 
 Notre approche repose sur l'écoute active du terrain pour proposer un produit toujours plus pertinent :
+
 1. **Immersion** : Recueil des besoins directement auprès des bureaux associatifs.
 2. **Design UX** : Prototypage itératif sur Figma pour valider l'ergonomie.
 3. **Livraison Continue** : Intégration et déploiement via GitLab CI/CD.
