@@ -483,7 +483,9 @@
     --project-glow-b: rgba(227, 164, 214, 0.2);
     --project-title-font: "Cormorant Garamond", serif;
     --project-body-font: "Manrope", sans-serif;
+    --project-body-weight: 400;
     font-family: var(--project-body-font);
+    font-weight: var(--project-body-weight);
   }
 
   .project-detail-meta {

@@ -1,4 +1,7 @@
 ---
+// Images are passed as static URL strings (from public/) and rendered with plain
+// <img> tags — required for the JS scroll animation that swaps opacity dynamically.
+// Do NOT move to src/assets/images/ or use Astro's <Image> component here.
 interface Props {
   images: string[];
 }

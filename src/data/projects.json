@@ -1,5 +1,25 @@
 [
   {
+    "title": "Bevel",
+    "description": "Site e-commerce vitrine en production sur bevel.fr — checkout Stripe, gestion des stocks, facturation PDF et interface bilingue fr/en.",
+    "details": "Bevel est un site e-commerce fullstack conçu pour la vente en salon. Il repose sur Astro 5 (SSR Cloudflare Pages) côté frontend et Strapi 5 + PostgreSQL sur VPS Docker côté backend. Le flux d'achat complet est géré : panier, checkout Stripe, webhook, décrémentation de stock, génération de facture PDF et envoi d'emails transactionnels.",
+    "technologies": [
+      "Astro 5",
+      "React 19",
+      "Strapi 5",
+      "PostgreSQL",
+      "Stripe",
+      "Cloudflare Pages",
+      "Docker",
+      "TypeScript"
+    ],
+    "imageUrl": "/images/bevel.png",
+    "demoUrl": "https://bevel.fr",
+    "detailPage": "/projects/bevel",
+    "category": "web",
+    "recruiterFeatured": true
+  },
+  {
     "title": "Azygo",
     "description": "La suite logicielle (ERP & Mobile) qui automatise la gestion des BDE pour libérer l’énergie associative.",
     "details": "AZYGO simplifie la vie associative en automatisant les tâches administratives complexes (billetterie, adhésions, comptabilité). Conçue par des passionnés, cette solution allie un ERP Laravel/Vue.js robuste à une application mobile Flutter intuitive pour redonner aux étudiants leur mission première : l’animation du campus.",
@@ -85,6 +105,6 @@
     "imageUrl": "/images/moodvie.png",
     "detailPage": "/projects/moodvie",
     "category": "desktop",
-    "recruiterFeatured": true
+    "recruiterFeatured": false
   }
 ]
