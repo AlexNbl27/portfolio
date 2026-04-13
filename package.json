@@ -1,6 +1,6 @@
 {
-  "name": "magical-odyssey-portfolio",
-  "version": "0.1.0",
+  "name": "alexandre-noblet-portfolio",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "astro dev",
