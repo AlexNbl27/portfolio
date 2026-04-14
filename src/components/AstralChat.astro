@@ -1,0 +1,452 @@
+---
+interface Props {
+  mode?: "floating" | "page";
+  title?: string;
+}
+
+const {
+  mode = "floating",
+  title = "Astral · Assistant IA",
+} = Astro.props as Props;
+
+const isFloating = mode === "floating";
+---
+
+<section
+  class:list={[
+    "astral-chat",
+    isFloating
+      ? "hidden lg:flex fixed right-6 bottom-6 z-[80] flex-col items-end gap-4 astral-chat--booting"
+      : "flex w-full",
+  ]}
+  data-astral-chat-root
+  data-mode={mode}
+>
+  <button
+    type="button"
+    class:list={[
+      "astral-chat__trigger focus-ring",
+      isFloating ? "inline-flex" : "hidden",
+    ]}
+    aria-expanded="false"
+    aria-controls="astral-chat-panel"
+  >
+    <span class="astral-chat__halo" aria-hidden="true"></span>
+    <span class="astral-chat__core" aria-hidden="true">✦</span>
+    <span class="sr-only">Ouvrir le chat Astral</span>
+  </button>
+
+  <div
+    id="astral-chat-panel"
+    class:list={[
+      "astral-chat__panel glass-card",
+      isFloating ? "is-floating" : "is-page",
+      isFloating ? "hidden" : "flex",
+    ]}
+  >
+    <header class="astral-chat__header">
+      <div>
+        <p class="astral-chat__kicker">Compagnon stellaire</p>
+        <h2>{title}</h2>
+      </div>
+      <button
+        type="button"
+        class:list={["astral-chat__close focus-ring", isFloating ? "" : "hidden"]}
+        aria-label="Fermer le chat"
+      >
+        ✕
+      </button>
+    </header>
+
+    <div class="astral-chat__messages" aria-live="polite"></div>
+
+    <form class="astral-chat__composer">
+      <label class="sr-only" for="astral-chat-input">Votre message</label>
+      <textarea
+        id="astral-chat-input"
+        placeholder="Parle-moi de tes projets, de ton profil, de l'univers Astral…"
+        rows="2"
+        required
+      ></textarea>
+      <button type="submit" class="focus-ring">Envoyer</button>
+    </form>
+  </div>
+</section>
+
+<script>
+  const DAILY_LIMIT = 20;
+  const STORAGE_KEY = "astral-chat-quota";
+
+  function initAstralChat() {
+    document.querySelectorAll("[data-astral-chat-root]").forEach((root) => {
+      if (root.getAttribute("data-init") === "true") return;
+      root.setAttribute("data-init", "true");
+
+      const isFloating = root.getAttribute("data-mode") === "floating";
+      const trigger = root.querySelector(".astral-chat__trigger");
+      const panel = root.querySelector(".astral-chat__panel");
+      const closeBtn = root.querySelector(".astral-chat__close");
+      const form = root.querySelector(".astral-chat__composer");
+      const messages = root.querySelector(".astral-chat__messages");
+      const textarea = root.querySelector("textarea");
+
+      const history: Array<{ role: "user" | "model"; parts: Array<{ text: string }> }> = [];
+      const disableChat = () => {
+        root.classList.remove("astral-chat--booting");
+        root.classList.add("astral-chat--disabled");
+      };
+
+      const enableChat = () => {
+        root.classList.remove("astral-chat--booting");
+      };
+
+      const appendMessage = (role: "assistant" | "user", text: string, isStreaming = false) => {
+        const bubble = document.createElement("article");
+        bubble.className = `astral-chat__bubble astral-chat__bubble--${role}`;
+        if (isStreaming) bubble.classList.add("is-streaming");
+        bubble.textContent = text;
+        messages?.appendChild(bubble);
+        messages?.scrollTo({ top: messages.scrollHeight, behavior: "smooth" });
+        return bubble;
+      };
+
+      const typewriter = async (el: HTMLElement, fullText: string) => {
+        el.textContent = "";
+        const chars = Array.from(fullText);
+        for (let i = 0; i < chars.length; i++) {
+          el.textContent += chars[i];
+          if (i % 3 === 0) {
+            messages?.scrollTo({ top: messages.scrollHeight, behavior: "auto" });
+            await new Promise((resolve) => setTimeout(resolve, 10));
+          }
+        }
+        el.classList.remove("is-streaming");
+      };
+
+      const getQuota = () => {
+        const today = new Date().toISOString().slice(0, 10);
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+          const fresh = { date: today, count: 0 };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(fresh));
+          return fresh;
+        }
+        const data = JSON.parse(raw);
+        if (data.date !== today) {
+          const reset = { date: today, count: 0 };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(reset));
+          return reset;
+        }
+        return data;
+      };
+
+      const incrementQuota = () => {
+        const quota = getQuota();
+        quota.count += 1;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(quota));
+      };
+
+      const canSend = () => getQuota().count < DAILY_LIMIT;
+
+      const canAccessQuotaStorage = () => {
+        try {
+          getQuota();
+          return true;
+        } catch {
+          return false;
+        }
+      };
+
+      const sendWithServerRoute = async (prompt: string): Promise<string> => {
+        const response = await fetch("/api/astral-chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt, history }),
+        });
+
+        if (!response.ok) {
+          const payload = await response.json().catch(() => ({}));
+          throw new Error(payload?.error || "Astral ne peut pas répondre pour le moment.");
+        }
+
+        const data = await response.json();
+        return data.text;
+      };
+
+      const bootHealthCheck = async () => {
+        if (!canAccessQuotaStorage()) return false;
+
+        try {
+          const health = await fetch("/api/astral-chat/health", { method: "GET" });
+          if (!health.ok) return false;
+          const payload = await health.json();
+          if (payload?.ok !== true) return false;
+        } catch {
+          return false;
+        }
+
+        return true;
+      };
+
+      bootHealthCheck().then((ok) => {
+        if (!ok) {
+          disableChat();
+          return;
+        }
+        enableChat();
+      });
+
+      if (isFloating && trigger && panel) {
+        trigger.addEventListener("click", () => {
+          panel.classList.toggle("hidden");
+          const expanded = trigger.getAttribute("aria-expanded") === "true";
+          trigger.setAttribute("aria-expanded", String(!expanded));
+          if (!expanded) textarea?.focus();
+        });
+      }
+
+      closeBtn?.addEventListener("click", () => {
+        if (!panel || !trigger) return;
+        panel.classList.add("hidden");
+        trigger.setAttribute("aria-expanded", "false");
+      });
+
+      if (messages && !messages.hasChildNodes()) {
+        appendMessage(
+          "assistant",
+          "Bonjour, je suis Astral ✨ Je peux vous guider dans le portfolio d'Alexandre, ses projets et son univers pro.",
+        );
+      }
+
+      form?.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const prompt = textarea?.value?.trim();
+        if (!prompt) return;
+
+        if (!canSend()) {
+          appendMessage(
+            "assistant",
+            "Quota journalier atteint pour ce navigateur. Revenez demain ou contactez Alexandre directement.",
+          );
+          return;
+        }
+
+        appendMessage("user", prompt);
+        history.push({ role: "user", parts: [{ text: prompt }] });
+        if (textarea) textarea.value = "";
+
+        const streamingBubble = appendMessage("assistant", "", true);
+        if (!streamingBubble) return;
+
+        try {
+          const text = await sendWithServerRoute(prompt);
+          history.push({ role: "model", parts: [{ text }] });
+          incrementQuota();
+          await typewriter(streamingBubble, text);
+        } catch (error) {
+          disableChat();
+          streamingBubble.classList.remove("is-streaming");
+          streamingBubble.textContent =
+            error instanceof Error
+              ? error.message
+              : "Un voile cosmique perturbe Astral. Réessayez dans quelques instants.";
+        }
+      });
+    });
+  }
+
+  document.addEventListener("astro:page-load", initAstralChat);
+</script>
+
+<style>
+  .astral-chat__trigger {
+    width: 4.2rem;
+    height: 4.2rem;
+    border-radius: 999px;
+    border: 1px solid rgba(246, 212, 13, 0.6);
+    background: radial-gradient(circle at 35% 25%, #ffe58a 0%, #f6d40d 45%, #9f7a00 100%);
+    color: #140f02;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+      0 8px 28px rgba(4, 9, 22, 0.55),
+      0 0 25px rgba(246, 212, 13, 0.6);
+    animation: astral-pulse 4.2s ease-in-out infinite;
+  }
+
+  .astral-chat__core {
+    position: relative;
+    z-index: 2;
+    font-size: 1.35rem;
+  }
+
+  .astral-chat__halo {
+    position: absolute;
+    inset: -0.35rem;
+    border-radius: inherit;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    background: conic-gradient(from 0deg, rgba(246, 212, 13, 0.08), rgba(227, 164, 214, 0.45), rgba(246, 212, 13, 0.08));
+    filter: blur(0.3px);
+    animation: astral-orbit 7s linear infinite;
+  }
+
+  .astral-chat__panel {
+    width: min(24rem, calc(100vw - 2rem));
+    max-height: 72vh;
+    padding: 1rem;
+    border-color: rgba(246, 212, 13, 0.32);
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .astral-chat__panel.is-page {
+    width: min(46rem, 100%);
+    margin-inline: auto;
+    max-height: min(78vh, 48rem);
+    min-height: 58vh;
+  }
+
+  .astral-chat__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .astral-chat__kicker {
+    margin: 0;
+    letter-spacing: 0.14em;
+    font-size: 0.64rem;
+    text-transform: uppercase;
+    color: rgba(246, 212, 13, 0.82);
+  }
+
+  .astral-chat__header h2 {
+    margin: 0.1rem 0 0;
+    font-size: 1.15rem;
+  }
+
+  .astral-chat__close {
+    border: 0;
+    background: transparent;
+    color: #f3f0e2;
+    cursor: pointer;
+  }
+
+  .astral-chat__messages {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding-right: 0.15rem;
+  }
+
+  .astral-chat__bubble {
+    padding: 0.7rem 0.9rem;
+    border-radius: 0.95rem;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    font-size: 0.92rem;
+    animation: bubble-fade 220ms ease-out;
+  }
+
+  .astral-chat__bubble--user {
+    align-self: flex-end;
+    background: rgba(246, 212, 13, 0.14);
+    border: 1px solid rgba(246, 212, 13, 0.35);
+  }
+
+  .astral-chat__bubble--assistant {
+    align-self: flex-start;
+    background: rgba(108, 89, 167, 0.2);
+    border: 1px solid rgba(227, 164, 214, 0.25);
+  }
+
+  .astral-chat__bubble.is-streaming::after {
+    content: "";
+    width: 0.52rem;
+    height: 0.9rem;
+    display: inline-block;
+    margin-left: 0.2rem;
+    background: rgba(246, 212, 13, 0.85);
+    animation: typing-cursor 1s steps(1, end) infinite;
+    vertical-align: text-bottom;
+  }
+
+  .astral-chat__composer {
+    margin-top: auto;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.55rem;
+    align-items: end;
+  }
+
+  .astral-chat__composer textarea {
+    width: 100%;
+    resize: none;
+    border-radius: 0.95rem;
+    border: 1px solid rgba(246, 212, 13, 0.28);
+    background: rgba(8, 12, 26, 0.55);
+    color: #f3f0e2;
+    padding: 0.7rem 0.8rem;
+    font: inherit;
+  }
+
+  .astral-chat__composer button {
+    border: 1px solid rgba(246, 212, 13, 0.5);
+    border-radius: 999px;
+    padding: 0.62rem 1rem;
+    background: linear-gradient(135deg, rgba(246, 212, 13, 0.22), rgba(227, 164, 214, 0.2));
+    color: #f8f2dc;
+    cursor: pointer;
+  }
+
+  @keyframes astral-orbit {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes astral-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+      box-shadow:
+        0 8px 28px rgba(4, 9, 22, 0.55),
+        0 0 20px rgba(246, 212, 13, 0.5);
+    }
+    50% {
+      transform: scale(1.04);
+      box-shadow:
+        0 12px 34px rgba(4, 9, 22, 0.6),
+        0 0 36px rgba(246, 212, 13, 0.75);
+    }
+  }
+
+  @keyframes bubble-fade {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes typing-cursor {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .astral-chat--booting {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .astral-chat--disabled {
+    display: none !important;
+  }
+</style>

@@ -196,3 +196,17 @@ But:
 ---
 
 Si une IA doit intervenir sur ce repository, elle doit traiter ce README comme la source de vérité produit et visuelle, sauf instruction explicite contraire de l'utilisateur.
+
+## 12) Astral Chatbot IA
+
+Une intégration initiale du chatbot Astral est disponible avec une documentation dédiée:
+
+- docs/astral-chat-integration.md
+
+Le document détaille les deux modes (site statique vs API route serveur), la configuration Gemini et la stratégie de limitation de quota.
+
+Implémentation actuelle recommandée pour Coolify:
+
+- build Astro statique (`dist`)
+- serveur Node unique (`server.mjs`) dans le même container Docker
+- endpoint `/api/astral-chat` avec clé privée (`GEMINI_API_KEY`) + rate limit mémoire
