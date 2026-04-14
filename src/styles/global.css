@@ -238,7 +238,7 @@
       gap: 0;
     }
 
-    .experience-item + .experience-item {
+    .experience-item.is-subsequent {
       margin-top: -5.75rem;
     }
 
@@ -1469,11 +1469,13 @@ body.vibe-mode-on .vibe-active-bg {
 .is-generating .skill-content {
   opacity: 0 !important;
   transform: scale(0.98);
+  transition: none !important;
 }
 
 .is-generating .skill-skeleton {
   opacity: 1 !important;
   visibility: visible;
+  transition: none !important;
   animation: skeleton-shimmer 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   background: linear-gradient(
     90deg,
@@ -1500,6 +1502,7 @@ body.vibe-mode-on .vibe-active-bg {
   background: rgba(15, 20, 35, 0.4) !important;
   border-color: rgba(255, 190, 80, 0.2) !important;
   box-shadow: none !important;
+  transition: none !important;
 }
 
 .skill-content {

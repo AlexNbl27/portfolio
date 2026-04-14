@@ -115,6 +115,24 @@ const portraitImages = [
 
         if (visible) {
           (item as HTMLElement).classList.add("animate-in");
+          item.classList.remove(
+            "experience-item--left",
+            "experience-item--right",
+            "md:[&>*:first-child]:order-2",
+            "is-subsequent",
+          );
+          if (visibleCount > 0) {
+            item.classList.add("is-subsequent");
+          }
+
+          if (visibleCount % 2 === 0) {
+            item.classList.add("experience-item--left");
+          } else {
+            item.classList.add(
+              "experience-item--right",
+              "md:[&>*:first-child]:order-2",
+            );
+          }
           visibleCount++;
         }
       });

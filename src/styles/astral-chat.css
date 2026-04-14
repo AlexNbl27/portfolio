@@ -1,0 +1,239 @@
+/* ── Messages ───────────────────────────────────────────────── */
+.astral-chat__messages {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-right: 0.6rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(246, 212, 13, 0.3) transparent;
+}
+
+.astral-chat__messages::-webkit-scrollbar {
+  width: 5px;
+}
+.astral-chat__messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+.astral-chat__messages::-webkit-scrollbar-thumb {
+  background: rgba(246, 212, 13, 0.2);
+  border-radius: 10px;
+  transition: background 0.2s;
+}
+.astral-chat__messages::-webkit-scrollbar-thumb:hover {
+  background: rgba(246, 212, 13, 0.4);
+}
+
+/* ── Bubbles ────────────────────────────────────────────────── */
+.astral-chat__bubble {
+  padding: 0.9rem 1.1rem;
+  border-radius: 1rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  font-size: 0.95rem;
+  max-width: 90%;
+}
+
+.astral-chat__bubble--user {
+  align-self: flex-end;
+  background: linear-gradient(
+    135deg,
+    rgba(246, 212, 13, 0.95),
+    rgba(246, 212, 13, 0.75)
+  );
+  border: 1px solid rgba(246, 212, 13, 0.95);
+  color: #0d0a02;
+  font-weight: 500;
+  border-bottom-right-radius: 0.2rem;
+}
+
+.astral-chat__bubble--assistant {
+  align-self: flex-start;
+  background: rgba(8, 12, 26, 0.65);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(227, 164, 214, 0.35);
+  color: #f3f0e2;
+  border-bottom-left-radius: 0.2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.astral-chat__skeleton {
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.4);
+  font-style: italic;
+  animation: pulse-opacity 1.5s ease-in-out infinite;
+}
+
+.astral-chat__bubble.is-streaming::after {
+  content: "";
+  width: 0.52rem;
+  height: 0.9rem;
+  display: inline-block;
+  margin-left: 0.3rem;
+  background: rgba(246, 212, 13, 0.85);
+  animation: typing-cursor 1s steps(1, end) infinite;
+  vertical-align: text-bottom;
+}
+
+/* ── Composer ───────────────────────────────────────────────── */
+.astral-chat__composer {
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.astral-chat__composer textarea {
+  width: 100%;
+  resize: none;
+  border-radius: 1rem;
+  border: 1px solid rgba(246, 212, 13, 0.35);
+  background: rgba(4, 9, 22, 0.7);
+  color: #f3f0e2;
+  padding: 0.85rem 1rem;
+  font: inherit;
+  line-height: 1.5;
+  min-height: 2.8rem;
+  max-height: 10rem;
+  overflow-y: hidden;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.astral-chat__composer textarea:focus {
+  border-color: rgba(246, 212, 13, 0.8);
+  box-shadow: 0 0 10px rgba(246, 212, 13, 0.2);
+  outline: none;
+}
+
+.astral-chat__composer button {
+  border: 1px solid rgba(246, 212, 13, 0.5);
+  border-radius: 999px;
+  width: 3.2rem;
+  height: 3.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    rgba(246, 212, 13, 0.22),
+    rgba(227, 164, 214, 0.2)
+  );
+  color: #f8f2dc;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    background 0.2s;
+}
+
+.astral-chat__composer button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(
+    135deg,
+    rgba(246, 212, 13, 0.35),
+    rgba(227, 164, 214, 0.3)
+  );
+}
+
+/* ── CTAs ───────────────────────────────────────────────────── */
+.astral-chat__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0rem;
+}
+
+/* Base — reprend le variant "ghost" de Button.astro */
+.astral-chat__cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(246, 212, 13, 0.35);
+  background: linear-gradient(
+    to bottom right,
+    rgba(11, 16, 35, 0.8),
+    rgba(13, 20, 41, 0.7)
+  );
+  color: #fff1b3;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    border-color 0.2s;
+  animation: cta-appear 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.astral-chat__cta-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(246, 212, 13, 0.24);
+  border-color: rgba(246, 212, 13, 0.6);
+}
+
+/* Variante LinkedIn — teinte bleue de marque */
+.astral-chat__cta-btn--linkedin {
+  border-color: rgba(10, 102, 194, 0.5);
+  color: #a8c8f0;
+}
+
+.astral-chat__cta-btn--linkedin:hover {
+  border-color: rgba(10, 102, 194, 0.85);
+  box-shadow: 0 12px 28px rgba(10, 102, 194, 0.2);
+}
+
+@keyframes cta-appear {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── State ──────────────────────────────────────────────────── */
+.astral-chat--booting {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.astral-chat--disabled {
+  display: none !important;
+}
+
+/* ── Animations ─────────────────────────────────────────────── */
+@keyframes bubble-fade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes typing-cursor {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes pulse-opacity {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}

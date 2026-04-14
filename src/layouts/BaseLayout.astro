@@ -5,6 +5,7 @@ import "../styles/animations.css";
 import Navigation from "../components/Navigation.astro";
 import CosmicBackground from "../components/CosmicBackground.astro";
 import Footer from "../components/Footer.astro";
+import AstralChat from "../components/AstralChat.astro";
 
 interface Props {
   title: string;
@@ -24,6 +25,7 @@ const {
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+    <link rel="icon" type="image/png" href="/images/website/portfolio.png" />
     <meta name="view-transition" content="same-origin" />
     <ClientRouter />
     <slot name="head" />
@@ -37,6 +39,7 @@ const {
     <CosmicBackground transition:persist />
     <Navigation transition:persist />
     <slot name="fixed-layer" />
+    <AstralChat transition:persist />
     <main
       class="page-shell relative z-10 pt-20 pb-8 md:pt-32 md:pb-12"
       transition:name="page-content"
@@ -45,7 +48,20 @@ const {
     </main>
     <Footer />
     <script>
+      function updateAstralChatVisibility() {
+        const isOnChat =
+          window.location.pathname.replace(/\/$/, "") === "/chat";
+        const widget = document.querySelector(
+          "[data-astral-chat-root][data-mode='floating']",
+        ) as HTMLElement | null;
+        if (widget) {
+          widget.style.display = isOnChat ? "none" : "";
+        }
+      }
+
+      document.addEventListener("astro:after-swap", updateAstralChatVisibility);
       document.addEventListener("astro:page-load", () => {
+        updateAstralChatVisibility();
         const isRecruiterPage = window.location.pathname === "/recruiter";
         const nextMode = isRecruiterPage ? "on" : "off";
         document.body.setAttribute("data-recruiter-mode", nextMode);

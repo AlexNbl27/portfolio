@@ -63,9 +63,9 @@ const skillNarratives = Object.fromEntries(
         class="rec-time-badge"
         aria-live="polite"
         aria-atomic="true"
-        aria-label="Temps de lecture restant"
+        aria-label="Temps de lecture"
       >
-        ~60s restant
+        0s
       </span>
     </div>
   </section>
@@ -125,10 +125,7 @@ const skillNarratives = Object.fromEntries(
         <div class="flex items-start justify-between gap-4">
           <div>
             <p class="rec-eyebrow">Narration compétence</p>
-            <h3
-              id="skill-focus-title"
-              class="skill-panel-title"
-            ></h3>
+            <h3 id="skill-focus-title" class="skill-panel-title"></h3>
             <p id="skill-focus-meta" class="skill-panel-meta"></p>
           </div>
           <button
@@ -211,26 +208,43 @@ const skillNarratives = Object.fromEntries(
     // ── Time to read badge ──────────────────────────────────────
     const badge = document.getElementById("reading-time-badge");
     if (badge) {
-      const TOTAL = 60;
-      let remaining = TOTAL;
+      const STORAGE_KEY = "recruiter-timer-state";
+      const EXPIRATION_TIME = 2 * 60 * 60 * 1000;
+
+      let elapsed = 0;
       let started = false;
-      let intervalId = null;
+      try {
+        const stored = sessionStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          const state = JSON.parse(stored);
+          if (Date.now() - state.lastUpdated < EXPIRATION_TIME) {
+            elapsed = typeof state.elapsed === "number" ? state.elapsed : 0;
+          } else {
+            sessionStorage.removeItem(STORAGE_KEY);
+          }
+        }
+      } catch (e) {
+        // En cas d'erreur de parsing
+      }
+
+      if (elapsed > 0) {
+        badge.textContent = `${elapsed}s`;
+      }
 
       const tick = () => {
-        remaining -= 1;
-        if (remaining <= 0) {
-          badge.textContent = "Lu \u2713";
-          clearInterval(intervalId);
-        } else {
-          badge.textContent = `${remaining}s restant`;
-        }
+        elapsed += 1;
+        badge.textContent = `${elapsed}s`;
+        sessionStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({ elapsed, lastUpdated: Date.now() }),
+        );
       };
 
       const startTimer = () => {
         if (started) return;
         started = true;
-        badge.textContent = `${remaining}s restant`;
-        intervalId = setInterval(tick, 1000);
+        badge.textContent = `${elapsed}s`;
+        setInterval(tick, 1000);
         window.removeEventListener("scroll", startTimer);
       };
 
@@ -268,16 +282,19 @@ const skillNarratives = Object.fromEntries(
       const metaEl = document.getElementById("skill-focus-meta");
       if (metaEl) {
         const y = data.years ?? 0;
-        metaEl.textContent =
-          `${data.category}\u2002·\u2002${y}\u00a0an${y > 1 ? "s" : ""}\u2002·\u2002${data.proficiency}\u202f%`;
+        metaEl.textContent = `${data.category}\u2002·\u2002${y}\u00a0an${y > 1 ? "s" : ""}\u2002·\u2002${data.proficiency}\u202f%`;
       }
 
       const projectsHtml = data.projects.length
         ? data.projects
-            .map(
-              (p) =>
-                `<a class="proof-chip" href="${p.detailPage || "#"}">${p.title}</a>`,
-            )
+            .map((p) => {
+              const url = p.detailPage
+                ? new URL(p.detailPage, window.location.origin)
+                : null;
+              if (url) url.searchParams.set("from", "recruiter");
+              const href = url ? `${url.pathname}${url.search}` : "#";
+              return `<a class="proof-chip" href="${href}">${p.title}</a>`;
+            })
             .join("")
         : `<p class="proof-empty">Aucun projet direct trouvé</p>`;
 
@@ -329,6 +346,20 @@ const skillNarratives = Object.fromEntries(
     });
 
     closeBtn?.addEventListener("click", closePanel);
+
+    // ── Setup recruiter source for modal projects ─────────────
+    panel?.addEventListener("click", (e) => {
+      const target = /** @type {HTMLElement} */ (e.target);
+      const isChip =
+        target?.classList.contains("proof-chip") ||
+        target?.closest(".proof-chip");
+      if (isChip) {
+        sessionStorage.setItem(
+          "project-detail-back-link",
+          "/recruiter#competences-cles",
+        );
+      }
+    });
   });
 </script>
 
@@ -506,8 +537,16 @@ const skillNarratives = Object.fromEntries(
     border-radius: var(--radius-card, 1.6rem);
     border: 1px solid rgba(246, 212, 13, 0.22);
     background:
-      radial-gradient(ellipse at 0% 0%, rgba(246, 212, 13, 0.06) 0%, transparent 55%),
-      linear-gradient(160deg, rgba(38, 43, 64, 0.97) 0%, rgba(18, 22, 40, 0.95) 100%);
+      radial-gradient(
+        ellipse at 0% 0%,
+        rgba(246, 212, 13, 0.06) 0%,
+        transparent 55%
+      ),
+      linear-gradient(
+        160deg,
+        rgba(38, 43, 64, 0.97) 0%,
+        rgba(18, 22, 40, 0.95) 100%
+      );
     padding: 1.5rem 1.6rem 1.6rem;
   }
 
@@ -561,7 +600,10 @@ const skillNarratives = Object.fromEntries(
     color: rgba(179, 184, 202, 0.45);
     border-radius: 0.4rem;
     border: 1px solid transparent;
-    transition: color 140ms, background 140ms, border-color 140ms;
+    transition:
+      color 140ms,
+      background 140ms,
+      border-color 140ms;
   }
   .skill-panel-close:hover {
     color: var(--gold, #f6d40d);
@@ -624,7 +666,10 @@ const skillNarratives = Object.fromEntries(
     font-weight: 600;
     color: rgba(246, 212, 13, 0.95);
     background: rgba(246, 212, 13, 0.05);
-    transition: background 130ms, border-color 130ms, transform 130ms;
+    transition:
+      background 130ms,
+      border-color 130ms,
+      transform 130ms;
     text-decoration: none;
     letter-spacing: 0.01em;
   }
@@ -632,7 +677,9 @@ const skillNarratives = Object.fromEntries(
     content: "↗";
     font-size: 0.6rem;
     opacity: 0.45;
-    transition: transform 130ms, opacity 130ms;
+    transition:
+      transform 130ms,
+      opacity 130ms;
   }
   :global(.proof-chip):hover {
     background: rgba(246, 212, 13, 0.11);

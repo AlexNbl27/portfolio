@@ -1,9 +1,11 @@
 {
-  "name": "magical-odyssey-portfolio",
-  "version": "0.1.0",
+  "name": "alexandre-noblet-portfolio",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "astro dev",
+    "dev:api": "cross-env PORT=3001 node server.mjs",
+    "dev:full": "concurrently -n \"astro,api\" -c \"cyan,yellow\" \"npm run dev\" \"npm run dev:api\"",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
@@ -18,6 +20,8 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4.2.2",
     "astro": "^6.1.5",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
     "tailwindcss": "^4.2.2",
     "typescript": "^5.9.3"
   }
