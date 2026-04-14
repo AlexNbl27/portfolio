@@ -170,6 +170,8 @@ function initAstralChat() {
       blog: `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`,
     };
 
+    class FatalChatError extends Error {}
+
     const sendWithServerRoute = async (prompt: string): Promise<{ text: string; ctas: Cta[] }> => {
       const response = await fetch("/api/astral-chat", {
         method: "POST",
@@ -179,9 +181,9 @@ function initAstralChat() {
 
       if (!response.ok) {
         const payload = await response.json().catch(() => ({}));
-        throw new Error(
-          payload?.error || "Astral ne peut pas répondre pour le moment.",
-        );
+        const message = payload?.error || "Astral ne peut pas répondre pour le moment.";
+        if (response.status === 503) throw new FatalChatError(message);
+        throw new Error(message);
       }
 
       const data = await response.json();
@@ -337,13 +339,10 @@ function initAstralChat() {
         await typewriter(streamingBubble, text);
         renderCtas(ctas);
       } catch (error) {
-        disableChat();
+        if (error instanceof FatalChatError) disableChat();
         streamingBubble.classList.remove("is-streaming");
-        streamingBubble.innerHTML = "";
-        streamingBubble.textContent =
-          error instanceof Error
-            ? error.message
-            : "Un voile cosmique perturbe Astral. Réessayez dans quelques instants.";
+        streamingBubble.classList.add("astral-chat__bubble--error");
+        streamingBubble.textContent = "✦ Le message s'est perdu dans l'espace suite à une erreur… Réessayez dans quelques instants.";
       }
     });
   });

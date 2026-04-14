@@ -57,6 +57,12 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
+.astral-chat__bubble--error {
+  border-color: rgba(255, 100, 100, 0.35) !important;
+  color: rgba(255, 180, 180, 0.9) !important;
+  font-style: italic;
+}
+
 .astral-chat__skeleton {
   display: inline-block;
   color: rgba(255, 255, 255, 0.4);
