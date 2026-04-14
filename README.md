@@ -210,3 +210,4 @@ Implémentation actuelle recommandée pour Coolify:
 - build Astro statique (`dist`)
 - serveur Node unique (`server.mjs`) dans le même container Docker
 - endpoint `/api/astral-chat` avec clé privée (`GEMINI_API_KEY`) + rate limit mémoire
+- `server.mjs` charge aussi `.env` en local (et lit les variables Coolify en production)

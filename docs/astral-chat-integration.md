@@ -49,3 +49,7 @@ Limites:
 - `GEMINI_MODEL=gemini-2.5-flash` (optionnel)
 - `ASTRAL_RATE_LIMIT_MAX=40` (optionnel, défaut 40 / IP / 24h)
 - `PORT=8080` (optionnel, Coolify le gère généralement automatiquement)
+
+Notes:
+- En production Coolify, définissez ces variables dans l'UI Coolify (Environment Variables).
+- Pour le local, `server.mjs` lit aussi automatiquement un fichier `.env` à la racine du projet.
