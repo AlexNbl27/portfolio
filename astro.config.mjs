@@ -5,7 +5,12 @@ import icon from 'astro-icon';
 export default defineConfig({
   integrations: [icon()],
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    server: {
+      proxy: {
+        '/api': 'http://localhost:3001',
+      },
+    },
   },
-  output: 'static'
+  output: 'static',
 });

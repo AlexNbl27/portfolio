@@ -1,21 +1,22 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import AstralChat from "../components/AstralChat.astro";
+import AstralChatContent from "../components/AstralChatContent.astro";
 ---
 
 <BaseLayout
   title="Chat Astral · Alexandre Noblet"
   description="Discutez avec Astral, l'assistant IA du portfolio d'Alexandre Noblet."
 >
-  <section class="cosmic-container flex flex-col gap-6">
-    <header class="glass-card rounded-card border border-white/10 px-6 py-8">
-      <p class="text-xs uppercase tracking-[0.2em] text-cosmic-gold">/chat</p>
-      <h1 class="section-title text-cosmic-gold">Canal Astral</h1>
-      <p class="muted mt-3 max-w-3xl">
-        Version mobile dédiée du chatbot. Idéal pour intégrer un accès direct dans le menu burger.
-      </p>
-    </header>
+  <section class="cosmic-container pt-8">
+    <h1 class="section-title">Canal <span class="highlight">Astral</span></h1>
+    <p class="muted mt-4 max-w-3xl text-lg">
+      Une interface conversationnelle alimentée par l'IA pour explorer mon
+      profil, mes projets et mon approche technique de manière interactive et
+      immersive.
+    </p>
 
-    <AstralChat mode="page" title="Astral · Guide conversationnel" />
+    <div class="mt-8">
+      <AstralChatContent />
+    </div>
   </section>
 </BaseLayout>

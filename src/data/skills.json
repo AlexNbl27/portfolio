@@ -63,6 +63,25 @@
     "yearsOfExperience": 2
   },
   {
+    "name": "Astro",
+    "category": "Développement web",
+    "proficiency": 80,
+    "yearsOfExperience": 1,
+    "recruiterCore": true
+  },
+  {
+    "name": "Tailwind CSS",
+    "category": "Développement web",
+    "proficiency": 75,
+    "yearsOfExperience": 1
+  },
+  {
+    "name": "React",
+    "category": "Développement web",
+    "proficiency": 68,
+    "yearsOfExperience": 1
+  },
+  {
     "name": "Vue.js 3",
     "category": "Développement web",
     "proficiency": 72,
@@ -76,9 +95,21 @@
     "recruiterCore": true
   },
   {
+    "name": "Strapi",
+    "category": "Backend & frameworks",
+    "proficiency": 68,
+    "yearsOfExperience": 1
+  },
+  {
     "name": "Symfony",
     "category": "Backend & frameworks",
     "proficiency": 68,
+    "yearsOfExperience": 1
+  },
+  {
+    "name": "Stripe",
+    "category": "Backend & frameworks",
+    "proficiency": 65,
     "yearsOfExperience": 1
   },
   {
