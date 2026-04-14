@@ -8,6 +8,7 @@ const links = [
   { href: "/soft-skills", label: "Soft skills" },
   { href: "/experience", label: "Parcours" },
   { href: "/blogs", label: "Blogs" },
+  { href: "/chat", label: "Chat IA", mobileOnly: true },
 ];
 
 const current = Astro.url.pathname;
@@ -68,6 +69,7 @@ const current = Astro.url.pathname;
                 aria-current={current === link.href ? "page" : undefined}
                 class:list={[
                   "focus-ring border-b pb-1 transition hover:text-cosmic-gold",
+                  link.mobileOnly ? "md:hidden" : "",
                   current === link.href
                     ? "border-cosmic-gold text-cosmic-gold"
                     : "border-transparent",

@@ -1,0 +1,274 @@
+---
+
+---
+
+<section
+  class="astral-chat hidden lg:flex fixed z-[150] flex-col items-end gap-4 bottom-6 right-6 astral-chat--booting"
+  data-astral-chat-root
+  data-mode="floating"
+>
+  <div
+    class="astral-chat__overlay fixed inset-0 bg-black/70 backdrop-blur-sm pointer-events-none opacity-0 transition-opacity duration-300 -z-10"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div
+    id="astral-chat-panel-floating"
+    class="astral-chat__panel glass-card is-floating hidden"
+  >
+    <header class="astral-chat__header">
+      <div>
+        <p class="astral-chat__kicker">Compagnon stellaire</p>
+        <h2>Astral · Assistant IA</h2>
+      </div>
+      <div class="flex items-center gap-2">
+        <a
+          href="/chat"
+          class="astral-chat__fullscreen focus-ring"
+          aria-label="Ouvrir en plein écran"
+          title="Ouvrir en plein écran"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"
+            ></path>
+          </svg>
+        </a>
+        <button
+          type="button"
+          class="astral-chat__clear focus-ring"
+          aria-label="Nouvelle conversation"
+          title="Nouvelle conversation"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+            <path d="M3 3v5h5"></path>
+          </svg>
+        </button>
+        <button
+          type="button"
+          class="astral-chat__close focus-ring"
+          aria-label="Fermer le chat"
+        >
+          ✕
+        </button>
+      </div>
+    </header>
+
+    <div class="astral-chat__messages" aria-live="polite"></div>
+
+    <form class="astral-chat__composer">
+      <label class="sr-only" for="astral-chat-input-floating"
+        >Votre message</label
+      >
+      <textarea
+        id="astral-chat-input-floating"
+        placeholder="Écrivez votre message…"
+        rows="1"
+        maxlength="800"
+        required></textarea>
+      <button type="submit" class="focus-ring">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </form>
+  </div>
+
+  <button
+    type="button"
+    class="astral-chat__trigger focus-ring transition-all duration-300 inline-flex"
+    aria-expanded="false"
+    aria-controls="astral-chat-panel-floating"
+  >
+    <span class="astral-chat__halo" aria-hidden="true"></span>
+    <span class="astral-chat__core" aria-hidden="true">✦</span>
+    <span class="sr-only">Ouvrir le chat Astral</span>
+  </button>
+</section>
+
+<script>
+  import "../scripts/astral-chat";
+</script>
+
+<style is:global>
+  @import "../styles/astral-chat.css";
+
+  /* ── Trigger ────────────────────────────────────────────────── */
+  .astral-chat__trigger {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 999px;
+    border: 1px solid rgba(246, 212, 13, 0.6);
+    background: radial-gradient(
+      circle at 35% 25%,
+      #ffe58a 0%,
+      #f6d40d 45%,
+      #9f7a00 100%
+    );
+    color: #140f02;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+      0 8px 28px rgba(4, 9, 22, 0.55),
+      0 0 25px rgba(246, 212, 13, 0.6);
+    animation: astral-pulse 4.2s ease-in-out infinite;
+  }
+
+  .astral-chat__core {
+    position: relative;
+    z-index: 2;
+    font-size: 2.8rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -0.2rem;
+  }
+
+  .astral-chat__halo {
+    position: absolute;
+    inset: -0.35rem;
+    border-radius: inherit;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    background: conic-gradient(
+      from 0deg,
+      rgba(246, 212, 13, 0.08),
+      rgba(227, 164, 214, 0.45),
+      rgba(246, 212, 13, 0.08)
+    );
+    filter: blur(0.3px);
+    animation: astral-orbit 7s linear infinite;
+  }
+
+  /* ── Panel ──────────────────────────────────────────────────── */
+  .astral-chat__panel {
+    max-height: 80vh;
+    padding: 1.5rem;
+    border-color: rgba(246, 212, 13, 0.32);
+    flex-direction: column;
+    gap: 1.2rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+
+  .astral-chat__panel.is-active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .astral-chat__panel:not(.hidden) {
+    display: flex;
+  }
+
+  .astral-chat__panel.is-floating {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: min(30rem, calc(100vw - 2rem));
+  }
+
+  /* ── Header ─────────────────────────────────────────────────── */
+  .astral-chat__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .astral-chat__kicker {
+    margin: 0;
+    letter-spacing: 0.14em;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: rgba(246, 212, 13, 0.82);
+  }
+
+  .astral-chat__header h2 {
+    margin: 0.2rem 0 0;
+    font-size: 1.25rem;
+  }
+
+  .astral-chat__fullscreen,
+  .astral-chat__close,
+  .astral-chat__clear {
+    border: 0;
+    background: transparent;
+    color: #f3f0e2;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 4px;
+    display: inline-flex;
+    transition:
+      color 0.2s,
+      background-color 0.2s;
+  }
+
+  .astral-chat__fullscreen:hover,
+  .astral-chat__close:hover,
+  .astral-chat__clear:hover {
+    color: #f6d40d;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  /* ── Animations ─────────────────────────────────────────────── */
+  @keyframes astral-orbit {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes astral-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+      box-shadow:
+        0 8px 28px rgba(4, 9, 22, 0.55),
+        0 0 20px rgba(246, 212, 13, 0.5);
+    }
+    50% {
+      transform: scale(1.04);
+      box-shadow:
+        0 12px 34px rgba(4, 9, 22, 0.6),
+        0 0 36px rgba(246, 212, 13, 0.75);
+    }
+  }
+</style>

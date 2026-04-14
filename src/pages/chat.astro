@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import AstralChatContent from "../components/AstralChatContent.astro";
+---
+
+<BaseLayout
+  title="Chat Astral · Alexandre Noblet"
+  description="Discutez avec Astral, l'assistant IA du portfolio d'Alexandre Noblet."
+>
+  <section class="cosmic-container pt-8">
+    <h1 class="section-title">Canal <span class="highlight">Astral</span></h1>
+    <p class="muted mt-4 max-w-3xl text-lg">
+      Une interface conversationnelle alimentée par l'IA pour explorer mon
+      profil, mes projets et mon approche technique de manière interactive et
+      immersive.
+    </p>
+
+    <div class="mt-8">
+      <AstralChatContent />
+    </div>
+  </section>
+</BaseLayout>
