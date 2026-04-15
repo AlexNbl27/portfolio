@@ -176,12 +176,14 @@
       box-shadow: 0 24px 60px rgba(4, 9, 22, 0.35);
     }
 
-    .home-portal-row:has(.home-portal-card:first-child:hover) {
-      grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
-    }
+    @supports selector(:has(*)) {
+      .home-portal-row:has(.home-portal-card:first-child:hover) {
+        grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+      }
 
-    .home-portal-row:has(.home-portal-card:last-child:hover) {
-      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      .home-portal-row:has(.home-portal-card:last-child:hover) {
+        grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      }
     }
   }
 
@@ -335,19 +337,19 @@
 
   .recruiter-cta-wrap::before,
   .recruiter-cta-wrap::after {
-    --light-pos: 0deg;
     content: '';
     position: absolute;
     border-radius: calc(var(--radius-card) + 1px);
     pointer-events: none;
-    animation: light-orbit 7s linear infinite;
+    transform-origin: center;
+    animation: orbit-rotate 7s linear infinite;
   }
 
   /* Conic border: bright spot that fades all the way around */
   .recruiter-cta-wrap::before {
     inset: -1px;
     background: conic-gradient(
-      from var(--light-pos),
+      from 0deg,
       rgba(246, 212, 13, 0.04) 0deg,
       rgba(246, 212, 13, 0.03) 200deg,
       rgba(246, 212, 13, 0.12) 280deg,
@@ -365,12 +367,22 @@
     mask-composite: exclude;
   }
 
+
+
+  @supports not ((-webkit-mask-composite: destination-out) or (mask-composite: exclude)) {
+    .recruiter-cta-wrap::before {
+      background: none;
+      padding: 0;
+      border: 1px solid rgba(246, 212, 13, 0.45);
+    }
+  }
+
   /* Diffuse outer halo that follows the light source */
   .recruiter-cta-wrap::after {
     inset: -12px;
     border-radius: calc(var(--radius-card) + 12px);
     background: conic-gradient(
-      from var(--light-pos),
+      from 0deg,
       transparent 0deg,
       transparent 250deg,
       rgba(246, 212, 13, 0.06) 310deg,

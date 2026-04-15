@@ -59,9 +59,19 @@ const {
         }
       }
 
-      document.addEventListener("astro:after-swap", updateAstralChatVisibility);
+      function syncViewTransitionMode() {
+        const isFirefox = /firefox/i.test(navigator.userAgent);
+        document.documentElement.classList.toggle("no-view-transition", isFirefox);
+      }
+
+      document.addEventListener("astro:after-swap", () => {
+        updateAstralChatVisibility();
+        syncViewTransitionMode();
+      });
+
       document.addEventListener("astro:page-load", () => {
         updateAstralChatVisibility();
+        syncViewTransitionMode();
         const isRecruiterPage = window.location.pathname === "/recruiter";
         const nextMode = isRecruiterPage ? "on" : "off";
         document.body.setAttribute("data-recruiter-mode", nextMode);
