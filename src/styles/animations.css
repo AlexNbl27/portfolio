@@ -141,14 +141,10 @@
   }
 }
 
-@property --light-pos {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
-}
-
-@keyframes light-orbit {
-  to { --light-pos: 360deg; }
+@keyframes orbit-rotate {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -165,4 +161,11 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+html.no-view-transition ::view-transition-old(page-content),
+html.no-view-transition ::view-transition-new(page-content),
+html.no-view-transition ::view-transition-old(root),
+html.no-view-transition ::view-transition-new(root) {
+  animation: none !important;
 }
