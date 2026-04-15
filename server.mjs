@@ -284,7 +284,7 @@ async function callGemini(prompt, history) {
                   href:  { type: "string" },
                   type:  { type: "string" },
                 },
-                required: ["label", "href", "type"],
+                required: ["label", "href"],
               },
             },
           },
@@ -314,6 +314,23 @@ async function callGemini(prompt, history) {
     text: typeof parsed.text === "string" ? parsed.text : raw,
     ctas: Array.isArray(parsed.ctas) ? parsed.ctas : [],
   };
+}
+
+
+async function callGeminiWithRetry(prompt, history, maxAttempts = 2) {
+  let lastError;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      return await callGemini(prompt, history);
+    } catch (error) {
+      lastError = error;
+      if (attempt >= maxAttempts) break;
+      await new Promise((resolve) => setTimeout(resolve, 300 * attempt));
+    }
+  }
+
+  throw lastError instanceof Error ? lastError : new Error("Erreur Gemini inconnue.");
 }
 
 function contentType(filePath) {
@@ -395,7 +412,7 @@ const server = http.createServer(async (req, res) => {
         return json(res, 400, { error: "Prompt manquant." });
       }
 
-      const { text, ctas } = await callGemini(prompt.slice(0, 4000), body?.history);
+      const { text, ctas } = await callGeminiWithRetry(prompt.slice(0, 4000), body?.history);
       return json(res, 200, { text, ctas });
     } catch (error) {
       return json(res, 500, {
