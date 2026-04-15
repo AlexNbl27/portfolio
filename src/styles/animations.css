@@ -141,14 +141,10 @@
   }
 }
 
-@property --light-pos {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
-}
-
-@keyframes light-orbit {
-  to { --light-pos: 360deg; }
+@keyframes orbit-rotate {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
