@@ -72,7 +72,8 @@
 }
 
 @keyframes planet-invite {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.2;
     transform: scale(1);
   }
@@ -83,8 +84,13 @@
 }
 
 @keyframes hint-breathe {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.85; }
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.85;
+  }
 }
 
 @keyframes skill-card-flash {
@@ -104,11 +110,21 @@
   }
 }
 
+/* Force normal blending and dark backgrounds for all view transitions globally to avoid bright flashes */
+::view-transition-group(*),
+::view-transition-old(*),
+::view-transition-new(*) {
+  mix-blend-mode: normal !important;
+}
+
+::view-transition-group(root) {
+  background-color: #040916 !important;
+}
+
 /* Supprime la transition par défaut sur toute la page pour éviter les doublons/chevauchements */
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
-  mix-blend-mode: normal;
 }
 
 ::view-transition-old(page-content) {
@@ -130,6 +146,35 @@
   to {
     opacity: 1;
   }
+}
+
+/* Désactive le backdrop-filter, les ombres et les transitions pendant les transitions de secours pour éviter le rendu en carré blanc et les lags sur Firefox */
+[data-astro-transition-fallback],
+[data-astro-transition-fallback] * {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  transition: none !important;
+  mix-blend-mode: normal !important;
+}
+
+[data-astro-transition-fallback] .glass-card,
+[data-astro-transition-fallback] .experience-card,
+[data-astro-transition-fallback] .skill-card {
+  background-image: none !important;
+  background-color: #1a1d2d !important;
+}
+
+html[data-astro-transition-fallback="old"],
+html[data-astro-transition-fallback="new"] {
+  animation: none !important;
+}
+
+html[data-astro-transition-fallback="old"] body {
+  animation: page-fade-out 250ms ease-out both !important;
+}
+html[data-astro-transition-fallback="new"] body {
+  animation: page-fade-in 250ms ease-out both !important;
 }
 
 @keyframes page-fade-out {
@@ -161,11 +206,4 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-}
-
-html.no-view-transition ::view-transition-old(page-content),
-html.no-view-transition ::view-transition-new(page-content),
-html.no-view-transition ::view-transition-old(root),
-html.no-view-transition ::view-transition-new(root) {
-  animation: none !important;
 }

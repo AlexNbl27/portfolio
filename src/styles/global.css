@@ -329,6 +329,17 @@
     transform: rotate(14deg) translateX(420%);
   }
 
+  @property --border-angle {
+    syntax: "<angle>";
+    inherits: true;
+    initial-value: 0deg;
+  }
+
+  @keyframes orbit-rotate-angle {
+    from { --border-angle: 0deg; }
+    to { --border-angle: 360deg; }
+  }
+
   /* Moving light source orbiting around the card border */
   .recruiter-cta-wrap {
     position: relative;
@@ -342,14 +353,14 @@
     border-radius: calc(var(--radius-card) + 1px);
     pointer-events: none;
     transform-origin: center;
-    animation: orbit-rotate 7s linear infinite;
+    animation: orbit-rotate-angle 7s linear infinite;
   }
 
   /* Conic border: bright spot that fades all the way around */
   .recruiter-cta-wrap::before {
     inset: -1px;
     background: conic-gradient(
-      from 0deg,
+      from var(--border-angle),
       rgba(246, 212, 13, 0.04) 0deg,
       rgba(246, 212, 13, 0.03) 200deg,
       rgba(246, 212, 13, 0.12) 280deg,
@@ -382,7 +393,7 @@
     inset: -12px;
     border-radius: calc(var(--radius-card) + 12px);
     background: conic-gradient(
-      from 0deg,
+      from var(--border-angle),
       transparent 0deg,
       transparent 250deg,
       rgba(246, 212, 13, 0.06) 310deg,
@@ -476,9 +487,7 @@
     }
   }
 
-  .page-shell {
-    will-change: transform, opacity;
-  }
+
 
   .project-item--detail {
     transition: transform 200ms ease;

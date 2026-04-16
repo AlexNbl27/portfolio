@@ -28,9 +28,17 @@ const {
     <link rel="icon" type="image/png" href="/images/website/portfolio.png" />
     <meta name="view-transition" content="same-origin" />
     <ClientRouter />
+    <script is:inline>
+      if (typeof navigator !== 'undefined' && /firefox/i.test(navigator.userAgent)) {
+        document.startViewTransition = undefined;
+      }
+    </script>
     <slot name="head" />
     <style is:global>
-      html {
+      :root {
+        color-scheme: dark !important;
+      }
+      html, body {
         background-color: #040916 !important;
       }
     </style>
@@ -59,19 +67,12 @@ const {
         }
       }
 
-      function syncViewTransitionMode() {
-        const isFirefox = /firefox/i.test(navigator.userAgent);
-        document.documentElement.classList.toggle("no-view-transition", isFirefox);
-      }
-
       document.addEventListener("astro:after-swap", () => {
         updateAstralChatVisibility();
-        syncViewTransitionMode();
       });
 
       document.addEventListener("astro:page-load", () => {
         updateAstralChatVisibility();
-        syncViewTransitionMode();
         const isRecruiterPage = window.location.pathname === "/recruiter";
         const nextMode = isRecruiterPage ? "on" : "off";
         document.body.setAttribute("data-recruiter-mode", nextMode);
