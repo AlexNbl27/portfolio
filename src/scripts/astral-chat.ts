@@ -43,6 +43,9 @@ function initAstralChat() {
       quotaReached: isEnglish
         ? "Daily quota reached for this browser. Please come back tomorrow or contact Alexandre directly."
         : "Quota journalier atteint pour ce navigateur. Revenez demain ou contactez Alexandre directement.",
+      genericError: isEnglish
+        ? "✦ The message was lost in space due to an error… Please try again in a few moments."
+        : "✦ Le message s'est perdu dans l'espace suite à une erreur… Réessayez dans quelques instants.",
     };
 
     const loadHistory = () => {
@@ -358,7 +361,7 @@ function initAstralChat() {
         if (error instanceof FatalChatError) disableChat();
         streamingBubble.classList.remove("is-streaming");
         streamingBubble.classList.add("astral-chat__bubble--error");
-        streamingBubble.textContent = "✦ Le message s'est perdu dans l'espace suite à une erreur… Réessayez dans quelques instants.";
+        streamingBubble.textContent = copy.genericError;
       }
     });
   });
