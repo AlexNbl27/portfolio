@@ -96,10 +96,7 @@ export function StarsBackground({
   return (
     <div
       data-slot="stars-background"
-      className={cn(
-        "relative size-full overflow-hidden bg-[radial-gradient(ellipse_at_bottom,_#262626_0%,_#000_100%)]",
-        className,
-      )}
+      className={cn("relative size-full overflow-hidden", className)}
       onMouseMove={handleMouseMove}
       {...props}
     >
@@ -107,7 +104,7 @@ export function StarsBackground({
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
         style={{ x: springX, y: springY }}
       >
         <StarLayer
