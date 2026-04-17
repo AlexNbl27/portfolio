@@ -6,6 +6,7 @@ import Navigation from "../components/Navigation.astro";
 import CosmicBackground from "../components/CosmicBackground.astro";
 import Footer from "../components/Footer.astro";
 import AstralChat from "../components/AstralChat.astro";
+import { getLocaleFromPathname, localizePath } from "../i18n/utils";
 
 interface Props {
   title: string;
@@ -16,10 +17,14 @@ const {
   title,
   description = "Portfolio d’Alexandre Noblet, développeur et intégrateur IoT.",
 } = Astro.props;
+
+const locale = getLocaleFromPathname(Astro.url.pathname);
+const enPath = localizePath(Astro.url.pathname, "en");
+const frPath = localizePath(Astro.url.pathname, "fr");
 ---
 
 <!doctype html>
-<html lang="fr">
+<html lang={locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
@@ -27,11 +32,55 @@ const {
     <title>{title}</title>
     <link rel="icon" type="image/png" href="/images/website/portfolio.png" />
     <meta name="view-transition" content="same-origin" />
+    <link rel="alternate" hreflang="fr" href={frPath} />
+    <link rel="alternate" hreflang="en" href={enPath} />
     <ClientRouter />
     <script is:inline>
       if (typeof navigator !== 'undefined' && /firefox/i.test(navigator.userAgent)) {
         document.startViewTransition = undefined;
       }
+    </script>
+    <script is:inline>
+      (() => {
+        if (typeof window === "undefined") return;
+
+        const defaultLocale = "fr";
+        const supportedLocales = ["fr", "en"];
+        const localeCookie = `portfolio_locale=`;
+
+        const getCookieLocale = () => {
+          const entry = document.cookie
+            .split(";")
+            .map((value) => value.trim())
+            .find((value) => value.startsWith(localeCookie));
+          return entry?.slice(localeCookie.length);
+        };
+
+        const normalize = (path) => {
+          const cleaned = path.replace(/\/$/, "") || "/";
+          const segments = cleaned.split("/").filter(Boolean);
+          if (segments.length > 0 && supportedLocales.includes(segments[0])) {
+            return `/${segments.slice(1).join("/")}` || "/";
+          }
+          return cleaned;
+        };
+
+        const currentPath = window.location.pathname;
+        const browserPreference = navigator.language.toLowerCase().startsWith("en") ? "en" : defaultLocale;
+        const preferredLocale = getCookieLocale() || localStorage.getItem("preferredLocale") || browserPreference;
+
+        if (!supportedLocales.includes(preferredLocale)) return;
+
+        const hasLocalePrefix = /^\/(fr|en)(\/|$)/.test(currentPath);
+        const basePath = normalize(currentPath);
+        const targetPath = preferredLocale === defaultLocale ? basePath : `/${preferredLocale}${basePath === "/" ? "" : basePath}`;
+
+        const isTopLevelPath = basePath === "/" || /^\/[^/]+$/.test(basePath);
+
+        if (!hasLocalePrefix && isTopLevelPath && targetPath !== currentPath) {
+          window.location.replace(targetPath);
+        }
+      })();
     </script>
     <slot name="head" />
     <style is:global>
@@ -47,18 +96,39 @@ const {
     <CosmicBackground transition:persist />
     <Navigation transition:persist />
     <slot name="fixed-layer" />
-    <AstralChat transition:persist />
+    <AstralChat locale={locale} transition:persist />
     <main
       class="page-shell relative z-10 pt-20 pb-8 md:pt-32 md:pb-12"
       transition:name="page-content"
     >
       <slot />
     </main>
-    <Footer />
+    <Footer locale={locale} />
+    <script>
+      // Reveal .project-card-img elements when their image data is ready,
+      // so the fade-in plays on load rather than on DOM insertion.
+      function revealCardImages() {
+        document.querySelectorAll<HTMLImageElement>('.project-card-img').forEach((img) => {
+          if (img.dataset.revealed) return;
+          const reveal = () => {
+            img.style.opacity = '0.8';
+            img.dataset.revealed = '1';
+          };
+          if (img.complete && img.naturalWidth > 0) {
+            reveal();
+          } else {
+            img.addEventListener('load', reveal, { once: true });
+          }
+        });
+      }
+      document.addEventListener('astro:page-load', revealCardImages);
+      revealCardImages();
+    </script>
+
     <script>
       function updateAstralChatVisibility() {
         const isOnChat =
-          window.location.pathname.replace(/\/$/, "") === "/chat";
+          ["/chat", "/en/chat"].includes(window.location.pathname.replace(/\/$/, ""));
         const widget = document.querySelector(
           "[data-astral-chat-root][data-mode='floating']",
         ) as HTMLElement | null;
@@ -73,7 +143,7 @@ const {
 
       document.addEventListener("astro:page-load", () => {
         updateAstralChatVisibility();
-        const isRecruiterPage = window.location.pathname === "/recruiter";
+        const isRecruiterPage = ["/recruiter", "/en/recruiter"].includes(window.location.pathname);
         const nextMode = isRecruiterPage ? "on" : "off";
         document.body.setAttribute("data-recruiter-mode", nextMode);
         document.dispatchEvent(

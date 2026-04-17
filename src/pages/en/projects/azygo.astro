@@ -1,0 +1,62 @@
+---
+import ProjectDetailLayout from '../../../layouts/ProjectDetailLayout.astro';
+
+const frontmatter = {
+  title: 'Azygo',
+  description: 'The ERP and mobile application that reinvent student-union management to free up energy for campus life.',
+  heroImage: '/images/azygo.png',
+  projectCategory: 'Mobile & ERP project',
+  technologies: ['Laravel','Vue.js','Flutter','Docker Swarm','Figma'],
+  links: [{ label: 'Visit website', url: 'https://azygo.fr/', variant: 'primary' }],
+  parentLink: '/en/projects',
+  theme: {
+    accent: "#ff3f6b",
+    accentSoft: "#f2ebe3",
+    glowA: "rgba(255, 63, 107, 0.32)",
+    glowB: "rgba(255, 138, 92, 0.26)",
+    titleFont: "Roundo, 'Poppins', 'Manrope', sans-serif",
+    bodyFont: "'Poppins', 'Manrope', sans-serif",
+  },
+  fontImports: ["https://fonts.cdnfonts.com/css/roundo"],
+};
+---
+
+<ProjectDetailLayout frontmatter={frontmatter}>
+  <h2>Mission</h2>
+  <p>To address the administrative overload faced by student unions, we designed <strong>AZYGO</strong>: a digital ecosystem created to give time back to student engagement. Our solution combines a centralized ERP and an intuitive mobile application so teams can focus on their real mission: <strong>building vibrant campus communities</strong>.</p>
+
+  <h2>A robust architecture</h2>
+  <p>Built by a team of three passionate developers, AZYGO relies on a modern technical stack designed for performance and scalability:</p>
+  <ul>
+    <li><strong>Backend</strong>: a robust <strong>Laravel</strong> API (PHP) to secure data and orchestrate business logic.</li>
+    <li><strong>Admin frontend</strong>: a reactive dashboard built with <strong>Vue.js</strong> for real-time operations and configuration.</li>
+    <li><strong>Mobile</strong>: a smooth native-feeling iOS/Android experience powered by <strong>Flutter</strong>.</li>
+    <li><strong>Infrastructure</strong>: high availability through <strong>Docker Swarm</strong> orchestration and secure networking via WireGuard.</li>
+  </ul>
+
+  <h2>Key features</h2>
+  <h3>For admins (ERP)</h3>
+  <ul>
+    <li><strong>Ticketing & memberships</strong>: simplified workflow management.</li>
+    <li><strong>Accounting</strong>: real-time financial tracking.</li>
+    <li><strong>Coordination</strong>: centralized event planning and team needs.</li>
+  </ul>
+
+  <h3>For students (app)</h3>
+  <ul>
+    <li>A dedicated campus activity feed.</li>
+    <li>An integrated online store for student-union merchandising.</li>
+    <li>Targeted notifications so users never miss important events.</li>
+  </ul>
+
+  <h2>Product methodology</h2>
+  <p>Our approach focused on field feedback to keep the product relevant and practical:</p>
+  <ol>
+    <li><strong>Immersion</strong>: gathering needs directly from student-union teams.</li>
+    <li><strong>UX design</strong>: iterative prototyping in Figma to validate usability.</li>
+    <li><strong>Continuous delivery</strong>: integration and deployments through GitLab CI/CD.</li>
+    <li><strong>Feedback loop</strong>: constant improvements driven by real usage data.</li>
+  </ol>
+
+  <p>Result: optimized management for student unions and better experiences for students. <strong>AZYGO</strong> is not just a tool — it is a partner for campus life.</p>
+</ProjectDetailLayout>

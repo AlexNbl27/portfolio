@@ -1,5 +1,12 @@
 ---
+import type { Locale } from "../i18n/config";
 
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const isEn = locale === "en";
 ---
 
 <section
@@ -19,15 +26,15 @@
   >
     <header class="astral-chat__header">
       <div>
-        <p class="astral-chat__kicker">Compagnon stellaire</p>
-        <h2>Astral · Assistant IA</h2>
+        <p class="astral-chat__kicker">{isEn ? "Stellar companion" : "Compagnon stellaire"}</p>
+        <h2>{isEn ? "Astral · AI assistant" : "Astral · Assistant IA"}</h2>
       </div>
       <div class="flex items-center gap-2">
         <a
-          href="/chat"
+          href={isEn ? "/en/chat" : "/chat"}
           class="astral-chat__fullscreen focus-ring"
-          aria-label="Ouvrir en plein écran"
-          title="Ouvrir en plein écran"
+          aria-label={isEn ? "Open fullscreen" : "Ouvrir en plein écran"}
+          title={isEn ? "Open fullscreen" : "Ouvrir en plein écran"}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -48,8 +55,8 @@
         <button
           type="button"
           class="astral-chat__clear focus-ring"
-          aria-label="Nouvelle conversation"
-          title="Nouvelle conversation"
+          aria-label={isEn ? "New conversation" : "Nouvelle conversation"}
+          title={isEn ? "New conversation" : "Nouvelle conversation"}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -69,7 +76,7 @@
         <button
           type="button"
           class="astral-chat__close focus-ring"
-          aria-label="Fermer le chat"
+          aria-label={isEn ? "Close chat" : "Fermer le chat"}
         >
           ✕
         </button>
@@ -80,11 +87,11 @@
 
     <form class="astral-chat__composer">
       <label class="sr-only" for="astral-chat-input-floating"
-        >Votre message</label
+        >{isEn ? "Your message" : "Votre message"}</label
       >
       <textarea
         id="astral-chat-input-floating"
-        placeholder="Écrivez votre message…"
+        placeholder={isEn ? "Write your message…" : "Écrivez votre message…"}
         rows="1"
         maxlength="800"
         required></textarea>
@@ -115,7 +122,7 @@
   >
     <span class="astral-chat__halo" aria-hidden="true"></span>
     <span class="astral-chat__core" aria-hidden="true">✦</span>
-    <span class="sr-only">Ouvrir le chat Astral</span>
+    <span class="sr-only">{isEn ? "Open Astral chat" : "Ouvrir le chat Astral"}</span>
   </button>
 </section>
 

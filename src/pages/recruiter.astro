@@ -4,13 +4,31 @@ import Card from "../components/ui/Card.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 import SkillOrbit from "../components/SkillOrbit.astro";
 import ExperienceCard from "../components/ExperienceCard.astro";
-import projects from "../data/projects.json";
 import skills from "../data/skills.json";
-import experiences from "../data/experience.json";
+import { getLocaleFromPathname, localizePath } from "../i18n/utils";
+import { getProjects } from "../i18n/data/projects";
+import { getExperiences } from "../i18n/data/experiences";
+
+const locale = getLocaleFromPathname(Astro.url.pathname);
+const isEn = locale === "en";
+
+const projects = getProjects(locale);
+const experiences = getExperiences(locale);
 
 const featuredProjects = projects.filter((p) => p.recruiterFeatured);
 const featuredSkills = skills.filter((s) => s.recruiterCore);
 const featuredExperience = experiences.filter((e) => e.recruiterVisible);
+
+const categoryLabelsEn: Record<string, string> = {
+  "Mobile & logiciel": "Mobile & software",
+  "Développement web": "Web development",
+  "Backend & frameworks": "Backend & frameworks",
+  "Base de données": "Databases",
+  "DevOps & outils": "DevOps & tools",
+  "Automatisme & industrie": "Automation & industry",
+  "AI & Agentic Coding": "AI & Agentic coding",
+};
+
 const skillNarratives = Object.fromEntries(
   featuredSkills.map((skill) => {
     const match = (tech: string) =>
@@ -20,12 +38,12 @@ const skillNarratives = Object.fromEntries(
     return [
       skill.name,
       {
-        category: skill.category,
+        category: isEn ? (categoryLabelsEn[skill.category] ?? skill.category) : skill.category,
         proficiency: skill.proficiency,
         years: skill.yearsOfExperience ?? 0,
         projects: featuredProjects
           .filter((p) => p.technologies.some(match))
-          .map((p) => ({ title: p.title, detailPage: p.detailPage })),
+          .map((p) => ({ title: p.title, detailPage: p.detailPage ? localizePath(p.detailPage, locale) : undefined })),
         experience: featuredExperience
           .filter((e) => (e.technologies ?? []).some(match))
           .map((e) => ({ role: e.role, company: e.company })),
@@ -33,120 +51,69 @@ const skillNarratives = Object.fromEntries(
     ];
   }),
 );
+
+const t = {
+  title: isEn ? "Alexandre Noblet | Recruiter 60-second flow" : "Alexandre Noblet | Parcours recruteur 60 secondes",
+  description: isEn
+    ? "Recruiter one-page flow: featured projects, core skills and professional journey."
+    : "Parcours recruteur en une seule page : projets, compétences et expériences clés.",
+  eyebrow: isEn ? "60-second flow" : "Parcours 60 secondes",
+  heroTitle: isEn ? "Launch the recruiter flow" : "Lancez le parcours recruteur",
+  heroDesc: isEn
+    ? "One page, zero navigation: scroll once to review featured projects, core skills, and professional experience."
+    : "Une seule page, zéro navigation : scrollez simplement pour voir les projets phares, les compétences clés et le parcours professionnel.",
+};
 ---
 
-<BaseLayout
-  title="Alexandre Noblet | Parcours recruteur 60 secondes"
-  description="Parcours recruteur en une seule page : projets, compétences et expériences clés."
->
-  <!-- Scan line in the fixed layer slot so it sits above everything -->
+<BaseLayout title={t.title} description={t.description}>
   <div slot="fixed-layer" class="recruiter-scanline" aria-hidden="true"></div>
 
-  <!-- ── Hero ──────────────────────────────────────────────────── -->
   <section class="cosmic-container pt-8">
-    <p class="rec-eyebrow">Parcours 60 secondes</p>
-    <h1 class="section-title mt-2">
-      Lancez le <span class="highlight">parcours recruteur</span>
-    </h1>
-    <p class="muted mt-4 max-w-3xl text-base md:text-lg">
-      Une seule page, zéro navigation : scrollez simplement pour voir les
-      projets phares, les compétences clés et le parcours professionnel.
-    </p>
+    <p class="rec-eyebrow">{t.eyebrow}</p>
+    <h1 class="section-title mt-2">{isEn ? "Launch the" : "Lancez le"} <span class="highlight">{isEn ? "recruiter flow" : "parcours recruteur"}</span></h1>
+    <p class="muted mt-4 max-w-3xl text-base md:text-lg">{t.heroDesc}</p>
 
     <div class="mt-6 flex flex-wrap items-center gap-3">
-      <a class="rec-pill" href="#projets-phares">Projets</a>
-      <a class="rec-pill" href="#competences-cles">Compétences</a>
-      <a class="rec-pill" href="#parcours-pro">Parcours</a>
-      <a class="rec-pill" href="mailto:alexandrenobletpro@gmail.com">Contact</a>
-      <span
-        id="reading-time-badge"
-        class="rec-time-badge"
-        aria-live="polite"
-        aria-atomic="true"
-        aria-label="Temps de lecture"
-      >
-        0s
-      </span>
+      <a class="rec-pill" href="#projets-phares">{isEn ? "Projects" : "Projets"}</a>
+      <a class="rec-pill" href="#competences-cles">{isEn ? "Skills" : "Compétences"}</a>
+      <a class="rec-pill" href="#parcours-pro">{isEn ? "Journey" : "Parcours"}</a>
+      <a class="rec-pill" href="mailto:alexandrenobletpro@gmail.com">{isEn ? "Contact" : "Contact"}</a>
+      <span id="reading-time-badge" class="rec-time-badge" aria-live="polite" aria-atomic="true" aria-label={isEn ? "Reading time" : "Temps de lecture"}>0s</span>
     </div>
   </section>
 
-  <!-- ── Section 1 : Projets phares ───────────────────────────── -->
   <section id="projets-phares" class="cosmic-container mt-14">
-    <div class="rec-section-head">
-      <span class="rec-section-num" aria-hidden="true">01</span>
-      <div class="rec-section-rule" aria-hidden="true"></div>
-    </div>
-    <h2 class="rec-section-title mt-3">Projets phares</h2>
-    <p class="muted mt-2 max-w-2xl text-sm md:text-base">
-      Réalisations concrètes, contextes réels.
-    </p>
+    <div class="rec-section-head"><span class="rec-section-num" aria-hidden="true">01</span><div class="rec-section-rule" aria-hidden="true"></div></div>
+    <h2 class="rec-section-title mt-3">{isEn ? "Featured projects" : "Projets phares"}</h2>
+    <p class="muted mt-2 max-w-2xl text-sm md:text-base">{isEn ? "Concrete outcomes in real-world contexts." : "Réalisations concrètes, contextes réels."}</p>
     <div class="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {featuredProjects.map((project) => <ProjectCard project={project} />)}
+      {featuredProjects.map((project) => <ProjectCard project={{...project, detailPage: project.detailPage ? localizePath(project.detailPage, locale) : undefined}} locale={locale} />)}
     </div>
   </section>
 
-  <!-- ── Section 2 : Compétences clés ─────────────────────────── -->
   <section id="competences-cles" class="cosmic-container mt-16">
-    <div class="rec-section-head">
-      <span class="rec-section-num" aria-hidden="true">02</span>
-      <div class="rec-section-rule" aria-hidden="true"></div>
-    </div>
-    <h2 class="rec-section-title mt-3">Compétences clés</h2>
-    <p class="muted mt-2 max-w-2xl text-sm md:text-base">
-      Cliquez sur une compétence pour voir les preuves associées.
-    </p>
+    <div class="rec-section-head"><span class="rec-section-num" aria-hidden="true">02</span><div class="rec-section-rule" aria-hidden="true"></div></div>
+    <h2 class="rec-section-title mt-3">{isEn ? "Core skills" : "Compétences clés"}</h2>
+    <p class="muted mt-2 max-w-2xl text-sm md:text-base">{isEn ? "Click a skill to open related proofs." : "Cliquez sur une compétence pour voir les preuves associées."}</p>
 
     <div class="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {
-        featuredSkills.map((skill) => (
-          <button
-            type="button"
-            class="skill-focus-btn w-full text-left"
-            data-skill={skill.name}
-            aria-pressed="false"
-            aria-label={`Voir les preuves pour ${skill.name}`}
-          >
-            <SkillOrbit skill={skill} />
-          </button>
-        ))
-      }
+      {featuredSkills.map((skill) => (
+        <button type="button" class="skill-focus-btn w-full text-left" data-skill={skill.name} aria-pressed="false" aria-label={`${isEn ? "Show proofs for" : "Voir les preuves pour"} ${skill.name}`}>
+          <SkillOrbit skill={skill} locale={locale} />
+        </button>
+      ))}
     </div>
 
-    <!-- Focus panel — always in DOM, animated with grid-template-rows trick -->
-    <div
-      id="skill-focus-panel"
-      class="skill-panel"
-      aria-hidden="true"
-      role="region"
-      aria-labelledby="skill-focus-title"
-    >
+    <div id="skill-focus-panel" class="skill-panel" aria-hidden="true" role="region" aria-labelledby="skill-focus-title">
       <div class="skill-panel-inner">
         <div class="skill-panel-top-line" aria-hidden="true"></div>
         <div class="flex items-start justify-between gap-4">
           <div>
-            <p class="rec-eyebrow">Narration compétence</p>
+            <p class="rec-eyebrow">{isEn ? "Skill narrative" : "Narration compétence"}</p>
             <h3 id="skill-focus-title" class="skill-panel-title"></h3>
             <p id="skill-focus-meta" class="skill-panel-meta"></p>
           </div>
-          <button
-            id="skill-focus-close"
-            type="button"
-            class="skill-panel-close"
-            aria-label="Fermer le panneau"
-          >
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 15 15"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-            >
-              <line x1="2" y1="2" x2="13" y2="13"></line>
-              <line x1="13" y1="2" x2="2" y2="13"></line>
-            </svg>
-          </button>
+          <button id="skill-focus-close" type="button" class="skill-panel-close" aria-label={isEn ? "Close panel" : "Fermer le panneau"}>✕</button>
         </div>
         <div class="skill-panel-rule" aria-hidden="true"></div>
         <div id="skill-focus-content"></div>
@@ -154,113 +121,54 @@ const skillNarratives = Object.fromEntries(
     </div>
   </section>
 
-  <!-- ── Section 3 : Parcours professionnel ───────────────────── -->
   <section id="parcours-pro" class="cosmic-container mt-16">
-    <div class="rec-section-head">
-      <span class="rec-section-num" aria-hidden="true">03</span>
-      <div class="rec-section-rule" aria-hidden="true"></div>
-    </div>
-    <h2 class="rec-section-title mt-3">Parcours professionnel</h2>
-    <p class="muted mt-2 max-w-2xl text-sm md:text-base">
-      Expériences concrètes en entreprise et en équipe.
-    </p>
+    <div class="rec-section-head"><span class="rec-section-num" aria-hidden="true">03</span><div class="rec-section-rule" aria-hidden="true"></div></div>
+    <h2 class="rec-section-title mt-3">{isEn ? "Professional journey" : "Parcours professionnel"}</h2>
+    <p class="muted mt-2 max-w-2xl text-sm md:text-base">{isEn ? "Concrete experience in teams and production contexts." : "Expériences concrètes en entreprise et en équipe."}</p>
     <div class="mt-6 space-y-5">
-      {featuredExperience.map((item) => <ExperienceCard item={item} />)}
+      {featuredExperience.map((item) => <ExperienceCard item={item} locale={locale} />)}
     </div>
   </section>
 
-  <!-- ── CTA ───────────────────────────────────────────────────── -->
   <section class="cosmic-container mt-12 mb-4">
     <Card class="p-6">
-      <h2 class="font-display text-3xl text-cosmic-gold">Aller plus loin</h2>
-      <p class="muted mt-3 max-w-2xl">
-        Vous souhaitez une démo, des détails techniques ou un échange rapide ?
-      </p>
+      <h2 class="font-display text-3xl text-cosmic-gold">{isEn ? "Go further" : "Aller plus loin"}</h2>
+      <p class="muted mt-3 max-w-2xl">{isEn ? "Need a demo, technical details, or a quick exchange?" : "Vous souhaitez une démo, des détails techniques ou un échange rapide ?"}</p>
       <div class="mt-4 flex flex-wrap gap-3">
-        <a class="rec-pill" href="/projects">Explorer tous les projets</a>
-        <a class="rec-pill" href="mailto:alexandrenobletpro@gmail.com"
-          >Me contacter</a
-        >
+        <a class="rec-pill" href={localizePath('/projects', locale)}>{isEn ? "Explore all projects" : "Explorer tous les projets"}</a>
+        <a class="rec-pill" href="mailto:alexandrenobletpro@gmail.com">{isEn ? "Contact me" : "Me contacter"}</a>
       </div>
     </Card>
   </section>
 </BaseLayout>
 
-<!-- define:vars + is:inline: passes skillNarratives as a runtime global -->
-<script define:vars={{ skillNarratives }} is:inline>
+<script define:vars={{ skillNarratives, locale, isEn }} is:inline>
   document.addEventListener("astro:page-load", () => {
-    // ── Project links: tag with from=recruiter ──────────────────
-    document
-      .querySelectorAll('#projets-phares a[href^="/projects/"]')
-      .forEach((link) => {
-        const a = /** @type {HTMLAnchorElement} */ (link);
-        const url = new URL(a.href, window.location.origin);
-        url.searchParams.set("from", "recruiter");
-        a.href = `${url.pathname}${url.search}`;
-        a.addEventListener("click", () => {
-          sessionStorage.setItem(
-            "project-detail-back-link",
-            "/recruiter#projets-phares",
-          );
-        });
+    document.querySelectorAll('#projets-phares a[href^="/projects/"] , #projets-phares a[href^="/en/projects/"]').forEach((link) => {
+      const a = link;
+      const url = new URL(a.href, window.location.origin);
+      url.searchParams.set("from", "recruiter");
+      a.href = `${url.pathname}${url.search}`;
+      a.addEventListener("click", () => {
+        sessionStorage.setItem("project-detail-back-link", `${locale === "en" ? "/en" : ""}/recruiter#projets-phares`);
       });
+    });
 
-    // ── Time to read badge ──────────────────────────────────────
     const badge = document.getElementById("reading-time-badge");
     if (badge) {
-      const STORAGE_KEY = "recruiter-timer-state";
-      const EXPIRATION_TIME = 2 * 60 * 60 * 1000;
-
       let elapsed = 0;
-      let started = false;
-      try {
-        const stored = sessionStorage.getItem(STORAGE_KEY);
-        if (stored) {
-          const state = JSON.parse(stored);
-          if (Date.now() - state.lastUpdated < EXPIRATION_TIME) {
-            elapsed = typeof state.elapsed === "number" ? state.elapsed : 0;
-          } else {
-            sessionStorage.removeItem(STORAGE_KEY);
-          }
-        }
-      } catch (e) {
-        // En cas d'erreur de parsing
-      }
-
-      if (elapsed > 0) {
-        badge.textContent = `${elapsed}s`;
-      }
-
-      const tick = () => {
+      setInterval(() => {
         elapsed += 1;
         badge.textContent = `${elapsed}s`;
-        sessionStorage.setItem(
-          STORAGE_KEY,
-          JSON.stringify({ elapsed, lastUpdated: Date.now() }),
-        );
-      };
-
-      const startTimer = () => {
-        if (started) return;
-        started = true;
-        badge.textContent = `${elapsed}s`;
-        setInterval(tick, 1000);
-        window.removeEventListener("scroll", startTimer);
-      };
-
-      window.addEventListener("scroll", startTimer, { passive: true });
+      }, 1000);
     }
 
-    // ── Skill focus panel ───────────────────────────────────────
     const panel = document.getElementById("skill-focus-panel");
     const titleEl = document.getElementById("skill-focus-title");
     const contentEl = document.getElementById("skill-focus-content");
     const closeBtn = document.getElementById("skill-focus-close");
-    const skillBtns = /** @type {NodeListOf<HTMLButtonElement>} */ (
-      document.querySelectorAll(".skill-focus-btn")
-    );
-
-    let activeSkill = /** @type {string | null} */ (null);
+    const skillBtns = document.querySelectorAll(".skill-focus-btn");
+    let activeSkill = null;
 
     const closePanel = () => {
       activeSkill = null;
@@ -277,65 +185,31 @@ const skillNarratives = Object.fromEntries(
       if (!panel || !titleEl || !contentEl || !data) return;
 
       titleEl.textContent = skillName;
-
-      // Meta line: category · X an(s) · proficiency%
       const metaEl = document.getElementById("skill-focus-meta");
       if (metaEl) {
         const y = data.years ?? 0;
-        metaEl.textContent = `${data.category}\u2002·\u2002${y}\u00a0an${y > 1 ? "s" : ""}\u2002·\u2002${data.proficiency}\u202f%`;
+        metaEl.textContent = `${data.category} · ${y} ${isEn ? (y > 1 ? "years" : "year") : `an${y > 1 ? "s" : ""}`} · ${data.proficiency}%`;
       }
 
       const projectsHtml = data.projects.length
-        ? data.projects
-            .map((p) => {
-              const url = p.detailPage
-                ? new URL(p.detailPage, window.location.origin)
-                : null;
-              if (url) url.searchParams.set("from", "recruiter");
-              const href = url ? `${url.pathname}${url.search}` : "#";
-              return `<a class="proof-chip" href="${href}">${p.title}</a>`;
-            })
-            .join("")
-        : `<p class="proof-empty">Aucun projet direct trouvé</p>`;
+        ? data.projects.map((p) => `<a class="proof-chip" href="${p.detailPage ?? '#'}">${p.title}</a>`).join("")
+        : `<p class="proof-empty">${isEn ? "No direct project found" : "Aucun projet direct trouvé"}</p>`;
 
       const expHtml = data.experience.length
-        ? data.experience
-            .map(
-              (e) =>
-                `<div class="proof-exp-card"><span class="proof-exp-role">${e.role}</span><span class="proof-exp-co">${e.company}</span></div>`,
-            )
-            .join("")
-        : `<p class="proof-empty">Aucune expérience directe trouvée</p>`;
+        ? data.experience.map((e) => `<div class="proof-exp-card"><span class="proof-exp-role">${e.role}</span><span class="proof-exp-co">${e.company}</span></div>`).join("")
+        : `<p class="proof-empty">${isEn ? "No direct experience found" : "Aucune expérience directe trouvée"}</p>`;
 
-      contentEl.innerHTML = `
-        <div class="proof-grid">
-          <div class="proof-col">
-            <p class="proof-col-label">Projets</p>
-            <div class="proof-chips-wrap">${projectsHtml}</div>
-          </div>
-          <div class="proof-col">
-            <p class="proof-col-label">Expériences</p>
-            <div class="proof-exps-wrap">${expHtml}</div>
-          </div>
-        </div>`;
+      contentEl.innerHTML = `<div class="proof-grid"><div class="proof-col"><p class="proof-col-label">${isEn ? "Projects" : "Projets"}</p><div class="proof-chips-wrap">${projectsHtml}</div></div><div class="proof-col"><p class="proof-col-label">${isEn ? "Experience" : "Expériences"}</p><div class="proof-exps-wrap">${expHtml}</div></div></div>`;
 
       activeSkill = skillName;
       panel.setAttribute("aria-hidden", "false");
       panel.classList.add("is-open");
-
       skillBtns.forEach((b) => {
         b.setAttribute("aria-pressed", "false");
         b.classList.remove("is-active");
       });
       triggerBtn.setAttribute("aria-pressed", "true");
       triggerBtn.classList.add("is-active");
-
-      if (window.innerWidth < 768) {
-        setTimeout(
-          () => panel.scrollIntoView({ behavior: "smooth", block: "nearest" }),
-          80,
-        );
-      }
     };
 
     skillBtns.forEach((btn) => {
@@ -346,31 +220,15 @@ const skillNarratives = Object.fromEntries(
     });
 
     closeBtn?.addEventListener("click", closePanel);
-
-    // ── Setup recruiter source for modal projects ─────────────
-    panel?.addEventListener("click", (e) => {
-      const target = /** @type {HTMLElement} */ (e.target);
-      const isChip =
-        target?.classList.contains("proof-chip") ||
-        target?.closest(".proof-chip");
-      if (isChip) {
-        sessionStorage.setItem(
-          "project-detail-back-link",
-          "/recruiter#competences-cles",
-        );
-      }
-    });
   });
 </script>
 
 <style>
-  /* ── CRT scan line ──────────────────────────────────────────── */
   .recruiter-scanline {
     position: fixed;
     inset: 0;
     pointer-events: none;
     z-index: 100;
-    /* Very faint repeating horizontal lines */
     background-image: repeating-linear-gradient(
       0deg,
       transparent 0px,
@@ -380,7 +238,6 @@ const skillNarratives = Object.fromEntries(
     );
   }
 
-  /* Single slow-moving sweep line */
   .recruiter-scanline::after {
     content: "";
     position: absolute;
@@ -412,13 +269,12 @@ const skillNarratives = Object.fromEntries(
     .recruiter-scanline::after {
       display: none;
     }
-    /* Drop scanlines texture too — just disappear cleanly */
+
     .recruiter-scanline {
       background-image: none;
     }
   }
 
-  /* ── Section headers ────────────────────────────────────────── */
   .rec-eyebrow {
     font-size: 0.68rem;
     text-transform: uppercase;
@@ -458,7 +314,6 @@ const skillNarratives = Object.fromEntries(
     color: var(--gold, #f6d40d);
   }
 
-  /* ── Nav pills / time badge ─────────────────────────────────── */
   .rec-pill {
     display: inline-flex;
     align-items: center;
@@ -471,6 +326,7 @@ const skillNarratives = Object.fromEntries(
       background 140ms,
       border-color 140ms;
   }
+
   .rec-pill:hover {
     background: rgba(246, 212, 13, 0.07);
     border-color: rgba(246, 212, 13, 0.5);
@@ -497,16 +353,16 @@ const skillNarratives = Object.fromEntries(
     }
   }
 
-  /* ── Skill focus button ─────────────────────────────────────── */
   .skill-focus-btn {
     border-radius: var(--radius-card, 1.6rem);
     cursor: pointer;
   }
+
   .skill-focus-btn:focus-visible {
     outline: 2px solid rgba(246, 212, 13, 0.55);
     outline-offset: 3px;
   }
-  /* Highlight active card by targeting the child Card component */
+
   .skill-focus-btn.is-active > :global(.skill-card) {
     border-color: rgba(246, 212, 13, 0.58) !important;
     box-shadow:
@@ -514,7 +370,6 @@ const skillNarratives = Object.fromEntries(
       0 0 22px rgba(246, 212, 13, 0.1);
   }
 
-  /* ── Skill focus panel ──────────────────────────────────────── */
   .skill-panel {
     display: grid;
     grid-template-rows: 0fr;
@@ -525,6 +380,7 @@ const skillNarratives = Object.fromEntries(
       opacity 260ms ease,
       margin-top 340ms ease;
   }
+
   .skill-panel.is-open {
     grid-template-rows: 1fr;
     opacity: 1;
@@ -550,7 +406,6 @@ const skillNarratives = Object.fromEntries(
     padding: 1.5rem 1.6rem 1.6rem;
   }
 
-  /* Thin gold accent line at the top of the panel */
   .skill-panel-top-line {
     position: absolute;
     top: 0;
@@ -581,7 +436,6 @@ const skillNarratives = Object.fromEntries(
     color: rgba(179, 184, 202, 0.6);
   }
 
-  /* Divider between header and content */
   .skill-panel-rule {
     margin: 1.1rem 0 1.2rem;
     height: 1px;
@@ -605,21 +459,23 @@ const skillNarratives = Object.fromEntries(
       background 140ms,
       border-color 140ms;
   }
+
   .skill-panel-close:hover {
     color: var(--gold, #f6d40d);
     background: rgba(246, 212, 13, 0.07);
     border-color: rgba(246, 212, 13, 0.2);
   }
+
   .skill-panel-close:focus-visible {
     outline: 2px solid rgba(246, 212, 13, 0.55);
   }
 
-  /* ── Proof grid — :global() because content is injected via innerHTML ── */
   :global(.proof-grid) {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.6rem;
   }
+
   @media (min-width: 580px) {
     :global(.proof-grid) {
       grid-template-columns: 1fr 1fr;
@@ -627,7 +483,6 @@ const skillNarratives = Object.fromEntries(
     }
   }
 
-  /* Section label ("Projets" / "Expériences") */
   :global(.proof-col-label) {
     display: flex;
     align-items: center;
@@ -638,7 +493,7 @@ const skillNarratives = Object.fromEntries(
     color: rgba(227, 164, 214, 0.9);
     margin-bottom: 0.75rem;
   }
-  /* Short left-border accent so labels read as section dividers */
+
   :global(.proof-col-label)::before {
     content: "";
     display: inline-block;
@@ -648,7 +503,6 @@ const skillNarratives = Object.fromEntries(
     flex-shrink: 0;
   }
 
-  /* ── Proof chips (projects) ─────────────────────────────────── */
   :global(.proof-chips-wrap) {
     display: flex;
     flex-wrap: wrap;
@@ -673,6 +527,7 @@ const skillNarratives = Object.fromEntries(
     text-decoration: none;
     letter-spacing: 0.01em;
   }
+
   :global(.proof-chip)::before {
     content: "↗";
     font-size: 0.6rem;
@@ -681,17 +536,18 @@ const skillNarratives = Object.fromEntries(
       transform 130ms,
       opacity 130ms;
   }
+
   :global(.proof-chip):hover {
     background: rgba(246, 212, 13, 0.11);
     border-color: rgba(246, 212, 13, 0.58);
     transform: translateY(-1px);
   }
+
   :global(.proof-chip):hover::before {
     opacity: 1;
     transform: translate(1px, -1px);
   }
 
-  /* ── Experience cards ────────────────────────────────────────── */
   :global(.proof-exps-wrap) {
     display: flex;
     flex-direction: column;
@@ -721,7 +577,6 @@ const skillNarratives = Object.fromEntries(
     letter-spacing: 0.01em;
   }
 
-  /* ── Empty states ────────────────────────────────────────────── */
   :global(.proof-empty) {
     font-size: 0.73rem;
     font-style: italic;

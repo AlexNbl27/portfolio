@@ -1,17 +1,22 @@
 ---
 import Card from "./ui/Card.astro";
 import Button from "./ui/Button.astro";
+import { getLocaleFromPathname, localizePath } from "../i18n/utils";
+
+const locale = getLocaleFromPathname(Astro.url.pathname);
 
 const links = [
-  { href: "/projects", label: "Projets" },
-  { href: "/skills", label: "Compétences" },
+  { href: "/projects", label: locale === "en" ? "Projects" : "Projets" },
+  { href: "/skills", label: locale === "en" ? "Skills" : "Compétences" },
   { href: "/soft-skills", label: "Soft skills" },
-  { href: "/experience", label: "Parcours" },
+  { href: "/experience", label: locale === "en" ? "Journey" : "Parcours" },
   { href: "/blogs", label: "Blogs" },
-  { href: "/chat", label: "Chat IA", mobileOnly: true },
-];
+  { href: "/chat", label: locale === "en" ? "AI Chat" : "Chat IA", mobileOnly: true },
+].map((link) => ({ ...link, href: localizePath(link.href, locale) }));
 
 const current = Astro.url.pathname;
+const homeHref = localizePath("/", locale);
+const contactLabel = locale === "en" ? "Contact" : "Contact";
 ---
 
 <header class="fixed inset-x-0 top-0 z-50 pt-0 md:pt-4">
@@ -20,11 +25,11 @@ const current = Astro.url.pathname;
       as="nav"
       id="nav-card"
       class="flex flex-col items-center justify-between px-5 py-4 shadow-[0_18px_40px_rgba(4,9,22,0.28)] !rounded-none border-x-0 border-t-0 transition-all duration-500 ease-in-out data-[mobile-open=true]:h-[100dvh] data-[mobile-open=true]:overflow-y-auto md:py-5 md:!rounded-card md:border-x md:border-t md:flex-row md:data-[mobile-open=true]:h-auto md:data-[mobile-open=true]:overflow-visible"
-      aria-label="Navigation principale"
+      aria-label={locale === "en" ? "Main navigation" : "Navigation principale"}
     >
       <div class="flex w-full items-center justify-between md:w-auto shrink-0">
         <a
-          href="/"
+          href={homeHref}
           class="focus-ring font-blanka text-2xl tracking-widest text-white transition-colors duration-300 hover:text-cosmic-gold -translate-y-[0px] md:-translate-y-[5px]"
           >Alexandre Noblet</a
         >
@@ -85,7 +90,7 @@ const current = Astro.url.pathname;
           style={`transition-delay: ${links.length * 70}ms`}
         >
           <Button href="mailto:alexandrenobletpro@gmail.com" variant="primary">
-            Contact
+            {contactLabel}
           </Button>
         </li>
       </ul>
@@ -134,7 +139,6 @@ const current = Astro.url.pathname;
       };
     }
 
-    // Prevent navigation to the current page
     const navLinks = document.querySelectorAll("#menu a");
     navLinks.forEach((link) => {
       link.addEventListener("click", (e) => {

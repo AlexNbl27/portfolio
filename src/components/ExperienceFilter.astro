@@ -1,9 +1,16 @@
 ---
 import SearchBadge from "./ui/SearchBadge.astro";
+import type { Locale } from "../i18n/config";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
 ---
-<div class="mb-8 pt-4 flex flex-wrap items-center gap-3" role="toolbar" aria-label="Filtrer le parcours">
-  <button class="focus-ring exp-filter rounded-full border border-cosmic-gold/40 px-4 py-2 text-xs uppercase tracking-[0.2em] transition-all" data-filter="all">Tout</button>
-  <button class="focus-ring exp-filter rounded-full border border-cosmic-gold/20 px-4 py-2 text-xs uppercase tracking-[0.2em] transition-all" data-filter="pro">Pro</button>
-  <button class="focus-ring exp-filter rounded-full border border-cosmic-gold/20 px-4 py-2 text-xs uppercase tracking-[0.2em] transition-all" data-filter="formation">Etudes</button>
-  <SearchBadge />
+<div class="mb-8 pt-4 flex flex-wrap items-center gap-3" role="toolbar" aria-label={locale === "en" ? "Filter timeline" : "Filtrer le parcours"}>
+  <button class="focus-ring exp-filter rounded-full border border-cosmic-gold/40 px-4 py-2 text-xs uppercase tracking-[0.2em] transition-all" data-filter="all">{locale === "en" ? "All" : "Tout"}</button>
+  <button class="focus-ring exp-filter rounded-full border border-cosmic-gold/20 px-4 py-2 text-xs uppercase tracking-[0.2em] transition-all" data-filter="pro">{locale === "en" ? "Work" : "Pro"}</button>
+  <button class="focus-ring exp-filter rounded-full border border-cosmic-gold/20 px-4 py-2 text-xs uppercase tracking-[0.2em] transition-all" data-filter="formation">{locale === "en" ? "Studies" : "Etudes"}</button>
+  <SearchBadge locale={locale} />
 </div>

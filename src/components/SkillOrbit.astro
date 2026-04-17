@@ -1,6 +1,8 @@
 ---
 import Card from "./ui/Card.astro";
 
+import type { Locale } from "../i18n/config";
+
 interface TechnicalSkill {
   name: string;
   category: string;
@@ -10,7 +12,17 @@ interface TechnicalSkill {
   isVibeOnly?: boolean;
 }
 
-const { skill } = Astro.props as { skill: TechnicalSkill };
+const { skill, locale = "fr" } = Astro.props as { skill: TechnicalSkill; locale?: Locale };
+const isEn = locale === "en";
+const categoryLabelsEn: Record<string, string> = {
+  "Mobile & logiciel": "Mobile & software",
+  "Développement web": "Web development",
+  "Backend & frameworks": "Backend & frameworks",
+  "Base de données": "Databases",
+  "DevOps & outils": "DevOps & tools",
+  "Automatisme & industrie": "Automation & industry",
+  "AI & Agentic Coding": "AI & Agentic coding",
+};
 const boosted = Math.round(skill.proficiency + (100 - skill.proficiency) * 0.5);
 ---
 
@@ -32,7 +44,7 @@ const boosted = Math.round(skill.proficiency + (100 - skill.proficiency) * 0.5);
       </h4>
       <span
         class="text-[10px] uppercase tracking-tighter text-cosmic-pink md:text-xs text-right leading-tight max-w-[50%]"
-        >{skill.category}</span
+        >{isEn ? (categoryLabelsEn[skill.category] ?? skill.category) : skill.category}</span
       >
     </div>
 
@@ -56,7 +68,7 @@ const boosted = Math.round(skill.proficiency + (100 - skill.proficiency) * 0.5);
       <p class="text-[10px] md:text-xs muted whitespace-nowrap">
         <span class="proficiency-text font-mono">{skill.proficiency}</span>% • {
           skill.yearsOfExperience ?? 0
-        } ans
+        } {isEn ? "years" : "ans"}
       </p>
       {
         skill.isVibeOnly && (

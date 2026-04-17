@@ -2,6 +2,7 @@
 import BaseLayout from "./BaseLayout.astro";
 import Button from "../components/ui/Button.astro";
 import Card from "../components/ui/Card.astro";
+import { getLocaleFromPathname } from "../i18n/utils";
 
 interface Frontmatter {
   title: string;
@@ -33,12 +34,14 @@ const resolveImage = (path?: string) =>
     : null;
 
 const heroImageSrc = resolveImage(heroImage);
+const locale = getLocaleFromPathname(Astro.url.pathname);
+const isEn = locale === "en";
 ---
 
 <BaseLayout title={`Alexandre Noblet | ${title}`} description={description}>
   <article class="cosmic-container pt-8">
     <Button href={parentLink} variant="outline" icon="lucide:arrow-left">
-      Retour
+      {isEn ? "Back" : "Retour"}
     </Button>
 
     <header class="mt-6">
@@ -50,7 +53,7 @@ const heroImageSrc = resolveImage(heroImage);
         )
       }
       <h1 class="section-title mt-3">{title}</h1>
-      {date && <p class="muted mt-3">Publié le {date}</p>}
+      {date && <p class="muted mt-3">{isEn ? "Published on" : "Publié le"} {date}</p>}
     </header>
 
     {
