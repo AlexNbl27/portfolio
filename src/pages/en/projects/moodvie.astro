@@ -1,0 +1,36 @@
+---
+import ProjectDetailLayout from '../../../layouts/ProjectDetailLayout.astro';
+
+const frontmatter = {
+  title: 'Moodvie',
+  description: 'An intuitive desktop app that recommends movies and series based on your emotional state.',
+  heroImage: '/images/moodvie.png',
+  projectCategory: 'Desktop app (C#)',
+  technologies: ['C#','.NET','XAML','WPF'],
+  links: [{ label: 'View on GitHub', url: 'https://github.com/AlexNbl27/Moodvie', variant: 'primary' }],
+  parentLink: '/en/projects',
+  theme: {
+    accent: "#FFB000",
+    accentSoft: "#FFF4DA",
+    glowA: "rgba(255, 176, 0, 0.35)",
+    glowB: "rgba(230, 57, 70, 0.22)",
+    titleFont: "'Poppins', 'Manrope', sans-serif",
+  },
+};
+---
+
+<ProjectDetailLayout frontmatter={frontmatter}>
+  <h2>The experience</h2>
+  <p>Moodvie was born from a common problem: we sometimes spend more time choosing what to watch than actually watching. To solve this “choice paradox,” the app takes an <strong>emotion-driven recommendation</strong> approach. By selecting your current mood (happy, stressed, nostalgic, etc.), Moodvie analyzes your needs and instantly suggests the most relevant content.</p>
+
+  <h2>Architecture & technology</h2>
+  <p>This project was built with the <strong>.NET / C#</strong> stack and <strong>WPF (Windows Presentation Foundation)</strong> to deliver a smooth and performant desktop experience. The architecture emphasizes strong separation of concerns (MVVM-inspired) for easier maintenance:</p>
+  <ul>
+    <li><strong>Matching algorithm</strong>: recommendation engine combining movie genres with emotion-specific weightings.</li>
+    <li><strong>User experience (UX)</strong>: modern XAML interface designed for clarity and speed.</li>
+    <li><strong>Dynamic management</strong>: flexible data model to integrate additional content sources over time.</li>
+  </ul>
+
+  <h2>Impact & learnings</h2>
+  <p>Built during my DUT GEII studies, Moodvie was a milestone project to strengthen my object-oriented programming foundations. It showcases my ability to design robust desktop tools while keeping user psychology at the center of technical decisions.</p>
+</ProjectDetailLayout>

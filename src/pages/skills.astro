@@ -4,33 +4,35 @@ import SkillOrbit from "../components/SkillOrbit.astro";
 import SkillFilter from "../components/SkillFilter.astro";
 import VibeSwitch from "../components/ui/VibeSwitch.astro";
 import skills from "../data/skills.json";
+import { getLocaleFromPathname } from "../i18n/utils";
 
 const categories = [...new Set(skills.map((skill) => skill.category))];
+const locale = getLocaleFromPathname(Astro.url.pathname);
+const isEn = locale === "en";
 ---
 
 <BaseLayout
-  title="Alexandre Noblet | Compétences"
-  description="Compétences techniques d’Alexandre Noblet en développement, data, DevOps et automatisme."
+  title={isEn ? "Alexandre Noblet | Skills" : "Alexandre Noblet | Compétences"}
+  description={isEn ? "Technical skills in development, data, DevOps, and industrial automation." : "Compétences techniques d’Alexandre Noblet en développement, data, DevOps et automatisme."}
 >
   <section class="cosmic-container pt-8 relative">
     <div class="vibe-active-bg rounded-3xl pointer-events-none"></div>
     <h1 class="section-title relative z-10">
-      Mes <span class="highlight">compétences</span>
+      {isEn ? "My" : "Mes"} <span class="highlight">{isEn ? "skills" : "compétences"}</span>
     </h1>
 
     <div class="my-6">
-      <VibeSwitch id="vibe-toggle" />
+      <VibeSwitch id="vibe-toggle" locale={locale} />
     </div>
 
     <p
       id="skills-desc"
       class="muted mt-4 max-w-2xl text-lg transition-all duration-500 min-h-[4rem]"
     >
-      Un socle technique construit autour du développement web et mobile, des
-      bases de données, des outils DevOps et de l’automatisme industriel.
+      {isEn ? "A technical foundation built around web/mobile development, databases, DevOps practices, and industrial automation." : "Un socle technique construit autour du développement web et mobile, des bases de données, des outils DevOps et de l’automatisme industriel."}
     </p>
 
-    <SkillFilter categories={categories} />
+    <SkillFilter categories={categories} locale={locale} />
     <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3" id="skill-grid">
       {
         skills.map((skill) => (
@@ -45,7 +47,7 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
                 : "order-last",
             ]}
           >
-            <SkillOrbit skill={skill} />
+            <SkillOrbit skill={skill} locale={locale} />
           </div>
         ))
       }
@@ -56,10 +58,10 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
       class="hidden mt-12 py-12 text-center rounded-[2.5rem] border border-cosmic-gold/10 bg-slate-900/20 backdrop-blur-sm"
     >
       <p class="text-cosmic-gold/60 text-lg italic font-display">
-        Aucune compétence ne correspond à votre recherche... 🌌
+        {isEn ? "No skills match your search... 🌌" : "Aucune compétence ne correspond à votre recherche... 🌌"}
       </p>
       <p class="muted text-sm mt-2">
-        Réessayez avec d'autres mots-clés ou filtres.
+        {isEn ? "Try different keywords or filters." : "Réessayez avec d'autres mots-clés ou filtres."}
       </p>
     </div>
   </section>
@@ -83,14 +85,17 @@ const categories = [...new Set(skills.map((skill) => skill.category))];
     let isVibeMode = false;
     let isRecruiterMode =
       document.body.getAttribute("data-recruiter-mode") === "on";
+    const isEn = document.documentElement.lang === "en";
     const isReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    const originalDesc =
-      "Un socle technique construit autour du développement web et mobile, des bases de données, des outils DevOps et de l’automatisme industriel.";
-    const vibeDesc =
-      "Plus qu'un développeur, un <span class='text-red-500 font-bold'>Vibe-Coder</span>. Même quand je ne suis pas expert, je 'vibe' avec n'importe quelle techno grâce à l'IA pour délivrer sans friction.";
+    const originalDesc = isEn
+      ? "A technical foundation built around web/mobile development, databases, DevOps practices, and industrial automation."
+      : "Un socle technique construit autour du développement web et mobile, des bases de données, des outils DevOps et de l’automatisme industriel.";
+    const vibeDesc = isEn
+      ? "More than a developer: a <span class='text-red-500 font-bold'>Vibe-Coder</span>. Even when I am not an expert, I can vibe with any stack using AI to deliver quickly."
+      : "Plus qu'un développeur, un <span class='text-red-500 font-bold'>Vibe-Coder</span>. Même quand je ne suis pas expert, je 'vibe' avec n'importe quelle techno grâce à l'IA pour délivrer sans friction.";
 
     // Normalization helper
     const normalize = (str: string) =>

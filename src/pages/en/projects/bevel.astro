@@ -1,0 +1,57 @@
+---
+import ProjectDetailLayout from '../../../layouts/ProjectDetailLayout.astro';
+
+const frontmatter = {
+  title: 'Bevel',
+  description: 'E-commerce showcase site for trade-show and online sales — currently live in production on bevel.fr.',
+  heroImage: '/images/bevel.png',
+  projectCategory: 'E-commerce · In production',
+  technologies: ['Astro 5','React 19','Strapi 5','PostgreSQL','Stripe','Cloudflare Pages','Docker','TypeScript'],
+  links: [{ label: 'Visit website', url: 'https://bevel.fr', variant: 'primary' }],
+  parentLink: '/en/projects',
+  theme: {
+    accent: "#bf1717",
+    accentSoft: "#f5c6c6",
+    glowA: "rgba(191, 23, 23, 0.28)",
+    glowB: "rgba(191, 23, 23, 0.14)",
+    titleFont: "'bookish', serif",
+    bodyFont: "'JetBrains Mono', monospace",
+    bodyWeight: 400,
+  },
+  fontImports: [
+    "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap",
+    "https://fonts.cdnfonts.com/css/bookish",
+  ],
+};
+---
+
+<ProjectDetailLayout frontmatter={frontmatter}>
+  <h2>The project</h2>
+  <p><strong>Bevel</strong> is a client project — an e-commerce site designed for a brand selling products at trade shows and online. Built and deployed end-to-end autonomously, it is currently <strong>live in production on <a href="https://bevel.fr" target="_blank" rel="noreferrer">bevel.fr</a></strong>. The goal: deliver a professional, reliable, and easy-to-manage tool without requiring daily technical intervention.</p>
+
+  <h2>What it enables</h2>
+  <h3>For customers</h3>
+  <ul>
+    <li>Browse a catalog with product variants (color, size, availability)</li>
+    <li>Add products to cart and pay securely with Stripe</li>
+    <li>Receive email confirmation and track order status in real time</li>
+  </ul>
+
+  <h3>For the store owner</h3>
+  <ul>
+    <li>Manage products, orders, and promo codes from a dedicated interface</li>
+    <li>Track each order step-by-step through fulfillment</li>
+    <li>Download automatically generated invoices</li>
+    <li>Prepare and preview content before publication</li>
+  </ul>
+
+  <h2>Why this stack?</h2>
+  <p>This project required concrete architecture decisions under real constraints: limited budget, solo maintenance, and production reliability.</p>
+  <ul>
+    <li><strong>Astro 5 (SSR)</strong>: server-rendered pages for SEO and speed, while only interactive parts (cart, checkout) ship JavaScript. Result: fast website without sacrificing UX.</li>
+    <li><strong>Strapi 5</strong>: instead of building a custom admin from scratch, I used a headless CMS with a ready-to-use back office so the owner can update products and content without touching code.</li>
+    <li><strong>PostgreSQL</strong>: required to guarantee stock consistency under load — ACID transactions prevent overselling during simultaneous purchases.</li>
+    <li><strong>Stripe</strong>: native webhook integration ensures robust order confirmation even if client-side network disruptions occur.</li>
+    <li><strong>Cloudflare Pages + Docker VPS</strong>: global CDN for frontend performance and containerized backend for isolation and easier updates — fully managed autonomously.</li>
+  </ul>
+</ProjectDetailLayout>

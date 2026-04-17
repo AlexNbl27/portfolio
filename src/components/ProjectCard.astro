@@ -5,18 +5,10 @@ import Badge from "./ui/Badge.astro";
 import Button from "./ui/Button.astro";
 import Card from "./ui/Card.astro";
 
-interface Project {
-  title: string;
-  description: string;
-  technologies: string[];
-  imageUrl: string;
-  demoUrl?: string;
-  githubUrl?: string;
-  detailPage?: string;
-  category: string;
-}
+import type { ProjectItem } from "../i18n/data/types";
+import type { Locale } from "../i18n/config";
 
-const { project } = Astro.props as { project: Project };
+const { project, locale } = Astro.props as { project: ProjectItem; locale: Locale };
 
 const images = import.meta.glob<{ default: ImageMetadata }>(
   "/src/assets/images/*.{jpeg,jpg,png,gif,webp,avif}",
@@ -73,9 +65,9 @@ const imageSrc = images[imagePath];
           <Button
             href={project.detailPage}
             variant="primary"
-            aria-label={`En savoir plus sur le projet ${project.title}`}
+            aria-label={`${locale === "en" ? "Learn more about" : "En savoir plus sur"} ${project.title}`}
           >
-            En savoir plus
+            {locale === "en" ? "Learn more" : "En savoir plus"}
           </Button>
         )
       }
@@ -87,9 +79,9 @@ const imageSrc = images[imagePath];
             rel="noreferrer"
             variant="outline"
             icon="lucide:external-link"
-            aria-label={`Démo live du projet ${project.title}`}
+            aria-label={`${locale === "en" ? "Live demo for" : "Démo live du projet"} ${project.title}`}
           >
-            Démo
+            {locale === "en" ? "Demo" : "Démo"}
           </Button>
         )
       }
@@ -101,7 +93,7 @@ const imageSrc = images[imagePath];
             rel="noreferrer"
             variant="outline"
             icon="lucide:github"
-            aria-label={`Code source du projet ${project.title}`}
+            aria-label={`${locale === "en" ? "Source code for" : "Code source du projet"} ${project.title}`}
           >
             GitHub
           </Button>
@@ -110,4 +102,3 @@ const imageSrc = images[imagePath];
     </div>
   </div>
 </Card>
-

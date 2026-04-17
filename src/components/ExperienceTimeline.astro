@@ -1,6 +1,9 @@
 ---
 import ExperienceCard from "./ExperienceCard.astro";
-const { experiences } = Astro.props;
+import type { ExperienceItem } from "../i18n/data/types";
+import type { Locale } from "../i18n/config";
+
+const { experiences, locale } = Astro.props as { experiences: ExperienceItem[]; locale: Locale };
 ---
 
 <section class="mt-0" id="experience-timeline">
@@ -8,7 +11,7 @@ const { experiences } = Astro.props;
     class="experience-timeline-track experience-timeline-stack relative before:absolute before:top-0 before:h-full before:w-[1px]"
   >
     {
-      experiences.map((item: any, idx: number) => (
+      experiences.map((item, idx: number) => (
         <div
           class:list={[
             "experience-item grid items-start md:grid-cols-2 md:gap-10",
@@ -25,7 +28,7 @@ const { experiences } = Astro.props;
           style={`animation-delay: ${idx * 110}ms;`}
         >
           <div class="experience-node relative py-4 pl-10 pr-0 md:p-0">
-            <ExperienceCard item={item} />
+            <ExperienceCard item={item} locale={locale} />
           </div>
           <div class="hidden md:block" />
         </div>

@@ -1,0 +1,42 @@
+---
+import ProjectDetailLayout from '../../../layouts/ProjectDetailLayout.astro';
+
+const frontmatter = {
+  title: 'Kaniot',
+  description: 'A fair group fund that optimizes contribution sharing without social pressure.',
+  heroImage: '/images/digital-art-neon-bubbles.jpg',
+  projectCategory: 'SaaS Project',
+  technologies: ['Vue.js 3','TypeScript','Supabase'],
+  links: [{ label: 'View on GitHub', url: 'https://github.com/AlexNbl27/kaniot', variant: 'primary' }],
+  parentLink: '/en/projects',
+  theme: {
+    accent: "#8ee7ff",
+    accentSoft: "#c4f3ff",
+    glowA: "rgba(90, 215, 255, 0.28)",
+    glowB: "rgba(75, 155, 255, 0.22)",
+  },
+};
+---
+
+<ProjectDetailLayout frontmatter={frontmatter}>
+  <h2>The challenge</h2>
+  <p>When organizing group funds, imbalance is common: some participants contribute beyond their means due to social pressure, while others are blocked by suggested amounts. <strong>Kaniot</strong> provides a fair alternative based on transparency and respect for each person’s financial capacity.</p>
+
+  <h2>The concept</h2>
+  <p>The project relies on an intelligent contribution algorithm:</p>
+  <ul>
+    <li><strong>Total freedom</strong>: each participant privately enters the maximum amount they can or want to contribute.</li>
+    <li><strong>Fair distribution</strong>: the algorithm computes the most balanced contribution split to reach the target without exceeding individual caps.</li>
+    <li><strong>Transparency</strong>: a simple interface shows real-time fund progress for a frictionless group experience.</li>
+  </ul>
+
+  <h2>Technical journey</h2>
+  <p>Developed during my studies at Ynov, Kaniot was an opportunity to explore modern technologies:</p>
+  <ul>
+    <li><strong>Frontend</strong>: Vue.js 3 with TypeScript for a robust typed interface.</li>
+    <li><strong>Backend as a Service</strong>: <strong>Supabase</strong> for authentication and real-time database operations.</li>
+  </ul>
+
+  <h2>Current status</h2>
+  <p>Although the project is now archived, it remains a strong case study of applying algorithmic logic to a concrete social problem. The source code is publicly available on GitHub for exploration and forking.</p>
+</ProjectDetailLayout>

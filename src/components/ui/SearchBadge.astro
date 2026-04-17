@@ -1,37 +1,27 @@
 ---
 import { Icon } from 'astro-icon/components';
+import type { Locale } from '../../i18n/config';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale = Astro.props.locale ?? 'fr';
+const isEn = locale === 'en';
 ---
 
-<div 
-  id="search-badge-container"
-  class="search-badge group relative flex h-[38px] w-[145px] cursor-pointer items-center overflow-hidden rounded-full border border-cosmic-gold/20 bg-slate-900/40 px-4 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] hover:border-cosmic-gold/40 focus-within:w-[240px] focus-within:border-cosmic-gold/60 focus-within:bg-slate-900/60 focus-within:ring-1 focus-within:ring-cosmic-gold/30"
->
+<div id="search-badge-container" class="search-badge group relative flex h-[38px] w-[145px] cursor-pointer items-center overflow-hidden rounded-full border border-cosmic-gold/20 bg-slate-900/40 px-4 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] hover:border-cosmic-gold/40 focus-within:w-[240px] focus-within:border-cosmic-gold/60 focus-within:bg-slate-900/60 focus-within:ring-1 focus-within:ring-cosmic-gold/30">
   <Icon name="lucide:search" class="relative z-10 h-4 w-4 shrink-0 text-cosmic-gold transition-transform duration-300 group-focus-within:scale-110" />
-  
   <span id="search-label" class="ml-2 text-[10px] uppercase tracking-[0.2em] whitespace-nowrap text-cosmic-gold/80 transition-all duration-300 group-focus-within:translate-x-4 group-focus-within:opacity-0">
-    Rechercher
+    {isEn ? 'Search' : 'Rechercher'}
   </span>
 
-  <input 
-    type="text" 
-    id="badge-search-input"
-    placeholder="RECHERCHER..."
-    class="absolute inset-0 h-full w-full bg-transparent pl-11 pr-4 text-xs uppercase tracking-[0.2em] text-cosmic-gold outline-none opacity-0 transition-opacity duration-300 focus:opacity-100"
-    aria-label="Rechercher une compétence"
-    autocomplete="off"
-  />
+  <input type="text" id="badge-search-input" placeholder={isEn ? 'SEARCH...' : 'RECHERCHER...'} class="absolute inset-0 h-full w-full bg-transparent pl-11 pr-4 text-xs uppercase tracking-[0.2em] text-cosmic-gold outline-none opacity-0 transition-opacity duration-300 focus:opacity-100" aria-label={isEn ? 'Search' : 'Rechercher une compétence'} autocomplete="off" />
 </div>
 
 <style>
-  .search-badge:focus-within #search-label {
-    visibility: hidden;
-  }
-  
-  /* Placeholder styling */
-  input::placeholder {
-    color: rgba(246, 212, 13, 0.35);
-    font-size: 9px;
-  }
+  .search-badge:focus-within #search-label { visibility: hidden; }
+  input::placeholder { color: rgba(246, 212, 13, 0.35); font-size: 9px; }
 </style>
 
 <script>
@@ -40,11 +30,7 @@ import { Icon } from 'astro-icon/components';
     const input = document.getElementById('badge-search-input') as HTMLInputElement;
 
     if (container && input) {
-      container.addEventListener('click', () => {
-        input.focus();
-      });
-
-      // Clear input on escape
+      container.addEventListener('click', () => input.focus());
       input.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
           input.value = '';
