@@ -10,6 +10,11 @@ import {
 
 import { cn } from "@/lib/utils";
 
+// Module-level flag: persists for the entire browser session regardless of React re-mounts.
+// Prevents the entrance fade-in from re-running on each page navigation
+// (transition:persist keeps the island alive, but this guards against any remount scenario).
+let _hasMountedOnce = false;
+
 type StarLayerProps = HTMLMotionProps<"div"> & {
   count: number;
   size: number;
@@ -77,6 +82,13 @@ export function StarsBackground({
   starColor = "#fff",
   ...props
 }: StarsBackgroundProps) {
+  // Capture at render time before the effect flips the flag
+  const isFirstMount = !_hasMountedOnce;
+
+  React.useLayoutEffect(() => {
+    _hasMountedOnce = true;
+  }, []);
+
   const offsetX = useMotionValue(1);
   const offsetY = useMotionValue(1);
 
@@ -100,11 +112,11 @@ export function StarsBackground({
       onMouseMove={handleMouseMove}
       {...props}
     >
-      {/* Fade-in wrapper — stars appear gradually instead of popping in */}
+      {/* Fade in only on first ever mount; skip on subsequent mounts (page navigation) */}
       <motion.div
-        initial={{ opacity: 0 }}
+        initial={isFirstMount ? { opacity: 0 } : false}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        transition={isFirstMount ? { duration: 0.6, ease: "easeOut" } : undefined}
         style={{ x: springX, y: springY }}
       >
         <StarLayer
