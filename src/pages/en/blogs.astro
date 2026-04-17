@@ -1,0 +1,41 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Card from "../../components/ui/Card.astro";
+
+const sections = [
+  {
+    title: "Internship @ REEL",
+    summary: "Industrial automation and monitoring projects in constrained environments.",
+    href: "/en/blogs/stage-reel",
+  },
+  {
+    title: "Internship @ OBS",
+    summary: "Mobile and IoT delivery notes from Orange Business Services.",
+    href: "/en/blogs/stage-obs",
+  },
+  {
+    title: "Apprenticeship @ OBS",
+    summary: "Long-term product and integration experience in Industry 4.0 contexts.",
+    href: "/en/blogs/alternance-obs",
+  },
+];
+---
+
+<BaseLayout title="Alexandre Noblet | Blog" description="English index of internship and apprenticeship blog sections.">
+  <section class="cosmic-container pt-8">
+    <h1 class="section-title">My <span class="highlight">blogs</span></h1>
+    <p class="muted mt-4 max-w-3xl text-lg">
+      English index of my field notes. Detailed sub-pages are currently written in French and will be progressively translated.
+    </p>
+
+    <div class="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      {sections.map((section) => (
+        <Card as="a" href={section.href} interactive class="p-5">
+          <h2 class="font-display text-3xl text-cosmic-gold">{section.title}</h2>
+          <p class="muted mt-3">{section.summary}</p>
+          <p class="mt-4 text-xs uppercase tracking-[0.2em] text-cosmic-pink">Open section</p>
+        </Card>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

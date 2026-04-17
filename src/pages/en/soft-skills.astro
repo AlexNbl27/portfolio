@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Card from "../../components/ui/Card.astro";
+
+const softSkills = [
+  "Adaptability in changing technical contexts",
+  "Clear communication with technical and non-technical stakeholders",
+  "Ownership and accountability from discovery to delivery",
+  "Collaborative mindset and team facilitation",
+];
+---
+
+<BaseLayout title="Alexandre Noblet | Soft skills" description="Core human and collaboration strengths.">
+  <section class="cosmic-container pt-8 pb-16">
+    <h1 class="section-title">My <span class="highlight">soft skills</span></h1>
+    <p class="muted mt-4 max-w-3xl text-lg">A concise English overview of the human skills I bring to product and engineering teams.</p>
+
+    <div class="mt-8 grid gap-4 md:grid-cols-2">
+      <Card class="p-6">
+        <h2 class="font-display text-3xl text-cosmic-gold">Core strengths</h2>
+        <ul class="mt-4 space-y-2 muted list-disc pl-5">
+          {softSkills.map((skill) => <li>{skill}</li>)}
+        </ul>
+      </Card>
+      <Card class="p-6">
+        <h2 class="font-display text-3xl text-cosmic-gold">Contact</h2>
+        <p class="muted mt-3">Open to discuss product, software engineering, and IoT projects.</p>
+        <a href="mailto:alexandrenobletpro@gmail.com" class="mt-4 inline-flex focus-ring rounded-xl border border-cosmic-gold/35 px-4 py-2 text-sm text-cosmic-gold hover:bg-cosmic-gold/10 transition">Contact me</a>
+      </Card>
+    </div>
+  </section>
+</BaseLayout>

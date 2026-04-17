@@ -4,6 +4,13 @@ import icon from 'astro-icon';
 
 export default defineConfig({
   integrations: [icon()],
+  i18n: {
+    defaultLocale: 'fr',
+    locales: ['fr', 'en'],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
   vite: {
     plugins: [tailwindcss()],
     server: {

@@ -1,3 +1,16 @@
+---
+import type { Locale } from "../i18n/config";
+import { DEFAULT_LOCALE, COOKIE_NAME } from "../i18n/config";
+import { useTranslations } from "../i18n/useTranslations";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
 <footer class="relative z-10 pb-12 pt-8 text-center text-xs uppercase tracking-[0.2em] text-slate-500">
   <div class="cosmic-container">
     <div class="mb-3 flex flex-wrap justify-center gap-4">
@@ -6,6 +19,44 @@
       <a href="/docs/CV-NOBLET.pdf" target="_blank" rel="noreferrer" class="focus-ring hover:text-cosmic-gold">CV</a>
       <a href="mailto:alexandrenobletpro@gmail.com" class="focus-ring hover:text-cosmic-gold">Email</a>
     </div>
-    <p>© 2023-2026 Alexandre Noblet — portfolio personnel.</p>
+
+    <div class="mb-4 flex items-center justify-center gap-2">
+      <label for="locale-switcher" class="text-[10px] opacity-80">{t("footer").localeLabel}</label>
+      <select
+        id="locale-switcher"
+        class="rounded-full border border-cosmic-gold/20 bg-slate-900/70 px-3 py-1 text-[10px] tracking-[0.15em] text-slate-200"
+      >
+        <option value="fr" selected={locale === "fr"}>FR</option>
+        <option value="en" selected={locale === "en"}>EN</option>
+      </select>
+    </div>
+
+    <p>{t("footer").copyright}</p>
   </div>
 </footer>
+
+<script define:vars={{ COOKIE_NAME, DEFAULT_LOCALE }} is:inline>
+  const localeSwitcher = document.getElementById("locale-switcher");
+
+  const stripLocalePrefix = (pathname) => {
+    const clean = pathname.replace(/\/$/, "") || "/";
+    return clean.replace(/^\/(fr|en)(?=\/|$)/, "") || "/";
+  };
+
+  if (localeSwitcher) {
+    localeSwitcher.addEventListener("change", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLSelectElement)) return;
+
+      const targetLocale = target.value;
+      const basePath = stripLocalePrefix(window.location.pathname);
+      const nextPath = targetLocale === DEFAULT_LOCALE
+        ? basePath
+        : `/${targetLocale}${basePath === "/" ? "" : basePath}`;
+
+      localStorage.setItem("preferredLocale", targetLocale);
+      document.cookie = `${COOKIE_NAME}=${targetLocale};path=/;max-age=31536000;SameSite=Lax`;
+      window.location.assign(nextPath);
+    });
+  }
+</script>

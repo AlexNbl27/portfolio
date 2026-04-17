@@ -3,14 +3,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import MagicPortal from '../components/MagicPortal.astro';
 import AIShowcase from '../components/AIShowcase.astro';
 import ParticleEffect from '../components/ParticleEffect.astro';
+import { getLocaleFromPathname } from '../i18n/utils';
+
+const locale = getLocaleFromPathname(Astro.url.pathname);
+const isEn = locale === 'en';
 ---
 
-<BaseLayout title="Alexandre Noblet | Blogs" description="Retours d’expérience d’Alexandre Noblet chez Orange Business Services.">
+<BaseLayout
+  title={isEn ? 'Alexandre Noblet | AI Portal' : 'Alexandre Noblet | Blogs'}
+  description={isEn ? 'Experience reports and AI explorations by Alexandre Noblet.' : 'Retours d’expérience d’Alexandre Noblet chez Orange Business Services.'}
+>
   <ParticleEffect />
   <section class="cosmic-container pt-8 text-center">
-    <h1 class="section-title">Mes <span class="highlight">blogs</span></h1>
-    <p class="muted mx-auto mt-4 max-w-3xl">Quelques retours d’expérience issus de mon stage puis de mon alternance chez Orange Business Services, autour du développement mobile, du fullstack et de l’IoT.</p>
+    <h1 class="section-title">{isEn ? 'My' : 'Mes'} <span class="highlight">{isEn ? 'AI notes' : 'blogs'}</span></h1>
+    <p class="muted mx-auto mt-4 max-w-3xl">
+      {isEn
+        ? 'A few experience notes from internship then apprenticeship at Orange Business Services, around mobile development, fullstack, and IoT.'
+        : 'Quelques retours d’expérience issus de mon stage puis de mon alternance chez Orange Business Services, autour du développement mobile, du fullstack et de l’IoT.'}
+    </p>
   </section>
-  <MagicPortal />
-  <AIShowcase />
+  <MagicPortal locale={locale} />
+  <AIShowcase locale={locale} />
 </BaseLayout>

@@ -2,55 +2,85 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Hero from "../components/Hero.astro";
 import Card from "../components/ui/Card.astro";
+import { getLocaleFromPathname, localizePath } from "../i18n/utils";
 
-const homeSections = [
-  {
-    href: "/projects",
-    title: "Mes projets",
-    description:
-      "Retrouvez une sélection de réalisations web, mobile, desktop et SaaS menées en formation, en stage ou sur mon temps personnel.",
-  },
-  {
-    href: "/skills",
-    title: "Mes compétences",
-    description:
-      "Développement, bases de données, DevOps, automatisme et outils : un profil polyvalent orienté produit et terrain.",
-  },
-  {
-    href: "/experience",
-    title: "Mon parcours",
-    description:
-      "Découvrez mon évolution, de la formation GEII à l’alternance chez Orange Business Services.",
-  },
-  {
-    href: "/blogs",
-    title: "Mes blogs",
-    description:
-      "Retrouve mes retours d’expérience, articles de stage et billets d’alternance dans des sous-pages dédiées.",
-  },
-];
+const locale = getLocaleFromPathname(Astro.url.pathname);
+const isEn = locale === "en";
 
+const homeSections = isEn
+  ? [
+      {
+        href: localizePath("/projects", locale),
+        title: "My projects",
+        description:
+          "A curated selection of web, mobile, desktop, and SaaS projects built during studies, internships, and personal work.",
+      },
+      {
+        href: localizePath("/skills", locale),
+        title: "My skills",
+        description:
+          "Development, databases, DevOps, automation, and tools: a versatile profile grounded in product and real-world delivery.",
+      },
+      {
+        href: localizePath("/experience", locale),
+        title: "My journey",
+        description:
+          "Explore my path from GEII studies to my apprenticeship at Orange Business Services.",
+      },
+      {
+        href: localizePath("/blogs", locale),
+        title: "My blogs",
+        description:
+          "Read my field notes, internship write-ups, and apprenticeship posts in dedicated blog sections.",
+      },
+    ]
+  : [
+      {
+        href: "/projects",
+        title: "Mes projets",
+        description:
+          "Retrouvez une sélection de réalisations web, mobile, desktop et SaaS menées en formation, en stage ou sur mon temps personnel.",
+      },
+      {
+        href: "/skills",
+        title: "Mes compétences",
+        description:
+          "Développement, bases de données, DevOps, automatisme et outils : un profil polyvalent orienté produit et terrain.",
+      },
+      {
+        href: "/experience",
+        title: "Mon parcours",
+        description:
+          "Découvrez mon évolution, de la formation GEII à l’alternance chez Orange Business Services.",
+      },
+      {
+        href: "/blogs",
+        title: "Mes blogs",
+        description:
+          "Retrouve mes retours d’expérience, articles de stage et billets d’alternance dans des sous-pages dédiées.",
+      },
+    ];
 ---
 
 <BaseLayout
-  title="Alexandre Noblet | Accueil"
-  description="Portfolio d’Alexandre Noblet, développeur et intégrateur IoT à Lyon."
+  title={isEn ? "Alexandre Noblet | Home" : "Alexandre Noblet | Accueil"}
+  description={isEn ? "Alexandre Noblet's portfolio, IoT integrator and developer in Lyon." : "Portfolio d’Alexandre Noblet, développeur et intégrateur IoT à Lyon."}
 >
-  <Hero />
+  <Hero locale={locale} />
   <section class="cosmic-container mt-8">
     <div class="recruiter-cta-wrap">
     <Card class="p-5 md:p-6">
       <p class="text-xs uppercase tracking-[0.26em] text-cosmic-pink">
-        Parcours rapide
+        {isEn ? "Quick profile" : "Parcours rapide"}
       </p>
       <h2 class="mt-2 font-display text-3xl md:text-4xl text-cosmic-gold">
-        Recruteur ? Commence ici en 60 secondes.
+        {isEn ? "Recruiter? Start here in 60 seconds." : "Recruteur ? Commence ici en 60 secondes."}
       </h2>
       <p class="muted mt-3 max-w-2xl">
-        Un seul bouton pour un parcours complet, sans changer de page.
+        {isEn ? "One page, one flow, a complete overview." : "Un seul bouton pour un parcours complet, sans changer de page."}
       </p>
       <div class="mt-4 flex flex-wrap gap-3">
-        <a class="focus-ring rounded-xl border border-cosmic-gold/35 px-4 py-2 text-sm text-cosmic-gold hover:bg-cosmic-gold/10 transition" href="/recruiter">Lancer le parcours</a>
+        <a class="focus-ring rounded-xl border border-cosmic-gold/35 px-4 py-2 text-sm text-cosmic-gold hover:bg-cosmic-gold/10 transition" href={localizePath('/recruiter', locale)}>{isEn ? "Start now" : "Lancer le parcours"}</a>
       </div>
     </Card>
     </div>

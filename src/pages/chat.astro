@@ -1,22 +1,26 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import AstralChatContent from "../components/AstralChatContent.astro";
+import { getLocaleFromPathname } from "../i18n/utils";
+
+const locale = getLocaleFromPathname(Astro.url.pathname);
+const isEn = locale === "en";
 ---
 
 <BaseLayout
-  title="Chat Astral · Alexandre Noblet"
-  description="Discutez avec Astral, l'assistant IA du portfolio d'Alexandre Noblet."
+  title={isEn ? "Astral Chat · Alexandre Noblet" : "Chat Astral · Alexandre Noblet"}
+  description={isEn ? "Talk with Astral, the AI assistant in Alexandre Noblet's portfolio." : "Discutez avec Astral, l'assistant IA du portfolio d'Alexandre Noblet."}
 >
   <section class="cosmic-container pt-8">
-    <h1 class="section-title">Canal <span class="highlight">Astral</span></h1>
+    <h1 class="section-title">{isEn ? "Astral" : "Canal"} <span class="highlight">Astral</span></h1>
     <p class="muted mt-4 max-w-3xl text-lg">
-      Une interface conversationnelle alimentée par l'IA pour explorer mon
-      profil, mes projets et mon approche technique de manière interactive et
-      immersive.
+      {isEn
+        ? "An AI-powered conversational interface to explore my profile, projects, and technical approach in an interactive way."
+        : "Une interface conversationnelle alimentée par l'IA pour explorer mon profil, mes projets et mon approche technique de manière interactive et immersive."}
     </p>
 
     <div class="mt-8">
-      <AstralChatContent />
+      <AstralChatContent locale={locale} />
     </div>
   </section>
 </BaseLayout>

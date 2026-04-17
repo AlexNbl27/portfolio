@@ -2,14 +2,20 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import ProjectFilter from '../components/ProjectFilter.astro';
-import projects from '../data/projects.json';
+import { getLocaleFromPathname } from '../i18n/utils';
+import { getProjects } from '../i18n/data/projects';
+import { useTranslations } from '../i18n/useTranslations';
+
+const locale = getLocaleFromPathname(Astro.url.pathname);
+const t = useTranslations(locale);
+const projects = getProjects(locale);
 ---
 
-<BaseLayout title="Alexandre Noblet | Projets" description="Découvrez les projets web, mobile, desktop et SaaS d’Alexandre Noblet.">
+<BaseLayout title={locale === "en" ? "Alexandre Noblet | Projects" : "Alexandre Noblet | Projets"} description={locale === "en" ? "Explore web, mobile, desktop and SaaS projects by Alexandre Noblet." : "Découvrez les projets web, mobile, desktop et SaaS d’Alexandre Noblet."}>
   <section class="cosmic-container pt-8">
-    <h1 class="section-title">Mes <span class="highlight">projets</span></h1>
-    <p class="muted mt-4 max-w-3xl text-lg">Une sélection de projets réalisés en formation, en stage ou sur mon temps personnel, avec un intérêt constant pour les produits utiles, concrets et bien pensés.</p>
-    <ProjectFilter />
+    <h1 class="section-title"><span class="highlight">{t("projects").title}</span></h1>
+    <p class="muted mt-4 max-w-3xl text-lg">{t("projects").subtitle}</p>
+    <ProjectFilter locale={locale} />
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="project-grid">
       {projects.map((project) => (
         <div
@@ -22,9 +28,9 @@ import projects from '../data/projects.json';
           ]}
           tabindex={project.detailPage ? 0 : undefined}
           role={project.detailPage ? 'link' : undefined}
-          aria-label={project.detailPage ? `Ouvrir la page de détails du projet ${project.title}` : undefined}
+          aria-label={project.detailPage ? (locale === "en" ? `Open details page for ${project.title}` : `Ouvrir la page de détails du projet ${project.title}`) : undefined}
         >
-          <ProjectCard project={project} />
+          <ProjectCard project={project} locale={locale} />
         </div>
       ))}
     </div>
@@ -88,10 +94,9 @@ import projects from '../data/projects.json';
 
       card.addEventListener('click', (event) => {
         const target = event.target as HTMLElement | null;
-        // Allow clicks on external links (demo, github) to work normally
         const link = target?.closest('a');
         if (link && !link.href.includes(detailPage)) return;
-        sessionStorage.setItem('project-detail-back-link', '/projects');
+        sessionStorage.setItem('project-detail-back-link', document.documentElement.lang === 'en' ? '/en/projects' : '/projects');
         navigate(detailPage);
       });
 
@@ -99,7 +104,7 @@ import projects from '../data/projects.json';
         const keyboardEvent = event as KeyboardEvent;
         if (keyboardEvent.key === 'Enter' || keyboardEvent.key === ' ') {
           keyboardEvent.preventDefault();
-          sessionStorage.setItem('project-detail-back-link', '/projects');
+          sessionStorage.setItem('project-detail-back-link', document.documentElement.lang === 'en' ? '/en/projects' : '/projects');
           navigate(detailPage);
         }
       });

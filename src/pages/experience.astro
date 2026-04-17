@@ -4,11 +4,14 @@ import ExperienceTimeline from "../components/ExperienceTimeline.astro";
 import ExperienceFilter from "../components/ExperienceFilter.astro";
 import ScrollPortrait from "../components/ScrollPortrait.astro";
 import ScrollAge from "../components/ScrollAge.astro";
-import experiences from "../data/experience.json";
+import { getLocaleFromPathname } from "../i18n/utils";
+import { getExperiences } from "../i18n/data/experiences";
+import { useTranslations } from "../i18n/useTranslations";
 
-// Portrait images are in public/images/portrait/ (not src/assets/images/) because
-// ScrollPortrait uses plain <img> tags with dynamic src strings for its JS scroll
-// animation. Astro's <Image> component cannot be used here.
+const locale = getLocaleFromPathname(Astro.url.pathname);
+const t = useTranslations(locale);
+const experiences = getExperiences(locale);
+
 const portraitImages = [
   "/images/portrait/2026.jpg",
   "/images/portrait/2024.jpg",
@@ -18,8 +21,8 @@ const portraitImages = [
 ---
 
 <BaseLayout
-  title="Alexandre Noblet | Parcours"
-  description="Parcours académique et professionnel d’Alexandre Noblet."
+  title={locale === "en" ? "Alexandre Noblet | Journey" : "Alexandre Noblet | Parcours"}
+  description={locale === "en" ? "Academic and professional journey of Alexandre Noblet." : "Parcours académique et professionnel d’Alexandre Noblet."}
 >
   <div slot="fixed-layer" class="hidden lg:block">
     <ScrollPortrait images={portraitImages} />
@@ -28,14 +31,13 @@ const portraitImages = [
 
   <section class="cosmic-container pt-8 lg:pr-[16rem] xl:pr-[18rem]">
     <div class="timeline-content">
-      <h1 class="section-title">Mon <span class="highlight">parcours</span></h1>
+      <h1 class="section-title"><span class="highlight">{t("experience").title}</span></h1>
       <p class="muted mt-4 max-w-3xl">
-        De la formation GEII à l’informatique, puis à l’IoT en entreprise : un
-        parcours construit entre technique, terrain et développement produit.
+        {t("experience").subtitle}
       </p>
 
-      <ExperienceFilter />
-      <ExperienceTimeline experiences={experiences} />
+      <ExperienceFilter locale={locale} />
+      <ExperienceTimeline experiences={experiences} locale={locale} />
     </div>
   </section>
 
@@ -44,10 +46,10 @@ const portraitImages = [
     class="cosmic-container hidden mt-2 py-16 text-center rounded-[3rem] border border-cosmic-gold/10 bg-slate-900/10"
   >
     <p class="text-cosmic-gold/60 text-xl italic font-display">
-      Il semble que ce chemin n'existe pas encore... 🛸
+      {t("experience").noResultsTitle}
     </p>
     <p class="muted text-sm mt-3">
-      Aucun parcours trouvé pour cette recherche.
+      {t("experience").noResultsDescription}
     </p>
   </div>
 </BaseLayout>
@@ -65,7 +67,6 @@ const portraitImages = [
     let isRecruiterMode =
       document.body.getAttribute("data-recruiter-mode") === "on";
 
-    // Reuse the same robust normalization and fuzzy logic
     const normalize = (str: string) =>
       str
         .toLowerCase()
@@ -173,7 +174,6 @@ const portraitImages = [
       updateUI();
     });
 
-    // Initial state setup
     const allBtn = document.querySelector('[data-filter="all"]');
     if (allBtn)
       allBtn.classList.add("border-cosmic-gold/60", "text-cosmic-gold");

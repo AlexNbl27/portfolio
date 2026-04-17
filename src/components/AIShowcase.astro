@@ -1,30 +1,34 @@
 ---
 import Card from "./ui/Card.astro";
+import type { Locale } from "../i18n/config";
+
+const { locale = 'fr' } = Astro.props as { locale?: Locale };
+const isEn = locale === 'en';
 ---
 
 <section class="cosmic-container mt-10 grid gap-5 md:grid-cols-3">
   <Card as="article" class="p-5">
-    <h3 class="font-display text-3xl text-cosmic-gold">Stage chez OBS</h3>
+    <h3 class="font-display text-3xl text-cosmic-gold">{isEn ? 'OBS internship' : 'Stage chez OBS'}</h3>
     <p class="muted mt-2">
-      Pendant l’été 2024, j’ai contribué au projet Live Tag en finalisant une
-      application mobile Flutter dédiée aux inventaires rapides en environnement
-      logistique.
+      {isEn
+        ? 'During summer 2024, I contributed to the Live Tag project by finalizing a Flutter mobile app dedicated to fast inventory workflows in logistics environments.'
+        : 'Pendant l’été 2024, j’ai contribué au projet Live Tag en finalisant une application mobile Flutter dédiée aux inventaires rapides en environnement logistique.'}
     </p>
   </Card>
   <Card as="article" class="p-5">
-    <h3 class="font-display text-3xl text-cosmic-gold">Alternance</h3>
+    <h3 class="font-display text-3xl text-cosmic-gold">{isEn ? 'Apprenticeship' : 'Alternance'}</h3>
     <p class="muted mt-2">
-      Depuis octobre 2024, je poursuis l’aventure chez Orange Business Services
-      avec une dimension plus fullstack et la découverte de PlanetTogether.
+      {isEn
+        ? 'Since October 2024, I have continued at Orange Business Services with broader fullstack responsibilities and PlanetTogether discovery.'
+        : 'Depuis octobre 2024, je poursuis l’aventure chez Orange Business Services avec une dimension plus fullstack et la découverte de PlanetTogether.'}
     </p>
   </Card>
   <Card as="article" class="p-5">
-    <h3 class="font-display text-3xl text-cosmic-gold">
-      Compétences renforcées
-    </h3>
+    <h3 class="font-display text-3xl text-cosmic-gold">{isEn ? 'Skills reinforced' : 'Compétences renforcées'}</h3>
     <p class="muted mt-2">
-      Ces expériences m’ont fait progresser sur Python, GitLab, JIRA, OpenShift,
-      la collaboration d’équipe et les attentes du monde professionnel.
+      {isEn
+        ? 'These missions strengthened Python, GitLab, JIRA, OpenShift, teamwork, and professional delivery standards.'
+        : 'Ces expériences m’ont fait progresser sur Python, GitLab, JIRA, OpenShift, la collaboration d’équipe et les attentes du monde professionnel.'}
     </p>
   </Card>
 </section>
