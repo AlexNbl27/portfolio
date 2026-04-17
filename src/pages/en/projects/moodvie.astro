@@ -1,5 +1,26 @@
 ---
-import Page from "../../projects/moodvie.md";
+import ProjectDetailLayout from '../../../layouts/ProjectDetailLayout.astro';
+
+const frontmatter = {
+  title: 'Moodvie',
+  description: 'Desktop app recommending movies and series based on the current emotional state.',
+  heroImage: '/images/moodvie.png',
+  projectCategory: 'Desktop app (C#)',
+  technologies: ['C#','.NET','XAML','WPF'],
+  links: [{ label: 'View on GitHub', url: 'https://github.com/AlexNbl27/Moodvie', variant: 'primary' }],
+  parentLink: '/en/projects',
+};
 ---
 
-<Page />
+<ProjectDetailLayout frontmatter={frontmatter}>
+  <h2>Experience</h2>
+  <p>Moodvie addresses the “choice overload” problem by recommending content through emotion-driven matching.</p>
+  <h3>Architecture</h3>
+  <ul>
+    <li>.NET / C# stack with WPF desktop UI</li>
+    <li>Separation of concerns inspired by MVVM principles</li>
+    <li>Recommendation logic combining genre data and emotional weightings</li>
+  </ul>
+  <h3>Impact</h3>
+  <p>This project strengthened my object-oriented fundamentals and my ability to design robust desktop experiences around user psychology.</p>
+</ProjectDetailLayout>

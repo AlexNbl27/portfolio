@@ -1,5 +1,27 @@
 ---
-import Page from "../../projects/azygo.md";
+import ProjectDetailLayout from '../../../layouts/ProjectDetailLayout.astro';
+
+const frontmatter = {
+  title: 'Azygo',
+  description: 'ERP + mobile ecosystem helping student associations automate operations and focus on campus life.',
+  heroImage: '/images/azygo.png',
+  projectCategory: 'Mobile & ERP Product',
+  technologies: ['Laravel','Vue.js','Flutter','Docker Swarm','Figma'],
+  links: [{ label: 'Visit website', url: 'https://azygo.fr/', variant: 'primary' }],
+  parentLink: '/en/projects',
+};
 ---
 
-<Page />
+<ProjectDetailLayout frontmatter={frontmatter}>
+  <h2>Mission</h2>
+  <p>AZYGO was built to reduce administrative overhead for student unions and centralize their day-to-day operations.</p>
+  <h3>Stack</h3>
+  <ul>
+    <li><strong>Laravel API</strong> for business workflows and secure data handling</li>
+    <li><strong>Vue admin</strong> for real-time operations and configuration</li>
+    <li><strong>Flutter app</strong> for iOS and Android user-facing experience</li>
+    <li><strong>Docker Swarm</strong> for resilient deployment orchestration</li>
+  </ul>
+  <h3>Product approach</h3>
+  <p>Needs discovery, iterative UX prototyping, continuous delivery, and usage-based feedback loops guided our roadmap.</p>
+</ProjectDetailLayout>

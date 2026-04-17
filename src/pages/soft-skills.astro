@@ -1,28 +1,21 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SkillVisualization from "../components/SkillVisualization.astro";
-import data from "../data/soft-skills.json";
 import { getLocaleFromPathname } from "../i18n/utils";
+import { getSoftSkillsData } from "../i18n/data/soft-skills";
 
 const locale = getLocaleFromPathname(Astro.url.pathname);
-const isEn = locale === "en";
+const data = getSoftSkillsData(locale);
 ---
 
-<BaseLayout
-  title={isEn ? "Alexandre Noblet | Soft skills" : data.page.title}
-  description={isEn ? "Human and collaboration skills in professional contexts." : data.page.description}
->
+<BaseLayout title={data.page.title} description={data.page.description}>
   <section class="cosmic-container pt-8 pb-16">
     <div class="mb-6 text-left">
       <h1 class="section-title mb-2">
-        {isEn ? "My" : "Mes"} <span class="highlight">soft skills</span>
+        {locale === "en" ? "My" : "Mes"} <span class="highlight">soft skills</span>
       </h1>
-      <p class="muted max-w-3xl text-lg leading-relaxed">
-        {isEn
-          ? "Communication, ownership, team spirit, and adaptability that support long-term product delivery."
-          : data.page.intro}
-      </p>
+      <p class="muted max-w-3xl text-lg leading-relaxed">{data.page.intro}</p>
     </div>
-    <SkillVisualization />
+    <SkillVisualization locale={locale} />
   </section>
 </BaseLayout>

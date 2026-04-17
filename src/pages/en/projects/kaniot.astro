@@ -1,5 +1,26 @@
 ---
-import Page from "../../projects/kaniot.md";
+import ProjectDetailLayout from '../../../layouts/ProjectDetailLayout.astro';
+
+const frontmatter = {
+  title: 'Kaniot',
+  description: 'A fair group fundraising app that balances contributions without social pressure.',
+  heroImage: '/images/digital-art-neon-bubbles.jpg',
+  projectCategory: 'SaaS Project',
+  technologies: ['Vue.js 3','TypeScript','Supabase'],
+  links: [{ label: 'View on GitHub', url: 'https://github.com/AlexNbl27/kaniot', variant: 'primary' }],
+  parentLink: '/en/projects',
+};
 ---
 
-<Page />
+<ProjectDetailLayout frontmatter={frontmatter}>
+  <h2>Problem</h2>
+  <p>Traditional group pools often create contribution pressure and imbalance between participants.</p>
+  <h3>Concept</h3>
+  <ul>
+    <li>Each participant sets a private maximum budget</li>
+    <li>An algorithm computes the fairest split to reach the target</li>
+    <li>Progress and allocation stay transparent for the whole group</li>
+  </ul>
+  <h3>Technical scope</h3>
+  <p>Built during my Ynov training with Vue 3 + TypeScript and Supabase for auth and real-time data management.</p>
+</ProjectDetailLayout>

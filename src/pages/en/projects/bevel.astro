@@ -1,5 +1,30 @@
 ---
-import Page from "../../projects/bevel.md";
+import ProjectDetailLayout from '../../../layouts/ProjectDetailLayout.astro';
+
+const frontmatter = {
+  title: 'Bevel',
+  description: 'Production e-commerce showcase for in-store sales, currently live on bevel.fr.',
+  heroImage: '/images/bevel.png',
+  projectCategory: 'E-commerce · Production',
+  technologies: ['Astro 5','React 19','Strapi 5','PostgreSQL','Stripe','Cloudflare Pages','Docker','TypeScript'],
+  links: [{ label: 'Visit website', url: 'https://bevel.fr', variant: 'primary' }],
+  parentLink: '/en/projects',
+};
 ---
 
-<Page />
+<ProjectDetailLayout frontmatter={frontmatter}>
+  <h2>The project</h2>
+  <p><strong>Bevel</strong> is a client e-commerce platform built and deployed end-to-end for real in-store and online sales flows.</p>
+  <h3>What it enables</h3>
+  <ul>
+    <li>Product catalog with variants and stock-aware purchase flow</li>
+    <li>Secure Stripe checkout and transactional email confirmations</li>
+    <li>Back-office management for products, orders, and promo codes</li>
+  </ul>
+  <h3>Architecture choices</h3>
+  <ul>
+    <li><strong>Astro SSR</strong> for SEO and performance with selective interactivity</li>
+    <li><strong>Strapi + PostgreSQL</strong> for reliable content and order data management</li>
+    <li><strong>Cloudflare + Docker VPS</strong> for global frontend delivery and isolated backend operations</li>
+  </ul>
+</ProjectDetailLayout>

@@ -173,13 +173,15 @@ const logoSrc = resolveImage(logo);
     const from = params.get("from");
     const storedBackLink = sessionStorage.getItem("project-detail-back-link");
     sessionStorage.removeItem("project-detail-back-link");
-    const recruiterBackLink = "/recruiter#projets-phares";
+    const isEn = window.location.pathname.startsWith("/en/");
+    const recruiterBackLink = `${isEn ? "/en" : ""}/recruiter#projets-phares`;
+    const defaultBackLink = `${isEn ? "/en" : ""}/projects`;
 
     if (from === "recruiter" || storedBackLink === recruiterBackLink) {
       backLink.href = recruiterBackLink;
       return;
     }
 
-    backLink.href = "/projects";
+    backLink.href = defaultBackLink;
   });
 </script>
