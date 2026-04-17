@@ -34,6 +34,9 @@ const frPath = localizePath(Astro.url.pathname, "fr");
     <meta name="view-transition" content="same-origin" />
     <link rel="alternate" hreflang="fr" href={frPath} />
     <link rel="alternate" hreflang="en" href={enPath} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.cdnfonts.com" />
     <ClientRouter />
     <script is:inline>
       if (typeof navigator !== 'undefined' && /firefox/i.test(navigator.userAgent)) {
@@ -83,14 +86,6 @@ const frPath = localizePath(Astro.url.pathname, "fr");
       })();
     </script>
     <slot name="head" />
-    <style is:global>
-      :root {
-        color-scheme: dark !important;
-      }
-      html, body {
-        background-color: #040916 !important;
-      }
-    </style>
   </head>
   <body>
     <CosmicBackground transition:persist />

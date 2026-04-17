@@ -103,6 +103,7 @@ const isEn = locale === "en";
             src={logoSrc}
             alt={`Logo ${title}`}
             class="project-detail-logo mt-3"
+            decoding="async"
           />
         )
       }
@@ -114,12 +115,16 @@ const isEn = locale === "en";
 
     {
       showHero && heroImageSrc && (
-        <Card class="project-detail-hero mt-6 overflow-hidden">
+        <Card class="project-detail-hero mt-6 overflow-hidden relative">
+          <div class="hero-skeleton absolute inset-0 animate-pulse bg-white/5 rounded-card" />
           <Image
             src={heroImageSrc}
             alt={title}
-            class="h-full w-full object-cover rounded-card"
+            class="hero-detail-img h-full w-full object-cover rounded-card relative"
             transition:name={`project-image-${title}`}
+            decoding="async"
+            loading="lazy"
+            onload="this.classList.add('loaded'); this.previousElementSibling.style.display='none';"
           />
         </Card>
       )
@@ -164,6 +169,16 @@ const isEn = locale === "en";
     </Card>
   </article>
 </BaseLayout>
+
+<style>
+  .hero-detail-img {
+    opacity: 0;
+    transition: opacity 0.7s ease;
+  }
+  .hero-detail-img.loaded {
+    opacity: 1;
+  }
+</style>
 
 <script>
   document.addEventListener("astro:page-load", () => {
