@@ -21,14 +21,11 @@ const t = useTranslations(locale);
     </div>
 
     <div class="mb-4 flex items-center justify-center gap-2">
-      <label for="locale-switcher" class="text-[10px] opacity-80">{t("footer").localeLabel}</label>
-      <select
-        id="locale-switcher"
-        class="rounded-full border border-cosmic-gold/20 bg-slate-900/70 px-3 py-1 text-[10px] tracking-[0.15em] text-slate-200"
-      >
-        <option value="fr" selected={locale === "fr"}>FR</option>
-        <option value="en" selected={locale === "en"}>EN</option>
-      </select>
+      <span class="text-[10px] opacity-80">{t("footer").localeLabel}</span>
+      <div class="inline-flex rounded-full border border-cosmic-gold/20 bg-slate-900/70 p-1 shadow-[0_0_20px_rgba(246,212,13,0.08)]">
+        <button type="button" class:list={["focus-ring rounded-full px-3 py-1 text-[10px] tracking-[0.15em] transition", locale === "fr" ? "bg-cosmic-gold text-slate-900" : "text-slate-300 hover:text-cosmic-gold"]} data-locale-switch="fr">FR</button>
+        <button type="button" class:list={["focus-ring rounded-full px-3 py-1 text-[10px] tracking-[0.15em] transition", locale === "en" ? "bg-cosmic-gold text-slate-900" : "text-slate-300 hover:text-cosmic-gold"]} data-locale-switch="en">EN</button>
+      </div>
     </div>
 
     <p>{t("footer").copyright}</p>
@@ -36,27 +33,31 @@ const t = useTranslations(locale);
 </footer>
 
 <script define:vars={{ COOKIE_NAME, DEFAULT_LOCALE }} is:inline>
-  const localeSwitcher = document.getElementById("locale-switcher");
-
   const stripLocalePrefix = (pathname) => {
     const clean = pathname.replace(/\/$/, "") || "/";
     return clean.replace(/^\/(fr|en)(?=\/|$)/, "") || "/";
   };
 
-  if (localeSwitcher) {
-    localeSwitcher.addEventListener("change", (event) => {
-      const target = event.target;
-      if (!(target instanceof HTMLSelectElement)) return;
+  const bindLocaleSwitcher = () => {
+    document.querySelectorAll("[data-locale-switch]").forEach((button) => {
+      if (button.dataset.boundLocale === "true") return;
+      button.dataset.boundLocale = "true";
+      button.addEventListener("click", () => {
+        const targetLocale = button.getAttribute("data-locale-switch");
+        if (!targetLocale) return;
 
-      const targetLocale = target.value;
-      const basePath = stripLocalePrefix(window.location.pathname);
-      const nextPath = targetLocale === DEFAULT_LOCALE
-        ? basePath
-        : `/${targetLocale}${basePath === "/" ? "" : basePath}`;
+        const basePath = stripLocalePrefix(window.location.pathname);
+        const nextPath = targetLocale === DEFAULT_LOCALE
+          ? basePath
+          : `/${targetLocale}${basePath === "/" ? "" : basePath}`;
 
-      localStorage.setItem("preferredLocale", targetLocale);
-      document.cookie = `${COOKIE_NAME}=${targetLocale};path=/;max-age=31536000;SameSite=Lax`;
-      window.location.assign(nextPath);
+        localStorage.setItem("preferredLocale", targetLocale);
+        document.cookie = `${COOKIE_NAME}=${targetLocale};path=/;max-age=31536000;SameSite=Lax`;
+        window.location.assign(nextPath);
+      });
     });
-  }
+  };
+
+  bindLocaleSwitcher();
+  document.addEventListener("astro:page-load", bindLocaleSwitcher);
 </script>

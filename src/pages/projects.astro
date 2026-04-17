@@ -2,13 +2,16 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import ProjectFilter from '../components/ProjectFilter.astro';
-import { getLocaleFromPathname } from '../i18n/utils';
+import { getLocaleFromPathname, localizePath } from '../i18n/utils';
 import { getProjects } from '../i18n/data/projects';
 import { useTranslations } from '../i18n/useTranslations';
 
 const locale = getLocaleFromPathname(Astro.url.pathname);
 const t = useTranslations(locale);
-const projects = getProjects(locale);
+const projects = getProjects(locale).map((project) => ({
+  ...project,
+  detailPage: project.detailPage ? localizePath(project.detailPage, locale) : undefined,
+}));
 ---
 
 <BaseLayout title={locale === "en" ? "Alexandre Noblet | Projects" : "Alexandre Noblet | Projets"} description={locale === "en" ? "Explore web, mobile, desktop and SaaS projects by Alexandre Noblet." : "Découvrez les projets web, mobile, desktop et SaaS d’Alexandre Noblet."}>

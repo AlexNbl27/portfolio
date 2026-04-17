@@ -22,7 +22,7 @@ const isEn = locale === "en";
     </h1>
 
     <div class="my-6">
-      <VibeSwitch id="vibe-toggle" />
+      <VibeSwitch id="vibe-toggle" locale={locale} />
     </div>
 
     <p
@@ -47,7 +47,7 @@ const isEn = locale === "en";
                 : "order-last",
             ]}
           >
-            <SkillOrbit skill={skill} />
+            <SkillOrbit skill={skill} locale={locale} />
           </div>
         ))
       }

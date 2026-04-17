@@ -122,7 +122,7 @@ const frPath = localizePath(Astro.url.pathname, "fr");
 
       document.addEventListener("astro:page-load", () => {
         updateAstralChatVisibility();
-        const isRecruiterPage = window.location.pathname === "/recruiter";
+        const isRecruiterPage = ["/recruiter", "/en/recruiter"].includes(window.location.pathname);
         const nextMode = isRecruiterPage ? "on" : "off";
         document.body.setAttribute("data-recruiter-mode", nextMode);
         document.dispatchEvent(
