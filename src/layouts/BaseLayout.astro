@@ -105,6 +105,27 @@ const frPath = localizePath(Astro.url.pathname, "fr");
     </main>
     <Footer locale={locale} />
     <script>
+      // Reveal .project-card-img elements when their image data is ready,
+      // so the fade-in plays on load rather than on DOM insertion.
+      function revealCardImages() {
+        document.querySelectorAll<HTMLImageElement>('.project-card-img').forEach((img) => {
+          if (img.dataset.revealed) return;
+          const reveal = () => {
+            img.style.opacity = '0.8';
+            img.dataset.revealed = '1';
+          };
+          if (img.complete && img.naturalWidth > 0) {
+            reveal();
+          } else {
+            img.addEventListener('load', reveal, { once: true });
+          }
+        });
+      }
+      document.addEventListener('astro:page-load', revealCardImages);
+      revealCardImages();
+    </script>
+
+    <script>
       function updateAstralChatVisibility() {
         const isOnChat =
           ["/chat", "/en/chat"].includes(window.location.pathname.replace(/\/$/, ""));
