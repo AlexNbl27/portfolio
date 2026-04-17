@@ -35,11 +35,11 @@ function StarLayer({
   className,
   ...props
 }: StarLayerProps) {
-  const [boxShadow, setBoxShadow] = React.useState<string>("");
-
-  React.useEffect(() => {
-    setBoxShadow(generateStars(count, starColor));
-  }, [count, starColor]);
+  // useMemo computes stars synchronously on first render — no double-render flash
+  const boxShadow = React.useMemo(
+    () => generateStars(count, starColor),
+    [count, starColor],
+  );
 
   return (
     <motion.div
@@ -51,19 +51,11 @@ function StarLayer({
     >
       <div
         className="absolute bg-transparent rounded-full"
-        style={{
-          width: `${size}px`,
-          height: `${size}px`,
-          boxShadow: boxShadow,
-        }}
+        style={{ width: `${size}px`, height: `${size}px`, boxShadow }}
       />
       <div
         className="absolute bg-transparent rounded-full top-[2000px]"
-        style={{
-          width: `${size}px`,
-          height: `${size}px`,
-          boxShadow: boxShadow,
-        }}
+        style={{ width: `${size}px`, height: `${size}px`, boxShadow }}
       />
     </motion.div>
   );
@@ -95,10 +87,8 @@ export function StarsBackground({
     (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       const centerX = window.innerWidth / 2;
       const centerY = window.innerHeight / 2;
-      const newOffsetX = -(e.clientX - centerX) * factor;
-      const newOffsetY = -(e.clientY - centerY) * factor;
-      offsetX.set(newOffsetX);
-      offsetY.set(newOffsetY);
+      offsetX.set(-(e.clientX - centerX) * factor);
+      offsetY.set(-(e.clientY - centerY) * factor);
     },
     [offsetX, offsetY, factor],
   );
@@ -113,7 +103,13 @@ export function StarsBackground({
       onMouseMove={handleMouseMove}
       {...props}
     >
-      <motion.div style={{ x: springX, y: springY }}>
+      {/* Fade-in wrapper — stars appear gradually instead of popping in */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+        style={{ x: springX, y: springY }}
+      >
         <StarLayer
           count={1000}
           size={1}
@@ -123,21 +119,13 @@ export function StarsBackground({
         <StarLayer
           count={400}
           size={2}
-          transition={{
-            repeat: Infinity,
-            duration: speed * 2,
-            ease: "linear",
-          }}
+          transition={{ repeat: Infinity, duration: speed * 2, ease: "linear" }}
           starColor={starColor}
         />
         <StarLayer
           count={200}
           size={3}
-          transition={{
-            repeat: Infinity,
-            duration: speed * 3,
-            ease: "linear",
-          }}
+          transition={{ repeat: Infinity, duration: speed * 3, ease: "linear" }}
           starColor={starColor}
         />
       </motion.div>
