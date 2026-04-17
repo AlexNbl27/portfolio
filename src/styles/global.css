@@ -27,6 +27,7 @@
 
 @layer base {
   :root {
+    color-scheme: dark;
     --bg: #040916;
     --card: rgba(28, 35, 63, 0.7);
     --text: #f3f0e2;
@@ -40,7 +41,7 @@
   }
   html {
     scroll-behavior: smooth;
-    background-color: #040916;
+    background-color: #040916 !important;
   }
 
   body::after {

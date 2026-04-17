@@ -27,6 +27,9 @@ const { images } = Astro.props;
           alt={`Portrait phase ${index}`}
           class:list={["portrait-image", index === 0 ? "is-active" : ""]}
           data-index={index}
+          decoding="async"
+          loading={index === 0 ? "eager" : "lazy"}
+          fetchpriority={index === 0 ? "high" : undefined}
         />
       ))
     }
