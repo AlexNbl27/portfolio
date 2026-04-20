@@ -52,9 +52,30 @@
   background: rgba(8, 12, 26, 0.65);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(227, 164, 214, 0.35);
+  transition: background 0.3s ease, border-color 0.3s ease;
   color: #f3f0e2;
   border-bottom-left-radius: 0.2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.astral-chat[data-theme="astro"] .astral-chat__bubble--assistant {
+  border-color: rgba(69, 137, 255, 0.45);
+  background: rgba(10, 25, 50, 0.65);
+}
+
+.astral-chat[data-theme="sirius"] .astral-chat__bubble--assistant {
+  border-color: rgba(16, 185, 129, 0.45);
+  background: rgba(10, 50, 25, 0.65);
+}
+
+.astral-chat[data-theme="saturn"] .astral-chat__bubble--assistant {
+  border-color: rgba(255, 140, 60, 0.45);
+  background: rgba(50, 20, 10, 0.65);
+}
+
+.astral-chat[data-theme="nova"] .astral-chat__bubble--assistant {
+  border-color: rgba(180, 69, 255, 0.45);
+  background: rgba(35, 15, 60, 0.65);
 }
 
 .astral-chat__bubble--error {

@@ -8,54 +8,344 @@ const locale = getLocaleFromPathname(Astro.url.pathname);
 const isEn = locale === "en";
 const copy = getContactCopy(locale);
 
-const calendlyUrl = "https://calendly.com/alexandrenobletpro/30min?hide_event_type_details=1&hide_gdpr_banner=1";
+const calendlyUrl =
+  "https://calendly.com/alexandrenoblet/30min?hide_event_type_details=1&hide_gdpr_banner=1&background_color=19008b3f&text_color=0a2540&primary_color=f6d40d&v=5";
 ---
 
 <BaseLayout
   title={isEn ? "Contact · Alexandre Noblet" : "Contact · Alexandre Noblet"}
-  description={isEn ? "Contact page with brief form and calendar booking." : "Page de contact avec formulaire rapide et prise de rendez-vous."}
+  description={isEn
+    ? "Contact page with brief form and calendar booking."
+    : "Page de contact avec formulaire rapide et prise de rendez-vous."}
 >
   <section class="cosmic-container pt-8">
     <h1 class="section-title">{copy.title}</h1>
     <p class="muted mt-4 max-w-3xl text-lg">{copy.subtitle}</p>
   </section>
 
-  <section class="cosmic-container mt-10 grid gap-6 lg:grid-cols-[1.05fr_1fr]">
-    <form id="contact-form-placeholder" class="rounded-card border border-white/10 bg-[#0f1430]/65 p-6 backdrop-blur-md grid gap-4" method="post" action="#">
-      <label class="text-sm text-white/85">
-        {isEn ? "Name" : "Nom"}
-        <input class="mt-1 w-full rounded-lg border border-white/15 bg-black/20 px-3 py-2" type="text" name="name" required />
-      </label>
-      <label class="text-sm text-white/85">
-        Email
-        <input class="mt-1 w-full rounded-lg border border-white/15 bg-black/20 px-3 py-2" type="email" name="email" required />
-      </label>
-      <label class="text-sm text-white/85">
-        {isEn ? "Project type" : "Type de projet"}
-        <input class="mt-1 w-full rounded-lg border border-white/15 bg-black/20 px-3 py-2" type="text" name="project" placeholder={isEn ? "Website, app, redesign..." : "Site web, app, refonte..."} />
-      </label>
-      <label class="text-sm text-white/85">
-        {isEn ? "Message" : "Message"}
-        <textarea class="mt-1 min-h-32 w-full rounded-lg border border-white/15 bg-black/20 px-3 py-2" name="message" required></textarea>
-      </label>
-      <button type="submit" class="focus-ring rounded-xl border border-cosmic-gold/40 px-4 py-2 text-cosmic-gold hover:bg-cosmic-gold/10 transition w-fit">
-        {copy.submit}
-      </button>
-      <p class="text-xs text-white/55">{isEn ? "Form endpoint can be connected later to Resend/Formspree." : "Endpoint du formulaire à connecter ensuite à Resend/Formspree."}</p>
+  <section
+    class="cosmic-container mt-10 grid gap-6 lg:grid-cols-2"
+    style="grid-template-areas: 'form booking' 'email booking'; grid-template-rows: auto 1fr; align-items: stretch;"
+  >
+    <!-- Formulaire -->
+    <form
+      id="contact-form"
+      class="contact-card"
+      method="post"
+      action="#"
+      style="grid-area: form;"
+    >
+      <div class="field-group">
+        <label class="field-label" for="name">
+          {isEn ? "Name" : "Nom"}
+        </label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          required
+          class="field-input"
+          placeholder={isEn ? "Alexandre Noblet" : "Alexandre Noblet"}
+        />
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="email">Email</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          required
+          class="field-input"
+          placeholder="hello@example.com"
+        />
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="project">
+          {isEn ? "Project type" : "Type de projet"}
+        </label>
+        <input
+          id="project"
+          name="project"
+          type="text"
+          class="field-input"
+          placeholder={isEn
+            ? "Website, app, redesign…"
+            : "Site web, app, refonte…"}
+        />
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="message">Message</label>
+        <textarea
+          id="message"
+          name="message"
+          required
+          class="field-input field-textarea"
+          placeholder={isEn
+            ? "Tell me about your project…"
+            : "Dites-moi en plus sur votre projet…"}></textarea>
+      </div>
+
+      <div class="form-footer">
+        <button type="submit" class="submit-btn">
+          <span>{copy.submit}</span>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+            ><line x1="22" y1="2" x2="11" y2="13"></line><polygon
+              points="22 2 15 22 11 13 2 9 22 2"></polygon></svg
+          >
+        </button>
+        <p id="form-status" class="form-status" aria-live="polite"></p>
+      </div>
     </form>
 
-    <div>
-      <h2 class="font-display text-2xl text-cosmic-gold mb-3">{copy.bookingTitle}</h2>
-      <BookingEmbed url={calendlyUrl} title={isEn ? "Calendly booking" : "Prise de rendez-vous Calendly"} />
+    <!-- Email -->
+    <a
+      href="mailto:alexandrenobletpro@gmail.com"
+      class="email-card"
+      style="grid-area: email;"
+    >
+      <span class="field-label"
+        >{isEn ? "Or reach me directly" : "Ou directement par mail"}</span
+      >
+      <span class="email-address">alexandrenobletpro@gmail.com</span>
+    </a>
+
+    <!-- Calendly -->
+    <div class="contact-card booking-card" style="grid-area: booking;">
+      <h2 class="font-display text-2xl text-cosmic-gold mb-4">
+        {copy.bookingTitle}
+      </h2>
+      <BookingEmbed
+        url={calendlyUrl}
+        title={isEn ? "Calendly booking" : "Prise de rendez-vous Calendly"}
+      />
     </div>
   </section>
 </BaseLayout>
 
+<style>
+  /* ── Carte commune formulaire / calendly ── */
+  .contact-card {
+    border-radius: 1.4rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(9, 15, 36, 0.65);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  /* ── Champ ── */
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .field-label {
+    font-family: var(--font-body, Manrope, sans-serif);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .field-input {
+    width: 100%;
+    background: rgba(4, 9, 22, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: var(--font-body, Manrope, sans-serif);
+    font-size: 0.9rem;
+    transition:
+      border-color 0.25s ease,
+      box-shadow 0.25s ease;
+    outline: none;
+    box-sizing: border-box;
+  }
+
+  .field-input::placeholder {
+    color: rgba(255, 255, 255, 0.22);
+  }
+
+  .field-input:focus {
+    border-color: rgba(246, 212, 13, 0.5);
+    box-shadow: 0 0 0 3px rgba(246, 212, 13, 0.08);
+  }
+
+  .field-textarea {
+    min-height: 9rem;
+    resize: vertical;
+  }
+
+  /* ── Footer du formulaire ── */
+  .form-footer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 0.25rem;
+  }
+
+  /* ── Bouton submit ── */
+  .submit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.4rem;
+    border-radius: 999px;
+    border: 1px solid rgba(246, 212, 13, 0.45);
+    color: #f6d40d;
+    font-family: var(--font-body, Manrope, sans-serif);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    background: transparent;
+    cursor: pointer;
+    transition:
+      background 0.25s ease,
+      border-color 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+
+  .submit-btn:hover {
+    background: rgba(246, 212, 13, 0.08);
+    border-color: rgba(246, 212, 13, 0.7);
+    box-shadow: 0 0 16px rgba(246, 212, 13, 0.15);
+  }
+
+  .submit-btn:active {
+    transform: scale(0.97);
+  }
+
+  /* ── Statut form ── */
+  .form-status {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .form-status.success {
+    color: #6ee7b7;
+  }
+  .form-status.error {
+    color: #fca5a5;
+  }
+
+  /* ── Email card ── */
+  .email-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: 1.4rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(9, 15, 36, 0.65);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    text-decoration: none;
+    transition:
+      border-color 0.25s,
+      background 0.25s;
+  }
+  .email-card:hover {
+    border-color: rgba(246, 212, 13, 0.3);
+    background: rgba(246, 212, 13, 0.04);
+  }
+
+  .email-address {
+    font-family: var(--font-body, Manrope, sans-serif);
+    font-size: 1rem;
+    color: #f6d40d;
+  }
+
+  /* ── Booking card ── */
+  .booking-card {
+    gap: 0.75rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #2c2a5f #090f24;
+  }
+  .booking-card::-webkit-scrollbar {
+    width: 6px;
+  }
+  .booking-card::-webkit-scrollbar-track {
+    background: #090f24;
+    border-radius: 999px;
+  }
+  .booking-card::-webkit-scrollbar-thumb {
+    background: #2c2a5f;
+    border-radius: 999px;
+  }
+  .booking-card::-webkit-scrollbar-thumb:hover {
+    background: #f6d40d;
+  }
+  .booking-card iframe {
+    flex: 1;
+    height: 100% !important;
+    min-height: 560px;
+  }
+</style>
+
 <script>
   document.addEventListener("astro:page-load", () => {
-    const form = document.getElementById("contact-form-placeholder");
-    form?.addEventListener("submit", (event) => {
-      event.preventDefault();
+    const form = document.getElementById(
+      "contact-form",
+    ) as HTMLFormElement | null;
+    const status = document.getElementById("form-status");
+    const btn = form?.querySelector<HTMLButtonElement>(".submit-btn");
+    const isEn = document.documentElement.lang === "en";
+
+    form?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!btn) return;
+      btn.disabled = true;
+      btn.style.opacity = "0.6";
+      if (status) {
+        status.textContent = isEn ? "Sending…" : "Envoi…";
+        status.className = "form-status";
+      }
+
+      try {
+        const res = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(Object.fromEntries(new FormData(form))),
+        });
+        if (res.ok) {
+          if (status) {
+            status.textContent = isEn ? "Message sent!" : "Message envoyé !";
+            status.className = "form-status success";
+          }
+          form.reset();
+        } else throw new Error();
+      } catch {
+        if (status) {
+          status.textContent = isEn
+            ? "An error occurred."
+            : "Une erreur est survenue.";
+          status.className = "form-status error";
+        }
+      } finally {
+        btn.disabled = false;
+        btn.style.opacity = "1";
+      }
     });
   });
 </script>

@@ -1,7 +1,5 @@
 ---
-import Button from './ui/Button.astro';
 import type { Locale } from '../i18n/config';
-import { localizePath } from '../i18n/utils';
 
 interface Props {
   locale: Locale;
@@ -20,9 +18,4 @@ const isEn = locale === 'en';
       ? 'I design useful, readable, product-oriented web and IoT experiences. My goal: turn ideas into concrete, high-performing, delightful solutions.'
       : 'Je conçois des expériences web et IoT utiles, lisibles et orientées produit. Mon objectif : transformer une idée en solution concrète, performante et agréable à utiliser.'}
   </p>
-  <div class="mt-6 flex flex-wrap gap-3">
-    <Button href={localizePath('/projects', locale)} variant="primary">{isEn ? 'View my projects' : 'Voir mes projets'}</Button>
-    <Button href={localizePath('/recruiter', locale)} variant="outline">{isEn ? '60-sec profile' : 'Parcours 60 sec'}</Button>
-    <Button href="mailto:alexandrenobletpro@gmail.com" variant="outline">{isEn ? 'Contact me' : 'Me contacter'}</Button>
-  </div>
 </section>

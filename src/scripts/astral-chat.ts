@@ -37,26 +37,39 @@ function initAstralChat() {
     const copy = {
       get thinking() { return isEnglish() ? "Astral is thinking..." : "Astral réfléchit..."; },
       get unavailable() { return isEnglish() ? "Astral cannot answer right now." : "Astral ne peut pas répondre pour le moment."; },
-      get greetingPro() { return isEnglish() ? "Hello, I'm Astral ✨ Professional mode enabled. I can help you review Alexandre's profile, projects, and collaboration fit quickly." : "Bonjour, je suis Astral ✨ Mode Pro activé. Je peux vous aider à évaluer rapidement le profil, les projets et la compatibilité collaboration d'Alexandre."; },
-      get greetingPote() { return isEnglish() ? "Hey, I'm Astral ✨ Friendly mode enabled. Ask me anything about Alexandre's universe, projects, and journey." : "Salut, je suis Astral ✨ Mode Pote activé. Pose-moi toutes tes questions sur l'univers, les projets et le parcours d'Alexandre."; },
+      get greetingAstro() { return isEnglish() ? "Hello, I'm Astral ✨ Astro mode enabled. Analytical and professional, I can help you review Alexandre's profile." : "Bonjour, je suis Astral ✨ Mode Astro activé. Analytique et professionnel, je vous aide à évaluer le profil d'Alexandre."; },
+      get greetingSirius() { return isEnglish() ? "Hello, I'm Astral ✨ Sirius mode enabled. Focused on business and solutions, I can tell you what Alexandre can build for you." : "Bonjour, je suis Astral ✨ Mode Sirius activé. Orienté solutions et pragmatisme, je vous explique comment Alexandre peut vous aider."; },
+      get greetingSaturn() { return isEnglish() ? "Hey, I'm Astral ✨ Saturn mode enabled. Friendly and direct, ask me anything about Alexandre's journey." : "Salut, je suis Astral ✨ Mode Saturn activé. Pote et direct, pose-moi tes questions sur le parcours d'Alexandre."; },
+      get greetingNova() { return isEnglish() ? "Greetings, I'm Astral ✨ Nova mode enabled. Creative and philosophical, let's explore concepts together." : "Salutations, je suis Astral ✨ Mode Nova activé. Créatif et philosophique, explorons les concepts ensemble."; },
       get quotaReached() { return isEnglish() ? "Daily quota reached for this browser. Please come back tomorrow or contact Alexandre directly." : "Quota journalier atteint pour ce navigateur. Revenez demain ou contactez Alexandre directement."; },
       get genericError() { return isEnglish() ? "✦ The message was lost in space due to an error… Please try again in a few moments." : "✦ Le message s'est perdu dans l'espace suite à une erreur… Réessayez dans quelques instants."; },
     };
 
-    const getCurrentMode = (): "pro" | "pote" => {
+    const getCurrentMode = (): "astro" | "saturn" | "nova" | "sirius" => {
       const selectedInput = Array.from(personalityInputs).find((input) => input.checked);
-      const selected = selectedInput?.value || sessionStorage.getItem(MODE_KEY) || "pro";
-      return selected === "pote" ? "pote" : "pro";
+      const selected = selectedInput?.value || sessionStorage.getItem(MODE_KEY) || "astro";
+      if (selected === "saturn") return "saturn";
+      if (selected === "nova") return "nova";
+      if (selected === "sirius") return "sirius";
+      return "astro";
     };
 
-    const setCurrentMode = (mode: "pro" | "pote") => {
+    const setCurrentMode = (mode: "astro" | "saturn" | "nova" | "sirius") => {
       sessionStorage.setItem(MODE_KEY, mode);
       personalityInputs.forEach((input) => {
         input.checked = input.value === mode;
       });
+      // also set data-theme on root to style messages
+      root.setAttribute("data-theme", mode);
     };
 
-    const getGreeting = () => (getCurrentMode() === "pote" ? copy.greetingPote : copy.greetingPro);
+    const getGreeting = () => {
+      const mode = getCurrentMode();
+      if (mode === "saturn") return copy.greetingSaturn;
+      if (mode === "nova") return copy.greetingNova;
+      if (mode === "sirius") return copy.greetingSirius;
+      return copy.greetingAstro;
+    };
 
     const loadHistory = () => {
       try {
@@ -296,9 +309,31 @@ function initAstralChat() {
       }
     };
 
-    if (isFloating && trigger) {
-      trigger.addEventListener("click", () => togglePanel(true));
+    if (isFloating) {
+      trigger?.addEventListener("click", () => togglePanel(true));
       overlay?.addEventListener("click", () => togglePanel(false));
+
+      // Global delegation to intercept ANY chat link clicks on Desktop
+      const handleGlobalClick = (e: MouseEvent) => {
+        if (!window.matchMedia("(min-width: 1024px)").matches) return;
+        
+        const link = (e.target as HTMLElement).closest("a");
+        if (!link) return;
+
+        // Use URL object to get a clean pathname regardless of host/trailing slash
+        const url = new URL(link.href, window.location.origin);
+        const path = url.pathname.replace(/\/$/, "");
+        const isChatLink = path === "/chat" || path === "/en/chat" || path === "/fr/chat";
+        const isFullscreen = link.classList.contains("astral-chat__fullscreen");
+
+        if (isChatLink && !isFullscreen) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          togglePanel(true);
+        }
+      };
+
+      document.addEventListener("click", handleGlobalClick, { capture: true });
     }
 
     closeBtn?.addEventListener("click", () => togglePanel(false));
@@ -321,7 +356,8 @@ function initAstralChat() {
       setCurrentMode(getCurrentMode());
       personalityInputs.forEach((input) => {
         input.addEventListener("change", () => {
-          const nextMode = input.value === "pote" ? "pote" : "pro";
+          const val = input.value;
+          const nextMode = val === "saturn" ? "saturn" : val === "nova" ? "nova" : val === "sirius" ? "sirius" : "astro";
           setCurrentMode(nextMode);
           resetConversation();
         });

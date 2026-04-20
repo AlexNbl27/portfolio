@@ -21,25 +21,18 @@ theme:
   titleFont: "'Poppins', 'Manrope', sans-serif"
 ---
 
-## Problème
+## L'Expérience
 
-Le choix d'un film peut devenir frustrant : trop d'options, pas assez de contexte personnel, et une fatigue décisionnelle forte.
+Moodvie est né d'un constat universel : nous passons parfois plus de temps à choisir un film qu'à le regarder. Pour résoudre ce "paradoxe du choix", l'application propose une approche centrée sur **l'intelligence émotionnelle**. En sélectionnant votre état d'esprit actuel (joyeux, stressé, nostalgique, etc.), Moodvie analyse vos besoins pour suggérer instantanément les contenus les plus pertinents de votre catalogue.
 
-## Contraintes
+## Architecture & Technologie
 
-- Application desktop fluide et lisible.
-- Recommandation basée sur l'état émotionnel sans complexifier l'interface.
-- Architecture maintenable pour un projet d'apprentissage sérieux.
+Ce projet a été conçu avec la stack **.NET / C#**, utilisant **WPF (Windows Presentation Foundation)** pour offrir une interface desktop à la fois fluide et performante. L'accent a été mis sur la séparation stricte des responsabilités (pattern MVVM) pour garantir une maintenance simplifiée :
 
-## Solution
+- **Algorithme d'Appairage** : Un moteur de recommandation croisant les genres cinématographiques avec des pondérations émotionnelles spécifiques.
+- **Expérience Utilisateur (UX)** : Une interface moderne en **XAML**, pensée pour la clarté et la rapidité d'exécution.
+- **Gestion Dynamique** : Une structure de données flexible permettant l'intégration facile de nouvelles sources de contenus.
 
-- Stack C#/.NET et interface WPF (XAML).
-- Organisation orientée MVVM pour séparer clairement UI, logique et données.
-- Moteur de recommandation croisant états émotionnels et préférences de genres.
+## Impact & Apprentissages
 
-## Résultats
-
-- ✅ Prototype desktop utilisable avec parcours de recommandation cohérent.
-- ✅ Consolidation de fondamentaux solides en architecture logicielle.
-- ✅ Démonstration d'une approche produit centrée utilisateur, même en contexte académique.
-- 🔢 KPI à confirmer : temps moyen de sélection divisé par session.
+Développé durant mon cursus en **DUT GEII**, Moodvie a été un projet pivot pour consolider mes bases en programmation orientée objet. Il témoigne de ma capacité à concevoir des outils desktop robustes tout en plaçant la psychologie de l'utilisateur au coeur de la réflexion technique.

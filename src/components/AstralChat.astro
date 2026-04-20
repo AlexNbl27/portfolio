@@ -26,9 +26,40 @@ const isEn = locale === "en";
     class="astral-chat__panel glass-card is-floating hidden"
   >
     <header class="astral-chat__header">
-      <div>
+      <div class="flex flex-col">
         <p class="astral-chat__kicker">{isEn ? "Stellar companion" : "Compagnon stellaire"}</p>
         <h2>{isEn ? "Astral · AI assistant" : "Astral · Assistant IA"}</h2>
+        
+        <div class="mt-2 flex items-stretch gap-1 bg-white/5 p-1 rounded-lg border border-white/10 w-fit">
+          <label class="cursor-pointer relative flex-1">
+            <input type="radio" name="astral_mode" value="astro" data-astral-personality class="peer sr-only" checked>
+            <div class="flex h-full flex-col items-center justify-center px-3 py-2 rounded-md peer-checked:bg-blue-500/30 peer-checked:text-blue-200 text-white/50 transition-colors hover:bg-white/5 hover:text-white/80">
+              <span class="block text-[0.75rem] font-bold leading-none">Astro</span>
+              <span class="block text-[0.55rem] font-medium opacity-70 mt-1 uppercase tracking-wider">{isEn ? "Recruiter" : "Pro"}</span>
+            </div>
+          </label>
+          <label class="cursor-pointer relative flex-1">
+            <input type="radio" name="astral_mode" value="sirius" data-astral-personality class="peer sr-only">
+            <div class="flex h-full flex-col items-center justify-center px-3 py-2 rounded-md peer-checked:bg-emerald-500/30 peer-checked:text-emerald-200 text-white/50 transition-colors hover:bg-white/5 hover:text-white/80">
+              <span class="block text-[0.75rem] font-bold leading-none">Sirius</span>
+              <span class="block text-[0.55rem] font-medium opacity-70 mt-1 uppercase tracking-wider">{isEn ? "Client" : "Client"}</span>
+            </div>
+          </label>
+          <label class="cursor-pointer relative flex-1">
+            <input type="radio" name="astral_mode" value="saturn" data-astral-personality class="peer sr-only">
+            <div class="flex h-full flex-col items-center justify-center px-3 py-2 rounded-md peer-checked:bg-orange-500/30 peer-checked:text-orange-200 text-white/50 transition-colors hover:bg-white/5 hover:text-white/80">
+              <span class="block text-[0.75rem] font-bold leading-none">Saturn</span>
+              <span class="block text-[0.55rem] font-medium opacity-70 mt-1 uppercase tracking-wider">{isEn ? "Friendly" : "Ami"}</span>
+            </div>
+          </label>
+          <label class="cursor-pointer relative flex-1">
+            <input type="radio" name="astral_mode" value="nova" data-astral-personality class="peer sr-only">
+            <div class="flex h-full flex-col items-center justify-center px-3 py-2 rounded-md peer-checked:bg-purple-500/30 peer-checked:text-purple-200 text-white/50 transition-colors hover:bg-white/5 hover:text-white/80">
+              <span class="block text-[0.75rem] font-bold leading-none">Nova</span>
+              <span class="block text-[0.55rem] font-medium opacity-70 mt-1 uppercase tracking-wider">{isEn ? "Creative" : "Créatif"}</span>
+            </div>
+          </label>
+        </div>
       </div>
       <div class="flex items-center gap-2">
         <a
