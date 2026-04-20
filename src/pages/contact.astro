@@ -27,7 +27,6 @@ const calendlyUrl =
     class="cosmic-container mt-10 grid gap-6 lg:grid-cols-2"
     style="grid-template-areas: 'form booking' 'email booking'; grid-template-rows: auto 1fr; align-items: stretch;"
   >
-    <!-- Formulaire -->
     <form
       id="contact-form"
       class="contact-card"
@@ -109,7 +108,6 @@ const calendlyUrl =
       </div>
     </form>
 
-    <!-- Email -->
     <a
       href="mailto:alexandrenobletpro@gmail.com"
       class="email-card"
@@ -121,7 +119,6 @@ const calendlyUrl =
       <span class="email-address">alexandrenobletpro@gmail.com</span>
     </a>
 
-    <!-- Calendly -->
     <div class="contact-card booking-card" style="grid-area: booking;">
       <h2 class="font-display text-2xl text-cosmic-gold mb-4">
         {copy.bookingTitle}
@@ -135,16 +132,20 @@ const calendlyUrl =
 </BaseLayout>
 
 <style>
-  /* ── Carte commune formulaire / calendly ── */
-  .contact-card {
+  /* ── Chrome commun : formulaire, email, calendly ── */
+  .contact-card,
+  .email-card {
     border-radius: 1.4rem;
     border: 1px solid rgba(255, 255, 255, 0.08);
     background: rgba(9, 15, 36, 0.65);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    padding: 2rem;
     display: flex;
     flex-direction: column;
+  }
+
+  .contact-card {
+    padding: 2rem;
     gap: 1.25rem;
   }
 
@@ -246,16 +247,9 @@ const calendlyUrl =
 
   /* ── Email card ── */
   .email-card {
-    display: flex;
-    flex-direction: column;
     justify-content: center;
     gap: 0.5rem;
     padding: 1.25rem 1.5rem;
-    border-radius: 1.4rem;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(9, 15, 36, 0.65);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
     text-decoration: none;
     transition:
       border-color 0.25s,
@@ -276,8 +270,6 @@ const calendlyUrl =
   .booking-card {
     gap: 0.75rem;
     height: 100%;
-    display: flex;
-    flex-direction: column;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: #2c2a5f #090f24;

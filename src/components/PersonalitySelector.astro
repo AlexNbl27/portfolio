@@ -1,0 +1,35 @@
+---
+interface Props {
+  name: string;
+  isEn: boolean;
+  class?: string;
+}
+
+const { name, isEn, class: className = "" } = Astro.props;
+
+const tabs = [
+  { value: "astro",  label: "Astro",  sub: isEn ? "Recruiter" : "Pro",      checked: true,  activeClass: "peer-checked:bg-blue-500/30 peer-checked:text-blue-200" },
+  { value: "sirius", label: "Sirius", sub: isEn ? "Client" : "Client",       checked: false, activeClass: "peer-checked:bg-emerald-500/30 peer-checked:text-emerald-200" },
+  { value: "saturn", label: "Saturn", sub: isEn ? "Friendly" : "Ami",        checked: false, activeClass: "peer-checked:bg-orange-500/30 peer-checked:text-orange-200" },
+  { value: "nova",   label: "Nova",   sub: isEn ? "Creative" : "Créatif",    checked: false, activeClass: "peer-checked:bg-purple-500/30 peer-checked:text-purple-200" },
+];
+---
+
+<div class:list={["flex items-stretch gap-1 bg-white/5 p-1 rounded-lg border border-white/10 w-fit", className]}>
+  {tabs.map((tab) => (
+    <label class="cursor-pointer relative flex-1">
+      <input
+        type="radio"
+        name={name}
+        value={tab.value}
+        data-astral-personality
+        class="peer sr-only"
+        checked={tab.checked || undefined}
+      />
+      <div class:list={["flex h-full flex-col items-center justify-center px-3 py-2 rounded-md text-white/50 transition-colors hover:bg-white/5 hover:text-white/80", tab.activeClass]}>
+        <span class="block text-[0.75rem] font-bold leading-none">{tab.label}</span>
+        <span class="block text-[0.55rem] font-medium opacity-70 mt-1 uppercase tracking-wider">{tab.sub}</span>
+      </div>
+    </label>
+  ))}
+</div>

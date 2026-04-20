@@ -45,30 +45,32 @@ function initAstralChat() {
       get genericError() { return isEnglish() ? "✦ The message was lost in space due to an error… Please try again in a few moments." : "✦ Le message s'est perdu dans l'espace suite à une erreur… Réessayez dans quelques instants."; },
     };
 
-    const getCurrentMode = (): "astro" | "saturn" | "nova" | "sirius" => {
-      const selectedInput = Array.from(personalityInputs).find((input) => input.checked);
-      const selected = selectedInput?.value || sessionStorage.getItem(MODE_KEY) || "astro";
-      if (selected === "saturn") return "saturn";
-      if (selected === "nova") return "nova";
-      if (selected === "sirius") return "sirius";
-      return "astro";
+    type Mode = "astro" | "sirius" | "saturn" | "nova";
+    const VALID_MODES = new Set<string>(["astro", "sirius", "saturn", "nova"]);
+    const toMode = (val: string | null | undefined): Mode =>
+      VALID_MODES.has(val ?? "") ? (val as Mode) : "astro";
+
+    const GREETING: Record<Mode, keyof typeof copy> = {
+      astro: "greetingAstro", sirius: "greetingSirius",
+      saturn: "greetingSaturn", nova: "greetingNova",
     };
 
-    const setCurrentMode = (mode: "astro" | "saturn" | "nova" | "sirius") => {
+    const getCurrentMode = (): Mode => {
+      const selectedInput = Array.from(personalityInputs).find((input) => input.checked);
+      return toMode(selectedInput?.value || sessionStorage.getItem(MODE_KEY));
+    };
+
+    const setCurrentMode = (mode: Mode) => {
       sessionStorage.setItem(MODE_KEY, mode);
-      personalityInputs.forEach((input) => {
-        input.checked = input.value === mode;
-      });
-      // also set data-theme on root to style messages
+      personalityInputs.forEach((input) => { input.checked = input.value === mode; });
       root.setAttribute("data-theme", mode);
     };
 
-    const getGreeting = () => {
-      const mode = getCurrentMode();
-      if (mode === "saturn") return copy.greetingSaturn;
-      if (mode === "nova") return copy.greetingNova;
-      if (mode === "sirius") return copy.greetingSirius;
-      return copy.greetingAstro;
+    const getGreeting = () => copy[GREETING[getCurrentMode()]];
+
+    const scrollToBottom = (behavior: ScrollBehavior = "smooth") => {
+      if (isFloating) messages?.scrollTo({ top: messages.scrollHeight, behavior });
+      else window.scrollTo({ top: document.body.scrollHeight, behavior });
     };
 
     const loadHistory = () => {
@@ -121,11 +123,7 @@ function initAstralChat() {
       }
 
       messages?.appendChild(bubble);
-      if (isFloating) {
-        messages?.scrollTo({ top: messages.scrollHeight, behavior: "smooth" });
-      } else {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-      }
+      scrollToBottom();
       return bubble;
     };
 
@@ -150,11 +148,7 @@ function initAstralChat() {
       for (let i = 0; i < chars.length; i++) {
         el.textContent += chars[i];
         if (i % 3 === 0) {
-          if (isFloating) {
-            messages?.scrollTo({ top: messages.scrollHeight, behavior: "auto" });
-          } else {
-            window.scrollTo({ top: document.body.scrollHeight, behavior: "auto" });
-          }
+          scrollToBottom("auto");
           await new Promise((resolve) => setTimeout(resolve, 10));
         }
       }
@@ -252,11 +246,7 @@ function initAstralChat() {
         container.appendChild(a);
       });
       messages?.appendChild(container);
-      if (isFloating) {
-        messages?.scrollTo({ top: messages.scrollHeight, behavior: "smooth" });
-      } else {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-      }
+      scrollToBottom();
     };
 
     const bootHealthCheck = async () => {
@@ -313,14 +303,13 @@ function initAstralChat() {
       trigger?.addEventListener("click", () => togglePanel(true));
       overlay?.addEventListener("click", () => togglePanel(false));
 
-      // Global delegation to intercept ANY chat link clicks on Desktop
+      // Global delegation listener function
       const handleGlobalClick = (e: MouseEvent) => {
         if (!window.matchMedia("(min-width: 1024px)").matches) return;
         
         const link = (e.target as HTMLElement).closest("a");
         if (!link) return;
 
-        // Use URL object to get a clean pathname regardless of host/trailing slash
         const url = new URL(link.href, window.location.origin);
         const path = url.pathname.replace(/\/$/, "");
         const isChatLink = path === "/chat" || path === "/en/chat" || path === "/fr/chat";
@@ -333,6 +322,8 @@ function initAstralChat() {
         }
       };
 
+      // Remove existing listener to prevent duplicates before adding new one
+      document.removeEventListener("click", handleGlobalClick, { capture: true });
       document.addEventListener("click", handleGlobalClick, { capture: true });
     }
 
@@ -356,9 +347,7 @@ function initAstralChat() {
       setCurrentMode(getCurrentMode());
       personalityInputs.forEach((input) => {
         input.addEventListener("change", () => {
-          const val = input.value;
-          const nextMode = val === "saturn" ? "saturn" : val === "nova" ? "nova" : val === "sirius" ? "sirius" : "astro";
-          setCurrentMode(nextMode);
+          setCurrentMode(toMode(input.value));
           resetConversation();
         });
       });

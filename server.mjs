@@ -456,6 +456,8 @@ const server = http.createServer(async (req, res) => {
   if (req.method === "POST" && req.url.startsWith("/api/contact")) {
     if (!RESEND_API_KEY) return json(res, 503, { error: "Service email indisponible." });
 
+    const escHtml = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
     try {
       const raw = await collectBody(req);
       const { name, email, project, message } = raw ? JSON.parse(raw) : {};
@@ -475,7 +477,7 @@ const server = http.createServer(async (req, res) => {
           to: "alexandrenobletpro@gmail.com",
           reply_to: email,
           subject: `[Portfolio] ${project || "Contact"} — ${name}`,
-          html: `<p><strong>Nom :</strong> ${name}</p><p><strong>Email :</strong> ${email}</p><p><strong>Type de projet :</strong> ${project || "—"}</p><p><strong>Message :</strong><br>${message.replace(/\n/g, "<br>")}</p>`,
+          html: `<p><strong>Nom :</strong> ${escHtml(name)}</p><p><strong>Email :</strong> ${escHtml(email)}</p><p><strong>Type de projet :</strong> ${escHtml(project || "—")}</p><p><strong>Message :</strong><br>${escHtml(message).replace(/\n/g, "<br>")}</p>`,
         }),
       });
 
