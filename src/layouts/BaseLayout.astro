@@ -90,10 +90,10 @@ const frPath = localizePath(Astro.url.pathname, "fr");
     <slot name="head" />
   </head>
   <body>
-    <CosmicBackground transition:persist />
-    <Navigation transition:persist />
+    <CosmicBackground transition:persist transition:name="cosmic-background" />
+    <Navigation transition:persist transition:name="site-navigation" />
     <slot name="fixed-layer" />
-    <AstralChat locale={locale} transition:persist />
+    <AstralChat locale={locale} transition:persist transition:name="astral-chat-widget" />
     <main
       class="page-shell relative z-10 pt-20 pb-8 md:pt-32 md:pb-12"
       transition:name="page-content"
@@ -124,15 +124,20 @@ const frPath = localizePath(Astro.url.pathname, "fr");
     </script>
 
     <script>
-      // Reveal .project-card-img elements when their image data is ready,
-      // so the fade-in plays on load rather than on DOM insertion.
-      function revealCardImages() {
-        document.querySelectorAll<HTMLImageElement>('.project-card-img').forEach((img) => {
-          if (img.dataset.revealed) return;
+      // Smoothly reveal images only once the browser has fully loaded them.
+      function initFadeImages() {
+        document.querySelectorAll<HTMLImageElement>('[data-fade-image]').forEach((img) => {
+          if (img.dataset.fadeReady === '1') return;
+
           const reveal = () => {
-            img.style.opacity = '0.8';
-            img.dataset.revealed = '1';
+            img.classList.add('is-loaded');
+            const skeleton = img.previousElementSibling as HTMLElement | null;
+            if (skeleton?.classList.contains('hero-skeleton') || skeleton?.classList.contains('hero-img-skeleton')) {
+              skeleton.style.display = 'none';
+            }
+            img.dataset.fadeReady = '1';
           };
+
           if (img.complete && img.naturalWidth > 0) {
             reveal();
           } else {
@@ -140,8 +145,9 @@ const frPath = localizePath(Astro.url.pathname, "fr");
           }
         });
       }
-      document.addEventListener('astro:page-load', revealCardImages);
-      revealCardImages();
+
+      document.addEventListener('astro:page-load', initFadeImages);
+      initFadeImages();
     </script>
 
     <script>
