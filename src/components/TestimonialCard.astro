@@ -1,0 +1,33 @@
+---
+interface Props {
+  quote: string;
+  author: string;
+  role: string;
+  company?: string;
+  sourceLabel?: string;
+  sourceUrl?: string;
+}
+
+const { quote, author, role, company, sourceLabel, sourceUrl } = Astro.props as Props;
+---
+
+<article class="rounded-card border border-white/10 bg-[#0f1430]/70 p-5 backdrop-blur-md">
+  <p class="text-cosmic-gold text-xl leading-none">“</p>
+  <blockquote class="mt-2 text-sm md:text-base text-white/90 leading-relaxed">{quote}</blockquote>
+  <footer class="mt-4 border-t border-white/10 pt-3">
+    <p class="text-sm font-semibold text-white">{author}</p>
+    <p class="text-xs text-white/65">{role}{company ? ` · ${company}` : ""}</p>
+    {
+      sourceLabel && sourceUrl && (
+        <a
+          href={sourceUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mt-2 inline-flex text-xs text-cosmic-gold hover:text-cosmic-pink transition"
+        >
+          {sourceLabel}
+        </a>
+      )
+    }
+  </footer>
+</article>

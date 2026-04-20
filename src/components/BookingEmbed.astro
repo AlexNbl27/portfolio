@@ -1,0 +1,17 @@
+---
+interface Props {
+  url: string;
+  title?: string;
+}
+
+const { url, title = "Booking calendar" } = Astro.props as Props;
+---
+
+<div class="rounded-card border border-white/10 bg-[#0f1430]/65 p-3 md:p-4 backdrop-blur-md">
+  <iframe
+    src={url}
+    title={title}
+    loading="lazy"
+    class="h-[700px] w-full rounded-xl border border-white/10 bg-black/20"
+  ></iframe>
+</div>

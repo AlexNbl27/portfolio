@@ -1,6 +1,7 @@
 const DAILY_LIMIT = 20;
 const STORAGE_KEY = "astral-chat-quota";
 const HISTORY_KEY = "astral-chat-history";
+const MODE_KEY = "astral-chat-mode";
 const MAX_CHARS = 800;
 
 function renderMarkdown(text: string): string {
@@ -31,14 +32,31 @@ function initAstralChat() {
     const messages = root.querySelector(".astral-chat__messages") as HTMLElement;
     const textarea = root.querySelector("textarea") as HTMLTextAreaElement;
     const overlay = root.querySelector(".astral-chat__overlay") as HTMLElement;
+    const personalityInputs = root.querySelectorAll<HTMLInputElement>("[data-astral-personality]");
     const isEnglish = () => document.documentElement.lang === "en";
     const copy = {
       get thinking() { return isEnglish() ? "Astral is thinking..." : "Astral réfléchit..."; },
       get unavailable() { return isEnglish() ? "Astral cannot answer right now." : "Astral ne peut pas répondre pour le moment."; },
-      get greeting() { return isEnglish() ? "Hi, I'm Astral ✨ I can guide you through Alexandre's portfolio, projects, and professional universe." : "Bonjour, je suis Astral ✨ Je peux vous guider dans le portfolio d'Alexandre, ses projets et son univers pro."; },
+      get greetingPro() { return isEnglish() ? "Hello, I'm Astral ✨ Professional mode enabled. I can help you review Alexandre's profile, projects, and collaboration fit quickly." : "Bonjour, je suis Astral ✨ Mode Pro activé. Je peux vous aider à évaluer rapidement le profil, les projets et la compatibilité collaboration d'Alexandre."; },
+      get greetingPote() { return isEnglish() ? "Hey, I'm Astral ✨ Friendly mode enabled. Ask me anything about Alexandre's universe, projects, and journey." : "Salut, je suis Astral ✨ Mode Pote activé. Pose-moi toutes tes questions sur l'univers, les projets et le parcours d'Alexandre."; },
       get quotaReached() { return isEnglish() ? "Daily quota reached for this browser. Please come back tomorrow or contact Alexandre directly." : "Quota journalier atteint pour ce navigateur. Revenez demain ou contactez Alexandre directement."; },
       get genericError() { return isEnglish() ? "✦ The message was lost in space due to an error… Please try again in a few moments." : "✦ Le message s'est perdu dans l'espace suite à une erreur… Réessayez dans quelques instants."; },
     };
+
+    const getCurrentMode = (): "pro" | "pote" => {
+      const selectedInput = Array.from(personalityInputs).find((input) => input.checked);
+      const selected = selectedInput?.value || sessionStorage.getItem(MODE_KEY) || "pro";
+      return selected === "pote" ? "pote" : "pro";
+    };
+
+    const setCurrentMode = (mode: "pro" | "pote") => {
+      sessionStorage.setItem(MODE_KEY, mode);
+      personalityInputs.forEach((input) => {
+        input.checked = input.value === mode;
+      });
+    };
+
+    const getGreeting = () => (getCurrentMode() === "pote" ? copy.greetingPote : copy.greetingPro);
 
     const loadHistory = () => {
       try {
@@ -182,13 +200,14 @@ function initAstralChat() {
 
     const sendWithServerRoute = async (prompt: string): Promise<{ text: string; ctas: Cta[] }> => {
       const en = isEnglish();
+      const personalityMode = getCurrentMode();
       const localizedPrompt = en
         ? `Please answer in English. User message: ${prompt}`
         : prompt;
       const response = await fetch("/api/astral-chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: localizedPrompt, history, locale: en ? "en" : "fr" }),
+        body: JSON.stringify({ prompt: localizedPrompt, history, locale: en ? "en" : "fr", personalityMode }),
       });
 
       if (!response.ok) {
@@ -285,17 +304,29 @@ function initAstralChat() {
     closeBtn?.addEventListener("click", () => togglePanel(false));
 
     const clearBtn = root.querySelector(".astral-chat__clear") as HTMLButtonElement;
-    clearBtn?.addEventListener("click", () => {
+    const resetConversation = () => {
       sessionStorage.removeItem(HISTORY_KEY);
       history.length = 0;
       if (messages) messages.innerHTML = "";
       appendMessage(
         "assistant",
-        copy.greeting,
+        getGreeting(),
         false,
         false,
       );
-    });
+    };
+    clearBtn?.addEventListener("click", resetConversation);
+
+    if (personalityInputs.length > 0) {
+      setCurrentMode(getCurrentMode());
+      personalityInputs.forEach((input) => {
+        input.addEventListener("change", () => {
+          const nextMode = input.value === "pote" ? "pote" : "pro";
+          setCurrentMode(nextMode);
+          resetConversation();
+        });
+      });
+    }
 
     document.addEventListener("astro:before-preparation", () => {
       if (panel && !panel.classList.contains("hidden")) togglePanel(false);
@@ -316,7 +347,7 @@ function initAstralChat() {
     } else if (messages && !messages.hasChildNodes()) {
       appendMessage(
         "assistant",
-        copy.greeting,
+        getGreeting(),
         false,
         true,
       );

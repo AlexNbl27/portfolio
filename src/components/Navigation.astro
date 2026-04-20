@@ -7,10 +7,10 @@ const locale = getLocaleFromPathname(Astro.url.pathname);
 
 const links = [
   { href: "/projects", label: locale === "en" ? "Projects" : "Projets" },
-  { href: "/skills", label: locale === "en" ? "Skills" : "Compétences" },
-  { href: "/soft-skills", label: "Soft skills" },
+  { href: "/expertise", label: locale === "en" ? "Expertise" : "Expertise" },
+  { href: "/services", label: locale === "en" ? "Services" : "Services" },
   { href: "/experience", label: locale === "en" ? "Journey" : "Parcours" },
-  { href: "/blogs", label: "Blogs" },
+  { href: "/blogs", label: "Blogs", secondary: true },
   { href: "/chat", label: locale === "en" ? "AI Chat" : "Chat IA", mobileOnly: true },
 ].map((link) => ({ ...link, href: localizePath(link.href, locale) }));
 
@@ -43,18 +43,9 @@ const contactLabel = locale === "en" ? "Contact" : "Contact";
           <div
             class="absolute left-1/2 top-1/2 w-6 -translate-x-1/2 -translate-y-1/2 transform"
           >
-            <span
-              id="burger-top"
-              class="absolute block h-0.5 w-6 transition-all duration-300 ease-in-out bg-white -translate-y-2"
-            ></span>
-            <span
-              id="burger-mid"
-              class="absolute block h-0.5 w-6 transition-all duration-300 ease-in-out bg-white"
-            ></span>
-            <span
-              id="burger-bot"
-              class="absolute block h-0.5 w-6 transition-all duration-300 ease-in-out bg-white translate-y-2"
-            ></span>
+            <span id="burger-top" class="absolute block h-0.5 w-6 transition-all duration-300 ease-in-out bg-white -translate-y-2"></span>
+            <span id="burger-mid" class="absolute block h-0.5 w-6 transition-all duration-300 ease-in-out bg-white"></span>
+            <span id="burger-bot" class="absolute block h-0.5 w-6 transition-all duration-300 ease-in-out bg-white translate-y-2"></span>
           </div>
         </button>
       </div>
@@ -65,19 +56,15 @@ const contactLabel = locale === "en" ? "Contact" : "Contact";
       >
         {
           links.map((link, index) => (
-            <li
-              class="nav-item opacity-0 translate-y-8 md:opacity-100 md:translate-y-0"
-              style={`transition-delay: ${index * 70}ms`}
-            >
+            <li class="nav-item opacity-0 translate-y-8 md:opacity-100 md:translate-y-0" style={`transition-delay: ${index * 70}ms`}>
               <a
                 href={link.href}
                 aria-current={current === link.href ? "page" : undefined}
                 class:list={[
                   "focus-ring border-b pb-1 transition hover:text-cosmic-gold",
                   link.mobileOnly ? "md:hidden" : "",
-                  current === link.href
-                    ? "border-cosmic-gold text-cosmic-gold"
-                    : "border-transparent",
+                  link.secondary ? "text-white/65" : "",
+                  current === link.href ? "border-cosmic-gold text-cosmic-gold" : "border-transparent",
                 ]}
               >
                 {link.label}
@@ -85,11 +72,8 @@ const contactLabel = locale === "en" ? "Contact" : "Contact";
             </li>
           ))
         }
-        <li
-          class="nav-item opacity-0 translate-y-8 md:opacity-100 md:translate-y-0 mt-4 md:mt-0"
-          style={`transition-delay: ${links.length * 70}ms`}
-        >
-          <Button href="mailto:alexandrenobletpro@gmail.com" variant="primary">
+        <li class="nav-item opacity-0 translate-y-8 md:opacity-100 md:translate-y-0 mt-4 md:mt-0" style={`transition-delay: ${links.length * 70}ms`}>
+          <Button href={localizePath('/contact', locale)} variant="primary">
             {contactLabel}
           </Button>
         </li>

@@ -11,16 +11,27 @@ import { getLocaleFromPathname, localizePath } from "../i18n/utils";
 interface Props {
   title: string;
   description?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  canonical?: string;
 }
 
 const {
   title,
   description = "Portfolio d’Alexandre Noblet, développeur et intégrateur IoT.",
+  ogTitle = title,
+  ogDescription = description,
+  ogImage = "/images/website/portfolio.png",
+  canonical,
 } = Astro.props;
 
 const locale = getLocaleFromPathname(Astro.url.pathname);
 const enPath = localizePath(Astro.url.pathname, "en");
 const frPath = localizePath(Astro.url.pathname, "fr");
+const origin = Astro.site?.toString() || Astro.url.origin;
+const canonicalUrl = canonical ? new URL(canonical, origin).toString() : Astro.url.toString();
+const ogImageUrl = new URL(ogImage, origin).toString();
 ---
 
 <!doctype html>
@@ -30,8 +41,18 @@ const frPath = localizePath(Astro.url.pathname, "fr");
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+    <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/png" href="/images/website/portfolio.png" />
     <meta name="view-transition" content="same-origin" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={ogTitle} />
+    <meta name="twitter:description" content={ogDescription} />
+    <meta name="twitter:image" content={ogImageUrl} />
     <link rel="alternate" hreflang="fr" href={frPath} />
     <link rel="alternate" hreflang="en" href={enPath} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
