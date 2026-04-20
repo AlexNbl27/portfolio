@@ -19,26 +19,23 @@ theme:
   glowB: "rgba(75, 155, 255, 0.22)"
 ---
 
-## Problème
+## L'Enjeu
 
-Dans une cagnotte de groupe, la contribution "égale" crée souvent des frictions : certains surpaient par pression sociale, d'autres se retirent faute de budget.
+Dans l'organisation de cagnottes de groupe, un déséquilibre s'installe souvent : certains participants donnent au-delà de leurs moyens par pression sociale, tandis que d'autres sont freinés par le montant suggéré. **Kaniot** propose une alternative équitable, basée sur la transparence et le respect des capacités financières de chacun.
 
-## Contraintes
+## Le Concept
 
-- Garantir une répartition juste sans exposer la situation financière de chacun.
-- Garder une expérience simple pour éviter les abandons.
-- Mettre en place une logique de calcul explicable et transparente.
+Le projet repose sur un algorithme de contribution intelligent :
+- **Liberté totale** : Chaque participant renseigne confidentiellement le montant maximal qu'il souhaite ou peut investir.
+- **Répartition Juste** : L'algorithme calcule automatiquement la quote-part la plus équilibrée pour atteindre l'objectif, sans jamais dépasser les plafonds individuels.
+- **Transparence** : L'interface simplifiée permet de suivre l'avancée de la cagnotte en temps réel, garantissant une expérience sans friction.
 
-## Solution
+## Parcours Technique
 
-- Interface Vue.js 3 + TypeScript pour un flux utilisateur clair.
-- Mécanisme de plafonds individuels confidentiels.
-- Algorithme de répartition qui optimise l'atteinte de l'objectif sans dépasser les limites déclarées.
-- Supabase pour l'authentification et la donnée temps réel.
+Développé dans le cadre de ma formation chez Ynov, Kaniot a été l'occasion d'explorer des technologies modernes et performantes :
+- **Frontend** : Vue.js 3 couplé à TypeScript pour une interface robuste et typée.
+- **Backend as a Service** : Utilisation de **Supabase** pour la gestion de l'authentification et de la base de données en temps réel.
 
-## Résultats
+## État Actuel
 
-- ✅ Prototype fonctionnel d'une cagnotte plus équitable socialement.
-- ✅ Validation d'un modèle algorithmique orienté impact utilisateur réel.
-- ✅ Code source documenté et réutilisable sur GitHub.
-- 🔢 KPI à confirmer : taux de complétion des cagnottes et satisfaction participant.
+Bien que le projet soit aujourd'hui archivé, il reste une étude de cas précieuse sur l'application de la logique algorithmique à des problématiques sociales concrètes. Le code source est disponible en libre accès sur GitHub pour toute exploration ou fork.

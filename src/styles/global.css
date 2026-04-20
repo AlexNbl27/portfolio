@@ -73,6 +73,24 @@
   }
 }
 
+/* ── Scrollbar custom ── */
+::-webkit-scrollbar              { width: 6px; height: 6px; }
+::-webkit-scrollbar-track        { background: #090f24; }
+::-webkit-scrollbar-thumb        { background: #2c2a5f; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover  { background: #f6d40d; }
+* { scrollbar-width: thin; scrollbar-color: #2c2a5f #090f24; }
+
+#page-transition-overlay {
+  position: fixed;
+  inset: 0;
+  background: #030713;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.38s ease;
+}
+
+
 @layer components {
   .cosmic-container {
     margin-left: auto;

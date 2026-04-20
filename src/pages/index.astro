@@ -19,25 +19,95 @@ const tabs = getHomePortalTabs(locale);
   <Hero locale={locale} />
 
   <section class="cosmic-container mt-8">
-    <Card class="p-5 md:p-6">
-      <p class="text-xs uppercase tracking-[0.26em] text-cosmic-pink">{isEn ? "Fast paths" : "Parcours rapides"}</p>
-      <h2 class="mt-2 font-display text-3xl md:text-4xl text-cosmic-gold">
-        {isEn ? "Choose your route in under a minute." : "Choisissez votre route en moins d'une minute."}
-      </h2>
-      <p class="muted mt-3 max-w-2xl">
-        {isEn ? "Recruiter, client, or curious visitor — each path highlights the most relevant pages." : "Recruteur, client ou visiteur curieux — chaque parcours met en avant les pages les plus pertinentes."}
-      </p>
-      <div class="mt-4 flex flex-wrap gap-3">
-        <a class="focus-ring rounded-xl border border-cosmic-gold/35 px-4 py-2 text-sm text-cosmic-gold hover:bg-cosmic-gold/10 transition" href={localizePath('/recruiter', locale)}>{isEn ? "Recruiter flow" : "Parcours recruteur"}</a>
-        <a class="focus-ring rounded-xl border border-white/25 px-4 py-2 text-sm text-white/90 hover:border-cosmic-gold/35 transition" href={localizePath('/services', locale)}>{isEn ? "Services" : "Services"}</a>
-        <a class="focus-ring rounded-xl border border-white/25 px-4 py-2 text-sm text-white/90 hover:border-cosmic-gold/35 transition" href={localizePath('/contact', locale)}>{isEn ? "Contact" : "Contact"}</a>
-      </div>
-    </Card>
+    <div class="recruiter-cta-wrap">
+      <Card class="p-5 md:p-6 relative group selection-card">
+        <p class="text-xs uppercase tracking-[0.26em] text-cosmic-pink mb-2">{isEn ? "Personalized space" : "Espace personnalisé"}</p>
+        <h2 class="font-display text-3xl md:text-4xl text-cosmic-gold">
+          {isEn ? "Choose your pathway." : "Choisissez votre parcours."}
+        </h2>
+        <p class="muted mt-3 max-w-2xl text-base">
+          {isEn 
+            ? "Identify yourself to access the most relevant constellations of projects and expertise for your specific needs." 
+            : "Identifiez-vous pour accéder instantanément aux constellations de projets et expertises pensées pour vos besoins."}
+        </p>
+        
+        <div class="mt-6 flex flex-wrap gap-4">
+          <a class="profile-btn profile-btn--gold" href={localizePath('/recruiter', locale)}>
+            <span>{isEn ? "Recruiter" : "Recruteur"} 🤝</span>
+          </a>
+          <a class="profile-btn profile-btn--white" href={localizePath('/services', locale)}>
+            <span>{isEn ? "Business space" : "Espace business"} 💼</span>
+          </a>
+          <a class="profile-btn profile-btn--white" href="#stellar-compass">
+            <span>{isEn ? "Free exploration" : "Exploration Libre"} 🔭</span>
+          </a>
+        </div>
+      </Card>
+    </div>
   </section>
 
-  <section class="cosmic-container mt-10">
-    <h2 class="font-display text-3xl text-cosmic-gold">{isEn ? "Interactive portfolio portal" : "Portail interactif du portfolio"}</h2>
-    <p class="muted mt-3 max-w-3xl">{isEn ? "Use this command center to jump directly to what matters." : "Utilisez ce centre de contrôle pour accéder directement à l'essentiel."}</p>
+  <style>
+    .selection-card {
+      background: rgba(9, 15, 36, 0.75) !important;
+      backdrop-filter: blur(12px) !important;
+    }
+
+    /* Profile Buttons */
+    .profile-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.8rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(8px);
+      color: rgba(255, 255, 255, 0.9);
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .profile-btn--gold {
+      border-color: rgba(246, 212, 13, 0.3);
+      color: #f6d40d;
+    }
+
+    .profile-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
+    }
+
+    .profile-btn:hover::before {
+      transform: translateX(100%);
+    }
+
+    .profile-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .profile-btn--gold:hover {
+      background: rgba(246, 212, 13, 0.1);
+      border-color: #f6d40d;
+      box-shadow: 0 0 15px rgba(246, 212, 13, 0.25);
+    }
+
+    .profile-btn--white:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+  </style>
+
+  <section id="stellar-compass" class="cosmic-container mt-10">
+    <h2 class="font-display text-3xl text-cosmic-gold">{isEn ? "Stellar Compass" : "Boussole Stellaire"}</h2>
+    <p class="muted mt-3 max-w-3xl">{isEn ? "Chart your course through the constellations of my projects and expertise." : "Tracez votre route à travers les constellations de mes projets et compétences."}</p>
     <div class="mt-5">
       <HomePortalTabs locale={locale} tabs={tabs} />
     </div>

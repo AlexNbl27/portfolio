@@ -29,6 +29,7 @@ loadDotEnvFile();
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
 const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+const RESEND_API_KEY = process.env.RESEND_API_KEY || "";
 const PORT = Number(process.env.PORT || 8080);
 const RATE_LIMIT_WINDOW_MS = 24 * 60 * 60 * 1000;
 const RATE_LIMIT_MAX = Number(process.env.ASTRAL_RATE_LIMIT_MAX || 40);
@@ -449,6 +450,43 @@ const server = http.createServer(async (req, res) => {
             ? error.message
             : "Erreur interne du relais Astral.",
       });
+    }
+  }
+
+  if (req.method === "POST" && req.url.startsWith("/api/contact")) {
+    if (!RESEND_API_KEY) return json(res, 503, { error: "Service email indisponible." });
+
+    try {
+      const raw = await collectBody(req);
+      const { name, email, project, message } = raw ? JSON.parse(raw) : {};
+
+      if (!name || !email || !message) {
+        return json(res, 400, { error: "Champs requis manquants." });
+      }
+
+      const response = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${RESEND_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: "Portfolio <contact@alexandrenoblet.fr>",
+          to: "alexandrenobletpro@gmail.com",
+          reply_to: email,
+          subject: `[Portfolio] ${project || "Contact"} — ${name}`,
+          html: `<p><strong>Nom :</strong> ${name}</p><p><strong>Email :</strong> ${email}</p><p><strong>Type de projet :</strong> ${project || "—"}</p><p><strong>Message :</strong><br>${message.replace(/\n/g, "<br>")}</p>`,
+        }),
+      });
+
+      if (!response.ok) {
+        const err = await response.text();
+        throw new Error(`Resend error (${response.status}): ${err}`);
+      }
+
+      return json(res, 200, { ok: true });
+    } catch (error) {
+      return json(res, 500, { error: "Erreur lors de l'envoi de l'email." });
     }
   }
 

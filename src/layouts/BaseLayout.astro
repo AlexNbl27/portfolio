@@ -111,6 +111,14 @@ const ogImageUrl = new URL(ogImage, origin).toString();
     <slot name="head" />
   </head>
   <body>
+    <div id="page-transition-overlay" aria-hidden="true"></div>
+    <!-- Script synchrone : s'exécute AVANT le premier paint, évite le flash -->
+    <script is:inline>
+      if (sessionStorage.getItem('rocket-transition')) {
+        var o = document.getElementById('page-transition-overlay');
+        if (o) o.style.opacity = '1';
+      }
+    </script>
     <CosmicBackground />
     <Navigation transition:name="site-navigation" />
     <slot name="fixed-layer" />
@@ -224,6 +232,20 @@ const ogImageUrl = new URL(ogImage, origin).toString();
 
         const triggerLabel = widget.querySelector<HTMLElement>(".astral-chat__trigger .sr-only");
         if (triggerLabel) triggerLabel.textContent = en ? "Open Astral chat" : "Ouvrir le chat Astral";
+      });
+
+      // Fade out overlay after rocket transition (overlay already at opacity:1 via inline script)
+      document.addEventListener("astro:page-load", () => {
+        if (sessionStorage.getItem('rocket-transition')) {
+          sessionStorage.removeItem('rocket-transition');
+          const overlay = document.getElementById('page-transition-overlay');
+          if (overlay) {
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+              overlay.style.transition = 'opacity 0.45s ease';
+              overlay.style.opacity = '0';
+            }));
+          }
+        }
       });
 
       document.addEventListener("astro:page-load", () => {
