@@ -10,9 +10,12 @@ const isEn = locale === "en";
 ---
 
 <section
-  class="astral-chat hidden lg:flex fixed z-[150] flex-col items-end gap-4 bottom-6 right-6 astral-chat--booting"
+  class="astral-chat hidden lg:flex fixed z-[150] flex-col items-end gap-4 bottom-6 right-6"
   data-astral-chat-root
   data-mode="floating"
+  transition:persist
+  transition:persist-props
+  transition:name="astral-chat-widget"
 >
   <div
     class="astral-chat__overlay fixed inset-0 bg-black/70 backdrop-blur-sm pointer-events-none opacity-0 transition-opacity duration-300 -z-10"

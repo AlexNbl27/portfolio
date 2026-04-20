@@ -90,15 +90,10 @@ const frPath = localizePath(Astro.url.pathname, "fr");
     <slot name="head" />
   </head>
   <body>
-    <CosmicBackground transition:persist transition:name="cosmic-background" />
+    <CosmicBackground />
     <Navigation transition:name="site-navigation" />
     <slot name="fixed-layer" />
-    <AstralChat
-      locale={locale}
-      transition:persist
-      transition:persist-props
-      transition:name="astral-chat-widget"
-    />
+    <AstralChat locale={locale} />
     <main
       class="page-shell relative z-10 pt-20 pb-8 md:pt-32 md:pb-12"
       transition:name="page-content"
