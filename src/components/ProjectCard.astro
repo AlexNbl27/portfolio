@@ -32,6 +32,7 @@ const imageSrc = images[imagePath];
           src={imageSrc.default}
           alt={project.title}
           class="project-card-img h-full w-full object-cover transition duration-700 group-hover:scale-115 rounded-card"
+          data-fade-image
           transition:name={`project-image-${project.title}`}
           decoding="async"
           loading="lazy"

@@ -31,21 +31,13 @@ function initAstralChat() {
     const messages = root.querySelector(".astral-chat__messages") as HTMLElement;
     const textarea = root.querySelector("textarea") as HTMLTextAreaElement;
     const overlay = root.querySelector(".astral-chat__overlay") as HTMLElement;
-    const isEnglish = document.documentElement.lang === "en";
+    const isEnglish = () => document.documentElement.lang === "en";
     const copy = {
-      thinking: isEnglish ? "Astral is thinking..." : "Astral réfléchit...",
-      unavailable: isEnglish
-        ? "Astral cannot answer right now."
-        : "Astral ne peut pas répondre pour le moment.",
-      greeting: isEnglish
-        ? "Hi, I'm Astral ✨ I can guide you through Alexandre's portfolio, projects, and professional universe."
-        : "Bonjour, je suis Astral ✨ Je peux vous guider dans le portfolio d'Alexandre, ses projets et son univers pro.",
-      quotaReached: isEnglish
-        ? "Daily quota reached for this browser. Please come back tomorrow or contact Alexandre directly."
-        : "Quota journalier atteint pour ce navigateur. Revenez demain ou contactez Alexandre directement.",
-      genericError: isEnglish
-        ? "✦ The message was lost in space due to an error… Please try again in a few moments."
-        : "✦ Le message s'est perdu dans l'espace suite à une erreur… Réessayez dans quelques instants.",
+      get thinking() { return isEnglish() ? "Astral is thinking..." : "Astral réfléchit..."; },
+      get unavailable() { return isEnglish() ? "Astral cannot answer right now." : "Astral ne peut pas répondre pour le moment."; },
+      get greeting() { return isEnglish() ? "Hi, I'm Astral ✨ I can guide you through Alexandre's portfolio, projects, and professional universe." : "Bonjour, je suis Astral ✨ Je peux vous guider dans le portfolio d'Alexandre, ses projets et son univers pro."; },
+      get quotaReached() { return isEnglish() ? "Daily quota reached for this browser. Please come back tomorrow or contact Alexandre directly." : "Quota journalier atteint pour ce navigateur. Revenez demain ou contactez Alexandre directement."; },
+      get genericError() { return isEnglish() ? "✦ The message was lost in space due to an error… Please try again in a few moments." : "✦ Le message s'est perdu dans l'espace suite à une erreur… Réessayez dans quelques instants."; },
     };
 
     const loadHistory = () => {
@@ -189,13 +181,14 @@ function initAstralChat() {
     class FatalChatError extends Error {}
 
     const sendWithServerRoute = async (prompt: string): Promise<{ text: string; ctas: Cta[] }> => {
-      const localizedPrompt = isEnglish
+      const en = isEnglish();
+      const localizedPrompt = en
         ? `Please answer in English. User message: ${prompt}`
         : prompt;
       const response = await fetch("/api/astral-chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: localizedPrompt, history, locale: isEnglish ? "en" : "fr" }),
+        body: JSON.stringify({ prompt: localizedPrompt, history, locale: en ? "en" : "fr" }),
       });
 
       if (!response.ok) {

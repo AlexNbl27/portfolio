@@ -55,6 +55,7 @@ const { blog } = Astro.props as { blog: BlogMeta };
               src={resolveImage(blog.detailImage ?? blog.coverImage)!}
               alt={blog.title}
               class="h-full w-full object-cover"
+              data-fade-image
             />
           </Card>
         )

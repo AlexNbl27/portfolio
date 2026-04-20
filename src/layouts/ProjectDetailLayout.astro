@@ -121,10 +121,10 @@ const isEn = locale === "en";
             src={heroImageSrc}
             alt={title}
             class="hero-detail-img h-full w-full object-cover rounded-card relative"
+            data-fade-image
             transition:name={`project-image-${title}`}
             decoding="async"
             loading="lazy"
-            onload="this.classList.add('loaded'); this.previousElementSibling.style.display='none';"
           />
         </Card>
       )
@@ -169,16 +169,6 @@ const isEn = locale === "en";
     </Card>
   </article>
 </BaseLayout>
-
-<style>
-  .hero-detail-img {
-    opacity: 0;
-    transition: opacity 0.7s ease;
-  }
-  .hero-detail-img.loaded {
-    opacity: 1;
-  }
-</style>
 
 <script>
   document.addEventListener("astro:page-load", () => {
