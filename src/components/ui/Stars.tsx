@@ -10,10 +10,12 @@ import {
 
 import { cn } from "@/lib/utils";
 
-// Module-level flag: persists for the entire browser session regardless of React re-mounts.
-// Prevents the entrance fade-in from re-running on each page navigation
-// (transition:persist keeps the island alive, but this guards against any remount scenario).
-let _hasMountedOnce = false;
+declare global {
+  interface Window {
+    __starsCache?: Record<string, string>;
+    __starsMountedOnce?: boolean;
+  }
+}
 
 type StarLayerProps = HTMLMotionProps<"div"> & {
   count: number;
@@ -32,6 +34,19 @@ function generateStars(count: number, starColor: string) {
   return shadows.join(", ");
 }
 
+function getStableStarField(count: number, starColor: string) {
+  if (typeof window === "undefined") {
+    return generateStars(count, starColor);
+  }
+
+  window.__starsCache ??= {};
+  const key = `${count}-${starColor}`;
+  if (!window.__starsCache[key]) {
+    window.__starsCache[key] = generateStars(count, starColor);
+  }
+  return window.__starsCache[key];
+}
+
 function StarLayer({
   count = 1000,
   size = 1,
@@ -40,9 +55,9 @@ function StarLayer({
   className,
   ...props
 }: StarLayerProps) {
-  // useMemo computes stars synchronously on first render — no double-render flash
+  // Keep star coordinates stable across remounts/page navigations.
   const boxShadow = React.useMemo(
-    () => generateStars(count, starColor),
+    () => getStableStarField(count, starColor),
     [count, starColor],
   );
 
@@ -82,11 +97,12 @@ export function StarsBackground({
   starColor = "#fff",
   ...props
 }: StarsBackgroundProps) {
-  // Capture at render time before the effect flips the flag
-  const isFirstMount = !_hasMountedOnce;
+  const isFirstMount = typeof window !== "undefined" ? !window.__starsMountedOnce : true;
 
   React.useLayoutEffect(() => {
-    _hasMountedOnce = true;
+    if (typeof window !== "undefined") {
+      window.__starsMountedOnce = true;
+    }
   }, []);
 
   const offsetX = useMotionValue(1);
