@@ -91,9 +91,14 @@ const frPath = localizePath(Astro.url.pathname, "fr");
   </head>
   <body>
     <CosmicBackground transition:persist transition:name="cosmic-background" />
-    <Navigation transition:persist transition:name="site-navigation" />
+    <Navigation transition:name="site-navigation" />
     <slot name="fixed-layer" />
-    <AstralChat locale={locale} transition:persist transition:name="astral-chat-widget" />
+    <AstralChat
+      locale={locale}
+      transition:persist
+      transition:persist-props
+      transition:name="astral-chat-widget"
+    />
     <main
       class="page-shell relative z-10 pt-20 pb-8 md:pt-32 md:pb-12"
       transition:name="page-content"
@@ -146,7 +151,11 @@ const frPath = localizePath(Astro.url.pathname, "fr");
         });
       }
 
-      document.addEventListener('astro:page-load', initFadeImages);
+      if (!(window as any).__fadeImagesBound) {
+        document.addEventListener('astro:page-load', initFadeImages);
+        (window as any).__fadeImagesBound = true;
+      }
+
       initFadeImages();
     </script>
 
