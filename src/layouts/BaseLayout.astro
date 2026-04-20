@@ -168,6 +168,41 @@ const frPath = localizePath(Astro.url.pathname, "fr");
 
       document.addEventListener("astro:after-swap", () => {
         updateAstralChatVisibility();
+
+        // Sync locale-dependent text in persisted AstralChat widget.
+        // The widget is kept alive by transition:persist but its HTML is baked at
+        // build time — update the visible strings whenever the lang attribute changes.
+        const en = document.documentElement.lang === "en";
+        const widget = document.querySelector<HTMLElement>("[data-astral-chat-root]");
+        if (!widget) return;
+
+        const kicker = widget.querySelector(".astral-chat__kicker");
+        if (kicker) kicker.textContent = en ? "Stellar companion" : "Compagnon stellaire";
+
+        const heading = widget.querySelector<HTMLElement>(".astral-chat__header h2");
+        if (heading) heading.textContent = en ? "Astral · AI assistant" : "Astral · Assistant IA";
+
+        const fs = widget.querySelector<HTMLAnchorElement>(".astral-chat__fullscreen");
+        if (fs) {
+          fs.href = en ? "/en/chat" : "/chat";
+          fs.setAttribute("aria-label", en ? "Open fullscreen" : "Ouvrir en plein écran");
+          fs.title = en ? "Open fullscreen" : "Ouvrir en plein écran";
+        }
+
+        const clearBtn = widget.querySelector<HTMLButtonElement>(".astral-chat__clear");
+        if (clearBtn) {
+          clearBtn.setAttribute("aria-label", en ? "New conversation" : "Nouvelle conversation");
+          clearBtn.title = en ? "New conversation" : "Nouvelle conversation";
+        }
+
+        const closeBtn = widget.querySelector<HTMLButtonElement>(".astral-chat__close");
+        if (closeBtn) closeBtn.setAttribute("aria-label", en ? "Close chat" : "Fermer le chat");
+
+        const textarea = widget.querySelector<HTMLTextAreaElement>("textarea");
+        if (textarea) textarea.placeholder = en ? "Write your message…" : "Écrivez votre message…";
+
+        const triggerLabel = widget.querySelector<HTMLElement>(".astral-chat__trigger .sr-only");
+        if (triggerLabel) triggerLabel.textContent = en ? "Open Astral chat" : "Ouvrir le chat Astral";
       });
 
       document.addEventListener("astro:page-load", () => {
