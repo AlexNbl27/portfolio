@@ -35,7 +35,7 @@ const RATE_LIMIT_MAX = Number(process.env.ASTRAL_RATE_LIMIT_MAX || 40);
 
 const rateLimitStore = new Map();
 
-const SYSTEM_INSTRUCTION = `
+const SYSTEM_BASE_INSTRUCTION = `
 Tu es Astral, l'assistant conversationnel officiel du portfolio d'Alexandre Noblet.
 
 ## IDENTITÉ & TON
@@ -127,10 +127,13 @@ GitHub Copilot · Claude Code · Cursor · Gemini · Antigravity
 ## PAGES DU PORTFOLIO (pour guider la navigation)
 - / — Accueil avec parcours recruteur rapide
 - /projects — Tous les projets
+- /expertise — Compétences techniques + soft skills
 - /skills — Toutes les compétences techniques
 - /experience — Parcours et formations
 - /soft-skills — Qualités humaines
 - /recruiter — Parcours recruteur accéléré (60 secondes)
+- /services — Services & process freelance
+- /contact — Contact & prise de rendez-vous
 - /chat — Cette interface conversationnelle
 
 ## RESSOURCES DISPONIBLES (pour les CTAs)
@@ -138,10 +141,13 @@ GitHub Copilot · Claude Code · Cursor · Gemini · Antigravity
 Pages internes du portfolio :
 - "/" → Accueil
 - "/projects" → Tous les projets
+- "/expertise" → Hub d'expertise (technique + soft skills)
 - "/skills" → Compétences techniques
 - "/experience" → Parcours & formations
 - "/soft-skills" → Qualités humaines
 - "/recruiter" → Parcours recruteur accéléré (60 s)
+- "/services" → Services & process freelance
+- "/contact" → Contact & rendez-vous
 - "/chat" → Cette interface
 
 Projets en production :
@@ -187,6 +193,27 @@ Exemples :
 - 3 à 8 phrases par défaut, plus long seulement si demandé explicitement.
 - Termine si pertinent par une proposition d'action concrète (ex. visiter une page, contacter Alexandre).
 `.trim();
+
+const SYSTEM_PRO_MODE = `
+## MODE PRO
+- Tutoiement interdit : vouvoie l'utilisateur.
+- Ton orienté recrutement/collaboration professionnelle.
+- Mets en avant les éléments CV, disponibilités, expériences et livrables.
+- Propose des actions concrètes : contacter Alexandre, consulter le CV, prendre rendez-vous.
+`.trim();
+
+const SYSTEM_POTE_MODE = `
+## MODE POTE
+- Tutoiement autorisé.
+- Ton plus décontracté, chaleureux, fun (sans perdre en clarté).
+- Tu peux glisser une touche d'anecdote ou d'énergie créative.
+- Reste utile : proposer des pages concrètes du portfolio pour aider rapidement.
+`.trim();
+
+function buildSystemInstruction(mode = "pro") {
+  const personalityBlock = mode === "pote" ? SYSTEM_POTE_MODE : SYSTEM_PRO_MODE;
+  return `${SYSTEM_BASE_INSTRUCTION}\n\n${personalityBlock}`;
+}
 
 function json(res, status, body) {
   res.writeHead(status, {
@@ -253,7 +280,7 @@ function normalizeHistory(history) {
     .slice(-20);
 }
 
-async function callGemini(prompt, history) {
+async function callGemini(prompt, history, personalityMode = "pro") {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
 
   const response = await fetch(url, {
@@ -261,7 +288,7 @@ async function callGemini(prompt, history) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       systemInstruction: {
-        parts: [{ text: SYSTEM_INSTRUCTION }],
+        parts: [{ text: buildSystemInstruction(personalityMode) }],
       },
       contents: [
         ...normalizeHistory(history),
@@ -317,12 +344,12 @@ async function callGemini(prompt, history) {
 }
 
 
-async function callGeminiWithRetry(prompt, history, maxAttempts = 2) {
+async function callGeminiWithRetry(prompt, history, personalityMode = "pro", maxAttempts = 2) {
   let lastError;
 
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
     try {
-      return await callGemini(prompt, history);
+      return await callGemini(prompt, history, personalityMode);
     } catch (error) {
       lastError = error;
       if (attempt >= maxAttempts) break;
@@ -407,12 +434,13 @@ const server = http.createServer(async (req, res) => {
       const raw = await collectBody(req);
       const body = raw ? JSON.parse(raw) : {};
       const prompt = typeof body?.prompt === "string" ? body.prompt.trim() : "";
+      const personalityMode = body?.personalityMode === "pote" ? "pote" : "pro";
 
       if (!prompt) {
         return json(res, 400, { error: "Prompt manquant." });
       }
 
-      const { text, ctas } = await callGeminiWithRetry(prompt.slice(0, 4000), body?.history);
+      const { text, ctas } = await callGeminiWithRetry(prompt.slice(0, 4000), body?.history, personalityMode);
       return json(res, 200, { text, ctas });
     } catch (error) {
       return json(res, 500, {

@@ -1,0 +1,21 @@
+---
+import type { ServicePack } from "../data/services";
+
+interface Props {
+  pack: ServicePack;
+}
+
+const { pack } = Astro.props as Props;
+---
+
+<article class="rounded-card border border-white/10 bg-[#0f1430]/65 p-5 backdrop-blur-md">
+  <p class="text-xs uppercase tracking-[0.18em] text-cosmic-pink">{pack.priceHint}</p>
+  <h3 class="mt-2 text-cosmic-gold text-2xl font-display">{pack.name}</h3>
+  <p class="mt-2 text-sm text-white/75">{pack.subtitle}</p>
+
+  <ul class="mt-4 space-y-2 text-sm text-white/80 list-disc pl-5">
+    {pack.deliverables.map((item) => <li>{item}</li>)}
+  </ul>
+
+  <p class="mt-4 text-xs text-white/65">{pack.idealFor}</p>
+</article>

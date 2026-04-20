@@ -25,44 +25,26 @@ fontImports:
   - "https://fonts.cdnfonts.com/css/roundo"
 ---
 
-## La Mission
+## Problème
 
-En réponse à la surcharge administrative que subissent les Bureau des Étudiants (BDE), nous avons conçu **AZYGO** : un écosystème numérique né de la volonté de redonner du temps à l'engagement associatif. Notre solution allie un ERP centralisateur et une application mobile intuitive pour permettre aux responsables de se recentrer sur leur véritable mission : **faire vivre la communauté étudiante**.
+Les BDE perdent énormément de temps sur des tâches administratives (billetterie, adhésions, comptabilité), au détriment de l'animation de la vie étudiante.
 
-## Une Architecture Solide
+## Contraintes
 
-Développé par une équipe de trois développeurs passionnés, AZYGO s'appuie sur une stack technique moderne garantissant performance et scalabilité :
+- Besoins différents selon chaque association.
+- Double expérience à livrer : back-office pour responsables + mobile pour étudiants.
+- Nécessité d'une architecture capable d'évoluer rapidement avec les retours terrain.
 
-- **Backend** : Une API robuste sous **Laravel** (PHP) pour sécuriser les données et orchestrer la logique métier complexe.
-- **Frontend Admin** : Une interface d'administration réactive développée avec **Vue.js**, offrant aux gestionnaires un outil de pilotage en temps réel.
-- **Mobile** : Une expérience utilisateur native et fluide sur iOS et Android grâce au framework **Flutter**.
-- **Infrastructure** : Haute disponibilité assurée par une orchestration sous **Docker Swarm** et des connexions sécurisées via **WireGuard**.
+## Solution
 
-## Fonctionnalités Clés
+- Backend Laravel pour centraliser la logique métier.
+- Front admin Vue.js pour piloter les opérations en temps réel.
+- Application Flutter pour l'usage étudiant et les interactions fréquentes.
+- Process produit itératif : immersion terrain, maquettes Figma, livraison continue.
 
-### Pour les Responsables (ERP)
+## Résultats
 
-L'interface d'administration permet d'automatiser les tâches les plus chronophages :
-
-- **Billetterie & Adhésions** : Gestion simplifiée des flux et des membres.
-- **Comptabilité** : Suivi rigoureux des finances en temps réel.
-- **Coordination** : Centralisation des besoins et des planning d'événements.
-
-### Pour les Étudiants (App)
-
-Une application moderne pensée pour l'engagement :
-
-- **Fil d'actualité** dédié à la vie du campus.
-- **Boutique en ligne** intégrée pour le merchandising du BDE.
-- **Notifications ciblées** pour ne rien rater des événements importants.
-
-## Méthodologie Produit
-
-Notre approche repose sur l'écoute active du terrain pour proposer un produit toujours plus pertinent :
-
-1. **Immersion** : Recueil des besoins directement auprès des bureaux associatifs.
-2. **Design UX** : Prototypage itératif sur Figma pour valider l'ergonomie.
-3. **Livraison Continue** : Intégration et déploiement via GitLab CI/CD.
-4. **Boucle de feedback** : Amélioration constante basée sur l'usage réel.
-
-Résultat : Une gestion optimisée pour les BDE et des moments mémorables pour les étudiants. **AZYGO** n'est pas seulement un outil, c'est un partenaire de la vie associative.
+- ✅ Suite ERP + mobile structurée autour des usages réels des BDE.
+- ✅ Automatisation des flux clés (adhésions, billetterie, suivi opérationnel).
+- ✅ Meilleure lisibilité des actions associatives pour les responsables.
+- 🔢 KPI à confirmer : temps administratif économisé / événement, taux d'adoption app.

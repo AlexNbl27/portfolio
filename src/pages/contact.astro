@@ -1,0 +1,61 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import BookingEmbed from "../components/BookingEmbed.astro";
+import { getLocaleFromPathname } from "../i18n/utils";
+import { getContactCopy } from "../data/contact";
+
+const locale = getLocaleFromPathname(Astro.url.pathname);
+const isEn = locale === "en";
+const copy = getContactCopy(locale);
+
+const calendlyUrl = "https://calendly.com/alexandrenobletpro/30min?hide_event_type_details=1&hide_gdpr_banner=1";
+---
+
+<BaseLayout
+  title={isEn ? "Contact · Alexandre Noblet" : "Contact · Alexandre Noblet"}
+  description={isEn ? "Contact page with brief form and calendar booking." : "Page de contact avec formulaire rapide et prise de rendez-vous."}
+>
+  <section class="cosmic-container pt-8">
+    <h1 class="section-title">{copy.title}</h1>
+    <p class="muted mt-4 max-w-3xl text-lg">{copy.subtitle}</p>
+  </section>
+
+  <section class="cosmic-container mt-10 grid gap-6 lg:grid-cols-[1.05fr_1fr]">
+    <form id="contact-form-placeholder" class="rounded-card border border-white/10 bg-[#0f1430]/65 p-6 backdrop-blur-md grid gap-4" method="post" action="#">
+      <label class="text-sm text-white/85">
+        {isEn ? "Name" : "Nom"}
+        <input class="mt-1 w-full rounded-lg border border-white/15 bg-black/20 px-3 py-2" type="text" name="name" required />
+      </label>
+      <label class="text-sm text-white/85">
+        Email
+        <input class="mt-1 w-full rounded-lg border border-white/15 bg-black/20 px-3 py-2" type="email" name="email" required />
+      </label>
+      <label class="text-sm text-white/85">
+        {isEn ? "Project type" : "Type de projet"}
+        <input class="mt-1 w-full rounded-lg border border-white/15 bg-black/20 px-3 py-2" type="text" name="project" placeholder={isEn ? "Website, app, redesign..." : "Site web, app, refonte..."} />
+      </label>
+      <label class="text-sm text-white/85">
+        {isEn ? "Message" : "Message"}
+        <textarea class="mt-1 min-h-32 w-full rounded-lg border border-white/15 bg-black/20 px-3 py-2" name="message" required></textarea>
+      </label>
+      <button type="submit" class="focus-ring rounded-xl border border-cosmic-gold/40 px-4 py-2 text-cosmic-gold hover:bg-cosmic-gold/10 transition w-fit">
+        {copy.submit}
+      </button>
+      <p class="text-xs text-white/55">{isEn ? "Form endpoint can be connected later to Resend/Formspree." : "Endpoint du formulaire à connecter ensuite à Resend/Formspree."}</p>
+    </form>
+
+    <div>
+      <h2 class="font-display text-2xl text-cosmic-gold mb-3">{copy.bookingTitle}</h2>
+      <BookingEmbed url={calendlyUrl} title={isEn ? "Calendly booking" : "Prise de rendez-vous Calendly"} />
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const form = document.getElementById("contact-form-placeholder");
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+    });
+  });
+</script>

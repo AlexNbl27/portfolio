@@ -1,0 +1,44 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Card from "../components/ui/Card.astro";
+import { getLocaleFromPathname, localizePath } from "../i18n/utils";
+
+const locale = getLocaleFromPathname(Astro.url.pathname);
+const isEn = locale === "en";
+---
+
+<BaseLayout
+  title={isEn ? "Expertise · Alexandre Noblet" : "Expertise · Alexandre Noblet"}
+  description={isEn ? "A single entry point to technical and interpersonal expertise." : "Un point d'entrée unique vers l'expertise technique et humaine."}
+>
+  <section class="cosmic-container pt-8">
+    <h1 class="section-title">{isEn ? "My" : "Mon"} <span class="highlight">{isEn ? "Expertise" : "Expertise"}</span></h1>
+    <p class="muted mt-4 max-w-3xl text-lg">
+      {isEn
+        ? "One page to quickly explore technical skills and soft skills, with direct links to detailed pages."
+        : "Une page unique pour explorer rapidement compétences techniques et soft skills, avec accès direct aux pages détaillées."}
+    </p>
+  </section>
+
+  <section class="cosmic-container mt-10 grid gap-6 md:grid-cols-2">
+    <Card as="a" href={localizePath('/skills', locale)} interactive class="p-6 md:p-8 block hover:no-underline">
+      <p class="text-cosmic-pink text-sm uppercase tracking-[0.16em]">{isEn ? "Technical" : "Technique"}</p>
+      <h2 class="font-display text-4xl text-cosmic-gold mt-2">{isEn ? "Technical skills" : "Compétences techniques"}</h2>
+      <p class="mt-3 text-white/75">{isEn ? "Frameworks, languages, infrastructure, and tooling with level indicators." : "Frameworks, langages, infrastructure et outils avec niveaux de maîtrise."}</p>
+    </Card>
+
+    <Card as="a" href={localizePath('/soft-skills', locale)} interactive class="p-6 md:p-8 block hover:no-underline">
+      <p class="text-cosmic-pink text-sm uppercase tracking-[0.16em]">{isEn ? "Human" : "Humain"}</p>
+      <h2 class="font-display text-4xl text-cosmic-gold mt-2">Soft skills</h2>
+      <p class="mt-3 text-white/75">{isEn ? "Communication, collaboration, autonomy, and delivery mindset in real contexts." : "Communication, collaboration, autonomie et posture delivery en contexte réel."}</p>
+    </Card>
+  </section>
+
+  <section class="cosmic-container mt-12 mb-4">
+    <Card class="p-6">
+      <h2 class="font-display text-2xl text-cosmic-gold">{isEn ? "Need a guided tour?" : "Besoin d'un parcours guidé ?"}</h2>
+      <p class="mt-2 text-white/80">{isEn ? "Use Astral chat for a role-based summary (recruiter, client, collaborator)." : "Utilisez Astral pour un résumé orienté rôle (recruteur, client, collaborateur)."}</p>
+      <a href={localizePath('/chat', locale)} class="mt-4 inline-flex rounded-xl border border-cosmic-gold/40 px-4 py-2 text-cosmic-gold hover:bg-cosmic-gold/10 transition">{isEn ? "Open Astral" : "Ouvrir Astral"}</a>
+    </Card>
+  </section>
+</BaseLayout>

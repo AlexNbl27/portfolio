@@ -30,31 +30,28 @@ fontImports:
   - "https://fonts.cdnfonts.com/css/bookish"
 ---
 
-## Le Projet
+## Problème
 
-**Bevel** est un projet client — un site e-commerce conçu pour une marque vendant ses produits en salon et en ligne. Développé et déployé de A à Z en autonomie, il est actuellement **en production sur [bevel.fr](https://bevel.fr)**. L'enjeu : livrer un outil professionnel, fiable et facile à gérer au quotidien sans intervention technique.
+Une marque vendant en salon et en ligne avait besoin d'un site e-commerce fiable, rapide et administrable sans dépendre d'un développeur au quotidien.
 
-## Ce que ça permet
+## Contraintes
 
-### Pour les clients
+- Budget contraint et maintenance en solo.
+- Nécessité d'un parcours d'achat simple sur mobile comme desktop.
+- Fiabilité des commandes et du stock en environnement de production.
+- Besoin d'un SEO solide pour capter du trafic organique.
 
-- Parcourir un catalogue avec variations de produits (couleur, taille, disponibilité)
-- Ajouter au panier et payer en toute sécurité via Stripe
-- Recevoir une confirmation par email et suivre sa commande en temps réel
+## Solution
 
-### Pour le gérant
+- Architecture Astro SSR pour des pages performantes et un rendu optimisé SEO.
+- Intégration Stripe (checkout + webhooks) pour sécuriser la chaîne de commande.
+- Strapi pour un back-office administrable par le client en autonomie.
+- PostgreSQL pour la cohérence des données stock/commandes.
+- Déploiement frontend + backend conteneurisé pour faciliter les mises à jour.
 
-- Gérer les produits, les commandes et les codes promo depuis une interface dédiée
-- Suivre chaque commande étape par étape jusqu'à la livraison
-- Télécharger les factures générées automatiquement
-- Préparer et prévisualiser les contenus avant publication
+## Résultats
 
-## Pourquoi cette stack ?
-
-Ce projet m'a demandé de faire des choix d'architecture concrets, avec des contraintes réelles : budget limité, maintenance en solo, site en production.
-
-- **Astro 5 (SSR)** : les pages sont rendues côté serveur pour le SEO et la vitesse — seules les parties interactives (panier, checkout) embarquent du JavaScript. Résultat : un site rapide sans sacrifier l'expérience utilisateur.
-- **Strapi 5** : plutôt que de coder un back-office sur mesure, j'ai choisi un headless CMS qui offre une interface d'administration prête à l'emploi. Le gérant peut mettre à jour ses produits et contenus sans toucher au code.
-- **PostgreSQL** : nécessaire pour garantir la cohérence du stock sous charge — les transactions ACID évitent les surventes en cas d'achats simultanés.
-- **Stripe** : intégration native des webhooks pour fiabiliser la confirmation de commande même en cas de coupure réseau côté client.
-- **Cloudflare Pages + VPS Docker** : frontend sur CDN mondial pour la performance, backend conteneurisé pour l'isolation et la facilité de mise à jour — le tout géré et maintenu en autonomie.
+- ✅ Site en production sur **bevel.fr**.
+- ✅ Process d'achat opérationnel de bout en bout (panier → paiement → confirmation).
+- ✅ Administration du catalogue et des contenus réalisable sans intervention technique quotidienne.
+- 🔢 KPI à confirmer : taux de conversion, panier moyen, temps de gestion hebdo.

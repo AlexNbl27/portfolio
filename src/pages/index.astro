@@ -2,107 +2,48 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Hero from "../components/Hero.astro";
 import Card from "../components/ui/Card.astro";
+import HomePortalTabs from "../components/HomePortalTabs.astro";
+import HomeProofStrip from "../components/HomeProofStrip.astro";
 import { getLocaleFromPathname, localizePath } from "../i18n/utils";
+import { getHomePortalTabs } from "../data/home-portal";
 
 const locale = getLocaleFromPathname(Astro.url.pathname);
 const isEn = locale === "en";
-
-const homeSections = isEn
-  ? [
-      {
-        href: localizePath("/projects", locale),
-        title: "My projects",
-        description:
-          "A curated selection of web, mobile, desktop, and SaaS projects built during studies, internships, and personal work.",
-      },
-      {
-        href: localizePath("/skills", locale),
-        title: "My skills",
-        description:
-          "Development, databases, DevOps, automation, and tools: a versatile profile grounded in product and real-world delivery.",
-      },
-      {
-        href: localizePath("/experience", locale),
-        title: "My journey",
-        description:
-          "Explore my path from GEII studies to my apprenticeship at Orange Business Services.",
-      },
-      {
-        href: localizePath("/blogs", locale),
-        title: "My blogs",
-        description:
-          "Read my field notes, internship write-ups, and apprenticeship posts in dedicated blog sections.",
-      },
-    ]
-  : [
-      {
-        href: "/projects",
-        title: "Mes projets",
-        description:
-          "Retrouvez une sélection de réalisations web, mobile, desktop et SaaS menées en formation, en stage ou sur mon temps personnel.",
-      },
-      {
-        href: "/skills",
-        title: "Mes compétences",
-        description:
-          "Développement, bases de données, DevOps, automatisme et outils : un profil polyvalent orienté produit et terrain.",
-      },
-      {
-        href: "/experience",
-        title: "Mon parcours",
-        description:
-          "Découvrez mon évolution, de la formation GEII à l’alternance chez Orange Business Services.",
-      },
-      {
-        href: "/blogs",
-        title: "Mes blogs",
-        description:
-          "Retrouve mes retours d’expérience, articles de stage et billets d’alternance dans des sous-pages dédiées.",
-      },
-    ];
+const tabs = getHomePortalTabs(locale);
 ---
 
 <BaseLayout
   title={isEn ? "Alexandre Noblet | Home" : "Alexandre Noblet | Accueil"}
-  description={isEn ? "Alexandre Noblet's portfolio, IoT integrator and developer in Lyon." : "Portfolio d’Alexandre Noblet, développeur et intégrateur IoT à Lyon."}
+  description={isEn ? "Interactive portal to explore Alexandre Noblet's projects, expertise and services." : "Portail interactif pour explorer les projets, l'expertise et les services d'Alexandre Noblet."}
 >
   <Hero locale={locale} />
+
   <section class="cosmic-container mt-8">
-    <div class="recruiter-cta-wrap">
     <Card class="p-5 md:p-6">
-      <p class="text-xs uppercase tracking-[0.26em] text-cosmic-pink">
-        {isEn ? "Quick profile" : "Parcours rapide"}
-      </p>
+      <p class="text-xs uppercase tracking-[0.26em] text-cosmic-pink">{isEn ? "Fast paths" : "Parcours rapides"}</p>
       <h2 class="mt-2 font-display text-3xl md:text-4xl text-cosmic-gold">
-        {isEn ? "Recruiter? Start here in 60 seconds." : "Recruteur ? Commence ici en 60 secondes."}
+        {isEn ? "Choose your route in under a minute." : "Choisissez votre route en moins d'une minute."}
       </h2>
       <p class="muted mt-3 max-w-2xl">
-        {isEn ? "One page, one flow, a complete overview." : "Un seul bouton pour un parcours complet, sans changer de page."}
+        {isEn ? "Recruiter, client, or curious visitor — each path highlights the most relevant pages." : "Recruteur, client ou visiteur curieux — chaque parcours met en avant les pages les plus pertinentes."}
       </p>
       <div class="mt-4 flex flex-wrap gap-3">
-        <a class="focus-ring rounded-xl border border-cosmic-gold/35 px-4 py-2 text-sm text-cosmic-gold hover:bg-cosmic-gold/10 transition" href={localizePath('/recruiter', locale)}>{isEn ? "Start now" : "Lancer le parcours"}</a>
+        <a class="focus-ring rounded-xl border border-cosmic-gold/35 px-4 py-2 text-sm text-cosmic-gold hover:bg-cosmic-gold/10 transition" href={localizePath('/recruiter', locale)}>{isEn ? "Recruiter flow" : "Parcours recruteur"}</a>
+        <a class="focus-ring rounded-xl border border-white/25 px-4 py-2 text-sm text-white/90 hover:border-cosmic-gold/35 transition" href={localizePath('/services', locale)}>{isEn ? "Services" : "Services"}</a>
+        <a class="focus-ring rounded-xl border border-white/25 px-4 py-2 text-sm text-white/90 hover:border-cosmic-gold/35 transition" href={localizePath('/contact', locale)}>{isEn ? "Contact" : "Contact"}</a>
       </div>
     </Card>
+  </section>
+
+  <section class="cosmic-container mt-10">
+    <h2 class="font-display text-3xl text-cosmic-gold">{isEn ? "Interactive portfolio portal" : "Portail interactif du portfolio"}</h2>
+    <p class="muted mt-3 max-w-3xl">{isEn ? "Use this command center to jump directly to what matters." : "Utilisez ce centre de contrôle pour accéder directement à l'essentiel."}</p>
+    <div class="mt-5">
+      <HomePortalTabs locale={locale} tabs={tabs} />
     </div>
   </section>
-  <section class="cosmic-container mt-10 grid gap-6 md:grid-cols-2">
-    {
-      homeSections.map((section) => (
-        <Card
-          as="a"
-          href={section.href}
-          interactive
-          class="p-6 md:p-8 flex flex-col group hover:no-underline"
-        >
-          <p class="mb-3 text-cosmic-pink transition-transform group-hover:scale-110 origin-left">
-            ✦
-          </p>
-          <h2 class="font-display text-4xl md:text-5xl text-cosmic-gold transition-colors">
-            {section.title}
-          </h2>
-          <p class="muted mt-3">{section.description}</p>
-        </Card>
-      ))
-    }
+
+  <section class="cosmic-container mt-10 mb-4">
+    <HomeProofStrip locale={locale} />
   </section>
 </BaseLayout>
