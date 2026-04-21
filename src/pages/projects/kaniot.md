@@ -2,7 +2,7 @@
 layout: ../../layouts/ProjectDetailLayout.astro
 title: "Kaniot"
 description: "Une cagnotte de groupe équitable qui optimise la répartition des contributions sans pression sociale."
-heroImage: "/images/digital-art-neon-bubbles.jpg"
+heroImage: "/images/kaniot.png"
 projectCategory: "Projet SaaS"
 technologies:
   - Vue.js 3

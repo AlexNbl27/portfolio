@@ -59,6 +59,9 @@ function initAstralChat() {
     const isFloating = root.getAttribute("data-mode") === "floating";
     const trigger = root.querySelector(".astral-chat__trigger") as HTMLElement;
     const panel = root.querySelector(".astral-chat__panel") as HTMLElement;
+    const fullscreenLink = root.querySelector(
+      ".astral-chat__fullscreen",
+    ) as HTMLAnchorElement | null;
     const closeBtn = root.querySelector(
       ".astral-chat__close",
     ) as HTMLButtonElement;
@@ -128,7 +131,9 @@ function initAstralChat() {
     };
 
     const historyKey = (mode: Mode) => `astral-chat-history-${mode}`;
+    const allowUrlMode = root.getAttribute("data-mode") === "page";
     const getModeFromUrl = (): Mode | null => {
+      if (!allowUrlMode) return null;
       try {
         const params = new URLSearchParams(window.location.search);
         const mode = params.get("mode");
@@ -138,6 +143,7 @@ function initAstralChat() {
       }
     };
     const syncModeInUrl = (mode: Mode) => {
+      if (!allowUrlMode) return;
       try {
         const url = new URL(window.location.href);
         if (url.searchParams.get("mode") === mode) return;
@@ -154,8 +160,8 @@ function initAstralChat() {
       );
       return toMode(
         selectedInput?.value ||
-          getModeFromUrl() ||
-          sessionStorage.getItem(MODE_KEY),
+        getModeFromUrl() ||
+        sessionStorage.getItem(MODE_KEY),
       );
     };
 
@@ -166,9 +172,20 @@ function initAstralChat() {
         input.checked = input.value === mode;
       });
       root.setAttribute("data-theme", mode);
+      syncFullscreenLink();
     };
 
     const getGreeting = () => copy[GREETING[getCurrentMode()]];
+    const syncFullscreenLink = () => {
+      if (!isFloating || !fullscreenLink) return;
+      try {
+        const url = new URL(fullscreenLink.href, window.location.origin);
+        url.searchParams.set("mode", getCurrentMode());
+        fullscreenLink.href = `${url.pathname}${url.search}${url.hash}`;
+      } catch {
+        // Ignore invalid fullscreen URL
+      }
+    };
 
     const scrollToBottom = (behavior: ScrollBehavior = "smooth") => {
       if (isFloating)
