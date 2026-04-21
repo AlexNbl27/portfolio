@@ -3,6 +3,7 @@ import type { Locale } from "../i18n/config";
 import Card from "./ui/Card.astro";
 import TestimonialCard from "./TestimonialCard.astro";
 import { getTestimonials } from "../data/testimonials";
+import rawProjects from "../data/projects.json";
 
 interface Props {
   locale: Locale;
@@ -12,33 +13,48 @@ const { locale } = Astro.props as Props;
 const isEn = locale === "en";
 const featured = getTestimonials(locale)[0];
 
+const yearsCoding = new Date().getFullYear() - 2023;
+const projectsDelivered = rawProjects.filter((p) => p.inProduction).length;
+
 const stats = isEn
   ? [
-      { label: "Years coding", value: "4+" },
-      { label: "Projects delivered", value: "12+" },
+      { label: "Years coding", value: `${yearsCoding}+` },
+      { label: "Projects delivered", value: `${projectsDelivered}+` },
       { label: "Domains", value: "Web · Mobile · IoT · Industry" },
     ]
   : [
-      { label: "Années de code", value: "4+" },
-      { label: "Projets livrés", value: "12+" },
+      { label: "Années de code", value: `${yearsCoding}+` },
+      { label: "Projets livrés", value: `${projectsDelivered}+` },
       { label: "Domaines", value: "Web · Mobile · IoT · Industrie" },
     ];
 ---
 
 <section class="grid gap-5 lg:grid-cols-[1.2fr_1fr]">
   <Card class="proof-strip-card p-5 md:p-6">
-    <p class="text-xs uppercase tracking-[0.22em] text-cosmic-pink">{isEn ? "Quick signals" : "Signaux rapides"}</p>
+    <p class="text-xs uppercase tracking-[0.22em] text-cosmic-pink">
+      {isEn ? "Quick signals" : "Signaux rapides"}
+    </p>
     <div class="mt-4 grid gap-3 sm:grid-cols-3">
-      {stats.map((s) => (
-        <Card class="proof-strip-stat-card p-3">
-          <p class="text-xl font-semibold text-cosmic-gold">{s.value}</p>
-          <p class="text-xs text-white/70 mt-1">{s.label}</p>
-        </Card>
-      ))}
+      {
+        stats.map((s) => (
+          <Card class="proof-strip-stat-card p-3">
+            <p class="text-xl font-semibold text-cosmic-gold">{s.value}</p>
+            <p class="text-xs text-white/70 mt-1">{s.label}</p>
+          </Card>
+        ))
+      }
     </div>
     <div class="mt-4 flex flex-wrap gap-3 text-xs md:text-sm">
-      <a href={isEn ? "/en/services" : "/services"} class="text-cosmic-gold hover:text-cosmic-pink transition">{isEn ? "See services" : "Voir les services"}</a>
-      <a href={isEn ? "/en/contact" : "/contact"} class="text-cosmic-gold hover:text-cosmic-pink transition">{isEn ? "Book a call" : "Réserver un échange"}</a>
+      <a
+        href={isEn ? "/en/services" : "/services"}
+        class="text-cosmic-gold hover:text-cosmic-pink transition"
+        >{isEn ? "See services" : "Voir les services"}</a
+      >
+      <a
+        href={isEn ? "/en/contact" : "/contact"}
+        class="text-cosmic-gold hover:text-cosmic-pink transition"
+        >{isEn ? "Book a call" : "Réserver un échange"}</a
+      >
     </div>
   </Card>
 

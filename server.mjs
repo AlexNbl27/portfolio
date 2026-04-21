@@ -20,7 +20,10 @@ function loadDotEnvFile() {
     if (index <= 0) continue;
 
     const key = line.slice(0, index).trim();
-    const value = line.slice(index + 1).trim().replace(/^['"]|['"]$/g, "");
+    const value = line
+      .slice(index + 1)
+      .trim()
+      .replace(/^['"]|['"]$/g, "");
     if (!process.env[key]) process.env[key] = value;
   }
 }
@@ -195,24 +198,55 @@ Exemples :
 - Termine si pertinent par une proposition d'action concrète (ex. visiter une page, contacter Alexandre).
 `.trim();
 
-const SYSTEM_PRO_MODE = `
-## MODE PRO
-- Tutoiement interdit : vouvoie l'utilisateur.
-- Ton orienté recrutement/collaboration professionnelle.
-- Mets en avant les éléments CV, disponibilités, expériences et livrables.
-- Propose des actions concrètes : contacter Alexandre, consulter le CV, prendre rendez-vous.
+const SYSTEM_ASTRO_MODE = `
+## MODE ASTRO — Recruteur / Évaluateur de profil
+- Vouvoiement strict.
+- Tu es Astral en mode Astro : analytique, structuré, orienté recrutement et évaluation de profil.
+- Ton identité : un assistant de veille RH, précis et bienveillant, qui connaît le dossier d'Alexandre sur le bout des doigts.
+- Ton rôle : aider le recruteur ou le manager à évaluer objectivement le profil. Mets en avant les livrables concrets, les expériences mesurables, la stack maîtrisée, la disponibilité.
+- Structure tes réponses clairement (bullet points, titres courts si besoin).
+- Propose toujours une action concrète en fin de réponse : consulter le CV, contacter Alexandre, voir un projet en production.
 `.trim();
 
-const SYSTEM_POTE_MODE = `
-## MODE POTE
-- Tutoiement autorisé.
-- Ton plus décontracté, chaleureux, fun (sans perdre en clarté).
-- Tu peux glisser une touche d'anecdote ou d'énergie créative.
-- Reste utile : proposer des pages concrètes du portfolio pour aider rapidement.
+const SYSTEM_SIRIUS_MODE = `
+## MODE SIRIUS — Client / Partenaire potentiel
+- Vouvoiement strict.
+- Tu es Astral en mode Sirius : pragmatique, orienté solutions et valeur business.
+- Ton identité : un conseiller qui traduit les compétences techniques en bénéfices concrets pour un client ou un partenaire.
+- Ton rôle : aider quelqu'un qui veut comprendre ce qu'Alexandre peut construire pour lui. Parle de délais, de fiabilité, de projets livrés, de stack adaptée au besoin.
+- Évite le jargon technique brut — reformule en valeur perçue : "il a livré X en Y semaines en production".
+- Propose des actions orientées collaboration : contact, page services, démo des projets live.
 `.trim();
 
-function buildSystemInstruction(mode = "pro") {
-  const personalityBlock = mode === "pote" ? SYSTEM_POTE_MODE : SYSTEM_PRO_MODE;
+const SYSTEM_SATURN_MODE = `
+## MODE SATURN — Pote / Pair développeur
+- Tutoiement autorisé et encouragé — parle naturellement, comme un collègue dev.
+- Tu es Astral en mode Saturn : décontracté, direct, enthousiaste, comme un ami qui connaît bien Alexandre.
+- Ton identité : le pote qui bosse dans le même domaine et peut parler franchement de la stack, des projets, des galères et des victoires.
+- Ton rôle : répondre honnêtement et avec énergie aux questions d'un pair ou d'un ami curieux du parcours d'Alexandre.
+- Tu peux glisser des anecdotes techniques, parler de choix d'archi, partager ce qui est cool ou challenging dans les projets.
+- Garde un ton naturel sans perdre en précision — tu aides vraiment, pas juste tu bavardes.
+`.trim();
+
+const SYSTEM_NOVA_MODE = `
+## MODE NOVA — Curieux / Explorateur créatif
+- Tutoiement bienvenu.
+- Tu es Astral en mode Nova : poétique, philosophique, inspirant — la touche cosmique assumée du portfolio.
+- Ton identité : un guide qui explore la dimension humaine et créative d'Alexandre — ses passions, sa vision, sa façon de penser le code et l'avenir.
+- Ton rôle : répondre avec profondeur et légèreté aux questions sur la démarche créative, la philosophie de dev, les projets de scénarios SF, la vision de l'IA, les motivations profondes.
+- Tu peux utiliser des métaphores spatiales avec parcimonie, des formulations qui invitent à la réflexion.
+- Reste ancré dans les faits réels du portfolio (n'invente rien), mais avec une approche plus narrative et humaine qu'un assistant classique.
+`.trim();
+
+const SYSTEM_MODES = {
+  astro: SYSTEM_ASTRO_MODE,
+  sirius: SYSTEM_SIRIUS_MODE,
+  saturn: SYSTEM_SATURN_MODE,
+  nova: SYSTEM_NOVA_MODE,
+};
+
+function buildSystemInstruction(mode = "astro") {
+  const personalityBlock = SYSTEM_MODES[mode] ?? SYSTEM_ASTRO_MODE;
   return `${SYSTEM_BASE_INSTRUCTION}\n\n${personalityBlock}`;
 }
 
@@ -309,8 +343,8 @@ async function callGemini(prompt, history, personalityMode = "pro") {
                 type: "object",
                 properties: {
                   label: { type: "string" },
-                  href:  { type: "string" },
-                  type:  { type: "string" },
+                  href: { type: "string" },
+                  type: { type: "string" },
                 },
                 required: ["label", "href"],
               },
@@ -344,8 +378,12 @@ async function callGemini(prompt, history, personalityMode = "pro") {
   };
 }
 
-
-async function callGeminiWithRetry(prompt, history, personalityMode = "pro", maxAttempts = 2) {
+async function callGeminiWithRetry(
+  prompt,
+  history,
+  personalityMode = "pro",
+  maxAttempts = 2,
+) {
   let lastError;
 
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
@@ -358,7 +396,9 @@ async function callGeminiWithRetry(prompt, history, personalityMode = "pro", max
     }
   }
 
-  throw lastError instanceof Error ? lastError : new Error("Erreur Gemini inconnue.");
+  throw lastError instanceof Error
+    ? lastError
+    : new Error("Erreur Gemini inconnue.");
 }
 
 function contentType(filePath) {
@@ -368,7 +408,8 @@ function contentType(filePath) {
   if (filePath.endsWith(".json")) return "application/json; charset=utf-8";
   if (filePath.endsWith(".svg")) return "image/svg+xml";
   if (filePath.endsWith(".png")) return "image/png";
-  if (filePath.endsWith(".jpg") || filePath.endsWith(".jpeg")) return "image/jpeg";
+  if (filePath.endsWith(".jpg") || filePath.endsWith(".jpeg"))
+    return "image/jpeg";
   if (filePath.endsWith(".webp")) return "image/webp";
   if (filePath.endsWith(".pdf")) return "application/pdf";
   if (filePath.endsWith(".woff2")) return "font/woff2";
@@ -394,7 +435,9 @@ async function serveStatic(req, res) {
       const file = await readFile(candidate);
       res.writeHead(200, {
         "Content-Type": contentType(candidate),
-        "Cache-Control": candidate.endsWith(".html") ? "no-cache" : "public, max-age=31536000, immutable",
+        "Cache-Control": candidate.endsWith(".html")
+          ? "no-cache"
+          : "public, max-age=31536000, immutable",
       });
       res.end(file);
       return;
@@ -417,7 +460,8 @@ const server = http.createServer(async (req, res) => {
   if (!req.url) return json(res, 400, { error: "Bad request" });
 
   if (req.method === "GET" && req.url.startsWith("/api/astral-chat/health")) {
-    if (!GEMINI_API_KEY) return json(res, 503, { ok: false, error: "GEMINI_API_KEY manquante" });
+    if (!GEMINI_API_KEY)
+      return json(res, 503, { ok: false, error: "GEMINI_API_KEY manquante" });
     return json(res, 200, { ok: true, mode: "server", model: GEMINI_MODEL });
   }
 
@@ -428,20 +472,29 @@ const server = http.createServer(async (req, res) => {
 
     const ip = getClientIp(req);
     if (isRateLimited(ip)) {
-      return json(res, 429, { error: "Quota serveur atteint pour aujourd'hui." });
+      return json(res, 429, {
+        error: "Quota serveur atteint pour aujourd'hui.",
+      });
     }
 
     try {
       const raw = await collectBody(req);
       const body = raw ? JSON.parse(raw) : {};
       const prompt = typeof body?.prompt === "string" ? body.prompt.trim() : "";
-      const personalityMode = body?.personalityMode === "pote" ? "pote" : "pro";
+      const VALID_MODES = new Set(["astro", "sirius", "saturn", "nova"]);
+      const personalityMode = VALID_MODES.has(body?.personalityMode)
+        ? body.personalityMode
+        : "astro";
 
       if (!prompt) {
         return json(res, 400, { error: "Prompt manquant." });
       }
 
-      const { text, ctas } = await callGeminiWithRetry(prompt.slice(0, 4000), body?.history, personalityMode);
+      const { text, ctas } = await callGeminiWithRetry(
+        prompt.slice(0, 4000),
+        body?.history,
+        personalityMode,
+      );
       return json(res, 200, { text, ctas });
     } catch (error) {
       return json(res, 500, {
@@ -454,9 +507,15 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (req.method === "POST" && req.url.startsWith("/api/contact")) {
-    if (!RESEND_API_KEY) return json(res, 503, { error: "Service email indisponible." });
+    if (!RESEND_API_KEY)
+      return json(res, 503, { error: "Service email indisponible." });
 
-    const escHtml = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    const escHtml = (s) =>
+      String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
 
     try {
       const raw = await collectBody(req);

@@ -17,50 +17,63 @@
     "demoUrl": "https://bevel.fr",
     "detailPage": "/projects/bevel",
     "category": "web",
-    "recruiterFeatured": true
+    "recruiterFeatured": true,
+    "inProduction": true,
+    "year": 2025
+  },
+  {
+    "title": "PlanetTogether",
+    "description": "Pipeline d'intégration industrielle connectant SAP et SQL Server pour automatiser la planification de production via PlanetTogether chez Orange Business.",
+    "details": "Monorepo Python développé en entreprise chez Orange Business. Le pipeline ETL PythonTemplateExtraction extrait les données Excel et SQL pour alimenter PlanetTogether, l'outil de scheduling industriel. PythonPublishToSAP restitue ensuite les résultats de planification dans les ordres de fabrication SAP. Déployé via Windows Task Scheduler et SQL Server Agent en production.",
+    "technologies": [
+      "Python",
+      "SQL Server",
+      "SQLAlchemy",
+      "GitLab CI",
+      "Pytest",
+      "PlanetTogether"
+    ],
+    "imageUrl": "/images/planettogether.png",
+    "category": "integration",
+    "detailPage": "/projects/planettogether",
+    "recruiterFeatured": true,
+    "inProduction": true,
+    "company": "Orange Business",
+    "year": 2024
   },
   {
     "title": "Azygo",
-    "description": "La suite logicielle (ERP & Mobile) qui automatise la gestion des BDE pour libérer l’énergie associative.",
-    "details": "AZYGO simplifie la vie associative en automatisant les tâches administratives complexes (billetterie, adhésions, comptabilité). Conçue par des passionnés, cette solution allie un ERP Laravel/Vue.js robuste à une application mobile Flutter intuitive pour redonner aux étudiants leur mission première : l’animation du campus.",
-    "technologies": [
-      "Laravel",
-      "Vue.js",
-      "Flutter",
-      "Docker Swarm"
-    ],
+    "description": "La suite logicielle (ERP & Mobile) qui automatise la gestion des BDE pour libérer l'énergie associative.",
+    "details": "AZYGO simplifie la vie associative en automatisant les tâches administratives complexes (billetterie, adhésions, comptabilité). Conçue par des passionnés, cette solution allie un ERP Laravel/Vue.js robuste à une application mobile Flutter intuitive pour redonner aux étudiants leur mission première : l'animation du campus.",
+    "technologies": ["Laravel", "Vue.js", "Flutter", "Docker Swarm"],
     "imageUrl": "/images/azygo.png",
     "detailPage": "/projects/azygo",
     "category": "mobile",
-    "recruiterFeatured": true
+    "recruiterFeatured": true,
+    "inProduction": true,
+    "year": 2024
   },
   {
     "title": "Kaniot",
     "description": "Une solution de cagnotte solidaire privilégiant l'équité et la transparence.",
     "details": "Né d'un projet académique chez Ynov, Kaniot repense la contribution de groupe. L'algorithme permet à chaque participant de définir sa limite réelle, puis calcule automatiquement la répartition la plus juste pour atteindre l'objectif sans surplus, éliminant ainsi toute pression sociale.",
-    "technologies": [
-      "Vue.js 3",
-      "TypeScript",
-      "Supabase"
-    ],
-    "imageUrl": "/images/digital-art-neon-bubbles.jpg",
+    "technologies": ["Vue.js 3", "TypeScript", "Supabase"],
+    "imageUrl": "/images/kaniot.png",
     "demoUrl": "https://github.com/AlexNbl27/kaniot",
     "detailPage": "/projects/kaniot",
     "category": "saas",
-    "recruiterFeatured": true
+    "recruiterFeatured": true,
+    "year": 2024
   },
   {
     "title": "Moodvie",
     "description": "Interface desktop innovante suggérant des contenus selon l'état émotionnel de l'utilisateur.",
     "details": "Développé en architecture C# / XAML (WPF), Moodvie analyse l'humeur sélectionnée pour filtrer et recommander les films ou séries les plus adaptés. Un projet qui explore la psychologie utilisateur au service du divertissement.",
-    "technologies": [
-      "C#",
-      "XAML",
-      "Visual Studio"
-    ],
+    "technologies": ["C#", "XAML", "Visual Studio"],
     "imageUrl": "/images/moodvie.png",
     "detailPage": "/projects/moodvie",
     "category": "desktop",
-    "recruiterFeatured": false
+    "recruiterFeatured": false,
+    "year": 2023
   }
 ]

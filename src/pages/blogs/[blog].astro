@@ -43,22 +43,22 @@ const { blog } = Astro.props as { blog: BlogMeta };
         <p class="muted text-lg">{blog.summary}</p>
 
         <div class="flex flex-wrap gap-2 text-xs">
-          {blog.skills.map((skill) => <Badge variant="default">{skill}</Badge>)}
+          {blog.skills.map((skill) => <Badge variant="tech">{skill}</Badge>)}
         </div>
       </div>
 
       {
         (blog.detailImage ?? blog.coverImage) &&
           resolveImage(blog.detailImage ?? blog.coverImage) && (
-          <Card class="overflow-hidden">
-            <Image
-              src={resolveImage(blog.detailImage ?? blog.coverImage)!}
-              alt={blog.title}
-              class="h-full w-full object-cover"
-              data-fade-image
-            />
-          </Card>
-        )
+            <Card class="overflow-hidden">
+              <Image
+                src={resolveImage(blog.detailImage ?? blog.coverImage)!}
+                alt={blog.title}
+                class="h-full w-full object-cover"
+                data-fade-image
+              />
+            </Card>
+          )
       }
     </div>
 

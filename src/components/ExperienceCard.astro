@@ -1,6 +1,7 @@
 ---
 import Card from "./ui/Card.astro";
 import Badge from "./ui/Badge.astro";
+import Button from "./ui/Button.astro";
 
 import type { ExperienceItem } from "../i18n/data/types";
 import type { Locale } from "../i18n/config";
@@ -30,4 +31,15 @@ const { item, locale } = Astro.props as { item: ExperienceItem; locale: Locale }
   <div class="mt-5 flex flex-wrap gap-2 text-xs">
     {item.technologies.map((tech) => <Badge variant="tech">{tech}</Badge>)}
   </div>
+  {item.blogSlug && (
+    <div class="mt-4">
+      <Button
+        href={`/blogs/${item.blogSlug}`}
+        variant="outline"
+        icon="lucide:book-open"
+      >
+        {locale === "en" ? "Read the blog" : "Lire le blog"}
+      </Button>
+    </div>
+  )}
 </Card>

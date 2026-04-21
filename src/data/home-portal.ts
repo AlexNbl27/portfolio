@@ -1,7 +1,7 @@
 import type { Locale } from "../i18n/config";
 import { localizePath } from "../i18n/utils";
-import blogs from "./blogs";
-import { getProjects } from "../i18n/data/projects";
+import blogs, { sortBlogsByRecentPostDesc } from "./blogs";
+import { getRecentPersonalProjects } from "../i18n/data/projects";
 
 export type HomePortalTab = {
   id: string;
@@ -12,8 +12,7 @@ export type HomePortalTab = {
 };
 
 const getProjectItems = (locale: Locale) =>
-  getProjects(locale)
-    .filter((project) => project.recruiterFeatured)
+  getRecentPersonalProjects(locale)
     .slice(0, 2)
     .map((project) => ({
       title: project.title,
@@ -23,7 +22,8 @@ const getProjectItems = (locale: Locale) =>
 
 const getContentItems = (locale: Locale) => {
   const isEn = locale === "en";
-  const blogItems = blogs.slice(0, 2).map((blog) => ({
+  const recentBlogs = sortBlogsByRecentPostDesc(blogs).slice(0, 2);
+  const blogItems = recentBlogs.map((blog) => ({
     title: blog.title,
     description: blog.summary,
     href: localizePath(`/blogs/${blog.slug}`, locale),

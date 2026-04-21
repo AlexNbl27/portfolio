@@ -319,180 +319,211 @@ const ogImageUrl = new URL(ogImage, origin).toString();
       // Star Wars lightspeed transition — 3-phase animation
       function startHyperspace(): Promise<void> {
         return new Promise((resolve) => {
-        const overlay = document.getElementById("page-transition-overlay");
-        const canvas = document.getElementById(
-          "hyperspace-canvas",
-        ) as HTMLCanvasElement | null;
+          const overlay = document.getElementById("page-transition-overlay");
+          const canvas = document.getElementById(
+            "hyperspace-canvas",
+          ) as HTMLCanvasElement | null;
 
-        if (!overlay) { resolve(); return; }
-        overlay.style.transition = "none";
-        overlay.style.opacity = "1";
+          if (!overlay) {
+            resolve();
+            return;
+          }
+          overlay.style.transition = "none";
+          overlay.style.opacity = "1";
 
-        if (
-          !canvas ||
-          window.matchMedia("(prefers-reduced-motion: reduce)").matches
-        ) { resolve(); return; }
+          if (
+            !canvas ||
+            window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ) {
+            resolve();
+            return;
+          }
 
-        const maybeCtx = canvas.getContext("2d");
-        if (!maybeCtx) { resolve(); return; }
-        const ctx: CanvasRenderingContext2D = maybeCtx;
+          const maybeCtx = canvas.getContext("2d");
+          if (!maybeCtx) {
+            resolve();
+            return;
+          }
+          const ctx: CanvasRenderingContext2D = maybeCtx;
 
-        const cw = (canvas.width = window.innerWidth);
-        const ch = (canvas.height = window.innerHeight);
-        const cx = cw / 2,
-          cy = ch / 2;
-        const maxDist = Math.hypot(cx, cy) * 1.15;
+          const cw = (canvas.width = window.innerWidth);
+          const ch = (canvas.height = window.innerHeight);
+          const cx = cw / 2,
+            cy = ch / 2;
+          const maxDist = Math.hypot(cx, cy) * 1.15;
 
-        // Timeline (normalised t)
-        const DURATION = 3200;
-        const ACCEL_END = 0.32;
-        const CRUISE_END = 0.8;
-        const FADE_END = 1.0;
+          const DURATION = 3200;
 
-        type StaticStar = { angle: number; speed: number; brightness: number; width: number };
-        type CruiseStar = { angle: number; dist: number; spd: number; brightness: number; width: number };
+          type StaticStar = {
+            angle: number;
+            speed: number;
+            brightness: number;
+            width: number;
+          };
+          type CruiseStar = {
+            angle: number;
+            dist: number;
+            spd: number;
+            brightness: number;
+            width: number;
+          };
 
-        const staticStars: StaticStar[] = Array.from({ length: 300 }, () => ({
-          angle: Math.random() * Math.PI * 2,
-          speed: 0.35 + Math.random() * 1.65,
-          brightness: 0.5 + Math.random() * 0.5,
-          width: 0.3 + Math.random() * 1.4,
-        }));
+          const staticStars: StaticStar[] = Array.from({ length: 300 }, () => ({
+            angle: Math.random() * Math.PI * 2,
+            speed: 0.35 + Math.random() * 1.65,
+            brightness: 0.5 + Math.random() * 0.5,
+            width: 0.3 + Math.random() * 1.4,
+          }));
 
-        const spawnCruise = (scatter = 0): CruiseStar => ({
-          angle: Math.random() * Math.PI * 2,
-          dist: scatter * maxDist * Math.random(),
-          spd: (maxDist / DURATION) * (5 + Math.random() * 6),
-          brightness: 0.55 + Math.random() * 0.45,
-          width: 0.5 + Math.random() * 1.8,
-        });
-        const cruiseStars: CruiseStar[] = Array.from({ length: 190 }, () =>
-          spawnCruise(0.88),
-        );
+          const spawnCruise = (scatter = 0): CruiseStar => ({
+            angle: Math.random() * Math.PI * 2,
+            dist: scatter * maxDist * Math.random(),
+            spd: (maxDist / DURATION) * (5 + Math.random() * 6),
+            brightness: 0.55 + Math.random() * 0.45,
+            width: 0.5 + Math.random() * 1.8,
+          });
+          const cruiseStars: CruiseStar[] = Array.from({ length: 190 }, () =>
+            spawnCruise(0.88),
+          );
 
-        // --- Drawing helpers ---
-        function streak(
-          angle: number,
-          tail: number,
-          head: number,
-          alpha: number,
-          lw: number,
-        ) {
-          if (head < 1 || alpha <= 0) return;
-          const x1 = cx + Math.cos(angle) * tail,
-            y1 = cy + Math.sin(angle) * tail;
-          const x2 = cx + Math.cos(angle) * head,
-            y2 = cy + Math.sin(angle) * head;
-          const g = ctx.createLinearGradient(x1, y1, x2, y2);
-          g.addColorStop(0, `rgba(80, 130, 255, ${alpha * 0.2})`);
-          g.addColorStop(0.5, `rgba(170, 205, 255, ${alpha * 0.6})`);
-          g.addColorStop(1, `rgba(255, 255, 255, ${alpha})`);
-          ctx.strokeStyle = g;
-          ctx.lineWidth = lw;
-          ctx.beginPath();
-          ctx.moveTo(x1, y1);
-          ctx.lineTo(x2, y2);
-          ctx.stroke();
-        }
+          // --- Drawing helpers ---
+          function streak(
+            angle: number,
+            tail: number,
+            head: number,
+            alpha: number,
+            lw: number,
+          ) {
+            if (head < 1 || alpha <= 0) return;
+            const x1 = cx + Math.cos(angle) * tail,
+              y1 = cy + Math.sin(angle) * tail;
+            const x2 = cx + Math.cos(angle) * head,
+              y2 = cy + Math.sin(angle) * head;
+            const g = ctx.createLinearGradient(x1, y1, x2, y2);
+            g.addColorStop(0, `rgba(80, 130, 255, ${alpha * 0.2})`);
+            g.addColorStop(0.5, `rgba(170, 205, 255, ${alpha * 0.6})`);
+            g.addColorStop(1, `rgba(255, 255, 255, ${alpha})`);
+            ctx.strokeStyle = g;
+            ctx.lineWidth = lw;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+          }
 
-        function glow(intensity: number, radius: number) {
-          const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
-          g.addColorStop(0, `rgba(190, 220, 255, ${intensity})`);
-          g.addColorStop(0.4, `rgba(90, 140, 255, ${intensity * 0.4})`);
-          g.addColorStop(1, "rgba(0, 0, 30, 0)");
-          ctx.fillStyle = g;
-          ctx.fillRect(0, 0, cw, ch);
-        }
+          function glow(intensity: number, radius: number) {
+            const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+            g.addColorStop(0, `rgba(190, 220, 255, ${intensity})`);
+            g.addColorStop(0.4, `rgba(90, 140, 255, ${intensity * 0.4})`);
+            g.addColorStop(1, "rgba(0, 0, 30, 0)");
+            ctx.fillStyle = g;
+            ctx.fillRect(0, 0, cw, ch);
+          }
 
-        let startTime: number | null = null;
-        let lastTs: number | null = null;
+          let startTime: number | null = null;
+          let lastTs: number | null = null;
 
-        function draw(ts: number) {
-          if (!startTime) startTime = ts;
-          const elapsed = ts - startTime;
-          const dt = lastTs ? Math.min(ts - lastTs, 32) : 16; // cap at 32ms
-          lastTs = ts;
-          const t = Math.min(1, elapsed / DURATION);
+          // Smoothstep interpolation for seamless phase crossfades
+          const ss = (a: number, b: number, x: number) => {
+            const u = Math.max(0, Math.min(1, (x - a) / (b - a)));
+            return u * u * (3 - 2 * u);
+          };
 
-          ctx.fillStyle = "#030713";
-          ctx.fillRect(0, 0, cw, ch);
+          function draw(ts: number) {
+            if (!startTime) startTime = ts;
+            const elapsed = ts - startTime;
+            const dt = lastTs ? Math.min(ts - lastTs, 32) : 16;
+            lastTs = ts;
+            const t = Math.min(1, elapsed / DURATION);
 
-          // ── Phase 1: acceleration (cubic ease-in) ──────────────────────────
-          if (t <= ACCEL_END) {
-            const pt = t / ACCEL_END;
-            const accel = pt * pt * pt;
-            staticStars.forEach((s) => {
-              const head = accel * maxDist * s.speed;
-              const tail = Math.max(0, head - accel * maxDist * 0.13 * s.speed);
-              streak(
-                s.angle,
-                tail,
-                head,
-                Math.min(1, pt * 4) * s.brightness,
-                s.width * (1 + accel * 1.8),
-              );
-            });
-            glow(accel * 0.8, 15 + accel * 75);
-
-            // ── Phase 2: hyperspace tunnel ─────────────────────────────────────
-          } else if (t <= CRUISE_END) {
-            const pt = (t - ACCEL_END) / (CRUISE_END - ACCEL_END);
-
-            // Advance & respawn cruise stars
-            for (let i = 0; i < cruiseStars.length; i++) {
-              cruiseStars[i].dist += cruiseStars[i].spd * dt;
-              if (cruiseStars[i].dist > maxDist * 1.15)
-                cruiseStars[i] = spawnCruise(0.02);
-            }
-            cruiseStars.forEach((s) => {
-              const tailLen = Math.min(s.dist * 0.55, maxDist * 0.2);
-              streak(
-                s.angle,
-                Math.max(0, s.dist - tailLen),
-                s.dist,
-                s.brightness,
-                s.width * 1.5,
-              );
-            });
-
-            // Pulsing center glow
-            const pulse = 0.75 + 0.25 * Math.sin(elapsed * 0.018);
-            glow(0.72 * pulse, 28 + pt * 60);
-
-            // Tunnel vignette — darkens edges to simulate depth
-            const vR = Math.max(cw, ch) * (0.72 - pt * 0.18);
-            const vg = ctx.createRadialGradient(cx, cy, vR * 0.3, cx, cy, vR);
-            vg.addColorStop(0, "rgba(0, 0, 0, 0)");
-            vg.addColorStop(1, `rgba(3, 7, 19, ${0.4 + pt * 0.4})`);
-            ctx.fillStyle = vg;
+            ctx.fillStyle = "#030713";
             ctx.fillRect(0, 0, cw, ch);
 
-            // ── Phase 3: slow fade to black ───────────────────────────────────
-          } else {
-            const pt = (t - CRUISE_END) / (FADE_END - CRUISE_END); // 0→1
-            const residual = 1 - pt * pt; // quad ease-out fade
-            staticStars.forEach((s) => {
-              streak(
-                s.angle,
-                maxDist * s.speed * 0.82,
-                maxDist * s.speed,
-                s.brightness * residual,
-                s.width * 2,
+            // Phase blend weights — overlap zones create smooth crossfades
+            const accelW = 1 - ss(0.27, 0.38, t);
+            const cruiseW = ss(0.27, 0.38, t) * (1 - ss(0.74, 0.85, t));
+            const fadeW = ss(0.74, 0.85, t);
+
+            // ── Phase 1: acceleration ──────────────────────────────────────────
+            if (accelW > 0.002) {
+              const pt = Math.min(t / 0.35, 1);
+              const accel = pt * pt * pt;
+              staticStars.forEach((s) => {
+                const head = accel * maxDist * s.speed;
+                const tail = Math.max(
+                  0,
+                  head - accel * maxDist * 0.13 * s.speed,
+                );
+                streak(
+                  s.angle,
+                  tail,
+                  head,
+                  Math.min(1, pt * 4) * s.brightness * accelW,
+                  s.width * (1 + accel * 1.8),
+                );
+              });
+              glow(accel * 0.8 * accelW, 15 + accel * 75);
+            }
+
+            // ── Phase 2: hyperspace tunnel ─────────────────────────────────────
+            // Advance cruise stars once accel is mostly done
+            if (t > 0.25) {
+              for (let i = 0; i < cruiseStars.length; i++) {
+                cruiseStars[i].dist += cruiseStars[i].spd * dt;
+                if (cruiseStars[i].dist > maxDist * 1.15)
+                  cruiseStars[i] = spawnCruise(0.02);
+              }
+            }
+            if (cruiseW > 0.002) {
+              const pt = Math.max(0, Math.min((t - 0.27) / (0.74 - 0.27), 1));
+              cruiseStars.forEach((s) => {
+                const tailLen = Math.min(s.dist * 0.55, maxDist * 0.2);
+                streak(
+                  s.angle,
+                  Math.max(0, s.dist - tailLen),
+                  s.dist,
+                  s.brightness * cruiseW,
+                  s.width * 1.5,
+                );
+              });
+              const pulse = 0.75 + 0.25 * Math.sin(elapsed * 0.018);
+              glow(0.72 * pulse * cruiseW, 28 + pt * 60);
+              const vR = Math.max(cw, ch) * (0.72 - pt * 0.18);
+              const vg = ctx.createRadialGradient(cx, cy, vR * 0.3, cx, cy, vR);
+              vg.addColorStop(0, "rgba(0, 0, 0, 0)");
+              vg.addColorStop(
+                1,
+                `rgba(3, 7, 19, ${(0.4 + pt * 0.4) * cruiseW})`,
               );
-            });
-            // Glow also fades
-            glow(0.5 * residual, 50);
+              ctx.fillStyle = vg;
+              ctx.fillRect(0, 0, cw, ch);
+            }
+
+            // ── Phase 3: fade to black ─────────────────────────────────────────
+            if (fadeW > 0.002) {
+              const fadePt = Math.max(0, (t - 0.74) / (1.0 - 0.74));
+              const residual = 1 - fadePt * fadePt;
+              staticStars.forEach((s) => {
+                streak(
+                  s.angle,
+                  maxDist * s.speed * 0.82,
+                  maxDist * s.speed,
+                  s.brightness * residual * fadeW,
+                  s.width * 2,
+                );
+              });
+              glow(0.5 * residual * fadeW, 50);
+            }
+
+            if (t < 1) {
+              requestAnimationFrame(draw);
+            } else {
+              ctx.clearRect(0, 0, cw, ch);
+              resolve();
+            }
           }
 
-          if (t < 1) {
-            requestAnimationFrame(draw);
-          } else {
-            ctx.clearRect(0, 0, cw, ch);
-            resolve();
-          }
-        }
-
-        requestAnimationFrame(draw);
+          requestAnimationFrame(draw);
         }); // end Promise
       }
 
