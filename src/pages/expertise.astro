@@ -1,0 +1,70 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import RocketSelector from "../components/RocketSelector.astro";
+import Card from "../components/ui/Card.astro";
+import { getLocaleFromPathname, localizePath } from "../i18n/utils";
+
+const locale = getLocaleFromPathname(Astro.url.pathname);
+const isEn = locale === "en";
+---
+
+<BaseLayout
+  title={isEn ? "Expertise · Alexandre Noblet" : "Expertise · Alexandre Noblet"}
+  description={isEn ? "A single entry point to technical and interpersonal expertise." : "Un point d'entrée unique vers l'expertise technique et humaine."}
+>
+  <!-- Desktop: fusée plein écran, sans distractions -->
+  <section class="rocket-fullscreen hidden md:flex">
+    <RocketSelector
+      softSkillsUrl={localizePath('/soft-skills', locale)}
+      skillsUrl={localizePath('/skills', locale)}
+      isEn={isEn}
+    />
+  </section>
+
+  <!-- Mobile: titre + cards + astral -->
+  <div class="md:hidden">
+    <section class="cosmic-container pt-8">
+      <h1 class="section-title">{isEn ? "My" : "Mon"} <span class="highlight">Expertise</span></h1>
+      <p class="muted mt-4 max-w-2xl text-lg">
+        {isEn
+          ? "T-minus zero. Two wings, one trajectory — which one do you board?"
+          : "T-moins zéro. Deux ailes, une trajectoire — laquelle tu embarques ?"}
+      </p>
+    </section>
+
+    <section class="cosmic-container mt-8 flex flex-col gap-4">
+      <Card as="a" href={localizePath('/soft-skills', locale)} interactive class="mobile-skill-card mobile-skill-card--pink">
+        <span class="msc-tag">{isEn ? "Human" : "Humain"}</span>
+        <span class="msc-title">Soft Skills</span>
+        <span class="msc-desc">{isEn ? "Communication, collaboration, autonomy." : "Communication, collaboration, autonomie."}</span>
+        <span class="msc-arrow">→</span>
+      </Card>
+      <Card as="a" href={localizePath('/skills', locale)} interactive class="mobile-skill-card mobile-skill-card--gold">
+        <span class="msc-tag">{isEn ? "Technical" : "Technique"}</span>
+        <span class="msc-title">{isEn ? "Technical Skills" : "Compétences techniques"}</span>
+        <span class="msc-desc">{isEn ? "Frameworks, languages, infrastructure." : "Frameworks, langages, infrastructure."}</span>
+        <span class="msc-arrow">→</span>
+      </Card>
+    </section>
+
+    <section class="cosmic-container mt-10 mb-4">
+      <Card class="p-6">
+        <h2 class="font-display text-2xl text-cosmic-gold">{isEn ? "Need a guided tour?" : "Besoin d'un parcours guidé ?"}</h2>
+        <p class="mt-2 text-white/80">{isEn ? "Use Astral chat for a role-based summary." : "Utilisez Astral pour un résumé orienté rôle."}</p>
+        <a href={localizePath('/chat', locale)} class="mt-4 inline-flex rounded-xl border border-cosmic-gold/40 px-4 py-2 text-cosmic-gold hover:bg-cosmic-gold/10 transition">{isEn ? "Open Astral" : "Ouvrir Astral"}</a>
+      </Card>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  /* Desktop: fusée centrée, compense le padding du main */
+  .rocket-fullscreen {
+    width: 100%;
+    min-height: calc(100vh - 5rem);
+    margin-top: -4rem; /* remonte pour coller sous la navbar */
+    align-items: center;
+    justify-content: center;
+    padding: 0 2rem;
+  }
+</style>

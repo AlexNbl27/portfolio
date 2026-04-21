@@ -1,6 +1,7 @@
 const DAILY_LIMIT = 20;
 const STORAGE_KEY = "astral-chat-quota";
 const HISTORY_KEY = "astral-chat-history";
+const MODE_KEY = "astral-chat-mode";
 const MAX_CHARS = 800;
 
 function renderMarkdown(text: string): string {
@@ -18,7 +19,40 @@ function renderMarkdown(text: string): string {
     .replace(/^(?!<[pul])(.+)$/, "<p>$1</p>");
 }
 
+/**
+ * Global click delegator to intercept any link pointing to /chat on desktop.
+ * Defined outside the init function to maintain a stable reference for removeEventListener.
+ */
+const handleGlobalChatLinkIntercept = (e: MouseEvent) => {
+  if (!window.matchMedia("(min-width: 1024px)").matches) return;
+
+  const link = (e.target as HTMLElement).closest("a");
+  if (!link) return;
+
+  try {
+    const url = new URL(link.href, window.location.origin);
+    const path = url.pathname.replace(/\/$/, "");
+    const isChatLink =
+      path === "/chat" || path === "/en/chat" || path === "/fr/chat";
+    const isFullscreen = link.classList.contains("astral-chat__fullscreen");
+    if (isChatLink && !isFullscreen) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      document.dispatchEvent(new CustomEvent("astral:open-floating-panel"));
+    }
+  } catch (err) {
+    // Ignore invalid link URLs
+  }
+};
+
 function initAstralChat() {
+  document.removeEventListener("click", handleGlobalChatLinkIntercept, {
+    capture: true,
+  });
+  document.addEventListener("click", handleGlobalChatLinkIntercept, {
+    capture: true,
+  });
+
   document.querySelectorAll("[data-astral-chat-root]").forEach((root) => {
     if (root.getAttribute("data-init") === "true") return;
     root.setAttribute("data-init", "true");
@@ -26,18 +60,95 @@ function initAstralChat() {
     const isFloating = root.getAttribute("data-mode") === "floating";
     const trigger = root.querySelector(".astral-chat__trigger") as HTMLElement;
     const panel = root.querySelector(".astral-chat__panel") as HTMLElement;
-    const closeBtn = root.querySelector(".astral-chat__close") as HTMLButtonElement;
-    const form = root.querySelector(".astral-chat__composer") as HTMLFormElement;
-    const messages = root.querySelector(".astral-chat__messages") as HTMLElement;
+    const closeBtn = root.querySelector(
+      ".astral-chat__close",
+    ) as HTMLButtonElement;
+    const form = root.querySelector(
+      ".astral-chat__composer",
+    ) as HTMLFormElement;
+    const messages = root.querySelector(
+      ".astral-chat__messages",
+    ) as HTMLElement;
     const textarea = root.querySelector("textarea") as HTMLTextAreaElement;
     const overlay = root.querySelector(".astral-chat__overlay") as HTMLElement;
+    const personalityInputs = root.querySelectorAll<HTMLInputElement>(
+      "[data-astral-personality]",
+    );
     const isEnglish = () => document.documentElement.lang === "en";
     const copy = {
-      get thinking() { return isEnglish() ? "Astral is thinking..." : "Astral réfléchit..."; },
-      get unavailable() { return isEnglish() ? "Astral cannot answer right now." : "Astral ne peut pas répondre pour le moment."; },
-      get greeting() { return isEnglish() ? "Hi, I'm Astral ✨ I can guide you through Alexandre's portfolio, projects, and professional universe." : "Bonjour, je suis Astral ✨ Je peux vous guider dans le portfolio d'Alexandre, ses projets et son univers pro."; },
-      get quotaReached() { return isEnglish() ? "Daily quota reached for this browser. Please come back tomorrow or contact Alexandre directly." : "Quota journalier atteint pour ce navigateur. Revenez demain ou contactez Alexandre directement."; },
-      get genericError() { return isEnglish() ? "✦ The message was lost in space due to an error… Please try again in a few moments." : "✦ Le message s'est perdu dans l'espace suite à une erreur… Réessayez dans quelques instants."; },
+      get thinking() {
+        return isEnglish() ? "Astral is thinking..." : "Astral réfléchit...";
+      },
+      get unavailable() {
+        return isEnglish()
+          ? "Astral cannot answer right now."
+          : "Astral ne peut pas répondre pour le moment.";
+      },
+      get greetingAstro() {
+        return isEnglish()
+          ? "Hello, I'm Astral ✨ Astro mode enabled. Analytical and professional, I can help you review Alexandre's profile."
+          : "Bonjour, je suis Astral ✨ Mode Astro activé. Analytique et professionnel, je vous aide à évaluer le profil d'Alexandre.";
+      },
+      get greetingSirius() {
+        return isEnglish()
+          ? "Hello, I'm Astral ✨ Sirius mode enabled. Focused on business and solutions, I can tell you what Alexandre can build for you."
+          : "Bonjour, je suis Astral ✨ Mode Sirius activé. Orienté solutions et pragmatisme, je vous explique comment Alexandre peut vous aider.";
+      },
+      get greetingSaturn() {
+        return isEnglish()
+          ? "Hey, I'm Astral ✨ Saturn mode enabled. Friendly and direct, ask me anything about Alexandre's journey."
+          : "Salut, je suis Astral ✨ Mode Saturn activé. Pote et direct, pose-moi tes questions sur le parcours d'Alexandre.";
+      },
+      get greetingNova() {
+        return isEnglish()
+          ? "Greetings, I'm Astral ✨ Nova mode enabled. Creative and philosophical, let's explore concepts together."
+          : "Salutations, je suis Astral ✨ Mode Nova activé. Créatif et philosophique, explorons les concepts ensemble.";
+      },
+      get quotaReached() {
+        return isEnglish()
+          ? "Daily quota reached for this browser. Please come back tomorrow or contact Alexandre directly."
+          : "Quota journalier atteint pour ce navigateur. Revenez demain ou contactez Alexandre directement.";
+      },
+      get genericError() {
+        return isEnglish()
+          ? "✦ The message was lost in space due to an error… Please try again in a few moments."
+          : "✦ Le message s'est perdu dans l'espace suite à une erreur… Réessayez dans quelques instants.";
+      },
+    };
+
+    type Mode = "astro" | "sirius" | "saturn" | "nova";
+    const VALID_MODES = new Set<string>(["astro", "sirius", "saturn", "nova"]);
+    const toMode = (val: string | null | undefined): Mode =>
+      VALID_MODES.has(val ?? "") ? (val as Mode) : "astro";
+
+    const GREETING: Record<Mode, keyof typeof copy> = {
+      astro: "greetingAstro",
+      sirius: "greetingSirius",
+      saturn: "greetingSaturn",
+      nova: "greetingNova",
+    };
+
+    const getCurrentMode = (): Mode => {
+      const selectedInput = Array.from(personalityInputs).find(
+        (input) => input.checked,
+      );
+      return toMode(selectedInput?.value || sessionStorage.getItem(MODE_KEY));
+    };
+
+    const setCurrentMode = (mode: Mode) => {
+      sessionStorage.setItem(MODE_KEY, mode);
+      personalityInputs.forEach((input) => {
+        input.checked = input.value === mode;
+      });
+      root.setAttribute("data-theme", mode);
+    };
+
+    const getGreeting = () => copy[GREETING[getCurrentMode()]];
+
+    const scrollToBottom = (behavior: ScrollBehavior = "smooth") => {
+      if (isFloating)
+        messages?.scrollTo({ top: messages.scrollHeight, behavior });
+      else window.scrollTo({ top: document.body.scrollHeight, behavior });
     };
 
     const loadHistory = () => {
@@ -90,11 +201,7 @@ function initAstralChat() {
       }
 
       messages?.appendChild(bubble);
-      if (isFloating) {
-        messages?.scrollTo({ top: messages.scrollHeight, behavior: "smooth" });
-      } else {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-      }
+      scrollToBottom();
       return bubble;
     };
 
@@ -119,11 +226,7 @@ function initAstralChat() {
       for (let i = 0; i < chars.length; i++) {
         el.textContent += chars[i];
         if (i % 3 === 0) {
-          if (isFloating) {
-            messages?.scrollTo({ top: messages.scrollHeight, behavior: "auto" });
-          } else {
-            window.scrollTo({ top: document.body.scrollHeight, behavior: "auto" });
-          }
+          scrollToBottom("auto");
           await new Promise((resolve) => setTimeout(resolve, 10));
         }
       }
@@ -180,15 +283,23 @@ function initAstralChat() {
 
     class FatalChatError extends Error {}
 
-    const sendWithServerRoute = async (prompt: string): Promise<{ text: string; ctas: Cta[] }> => {
+    const sendWithServerRoute = async (
+      prompt: string,
+    ): Promise<{ text: string; ctas: Cta[] }> => {
       const en = isEnglish();
+      const personalityMode = getCurrentMode();
       const localizedPrompt = en
         ? `Please answer in English. User message: ${prompt}`
         : prompt;
       const response = await fetch("/api/astral-chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: localizedPrompt, history, locale: en ? "en" : "fr" }),
+        body: JSON.stringify({
+          prompt: localizedPrompt,
+          history,
+          locale: en ? "en" : "fr",
+          personalityMode,
+        }),
       });
 
       if (!response.ok) {
@@ -199,7 +310,10 @@ function initAstralChat() {
       }
 
       const data = await response.json();
-      return { text: data.text ?? "", ctas: Array.isArray(data.ctas) ? data.ctas : [] };
+      return {
+        text: data.text ?? "",
+        ctas: Array.isArray(data.ctas) ? data.ctas : [],
+      };
     };
 
     const renderCtas = (ctas: Cta[]) => {
@@ -211,7 +325,11 @@ function initAstralChat() {
         a.href = href;
         a.className = `astral-chat__cta-btn astral-chat__cta-btn--${type ?? "page"}`;
         a.style.animationDelay = `${i * 80}ms`;
-        if (href.startsWith("http") || href.startsWith("mailto") || type === "cv") {
+        if (
+          href.startsWith("http") ||
+          href.startsWith("mailto") ||
+          type === "cv"
+        ) {
           a.target = "_blank";
           a.rel = "noopener noreferrer";
         }
@@ -220,17 +338,15 @@ function initAstralChat() {
         container.appendChild(a);
       });
       messages?.appendChild(container);
-      if (isFloating) {
-        messages?.scrollTo({ top: messages.scrollHeight, behavior: "smooth" });
-      } else {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-      }
+      scrollToBottom();
     };
 
     const bootHealthCheck = async () => {
       if (!canAccessQuotaStorage()) return false;
       try {
-        const health = await fetch("/api/astral-chat/health", { method: "GET" });
+        const health = await fetch("/api/astral-chat/health", {
+          method: "GET",
+        });
         if (!health.ok) return false;
         const payload = await health.json();
         if (payload?.ok !== true) return false;
@@ -241,7 +357,10 @@ function initAstralChat() {
     };
 
     bootHealthCheck().then((ok) => {
-      if (!ok) { disableChat(); return; }
+      if (!ok) {
+        disableChat();
+        return;
+      }
       enableChat();
     });
 
@@ -277,25 +396,37 @@ function initAstralChat() {
       }
     };
 
-    if (isFloating && trigger) {
-      trigger.addEventListener("click", () => togglePanel(true));
+    if (isFloating) {
+      trigger?.addEventListener("click", () => togglePanel(true));
       overlay?.addEventListener("click", () => togglePanel(false));
+      // Listen for the global signal distributed by handleGlobalChatLinkIntercept
+      document.addEventListener("astral:open-floating-panel", () =>
+        togglePanel(true),
+      );
     }
 
     closeBtn?.addEventListener("click", () => togglePanel(false));
 
-    const clearBtn = root.querySelector(".astral-chat__clear") as HTMLButtonElement;
-    clearBtn?.addEventListener("click", () => {
+    const clearBtn = root.querySelector(
+      ".astral-chat__clear",
+    ) as HTMLButtonElement;
+    const resetConversation = () => {
       sessionStorage.removeItem(HISTORY_KEY);
       history.length = 0;
       if (messages) messages.innerHTML = "";
-      appendMessage(
-        "assistant",
-        copy.greeting,
-        false,
-        false,
-      );
-    });
+      appendMessage("assistant", getGreeting(), false, false);
+    };
+    clearBtn?.addEventListener("click", resetConversation);
+
+    if (personalityInputs.length > 0) {
+      setCurrentMode(getCurrentMode());
+      personalityInputs.forEach((input) => {
+        input.addEventListener("change", () => {
+          setCurrentMode(toMode(input.value));
+          resetConversation();
+        });
+      });
+    }
 
     document.addEventListener("astro:before-preparation", () => {
       if (panel && !panel.classList.contains("hidden")) togglePanel(false);
@@ -314,12 +445,7 @@ function initAstralChat() {
         }
       });
     } else if (messages && !messages.hasChildNodes()) {
-      appendMessage(
-        "assistant",
-        copy.greeting,
-        false,
-        true,
-      );
+      appendMessage("assistant", getGreeting(), false, true);
     }
 
     form?.addEventListener("submit", async (event) => {
@@ -328,10 +454,7 @@ function initAstralChat() {
       if (!prompt) return;
 
       if (!canSend()) {
-        appendMessage(
-          "assistant",
-          copy.quotaReached,
-        );
+        appendMessage("assistant", copy.quotaReached);
         return;
       }
 

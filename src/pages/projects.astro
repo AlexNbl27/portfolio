@@ -1,54 +1,76 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import ProjectCard from '../components/ProjectCard.astro';
-import ProjectFilter from '../components/ProjectFilter.astro';
-import { getLocaleFromPathname, localizePath } from '../i18n/utils';
-import { getProjects } from '../i18n/data/projects';
-import { useTranslations } from '../i18n/useTranslations';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import ProjectFilter from "../components/ProjectFilter.astro";
+import { getLocaleFromPathname, localizePath } from "../i18n/utils";
+import { getProjects } from "../i18n/data/projects";
+import { useTranslations } from "../i18n/useTranslations";
 
 const locale = getLocaleFromPathname(Astro.url.pathname);
 const t = useTranslations(locale);
 const projects = getProjects(locale).map((project) => ({
   ...project,
-  detailPage: project.detailPage ? localizePath(project.detailPage, locale) : undefined,
+  detailPage: project.detailPage
+    ? localizePath(project.detailPage, locale)
+    : undefined,
 }));
 ---
 
-<BaseLayout title={locale === "en" ? "Alexandre Noblet | Projects" : "Alexandre Noblet | Projets"} description={locale === "en" ? "Explore web, mobile, desktop and SaaS projects by Alexandre Noblet." : "Découvrez les projets web, mobile, desktop et SaaS d’Alexandre Noblet."}>
+<BaseLayout
+  title={locale === "en"
+    ? "Alexandre Noblet | Projects"
+    : "Alexandre Noblet | Projets"}
+  description={locale === "en"
+    ? "Explore web, mobile, desktop and SaaS projects by Alexandre Noblet."
+    : "Découvrez les projets web, mobile, desktop et SaaS d’Alexandre Noblet."}
+>
   <section class="cosmic-container pt-8">
-    <h1 class="section-title"><span class="highlight">{t("projects").title}</span></h1>
+    <h1 class="section-title">
+      <span class="highlight">{t("projects").title}</span>
+    </h1>
     <p class="muted mt-4 max-w-3xl text-lg">{t("projects").subtitle}</p>
     <ProjectFilter locale={locale} />
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="project-grid">
-      {projects.map((project) => (
-        <div
-          data-category={project.category}
-          data-featured={project.recruiterFeatured ? 'true' : 'false'}
-          data-detail-page={project.detailPage ?? ''}
-          class:list={[
-            'project-item',
-            project.detailPage ? 'project-item--detail cursor-pointer' : 'cursor-default'
-          ]}
-          tabindex={project.detailPage ? 0 : undefined}
-          role={project.detailPage ? 'link' : undefined}
-          aria-label={project.detailPage ? (locale === "en" ? `Open details page for ${project.title}` : `Ouvrir la page de détails du projet ${project.title}`) : undefined}
-        >
-          <ProjectCard project={project} locale={locale} />
-        </div>
-      ))}
+      {
+        projects.map((project) => (
+          <div
+            data-category={project.category}
+            data-featured={project.recruiterFeatured ? "true" : "false"}
+            data-detail-page={project.detailPage ?? ""}
+            class:list={[
+              "project-item",
+              project.detailPage
+                ? "project-item--detail cursor-pointer"
+                : "cursor-default",
+            ]}
+            tabindex={project.detailPage ? 0 : undefined}
+            role={project.detailPage ? "link" : undefined}
+            aria-label={
+              project.detailPage
+                ? locale === "en"
+                  ? `Open details page for ${project.title}`
+                  : `Ouvrir la page de détails du projet ${project.title}`
+                : undefined
+            }
+          >
+            <ProjectCard project={project} locale={locale} />
+          </div>
+        ))
+      }
     </div>
   </section>
 </BaseLayout>
 
 <script>
-  import { navigate } from 'astro:transitions/client';
+  import { navigate } from "astro:transitions/client";
 
   document.addEventListener("astro:page-load", () => {
-    const buttons = document.querySelectorAll('.filter-btn');
-    const cards = document.querySelectorAll('.project-item');
+    const buttons = document.querySelectorAll(".filter-btn");
+    const cards = document.querySelectorAll(".project-item");
 
     let activeCategory = "all";
-    let recruiterMode = document.body.getAttribute("data-recruiter-mode") === "on";
+    let recruiterMode =
+      document.body.getAttribute("data-recruiter-mode") === "on";
 
     const applyVisibility = () => {
       cards.forEach((card) => {
@@ -62,21 +84,23 @@ const projects = getProjects(locale).map((project) => ({
         card.classList.toggle("hidden", !visible);
 
         if (visible && wasHidden) {
-          const img = card.querySelector('.project-card-img') as HTMLElement | null;
+          const img = card.querySelector(
+            ".project-card-img",
+          ) as HTMLElement | null;
           if (img) {
-            img.style.animation = 'none';
+            img.style.animation = "none";
             void img.offsetWidth;
-            img.style.animation = '';
+            img.style.animation = "";
           }
         }
       });
     };
 
     buttons.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        activeCategory = btn.getAttribute('data-category') ?? 'all';
-        buttons.forEach((b) => b.classList.remove('border-cosmic-gold', 'text-cosmic-gold'));
-        btn.classList.add('border-cosmic-gold', 'text-cosmic-gold');
+      btn.addEventListener("click", () => {
+        activeCategory = btn.getAttribute("data-category") ?? "all";
+        buttons.forEach((b) => b.classList.remove("is-active"));
+        btn.classList.add("is-active");
         applyVisibility();
       });
     });
@@ -88,26 +112,34 @@ const projects = getProjects(locale).map((project) => ({
     });
 
     const allBtn = document.querySelector('[data-category="all"]');
-    if (allBtn) allBtn.classList.add('border-cosmic-gold', 'text-cosmic-gold');
+    if (allBtn) allBtn.classList.add("is-active");
     applyVisibility();
 
     cards.forEach((card) => {
-      const detailPage = card.getAttribute('data-detail-page');
+      const detailPage = card.getAttribute("data-detail-page");
       if (!detailPage) return;
 
-      card.addEventListener('click', (event) => {
+      card.addEventListener("click", (event) => {
         const target = event.target as HTMLElement | null;
-        const link = target?.closest('a');
+        const link = target?.closest("a");
         if (link && !link.href.includes(detailPage)) return;
-        sessionStorage.setItem('project-detail-back-link', document.documentElement.lang === 'en' ? '/en/projects' : '/projects');
+        sessionStorage.setItem(
+          "project-detail-back-link",
+          document.documentElement.lang === "en" ? "/en/projects" : "/projects",
+        );
         navigate(detailPage);
       });
 
-      card.addEventListener('keydown', (event) => {
+      card.addEventListener("keydown", (event) => {
         const keyboardEvent = event as KeyboardEvent;
-        if (keyboardEvent.key === 'Enter' || keyboardEvent.key === ' ') {
+        if (keyboardEvent.key === "Enter" || keyboardEvent.key === " ") {
           keyboardEvent.preventDefault();
-          sessionStorage.setItem('project-detail-back-link', document.documentElement.lang === 'en' ? '/en/projects' : '/projects');
+          sessionStorage.setItem(
+            "project-detail-back-link",
+            document.documentElement.lang === "en"
+              ? "/en/projects"
+              : "/projects",
+          );
           navigate(detailPage);
         }
       });

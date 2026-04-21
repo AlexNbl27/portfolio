@@ -1,5 +1,6 @@
 ---
 import type { Locale } from "../i18n/config";
+import PersonalitySelector from "./PersonalitySelector.astro";
 
 interface Props {
   locale: Locale;
@@ -16,6 +17,7 @@ const isEn = locale === "en";
 >
   <div class="astral-chat__panel is-page flex">
     <div class="astral-chat__messages-header">
+      <PersonalitySelector name="astral_mode_page" isEn={isEn} />
       <button
         type="button"
         class="astral-chat__clear focus-ring"
@@ -70,7 +72,7 @@ const isEn = locale === "en";
     -webkit-backdrop-filter: blur(16px);
   }
 
-  .astral-chat__messages-header { display: flex; justify-content: flex-end; }
+  .astral-chat__messages-header { display: flex; justify-content: space-between; gap: 1rem; align-items: center; flex-wrap: wrap; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 1rem; margin-bottom: 0.5rem; }
   .astral-chat__panel.is-page .astral-chat__clear { display: inline-flex; align-items: center; gap: 0.35rem; border: 0; background: transparent; color: rgba(180, 184, 202, 0.55); font-size: 0.75rem; cursor: pointer; padding: 0.25rem 0.5rem; border-radius: 6px; transition: color 0.2s, background 0.2s; }
   .astral-chat__panel.is-page .astral-chat__clear:hover { color: #f6d40d; background: rgba(246, 212, 13, 0.06); }
   .astral-chat__panel.is-page .astral-chat__messages { overflow-y: visible; padding-bottom: 1rem; }

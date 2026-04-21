@@ -5,10 +5,12 @@ import Card from "../components/ui/Card.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 import SkillOrbit from "../components/SkillOrbit.astro";
 import ExperienceCard from "../components/ExperienceCard.astro";
+import TestimonialCard from "../components/TestimonialCard.astro";
 import skills from "../data/skills.json";
 import { getLocaleFromPathname, localizePath } from "../i18n/utils";
 import { getProjects } from "../i18n/data/projects";
 import { getExperiences } from "../i18n/data/experiences";
+import { getTestimonials } from "../data/testimonials";
 
 const locale = getLocaleFromPathname(Astro.url.pathname);
 const isEn = locale === "en";
@@ -19,6 +21,7 @@ const experiences = getExperiences(locale);
 const featuredProjects = projects.filter((p) => p.recruiterFeatured);
 const featuredSkills = skills.filter((s) => s.recruiterCore);
 const featuredExperience = experiences.filter((e) => e.recruiterVisible);
+const recruiterTestimonials = getTestimonials(locale).slice(0, 1);
 
 const categoryLabelsEn: Record<string, string> = {
   "Mobile & logiciel": "Mobile & software",
@@ -128,6 +131,14 @@ const t = {
     <p class="muted mt-2 max-w-2xl text-sm md:text-base">{isEn ? "Concrete experience in teams and production contexts." : "Expériences concrètes en entreprise et en équipe."}</p>
     <div class="mt-6 space-y-5">
       {featuredExperience.map((item) => <ExperienceCard item={item} locale={locale} />)}
+    </div>
+  </section>
+
+  <section class="cosmic-container mt-14">
+    <h2 class="rec-section-title mt-3">{isEn ? "Recommendation highlight" : "Recommandation mise en avant"}</h2>
+    <p class="muted mt-2 max-w-2xl text-sm md:text-base">{isEn ? "One quick social proof to validate team fit and reliability." : "Une preuve sociale rapide pour valider la fiabilité et le fit équipe."}</p>
+    <div class="mt-5 max-w-3xl">
+      {recruiterTestimonials.map((item) => <TestimonialCard {...item} />)}
     </div>
   </section>
 

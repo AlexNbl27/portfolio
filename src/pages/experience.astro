@@ -21,8 +21,12 @@ const portraitImages = [
 ---
 
 <BaseLayout
-  title={locale === "en" ? "Alexandre Noblet | Journey" : "Alexandre Noblet | Parcours"}
-  description={locale === "en" ? "Academic and professional journey of Alexandre Noblet." : "Parcours académique et professionnel d’Alexandre Noblet."}
+  title={locale === "en"
+    ? "Alexandre Noblet | Journey"
+    : "Alexandre Noblet | Parcours"}
+  description={locale === "en"
+    ? "Academic and professional journey of Alexandre Noblet."
+    : "Parcours académique et professionnel d’Alexandre Noblet."}
 >
   <div slot="fixed-layer" class="hidden lg:block">
     <ScrollPortrait images={portraitImages} />
@@ -31,7 +35,9 @@ const portraitImages = [
 
   <section class="cosmic-container pt-8 lg:pr-[16rem] xl:pr-[18rem]">
     <div class="timeline-content">
-      <h1 class="section-title"><span class="highlight">{t("experience").title}</span></h1>
+      <h1 class="section-title">
+        <span class="highlight">{t("experience").title}</span>
+      </h1>
       <p class="muted mt-4 max-w-3xl">
         {t("experience").subtitle}
       </p>
@@ -153,10 +159,8 @@ const portraitImages = [
     filters.forEach((btn) => {
       btn.addEventListener("click", () => {
         activeFilter = btn.getAttribute("data-filter") || "all";
-        filters.forEach((f) =>
-          f.classList.remove("border-cosmic-gold/60", "text-cosmic-gold"),
-        );
-        btn.classList.add("border-cosmic-gold/60", "text-cosmic-gold");
+        filters.forEach((f) => f.classList.remove("is-active"));
+        btn.classList.add("is-active");
         updateUI();
       });
     });
@@ -175,8 +179,7 @@ const portraitImages = [
     });
 
     const allBtn = document.querySelector('[data-filter="all"]');
-    if (allBtn)
-      allBtn.classList.add("border-cosmic-gold/60", "text-cosmic-gold");
+    if (allBtn) allBtn.classList.add("is-active");
     updateUI();
   });
 </script>

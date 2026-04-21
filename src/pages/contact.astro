@@ -1,0 +1,666 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CalBookingEmbed from "../components/CalBookingEmbed.astro";
+import Card from "../components/ui/Card.astro";
+import { getLocaleFromPathname } from "../i18n/utils";
+import { getContactCopy } from "../data/contact";
+
+const locale = getLocaleFromPathname(Astro.url.pathname);
+const isEn = locale === "en";
+const copy = getContactCopy(locale);
+
+const calLink = "alexandrenoblet/briefcall";
+---
+
+<BaseLayout
+  title={isEn ? "Contact · Alexandre Noblet" : "Contact · Alexandre Noblet"}
+  description={isEn
+    ? "Contact page with brief form and calendar booking."
+    : "Page de contact avec formulaire rapide et prise de rendez-vous."}
+>
+  <section class="cosmic-container contact-hero pt-8">
+    <div class="contact-hero__copy">
+      <h1 class="section-title">
+        {copy.title}
+        <span class="highlight"
+          >{isEn ? "& next step" : "& prochaine étape"}</span
+        >
+      </h1>
+      <p class="muted mt-4 max-w-3xl text-lg leading-relaxed">
+        {copy.subtitle}
+      </p>
+    </div>
+
+    <div class="contact-hero__metrics">
+      {
+        copy.heroCards.map((item) => (
+          <div class="hero-metric">
+            <span class="hero-metric__label">{item.label}</span>
+            <strong class="hero-metric__value">{item.value}</strong>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="cosmic-container contact-layout mt-10">
+    <div class="contact-primary">
+      <form id="contact-form" class="contact-card" method="post" action="#">
+        <div class="form-header">
+          <span class="form-kicker">{copy.formTitle}</span>
+          <p class="form-intro">{copy.formIntro}</p>
+        </div>
+
+        <ul
+          class="contact-points"
+          aria-label={isEn ? "Useful brief points" : "Points utiles du brief"}
+        >
+          {copy.formPoints.map((point) => <li>{point}</li>)}
+        </ul>
+
+        <div class="field-grid">
+          <div class="field-group">
+            <label class="field-label" for="name">
+              {isEn ? "Name" : "Nom"}
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              required
+              class="field-input"
+              placeholder={isEn ? "Alexandre Noblet" : "Alexandre Noblet"}
+            />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="email">Email</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              class="field-input"
+              placeholder="hello@example.com"
+            />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="project">
+            {isEn ? "Project type" : "Type de projet"}
+          </label>
+          <input
+            id="project"
+            name="project"
+            type="text"
+            class="field-input"
+            placeholder={isEn
+              ? "Website, app, redesign…"
+              : "Site web, app, refonte…"}
+          />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="message">Message</label>
+          <textarea
+            id="message"
+            name="message"
+            required
+            class="field-input field-textarea"
+            placeholder={isEn
+              ? "Tell me about your project…"
+              : "Dites-moi en plus sur votre projet…"}></textarea>
+        </div>
+
+        <div class="form-footer">
+          <button type="submit" class="submit-btn">
+            <span>{copy.submit}</span>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              ><line x1="22" y1="2" x2="11" y2="13"></line><polygon
+                points="22 2 15 22 11 13 2 9 22 2"></polygon></svg
+            >
+          </button>
+          <p id="form-status" class="form-status" aria-live="polite"></p>
+        </div>
+      </form>
+
+      <a href="mailto:alexandrenobletpro@gmail.com" class="email-card">
+        <span class="email-card-meta">{copy.emailMeta}</span>
+        <span class="email-card-title">{copy.emailTitle}</span>
+        <p class="email-card-copy">{copy.emailIntro}</p>
+        <span class="email-address">alexandrenobletpro@gmail.com</span>
+      </a>
+    </div>
+
+    <Card class="contact-card booking-card">
+      <div class="booking-header">
+        <span class="booking-kicker">Cal.com</span>
+        <h2 class="font-display text-2xl text-cosmic-gold">
+          {copy.bookingTitle}
+        </h2>
+        <p class="booking-intro">{copy.bookingIntro}</p>
+      </div>
+      <CalBookingEmbed
+        calLink={calLink}
+        title={isEn ? "Cal.com booking" : "Prise de rendez-vous Cal.com"}
+        loadingLabel={isEn
+          ? "Loading the calendar..."
+          : "Chargement du calendrier..."}
+        helperLabel={isEn
+          ? "If the widget is slow to appear, you can open the booking page directly."
+          : "Si le widget tarde à apparaître, vous pouvez ouvrir la page de réservation directement."}
+        ctaLabel={isEn ? "Open Cal.com" : "Ouvrir Cal.com"}
+      />
+    </Card>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    border-radius: 1.6rem;
+    border: 1px solid rgba(203, 191, 132, 0.2);
+    background: linear-gradient(
+      120deg,
+      rgba(41, 45, 67, 0.8),
+      rgba(29, 33, 52, 0.6)
+    );
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 8px 32px rgba(4, 9, 22, 0.37);
+  }
+
+  .contact-hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .contact-hero::before {
+    content: "";
+    position: absolute;
+    inset: -1rem 0 auto;
+    height: 14rem;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        circle at 15% 25%,
+        rgba(242, 180, 223, 0.14),
+        transparent 32%
+      ),
+      radial-gradient(
+        circle at 85% 35%,
+        rgba(246, 212, 13, 0.16),
+        transparent 34%
+      );
+    filter: blur(26px);
+    opacity: 0.85;
+  }
+
+  .contact-hero__copy,
+  .contact-hero__metrics {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-metric__label,
+  .field-label,
+  .booking-kicker,
+  .email-card-meta {
+    font-family: var(--font-body, Manrope, sans-serif);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .contact-hero__metrics {
+    display: grid;
+    gap: 0.85rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 52rem;
+  }
+
+  .hero-metric {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0.9rem;
+    padding: 0.95rem 1.05rem 1rem;
+    min-height: 0;
+    border-radius: 1rem;
+    border: 1px solid rgba(246, 212, 13, 0.12);
+    background:
+      linear-gradient(145deg, rgba(14, 20, 42, 0.92), rgba(8, 13, 29, 0.88)),
+      rgba(9, 15, 36, 0.72);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.03),
+      0 10px 24px rgba(4, 9, 22, 0.16);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-metric::after {
+    content: "";
+    position: absolute;
+    inset: auto -20% -55% auto;
+    width: 7rem;
+    height: 7rem;
+    border-radius: 999px;
+    background: radial-gradient(
+      circle,
+      rgba(246, 212, 13, 0.1),
+      transparent 68%
+    );
+    pointer-events: none;
+  }
+
+  .hero-metric__label {
+    display: block;
+    color: rgba(255, 255, 255, 0.46);
+    line-height: 1.3;
+    font-size: 0.64rem;
+    letter-spacing: 0.22em;
+  }
+
+  .hero-metric__value {
+    display: block;
+    margin-top: 0;
+    color: #f4ede0;
+    font-family: var(--font-display);
+    font-size: 1.85rem;
+    line-height: 0.95;
+    max-width: 12ch;
+    text-wrap: pretty;
+  }
+
+  #contact-form {
+    padding: 1.65rem;
+  }
+
+  .contact-layout {
+    display: grid;
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  .contact-primary {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .form-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .form-kicker {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 2.7rem);
+    line-height: 1.1;
+    color: #f4ede0;
+  }
+
+  .form-intro {
+    margin: 0;
+    max-width: 30rem;
+    color: rgba(255, 255, 255, 0.68);
+    line-height: 1.6;
+    font-size: 0.98rem;
+  }
+
+  .contact-points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .contact-points li {
+    position: relative;
+    padding: 0.7rem 0.9rem 0.7rem 1.6rem;
+    border-radius: 999px;
+    border: 1px solid rgba(246, 212, 13, 0.12);
+    background: rgba(7, 12, 28, 0.38);
+    color: rgba(255, 255, 255, 0.72);
+    line-height: 1.4;
+    font-size: 0.88rem;
+  }
+
+  .contact-points li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.95rem;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #f6d40d, #f2b4df);
+    box-shadow: 0 0 14px rgba(246, 212, 13, 0.25);
+  }
+
+  .field-grid {
+    display: grid;
+    gap: 1rem;
+    margin-top: 0.25rem;
+  }
+
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .field-input {
+    width: 100%;
+    background:
+      linear-gradient(180deg, rgba(7, 12, 28, 0.82), rgba(10, 16, 35, 0.74)),
+      rgba(4, 9, 22, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1rem;
+    padding: 0.9rem 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: var(--font-body, Manrope, sans-serif);
+    font-size: 0.95rem;
+    transition:
+      border-color 0.25s ease,
+      box-shadow 0.25s ease,
+      transform 0.25s ease;
+    outline: none;
+    box-sizing: border-box;
+  }
+
+  .field-input::placeholder {
+    color: rgba(255, 255, 255, 0.22);
+  }
+
+  .field-input:focus {
+    border-color: rgba(246, 212, 13, 0.5);
+    box-shadow:
+      0 0 0 3px rgba(246, 212, 13, 0.08),
+      0 12px 24px rgba(4, 9, 22, 0.16);
+    transform: translateY(-1px);
+  }
+
+  .field-textarea {
+    min-height: 12rem;
+    resize: vertical;
+  }
+
+  .form-footer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 0.25rem;
+  }
+
+  .submit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.45rem;
+    border-radius: 999px;
+    border: 1px solid rgba(246, 212, 13, 0.38);
+    color: #fff5bf;
+    font-family: var(--font-body, Manrope, sans-serif);
+    font-size: 0.88rem;
+    letter-spacing: 0.08em;
+    background:
+      linear-gradient(
+        135deg,
+        rgba(246, 212, 13, 0.18),
+        rgba(242, 180, 223, 0.1)
+      ),
+      rgba(9, 15, 36, 0.68);
+    cursor: pointer;
+    transition:
+      background 0.25s ease,
+      border-color 0.25s ease,
+      box-shadow 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  .submit-btn:hover {
+    background:
+      linear-gradient(
+        135deg,
+        rgba(246, 212, 13, 0.28),
+        rgba(242, 180, 223, 0.16)
+      ),
+      rgba(246, 212, 13, 0.08);
+    border-color: rgba(246, 212, 13, 0.7);
+    box-shadow:
+      0 0 18px rgba(246, 212, 13, 0.14),
+      0 16px 30px rgba(4, 9, 22, 0.25);
+    transform: translateY(-1px);
+  }
+
+  .submit-btn:active {
+    transform: scale(0.97);
+  }
+
+  .form-status {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .form-status.success {
+    color: #6ee7b7;
+  }
+  .form-status.error {
+    color: #fca5a5;
+  }
+
+  .email-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 1.25rem 1.35rem;
+    min-height: 10rem;
+    border-radius: 1.2rem;
+    border: 1px solid rgba(246, 212, 13, 0.16);
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(246, 212, 13, 0.14),
+        transparent 36%
+      ),
+      linear-gradient(145deg, rgba(16, 22, 43, 0.82), rgba(8, 13, 30, 0.82));
+    text-decoration: none;
+    transition:
+      border-color 0.25s,
+      background 0.25s,
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+
+  .email-card:hover {
+    border-color: rgba(246, 212, 13, 0.34);
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(246, 212, 13, 0.2),
+        transparent 38%
+      ),
+      linear-gradient(145deg, rgba(18, 25, 48, 0.86), rgba(9, 15, 34, 0.88));
+    transform: translateY(-2px);
+    box-shadow: 0 20px 36px rgba(4, 9, 22, 0.28);
+  }
+
+  .email-address {
+    font-family: var(--font-body, Manrope, sans-serif);
+    font-size: clamp(1rem, 2vw, 1.12rem);
+    line-height: 1.35;
+    color: #f6d40d;
+    word-break: break-word;
+  }
+
+  .email-card-meta {
+    color: rgba(246, 212, 13, 0.64);
+  }
+
+  .email-card-title {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    line-height: 1.1;
+    color: #f4ede0;
+  }
+
+  .email-card-copy {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.58);
+    line-height: 1.55;
+    font-size: 0.92rem;
+  }
+
+  .booking-card {
+    padding: 1.65rem;
+    gap: 0.75rem;
+    min-height: 0;
+  }
+
+  .booking-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .booking-kicker {
+    color: rgba(246, 212, 13, 0.72);
+  }
+
+  .booking-header h2 {
+    margin: 0;
+  }
+
+  .booking-intro {
+    margin: 0;
+    max-width: 36rem;
+    color: rgba(255, 255, 255, 0.66);
+    line-height: 1.65;
+    font-size: 0.96rem;
+  }
+
+  @media (min-width: 768px) {
+    .field-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .contact-layout {
+      grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr);
+      gap: 1.5rem;
+    }
+
+    #contact-form {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    #contact-form .field-group:last-of-type {
+      flex: 1;
+    }
+
+    #contact-form .field-textarea {
+      height: 100%;
+      min-height: 15rem;
+    }
+
+    .booking-card {
+      min-height: 100%;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .contact-hero__metrics {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-metric__value {
+      font-size: 1.5rem;
+    }
+
+    #contact-form,
+    .booking-card {
+      padding: 1.35rem;
+    }
+
+    .form-kicker {
+      font-size: 1.85rem;
+    }
+
+    .contact-points {
+      display: grid;
+    }
+
+    .contact-points li {
+      border-radius: 1rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const form = document.getElementById(
+      "contact-form",
+    ) as HTMLFormElement | null;
+    const status = document.getElementById("form-status");
+    const btn = form?.querySelector<HTMLButtonElement>(".submit-btn");
+    const isEn = document.documentElement.lang === "en";
+
+    form?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!btn) return;
+      btn.disabled = true;
+      btn.style.opacity = "0.6";
+      if (status) {
+        status.textContent = isEn ? "Sending…" : "Envoi…";
+        status.className = "form-status";
+      }
+
+      try {
+        const res = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(Object.fromEntries(new FormData(form))),
+        });
+        if (res.ok) {
+          if (status) {
+            status.textContent = isEn ? "Message sent!" : "Message envoyé !";
+            status.className = "form-status success";
+          }
+          form.reset();
+        } else throw new Error();
+      } catch {
+        if (status) {
+          status.textContent = isEn
+            ? "An error occurred."
+            : "Une erreur est survenue.";
+          status.className = "form-status error";
+        }
+      } finally {
+        btn.disabled = false;
+        btn.style.opacity = "1";
+      }
+    });
+  });
+</script>

@@ -37,6 +37,7 @@
   * {
     box-sizing: border-box;
   }
+
   html {
     scroll-behavior: smooth;
     background-color: #040916 !important;
@@ -56,22 +57,61 @@
     margin: 0;
     color: var(--text);
     background:
-      radial-gradient(
-        circle at 20% 20%,
+      radial-gradient(circle at 20% 20%,
         rgba(105, 72, 165, 0.25),
-        transparent 50%
-      ),
-      radial-gradient(
-        circle at 80% 60%,
+        transparent 50%),
+      radial-gradient(circle at 80% 60%,
         rgba(38, 83, 130, 0.26),
-        transparent 45%
-      ),
+        transparent 45%),
       linear-gradient(160deg, #040916 0%, #050d22 45%, #060a18 100%);
     font-family: "Manrope", sans-serif;
     min-height: 100vh;
     transition: background 320ms ease;
   }
 }
+
+/* ── Scrollbar custom ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #090f24;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2c2a5f;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #f6d40d;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2c2a5f #090f24;
+}
+
+#page-transition-overlay {
+  position: fixed;
+  inset: 0;
+  background: #030713;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.38s ease;
+}
+
+#hyperspace-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 
 @layer components {
   .cosmic-container {
@@ -81,6 +121,7 @@
     padding-left: 1.25rem;
     padding-right: 1.25rem;
   }
+
   @media (min-width: 768px) {
     .cosmic-container {
       padding-left: 2rem;
@@ -99,16 +140,182 @@
   }
 
   .glass-card {
-    background: linear-gradient(
-      120deg,
-      rgba(41, 45, 67, 0.78),
-      rgba(29, 33, 52, 0.58)
-    );
+    background: linear-gradient(120deg,
+        rgba(41, 45, 67, 0.78),
+        rgba(29, 33, 52, 0.58));
     border: 1px solid rgba(203, 191, 132, 0.2);
     border-radius: 1.6rem;
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     contain: paint;
+  }
+
+  .card-shell {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-glass-card);
+  }
+
+  .card-hoverable {
+    transition:
+      transform 260ms ease,
+      border-color 260ms ease,
+      box-shadow 260ms ease,
+      background 260ms ease;
+  }
+
+  .card-hoverable:hover {
+    transform: translateY(-8px);
+    border-color: rgba(246, 212, 13, 0.48);
+    box-shadow: var(--shadow-glow-hover);
+  }
+
+  .card-interactive {
+    display: block;
+    cursor: pointer;
+  }
+
+  .service-pack-card,
+  .testimonial-card,
+  .process-step-card {
+    min-height: 100%;
+  }
+
+  .service-pack-card {
+    background:
+      radial-gradient(circle at top right, rgba(246, 212, 13, 0.12), transparent 32%),
+      linear-gradient(135deg, rgba(15, 20, 48, 0.88), rgba(12, 17, 40, 0.72));
+  }
+
+  .service-pack-card__list li::marker {
+    color: var(--gold);
+  }
+
+  .process-step-card {
+    background:
+      radial-gradient(circle at top left, rgba(242, 180, 223, 0.1), transparent 30%),
+      linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+  }
+
+  .testimonial-card {
+    background:
+      radial-gradient(circle at 85% 0%, rgba(242, 180, 223, 0.12), transparent 28%),
+      linear-gradient(135deg, rgba(15, 20, 48, 0.9), rgba(12, 17, 40, 0.76));
+  }
+
+  .proof-strip-card {
+    background:
+      radial-gradient(circle at top right, rgba(246, 212, 13, 0.12), transparent 32%),
+      linear-gradient(135deg, rgba(15, 20, 48, 0.88), rgba(12, 17, 40, 0.72));
+  }
+
+  .proof-strip-stat-card {
+    min-height: 100%;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: none;
+  }
+
+  .portal-tabs-card {
+    background:
+      radial-gradient(circle at top left, rgba(242, 180, 223, 0.08), transparent 28%),
+      linear-gradient(135deg, rgba(12, 18, 48, 0.9), rgba(10, 16, 40, 0.76));
+  }
+
+  .portal-tabs-item-card {
+    min-height: 100%;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .services-cta-card {
+    background:
+      radial-gradient(circle at top right, rgba(246, 212, 13, 0.18), transparent 36%),
+      linear-gradient(135deg, rgba(246, 212, 13, 0.12), rgba(12, 17, 40, 0.78));
+    border-color: rgba(246, 212, 13, 0.25);
+  }
+
+  .mobile-skill-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    padding: 1.375rem 1.25rem;
+    text-decoration: none;
+  }
+
+  .mobile-skill-card--pink {
+    border-color: rgba(242, 180, 223, 0.25);
+  }
+
+  .mobile-skill-card--gold {
+    border-color: rgba(246, 212, 13, 0.25);
+  }
+
+  .mobile-skill-card--pink:hover {
+    border-color: rgba(242, 180, 223, 0.6);
+    background:
+      radial-gradient(circle at top left, rgba(242, 180, 223, 0.16), transparent 34%),
+      linear-gradient(135deg, rgba(18, 14, 36, 0.92), rgba(12, 17, 40, 0.76));
+  }
+
+  .mobile-skill-card--gold:hover {
+    border-color: rgba(246, 212, 13, 0.6);
+    background:
+      radial-gradient(circle at top left, rgba(246, 212, 13, 0.18), transparent 34%),
+      linear-gradient(135deg, rgba(18, 16, 30, 0.92), rgba(12, 17, 40, 0.76));
+  }
+
+  .msc-tag {
+    font-size: 0.625rem;
+    letter-spacing: 0.25rem;
+    text-transform: uppercase;
+    opacity: 0.65;
+  }
+
+  .msc-title {
+    font-family: var(--font-display, "Cormorant Garamond", serif);
+    font-size: 1.875rem;
+    font-weight: 600;
+    line-height: 1.1;
+  }
+
+  .msc-desc {
+    font-size: 0.875rem;
+    opacity: 0.65;
+  }
+
+  .msc-arrow {
+    position: absolute;
+    right: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.25rem;
+    opacity: 0.4;
+    transition: opacity 0.3s, right 0.3s;
+  }
+
+  .mobile-skill-card:hover .msc-arrow {
+    opacity: 0.9;
+    right: 0.875rem;
+  }
+
+  .mobile-skill-card--pink .msc-tag,
+  .mobile-skill-card--pink .msc-title,
+  .mobile-skill-card--pink .msc-arrow {
+    color: #f2b4df;
+  }
+
+  .mobile-skill-card--gold .msc-tag,
+  .mobile-skill-card--gold .msc-title,
+  .mobile-skill-card--gold .msc-arrow {
+    color: #f6d40d;
+  }
+
+  .mobile-skill-card--pink .msc-desc,
+  .mobile-skill-card--gold .msc-desc {
+    color: rgba(255, 255, 255, 0.65);
   }
 
   .section-title {
@@ -121,6 +328,7 @@
     color: var(--gold);
     font-style: italic;
   }
+
   .muted {
     color: var(--muted);
   }
@@ -131,6 +339,7 @@
   }
 
   @media (max-width: 767px) {
+
     a,
     button,
     [role="button"],
@@ -186,12 +395,10 @@
 
   .experience-timeline-track::before {
     left: calc(1rem - 0.5px);
-    background: linear-gradient(
-      180deg,
-      rgba(246, 212, 13, 0.12),
-      rgba(246, 212, 13, 0.7),
-      rgba(227, 164, 214, 0.2)
-    );
+    background: linear-gradient(180deg,
+        rgba(246, 212, 13, 0.12),
+        rgba(246, 212, 13, 0.7),
+        rgba(227, 164, 214, 0.2));
     box-shadow: 0 0 22px rgba(246, 212, 13, 0.18);
   }
 
@@ -257,7 +464,8 @@
 
   @media (max-width: 767px) {
     .experience-item:hover::before {
-      transform: scale(1.3); /* Restore non-translated scale for mobile */
+      transform: scale(1.3);
+      /* Restore non-translated scale for mobile */
     }
   }
 
@@ -276,11 +484,9 @@
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(
-        circle at top right,
+      radial-gradient(circle at top right,
         rgba(246, 212, 13, 0.18),
-        transparent 32%
-      ),
+        transparent 32%),
       linear-gradient(135deg, rgba(255, 255, 255, 0.06), transparent 34%);
     opacity: 0.9;
     pointer-events: none;
@@ -293,12 +499,10 @@
     inset: -40% auto -40% -35%;
     width: 38%;
     transform: rotate(14deg) translateX(-180%);
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.18),
-      transparent
-    );
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.18),
+        transparent);
     opacity: 0;
     transition:
       transform 420ms ease,
@@ -306,8 +510,8 @@
     pointer-events: none;
   }
 
-  .experience-card > *,
-  .shine-effect > * {
+  .experience-card>*,
+  .shine-effect>* {
     position: relative;
     z-index: 1;
   }
@@ -333,8 +537,13 @@
   }
 
   @keyframes orbit-rotate-angle {
-    from { --border-angle: 0deg; }
-    to { --border-angle: 360deg; }
+    from {
+      --border-angle: 0deg;
+    }
+
+    to {
+      --border-angle: 360deg;
+    }
   }
 
   /* Moving light source orbiting around the card border */
@@ -356,14 +565,12 @@
   /* Conic border: bright spot that fades all the way around */
   .recruiter-cta-wrap::before {
     inset: -1px;
-    background: conic-gradient(
-      from var(--border-angle),
-      rgba(246, 212, 13, 0.04) 0deg,
-      rgba(246, 212, 13, 0.03) 200deg,
-      rgba(246, 212, 13, 0.12) 280deg,
-      rgba(246, 212, 13, 0.75) 350deg,
-      rgba(246, 212, 13, 0.04) 360deg
-    );
+    background: conic-gradient(from var(--border-angle),
+        rgba(246, 212, 13, 0.04) 0deg,
+        rgba(246, 212, 13, 0.03) 200deg,
+        rgba(246, 212, 13, 0.12) 280deg,
+        rgba(246, 212, 13, 0.75) 350deg,
+        rgba(246, 212, 13, 0.04) 360deg);
     padding: 1px;
     -webkit-mask:
       linear-gradient(#fff 0 0) content-box,
@@ -389,14 +596,12 @@
   .recruiter-cta-wrap::after {
     inset: -12px;
     border-radius: calc(var(--radius-card) + 12px);
-    background: conic-gradient(
-      from var(--border-angle),
-      transparent 0deg,
-      transparent 250deg,
-      rgba(246, 212, 13, 0.06) 310deg,
-      rgba(246, 212, 13, 0.22) 355deg,
-      transparent 360deg
-    );
+    background: conic-gradient(from var(--border-angle),
+        transparent 0deg,
+        transparent 250deg,
+        rgba(246, 212, 13, 0.06) 310deg,
+        rgba(246, 212, 13, 0.22) 355deg,
+        transparent 360deg);
     filter: blur(14px);
     z-index: -1;
   }
@@ -418,11 +623,9 @@
 
   .experience-tech {
     border: 1px solid rgba(246, 212, 13, 0.14);
-    background: linear-gradient(
-      180deg,
-      rgba(10, 15, 34, 0.84),
-      rgba(14, 22, 45, 0.7)
-    );
+    background: linear-gradient(180deg,
+        rgba(10, 15, 34, 0.84),
+        rgba(14, 22, 45, 0.7));
     border-radius: 999px;
     color: #efe7c4;
     padding: 0.5rem 0.85rem;
@@ -435,53 +638,79 @@
   .experience-tech:hover {
     transform: translateY(-2px);
     border-color: rgba(246, 212, 13, 0.4);
-    background: linear-gradient(
-      180deg,
-      rgba(26, 34, 66, 0.92),
-      rgba(18, 26, 49, 0.84)
-    );
+    background: linear-gradient(180deg,
+        rgba(26, 34, 66, 0.92),
+        rgba(18, 26, 49, 0.84));
   }
 
   /* ── Soft skills page layout ── */
   .soft-viz-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
     width: 100%;
+    max-width: 72rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .soft-viz-wrapper {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+
+  .soft-viz-stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch;
+    gap: clamp(0.75rem, 2vw, 1.25rem);
   }
 
   .soft-constellation-banner {
     position: relative;
     width: 100%;
-    margin: 0 auto;
-    height: 38vh;
-    min-height: 320px;
-    max-height: 480px;
+    min-height: clamp(20rem, 39vh, 28rem);
+    max-height: 42vh;
     overflow: hidden;
-    border-radius: 2rem;
-    border: 1px solid rgba(246, 212, 13, 0.25);
-    background: radial-gradient(
-      ellipse at 50% 100%,
-      rgba(39, 46, 86, 0.4),
-      rgba(15, 20, 42, 0.75) 45%,
-      rgba(8, 12, 26, 0.98) 100%
-    );
+    border-radius: 1.6rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background:
+      linear-gradient(180deg, rgba(255, 220, 80, 0.04), rgba(255, 220, 80, 0.008) 28%, rgba(8, 12, 28, 0.015) 100%),
+      radial-gradient(circle at 24% 0%, rgba(246, 212, 13, 0.08), transparent 34%),
+      radial-gradient(circle at 78% 12%, rgba(227, 164, 214, 0.05), transparent 32%);
     box-shadow:
-      inset 0 0 0 1px rgba(255, 255, 255, 0.03),
-      0 12px 60px rgba(0, 0, 0, 0.5);
+      inset 0 1px 0 rgba(255, 245, 190, 0.08),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.02);
   }
 
-  .soft-viz-cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+  .soft-constellation__nebula {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 42%, rgba(227, 164, 214, 0.12), transparent 24%),
+      radial-gradient(circle at 72% 36%, rgba(246, 212, 13, 0.12), transparent 20%),
+      radial-gradient(circle at 50% 56%, rgba(255, 144, 66, 0.14), transparent 28%),
+      radial-gradient(circle at 44% 22%, rgba(255, 215, 120, 0.08), transparent 18%);
+    filter: blur(18px);
+    opacity: 0.58;
+    pointer-events: none;
+    animation: nebula-drift 14s ease-in-out infinite alternate;
+  }
+
+  .skill-info-card {
+    position: relative !important;
     width: 100%;
+    z-index: 10;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    align-self: stretch;
   }
 
-  @media (max-width: 767px) {
-    .soft-viz-cards {
-      grid-template-columns: 1fr;
-    }
+  /* Hide hint once a planet is active */
+  body[data-soft-skill-theme] .constellation-hint {
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
 
 
@@ -550,11 +779,9 @@
   .project-detail-link--ghost {
     border: 1px solid var(--project-glow-a);
     color: var(--project-accent-soft);
-    background: linear-gradient(
-      160deg,
-      rgba(11, 16, 35, 0.84),
-      rgba(13, 20, 41, 0.68)
-    );
+    background: linear-gradient(160deg,
+        rgba(11, 16, 35, 0.84),
+        rgba(13, 20, 41, 0.68));
   }
 
   .project-detail-link:hover {
@@ -565,61 +792,17 @@
   .project-detail-tech {
     border: 1px solid var(--project-glow-a);
     color: var(--project-accent-soft);
-    background: linear-gradient(
-      180deg,
-      rgba(13, 19, 40, 0.9),
-      rgba(10, 15, 33, 0.72)
-    );
+    background: linear-gradient(180deg,
+        rgba(13, 19, 40, 0.9),
+        rgba(10, 15, 33, 0.72));
   }
 
   .project-detail .glass-card:last-child {
     background:
-      radial-gradient(
-        circle at 82% 12%,
+      radial-gradient(circle at 82% 12%,
         var(--project-glow-b),
-        transparent 34%
-      ),
+        transparent 34%),
       linear-gradient(120deg, rgba(41, 45, 67, 0.78), rgba(29, 33, 52, 0.58));
-  }
-
-  .soft-constellation__nebula {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(
-        circle at 20% 22%,
-        rgba(227, 164, 214, 0.18),
-        transparent 24%
-      ),
-      radial-gradient(
-        circle at 76% 28%,
-        rgba(246, 212, 13, 0.14),
-        transparent 22%
-      ),
-      radial-gradient(
-        circle at 30% 74%,
-        rgba(68, 193, 255, 0.12),
-        transparent 18%
-      ),
-      radial-gradient(
-        circle at 72% 74%,
-        rgba(99, 102, 241, 0.14),
-        transparent 20%
-      );
-    pointer-events: none;
-  }
-
-  .soft-constellation__star {
-    position: absolute;
-    border-radius: 999px;
-    background: radial-gradient(
-      circle,
-      rgba(255, 248, 210, 0.95),
-      rgba(246, 212, 13, 0.7) 55%,
-      rgba(246, 212, 13, 0) 100%
-    );
-    box-shadow: 0 0 18px rgba(246, 212, 13, 0.28);
-    pointer-events: none;
   }
 
   .soft-skill-core {
@@ -633,13 +816,11 @@
     transform: translate(-50%, -50%);
     border-radius: 999px;
     border: 2px solid rgba(255, 230, 60, 0.85);
-    background: radial-gradient(
-      circle at 35% 30%,
-      rgba(255, 248, 180, 0.98) 0%,
-      rgba(255, 220, 40, 0.95) 40%,
-      rgba(246, 170, 0, 0.88) 75%,
-      rgba(200, 100, 0, 0.7) 100%
-    );
+    background: radial-gradient(circle at 35% 30%,
+        rgba(255, 248, 180, 0.98) 0%,
+        rgba(255, 220, 40, 0.95) 40%,
+        rgba(246, 170, 0, 0.88) 75%,
+        rgba(200, 100, 0, 0.7) 100%);
     box-shadow:
       0 0 18px rgba(255, 220, 40, 0.9),
       0 0 42px rgba(246, 212, 13, 0.55),
@@ -713,6 +894,7 @@
     height: 3.5rem;
     flex: none;
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: planet-drift 6.5s ease-in-out infinite;
   }
 
   .soft-skill-node:hover .soft-skill-node__planet-wrap {
@@ -723,13 +905,23 @@
     position: absolute;
     inset: -0.8rem;
     border-radius: 50%;
-    background: radial-gradient(
-      circle,
-      currentColor 0%,
-      rgba(255, 255, 255, 0) 70%
-    );
+    background: radial-gradient(circle,
+        currentColor 0%,
+        rgba(255, 255, 255, 0) 70%);
     opacity: 0.35;
     filter: blur(8px);
+    animation: soft-skill-pulse 3.8s ease-in-out infinite;
+  }
+
+  .soft-skill-node__planet-wrap::after {
+    content: "";
+    position: absolute;
+    inset: -0.45rem;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    opacity: 0;
+    transform: scale(0.88);
+    animation: planet-ring-echo 4.5s ease-out infinite;
   }
 
   .soft-skill-node__planet {
@@ -746,25 +938,20 @@
   .planet-mars {
     color: #e07050;
   }
+
   .planet-mars .soft-skill-node__planet {
     background:
-      radial-gradient(
-        ellipse 25% 20% at 72% 58%,
+      radial-gradient(ellipse 25% 20% at 72% 58%,
         rgba(140, 60, 30, 0.5) 0%,
-        transparent 70%
-      ),
-      radial-gradient(
-        ellipse 18% 12% at 38% 72%,
+        transparent 70%),
+      radial-gradient(ellipse 18% 12% at 38% 72%,
         rgba(160, 70, 35, 0.35) 0%,
-        transparent 70%
-      ),
-      radial-gradient(
-        circle at 33% 28%,
+        transparent 70%),
+      radial-gradient(circle at 33% 28%,
         #f0a888 0%,
         #c85838 38%,
         #8b2e18 72%,
-        #5a1a0a 100%
-      );
+        #5a1a0a 100%);
     box-shadow:
       0 0 10px rgba(200, 88, 56, 0.7),
       0 0 22px rgba(200, 88, 56, 0.3),
@@ -775,34 +962,31 @@
   .planet-saturn {
     color: #d4a84b;
   }
+
   .planet-saturn .soft-skill-node__planet-wrap {
     width: 2.6rem;
     height: 2.6rem;
   }
+
   .planet-saturn .soft-skill-node__planet {
     background:
-      radial-gradient(
-        ellipse 80% 18% at 50% 38%,
+      radial-gradient(ellipse 80% 18% at 50% 38%,
         rgba(240, 210, 120, 0.4) 0%,
-        transparent 100%
-      ),
-      radial-gradient(
-        ellipse 80% 14% at 50% 62%,
+        transparent 100%),
+      radial-gradient(ellipse 80% 14% at 50% 62%,
         rgba(180, 130, 40, 0.35) 0%,
-        transparent 100%
-      ),
-      radial-gradient(
-        circle at 33% 28%,
+        transparent 100%),
+      radial-gradient(circle at 33% 28%,
         #f5e6a3 0%,
         #d4a848 35%,
         #a07828 68%,
-        #6a4e18 100%
-      );
+        #6a4e18 100%);
     box-shadow:
       0 0 10px rgba(212, 168, 72, 0.7),
       0 0 24px rgba(212, 168, 72, 0.3),
       inset -4px -4px 8px rgba(0, 0, 0, 0.35);
   }
+
   /* Saturn ring */
   .planet-saturn .soft-skill-node__planet::before {
     content: "";
@@ -819,6 +1003,7 @@
     transform: translate(-50%, -50%);
     z-index: -1;
   }
+
   /* Front half of ring (in front of planet) */
   .planet-saturn .soft-skill-node__planet::after {
     content: "";
@@ -840,25 +1025,20 @@
   .planet-neptune {
     color: #5080e0;
   }
+
   .planet-neptune .soft-skill-node__planet {
     background:
-      radial-gradient(
-        ellipse 40% 25% at 30% 42%,
+      radial-gradient(ellipse 40% 25% at 30% 42%,
         rgba(120, 170, 240, 0.5) 0%,
-        transparent 70%
-      ),
-      radial-gradient(
-        ellipse 30% 18% at 70% 60%,
+        transparent 70%),
+      radial-gradient(ellipse 30% 18% at 70% 60%,
         rgba(30, 60, 160, 0.5) 0%,
-        transparent 70%
-      ),
-      radial-gradient(
-        circle at 33% 28%,
+        transparent 70%),
+      radial-gradient(circle at 33% 28%,
         #7aacf8 0%,
         #2e5cc8 38%,
         #1432a0 70%,
-        #0a1a70 100%
-      );
+        #0a1a70 100%);
     box-shadow:
       0 0 10px rgba(46, 92, 200, 0.8),
       0 0 24px rgba(46, 92, 200, 0.35),
@@ -869,67 +1049,26 @@
   .planet-earth {
     color: #4ab8c8;
   }
+
   .planet-earth .soft-skill-node__planet {
     background:
-      radial-gradient(
-        ellipse 35% 30% at 62% 38%,
+      radial-gradient(ellipse 35% 30% at 62% 38%,
         rgba(34, 140, 60, 0.75) 0%,
-        transparent 65%
-      ),
-      radial-gradient(
-        ellipse 22% 20% at 28% 65%,
+        transparent 65%),
+      radial-gradient(ellipse 22% 20% at 28% 65%,
         rgba(34, 130, 50, 0.55) 0%,
-        transparent 65%
-      ),
-      radial-gradient(
-        ellipse 18% 14% at 72% 70%,
+        transparent 65%),
+      radial-gradient(ellipse 18% 14% at 72% 70%,
         rgba(34, 120, 50, 0.4) 0%,
-        transparent 65%
-      ),
-      radial-gradient(
-        circle at 33% 28%,
+        transparent 65%),
+      radial-gradient(circle at 33% 28%,
         #a8e0f8 0%,
         #2a8ad0 35%,
         #1060a8 68%,
-        #083a70 100%
-      );
+        #083a70 100%);
     box-shadow:
       0 0 10px rgba(42, 138, 208, 0.7),
       0 0 22px rgba(42, 138, 208, 0.3),
-      inset -4px -4px 8px rgba(0, 0, 0, 0.4);
-  }
-
-  /* Jupiter — bandes orangées */
-  .planet-jupiter {
-    color: #d4874a;
-  }
-  .planet-jupiter .soft-skill-node__planet {
-    background:
-      radial-gradient(
-        ellipse 85% 7% at 50% 32%,
-        rgba(215, 155, 90, 0.65) 0%,
-        transparent 100%
-      ),
-      radial-gradient(
-        ellipse 85% 7% at 50% 52%,
-        rgba(170, 100, 50, 0.55) 0%,
-        transparent 100%
-      ),
-      radial-gradient(
-        ellipse 85% 6% at 50% 68%,
-        rgba(200, 130, 70, 0.45) 0%,
-        transparent 100%
-      ),
-      radial-gradient(
-        circle at 33% 28%,
-        #f0c090 0%,
-        #c87840 35%,
-        #a05828 68%,
-        #703818 100%
-      );
-    box-shadow:
-      0 0 10px rgba(200, 120, 60, 0.7),
-      0 0 24px rgba(200, 120, 60, 0.3),
       inset -4px -4px 8px rgba(0, 0, 0, 0.4);
   }
 
@@ -937,25 +1076,20 @@
   .planet-venus {
     color: #e8c860;
   }
+
   .planet-venus .soft-skill-node__planet {
     background:
-      radial-gradient(
-        ellipse 55% 40% at 38% 38%,
+      radial-gradient(ellipse 55% 40% at 38% 38%,
         rgba(255, 245, 190, 0.55) 0%,
-        transparent 70%
-      ),
-      radial-gradient(
-        ellipse 40% 25% at 65% 60%,
+        transparent 70%),
+      radial-gradient(ellipse 40% 25% at 65% 60%,
         rgba(220, 180, 80, 0.35) 0%,
-        transparent 70%
-      ),
-      radial-gradient(
-        circle at 35% 30%,
+        transparent 70%),
+      radial-gradient(circle at 35% 30%,
         #fef5c8 0%,
         #e8c858 38%,
         #c8a030 70%,
-        #906010 100%
-      );
+        #906010 100%);
     box-shadow:
       0 0 10px rgba(232, 200, 80, 0.8),
       0 0 24px rgba(232, 200, 80, 0.35),
@@ -966,19 +1100,19 @@
   .planet-uranus {
     color: #7de8d8;
   }
+
   .planet-uranus .soft-skill-node__planet {
-    background: radial-gradient(
-      circle at 35% 30%,
-      #c8f4f4 0%,
-      #58d0d0 38%,
-      #26a0b0 70%,
-      #0e6878 100%
-    );
+    background: radial-gradient(circle at 35% 30%,
+        #c8f4f4 0%,
+        #58d0d0 38%,
+        #26a0b0 70%,
+        #0e6878 100%);
     box-shadow:
       0 0 10px rgba(88, 208, 208, 0.7),
       0 0 24px rgba(88, 208, 208, 0.3),
       inset -4px -4px 8px rgba(0, 0, 0, 0.4);
   }
+
   .planet-uranus .soft-skill-node__planet::before {
     content: "";
     position: absolute;
@@ -990,40 +1124,6 @@
     border: 2px solid rgba(88, 208, 208, 0.6);
     transform: translate(-50%, -50%);
     z-index: -1;
-  }
-
-  /* Mercury — gris cratérisé */
-  .planet-mercury {
-    color: #a0a0b8;
-  }
-  .planet-mercury .soft-skill-node__planet {
-    background:
-      radial-gradient(
-        ellipse 14% 10% at 65% 32%,
-        rgba(60, 60, 80, 0.7) 0%,
-        transparent 70%
-      ),
-      radial-gradient(
-        ellipse 10% 8% at 32% 62%,
-        rgba(60, 60, 80, 0.6) 0%,
-        transparent 70%
-      ),
-      radial-gradient(
-        ellipse 8% 6% at 55% 68%,
-        rgba(50, 50, 70, 0.5) 0%,
-        transparent 70%
-      ),
-      radial-gradient(
-        circle at 35% 30%,
-        #d0d0e0 0%,
-        #909098 38%,
-        #606070 70%,
-        #3c3c50 100%
-      );
-    box-shadow:
-      0 0 8px rgba(144, 144, 152, 0.55),
-      0 0 18px rgba(144, 144, 152, 0.2),
-      inset -4px -4px 8px rgba(0, 0, 0, 0.55);
   }
 
   /* Label under planet */
@@ -1043,20 +1143,10 @@
     box-shadow: 0 4px 12px rgba(4, 9, 22, 0.35);
   }
 
-  @media (min-width: 768px) {
-    .soft-skill-node {
-      transition: transform 220ms ease;
-    }
-
-    .soft-skill-node:hover {
-      transform: translate(-50%, -50%) scale(1.1);
-    }
-  }
-
   @media (max-width: 767px) {
     .soft-constellation-banner {
-      height: 48vh;
-      min-height: 380px;
+      min-height: clamp(18rem, 48vh, 24rem);
+      max-height: none;
     }
 
     .soft-skill-node__planet-wrap {
@@ -1082,25 +1172,6 @@
     .soft-skill-core__label {
       font-size: 0.9rem;
     }
-
-    .soft-viz-cards {
-      gap: 0.75rem;
-    }
-  }
-
-  .exp-filter {
-    transition:
-      transform 200ms ease,
-      border-color 200ms ease,
-      color 200ms ease,
-      background 200ms ease;
-  }
-
-  .exp-filter:hover {
-    transform: translateY(-2px);
-    border-color: rgba(246, 212, 13, 0.45);
-    color: var(--gold);
-    background: rgba(255, 255, 255, 0.03);
   }
 
   .featured-soft-skill {
@@ -1118,12 +1189,10 @@
     inset: -50% auto -50% -30%;
     width: 34%;
     transform: rotate(18deg) translateX(-220%);
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.18),
-      transparent
-    );
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.18),
+        transparent);
     opacity: 0;
     transition:
       transform 360ms ease,
@@ -1188,6 +1257,17 @@
     margin-bottom: 0.5rem;
   }
 
+  .skill-info-detail__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(15rem, 0.9fr);
+    gap: 1.2rem;
+    align-items: start;
+  }
+
+  .skill-info-detail__copy {
+    min-width: 0;
+  }
+
   .skill-info-detail__title {
     font-size: 2rem;
     color: #f6d40d;
@@ -1198,7 +1278,51 @@
   .skill-info-detail__text {
     font-size: 0.95rem;
     line-height: 1.65;
-    margin-bottom: 1.2rem;
+    margin-bottom: 0;
+  }
+
+  .skill-info-detail__movie-block {
+    display: grid;
+    gap: 0.35rem;
+    padding: 0.95rem 1rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(246, 212, 13, 0.24);
+    background:
+      linear-gradient(145deg, rgba(246, 212, 13, 0.1), rgba(227, 164, 214, 0.08)),
+      rgba(10, 15, 32, 0.82);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+      0 14px 30px rgba(4, 9, 22, 0.28);
+  }
+
+  .skill-info-detail__movie-block.is-empty {
+    opacity: 0.72;
+  }
+
+  .skill-info-detail__movie-kicker {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: rgba(246, 212, 13, 0.7);
+  }
+
+  .skill-info-detail__movie-title {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: #fff4bf;
+  }
+
+  .skill-info-detail__movie-note {
+    font-size: 0.84rem;
+    line-height: 1.45;
+    color: rgba(220, 232, 255, 0.66);
+  }
+
+  @media (max-width: 767px) {
+    .skill-info-detail__body {
+      grid-template-columns: 1fr;
+    }
   }
 
   /* Flash animation on card switch */
@@ -1222,18 +1346,77 @@
     animation: hint-breathe 3s ease-in-out infinite;
   }
 
-  /* Planet invite glow — staggered per planet */
-  .soft-skill-node:nth-child(2) .soft-skill-node__aura {
+  /* Planet invite glow — staggered per planet class */
+  .planet-mars .soft-skill-node__aura {
     animation-delay: 0s;
   }
-  .soft-skill-node:nth-child(3) .soft-skill-node__aura {
+
+  .planet-saturn .soft-skill-node__aura {
     animation-delay: 0.6s;
   }
-  .soft-skill-node:nth-child(4) .soft-skill-node__aura {
+
+  .planet-neptune .soft-skill-node__aura {
     animation-delay: 1.2s;
   }
-  .soft-skill-node:nth-child(5) .soft-skill-node__aura {
+
+  .planet-earth .soft-skill-node__aura {
     animation-delay: 1.8s;
+  }
+
+  .planet-venus .soft-skill-node__aura {
+    animation-delay: 2.4s;
+  }
+
+  .planet-uranus .soft-skill-node__aura {
+    animation-delay: 0.3s;
+  }
+
+  .planet-mars .soft-skill-node__planet-wrap {
+    animation-delay: -0.4s;
+  }
+
+  .planet-saturn .soft-skill-node__planet-wrap {
+    animation-delay: -2.1s;
+  }
+
+  .planet-neptune .soft-skill-node__planet-wrap {
+    animation-delay: -1.2s;
+  }
+
+  .planet-earth .soft-skill-node__planet-wrap {
+    animation-delay: -2.8s;
+  }
+
+  .planet-venus .soft-skill-node__planet-wrap {
+    animation-delay: -3.4s;
+  }
+
+  .planet-uranus .soft-skill-node__planet-wrap {
+    animation-delay: -1.7s;
+  }
+
+  .planet-mars .soft-skill-node__planet-wrap::after {
+    animation-delay: 0.4s;
+  }
+
+  .planet-saturn .soft-skill-node__planet-wrap::after {
+    animation-delay: 1.8s;
+  }
+
+  .planet-neptune .soft-skill-node__planet-wrap::after {
+    animation-delay: 0.9s;
+  }
+
+  .planet-earth .soft-skill-node__planet-wrap::after {
+    animation-delay: 2.5s;
+  }
+
+  .planet-venus .soft-skill-node__planet-wrap::after {
+    animation-delay: 1.2s;
+  }
+
+  .planet-uranus .soft-skill-node__planet-wrap::after {
+    animation-delay: 3.1s;
   }
 
   /* Active node ring */
@@ -1242,6 +1425,11 @@
       0 0 0 2px rgba(255, 255, 255, 0.5),
       0 0 18px currentColor,
       0 0 32px currentColor;
+  }
+
+  .soft-skill-node.is-active .soft-skill-node__aura {
+    opacity: 0.55;
+    transform: scale(1.08);
   }
 
   /* Sun button reset */
@@ -1262,6 +1450,77 @@
     .exp-filter {
       transition: none;
     }
+
+    .soft-skill-node__aura,
+    .soft-skill-node__planet-wrap,
+    .soft-skill-node__planet-wrap::after,
+    .soft-skill-core__ray,
+    .soft-skill-core__ring,
+    .soft-constellation__nebula {
+      animation: none;
+    }
+  }
+
+  @keyframes nebula-drift {
+    0% {
+      transform: translate3d(-1%, 0%, 0) scale(1);
+      opacity: 0.78;
+    }
+
+    100% {
+      transform: translate3d(1.5%, -1.5%, 0) scale(1.05);
+      opacity: 1;
+    }
+  }
+
+  @keyframes planet-drift {
+
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    25% {
+      transform: translate3d(-0.18rem, -0.22rem, 0) scale(1.015);
+    }
+
+    50% {
+      transform: translate3d(0.16rem, -0.1rem, 0) scale(1.03);
+    }
+
+    75% {
+      transform: translate3d(-0.08rem, 0.18rem, 0) scale(1.01);
+    }
+  }
+
+  @keyframes soft-skill-pulse {
+
+    0%,
+    100% {
+      opacity: 0.22;
+      transform: scale(0.92);
+    }
+
+    50% {
+      opacity: 0.52;
+      transform: scale(1.08);
+    }
+  }
+
+  @keyframes planet-ring-echo {
+    0% {
+      opacity: 0;
+      transform: scale(0.82);
+    }
+
+    20% {
+      opacity: 0.22;
+    }
+
+    100% {
+      opacity: 0;
+      transform: scale(1.55);
+    }
   }
 
   .article-content {
@@ -1269,7 +1528,7 @@
     line-height: 1.8;
   }
 
-  .article-content > * + * {
+  .article-content>*+* {
     margin-top: 1rem;
   }
 
@@ -1307,7 +1566,7 @@
     padding-left: 1.5rem;
   }
 
-  .article-content li + li {
+  .article-content li+li {
     margin-top: 0.45rem;
   }
 
@@ -1333,6 +1592,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -1341,11 +1601,9 @@
 /* --- Vibe AI Generative Magic Styles --- */
 body.vibe-mode-on {
   /* Astrophage Mode: Deep charcoal to black background with subtle blood-red core */
-  background: radial-gradient(
-    circle at 50% 50%,
-    #1a0808 0%,
-    #02040a 100%
-  ) !important;
+  background: radial-gradient(circle at 50% 50%,
+      #1a0808 0%,
+      #02040a 100%) !important;
   transition: background 2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -1365,11 +1623,9 @@ body.vibe-mode-on {
   position: absolute;
   inset: -100%;
   background:
-    radial-gradient(
-      circle at 30% 40%,
+    radial-gradient(circle at 30% 40%,
       rgba(220, 20, 20, 0.15),
-      transparent 35%
-    ),
+      transparent 35%),
     radial-gradient(circle at 70% 30%, rgba(255, 0, 0, 0.12), transparent 40%),
     radial-gradient(circle at 45% 75%, rgba(139, 0, 0, 0.18), transparent 45%),
     radial-gradient(circle at 85% 85%, rgba(180, 10, 10, 0.14), transparent 30%);
@@ -1395,47 +1651,31 @@ body.vibe-mode-on .vibe-active-bg {
     radial-gradient(1.8px 1.8px at 68% 18%, #ff0000 90%, transparent 100%),
     radial-gradient(1.2px 1.2px at 88% 33%, #ff2222 95%, transparent 100%),
     /* Layer 2: Medium glowing crimson */
-    radial-gradient(
-        3.5px 3.5px at 18% 78%,
-        rgba(255, 0, 0, 0.9) 25%,
-        transparent 100%
-      ),
-    radial-gradient(
-      4.5px 4.5px at 38% 63%,
-      rgba(230, 20, 20, 0.8) 15%,
-      transparent 100%
-    ),
-    radial-gradient(
-      4px 4px at 58% 88%,
-      rgba(255, 10, 10, 0.85) 20%,
-      transparent 100%
-    ),
-    radial-gradient(
-      5px 5px at 78% 53%,
-      rgba(255, 40, 40, 0.7) 12%,
-      transparent 100%
-    ),
-    radial-gradient(
-      3.5px 3.5px at 98% 73%,
+    radial-gradient(3.5px 3.5px at 18% 78%,
       rgba(255, 0, 0, 0.9) 25%,
-      transparent 100%
-    ),
+      transparent 100%),
+    radial-gradient(4.5px 4.5px at 38% 63%,
+      rgba(230, 20, 20, 0.8) 15%,
+      transparent 100%),
+    radial-gradient(4px 4px at 58% 88%,
+      rgba(255, 10, 10, 0.85) 20%,
+      transparent 100%),
+    radial-gradient(5px 5px at 78% 53%,
+      rgba(255, 40, 40, 0.7) 12%,
+      transparent 100%),
+    radial-gradient(3.5px 3.5px at 98% 73%,
+      rgba(255, 0, 0, 0.9) 25%,
+      transparent 100%),
     /* Layer 3: Large Astrophage flares */
-    radial-gradient(
-        9px 9px at 12% 22%,
-        rgba(255, 20, 20, 0.5) 0%,
-        transparent 100%
-      ),
-    radial-gradient(
-      7px 7px at 45% 75%,
+    radial-gradient(9px 9px at 12% 22%,
+      rgba(255, 20, 20, 0.5) 0%,
+      transparent 100%),
+    radial-gradient(7px 7px at 45% 75%,
       rgba(200, 0, 0, 0.6) 0%,
-      transparent 100%
-    ),
-    radial-gradient(
-      10px 10px at 85% 45%,
+      transparent 100%),
+    radial-gradient(10px 10px at 85% 45%,
       rgba(255, 30, 30, 0.4) 0%,
-      transparent 100%
-    );
+      transparent 100%);
   background-size:
     200px 200px,
     350px 350px,
@@ -1451,9 +1691,11 @@ body.vibe-mode-on .vibe-active-bg {
   0% {
     transform: rotate(0deg) scale(1);
   }
+
   50% {
     transform: rotate(180deg) scale(1.1);
   }
+
   100% {
     transform: rotate(360deg) scale(1);
   }
@@ -1464,10 +1706,12 @@ body.vibe-mode-on .vibe-active-bg {
     opacity: 0.4;
     transform: translateY(0) scale(1);
   }
+
   50% {
     opacity: 0.9;
     transform: translateY(-10px) scale(1.05);
   }
+
   100% {
     opacity: 0.4;
     transform: translateY(0) scale(1);
@@ -1479,6 +1723,7 @@ body.vibe-mode-on .vibe-active-bg {
   0% {
     background-position: 200% 0;
   }
+
   100% {
     background-position: -200% 0;
   }
@@ -1495,12 +1740,10 @@ body.vibe-mode-on .vibe-active-bg {
   visibility: visible;
   transition: none !important;
   animation: skeleton-shimmer 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.03) 25%,
-    rgba(255, 190, 80, 0.15) 50%,
-    rgba(255, 255, 255, 0.03) 75%
-  );
+  background: linear-gradient(90deg,
+      rgba(255, 255, 255, 0.03) 25%,
+      rgba(255, 190, 80, 0.15) 50%,
+      rgba(255, 255, 255, 0.03) 75%);
   background-size: 200% 100%;
 }
 
@@ -1532,11 +1775,9 @@ body.vibe-mode-on .vibe-active-bg {
 /* Premium AI Card Style: Astrophage Crimson */
 .vibe-only-card {
   border-color: rgba(255, 50, 50, 0.4) !important;
-  background: linear-gradient(
-    145deg,
-    rgba(45, 15, 15, 0.8),
-    rgba(20, 10, 10, 0.7)
-  ) !important;
+  background: linear-gradient(145deg,
+      rgba(45, 15, 15, 0.8),
+      rgba(20, 10, 10, 0.7)) !important;
   box-shadow:
     0 8px 32px rgba(255, 0, 0, 0.15),
     inset 0 0 20px rgba(255, 100, 100, 0.05) !important;
@@ -1562,59 +1803,53 @@ body::after {
   transition:
     opacity 1.6s ease,
     background-color 0.8s ease-in-out;
-  -webkit-mask-image: radial-gradient(
-    circle at 50% 45%,
-    black 0%,
-    transparent 75%
-  );
+  -webkit-mask-image: radial-gradient(circle at 50% 45%,
+      black 0%,
+      transparent 75%);
   mask-image: radial-gradient(circle at 50% 45%, black 0%, transparent 75%);
 }
 
 body[data-soft-skill-theme]::after {
-  opacity: 1 !important;
+  opacity: 0.42 !important;
 }
 
 body[data-soft-skill-theme="mars"]::after {
-  background-color: rgba(220, 40, 20, 0.7) !important;
+  background-color: rgba(220, 40, 20, 0.64) !important;
 }
+
 body[data-soft-skill-theme="saturn"]::after {
-  background-color: rgba(246, 212, 13, 0.6) !important;
+  background-color: rgba(246, 212, 13, 0.64) !important;
 }
+
 body[data-soft-skill-theme="earth"]::after {
-  background-color: rgba(20, 80, 255, 0.7) !important;
+  background-color: rgba(20, 80, 255, 0.64) !important;
 }
+
 body[data-soft-skill-theme="neptune"]::after {
-  background-color: rgba(38, 160, 176, 0.7) !important;
+  background-color: rgba(38, 160, 176, 0.64) !important;
 }
+
 body[data-soft-skill-theme="venus"]::after {
-  background-color: rgba(255, 50, 200, 0.65) !important;
+  background-color: rgba(255, 50, 200, 0.64) !important;
 }
+
 body[data-soft-skill-theme="uranus"]::after {
-  background-color: rgba(0, 245, 255, 0.6) !important;
-}
-body[data-soft-skill-theme="mercury"]::after {
-  background-color: rgba(160, 160, 184, 0.5) !important;
-}
-body[data-soft-skill-theme="jupiter"]::after {
-  background-color: rgba(255, 120, 0, 0.6) !important;
+  background-color: rgba(0, 245, 255, 0.64) !important;
 }
 
 body[data-recruiter-mode="on"] {
   background:
-    radial-gradient(
-      circle at 20% 20%,
+    radial-gradient(circle at 20% 20%,
       rgba(150, 112, 220, 0.32),
-      transparent 52%
-    ),
-    radial-gradient(
-      circle at 80% 60%,
+      transparent 52%),
+    radial-gradient(circle at 80% 60%,
       rgba(74, 132, 190, 0.34),
-      transparent 48%
-    ),
+      transparent 48%),
     linear-gradient(160deg, #0a1430 0%, #0b1735 45%, #0c1732 100%);
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -1628,5 +1863,62 @@ body[data-recruiter-mode="on"] {
   .experience-item,
   .nav-item {
     animation: none !important;
+  }
+}
+
+.filter-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.filter-badge {
+  min-height: 2.5rem;
+  border: 1px solid rgba(246, 212, 13, 0.2);
+  border-radius: var(--radius-badge);
+  background: rgba(8, 13, 31, 0.45);
+  color: rgba(243, 240, 226, 0.74);
+  padding: 0.625rem 1rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    transform 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease,
+    background 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.filter-badge:hover {
+  transform: translateY(-2px);
+  border-color: rgba(246, 212, 13, 0.45);
+  color: var(--gold);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.filter-badge.is-active {
+  border-color: rgba(246, 212, 13, 0.6);
+  color: var(--gold);
+  background:
+    linear-gradient(180deg, rgba(246, 212, 13, 0.1), rgba(246, 212, 13, 0.03)),
+    rgba(8, 13, 31, 0.56);
+  box-shadow: inset 0 0 0 1px rgba(246, 212, 13, 0.12);
+}
+
+@media (max-width: 767px) {
+  .filter-toolbar {
+    gap: 0.5rem;
+  }
+
+  .filter-badge {
+    min-height: 2.15rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.64rem;
+    letter-spacing: 0.12em;
   }
 }

@@ -3,7 +3,9 @@
     "allow": [
       "Bash(node -e ':*)",
       "Bash(npm outdated:*)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(claude skill *)",
+      "Bash(git -C d:/PERSO/portfolio status --short)"
     ]
   }
 }

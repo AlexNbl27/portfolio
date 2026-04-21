@@ -1,5 +1,6 @@
 ---
 import type { Locale } from "../i18n/config";
+import PersonalitySelector from "./PersonalitySelector.astro";
 
 interface Props {
   locale: Locale;
@@ -26,9 +27,11 @@ const isEn = locale === "en";
     class="astral-chat__panel glass-card is-floating hidden"
   >
     <header class="astral-chat__header">
-      <div>
+      <div class="flex flex-col">
         <p class="astral-chat__kicker">{isEn ? "Stellar companion" : "Compagnon stellaire"}</p>
         <h2>{isEn ? "Astral · AI assistant" : "Astral · Assistant IA"}</h2>
+        
+        <PersonalitySelector name="astral_mode" isEn={isEn} class="mt-2" />
       </div>
       <div class="flex items-center gap-2">
         <a

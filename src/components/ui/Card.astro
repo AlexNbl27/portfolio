@@ -1,31 +1,18 @@
 ---
-import type { HTMLAttributes } from "astro/types";
-
-interface Props {
-  as?: "article" | "div" | "section" | "a";
-  href?: string;
-  class?: string;
-  interactive?: boolean;
-  shine?: boolean;
-  [key: string]: any;
-}
-
 const {
   as: Component = Astro.props.href ? "a" : "div",
   href,
   class: className,
   interactive = false,
+  hoverable = interactive,
   shine = false,
   ...rest
 } = Astro.props;
 
-const baseClasses =
-  "relative overflow-hidden rounded-card border border-[#cbbf84]/20 bg-linear-to-br from-[#292d43]/80 to-[#1d2134]/60 backdrop-blur-md shadow-glass-card";
+const baseClasses = "glass-card card-shell";
+const hoverableClasses = hoverable ? "card-hoverable" : "";
 
-// Added focus-ring for accessibility if it's interactive (like a link)
-const interactiveClasses = interactive
-  ? "transition-all duration-300 hover:-translate-y-1 hover:border-cosmic-gold/50 hover:shadow-glow-hover z-10 focus-ring cursor-pointer block"
-  : "";
+const interactiveClasses = interactive ? "card-interactive focus-ring" : "";
 
 const elementProps = Component === "a" ? { href } : {};
 ---
@@ -33,6 +20,7 @@ const elementProps = Component === "a" ? { href } : {};
 <Component
   class:list={[
     baseClasses,
+    hoverableClasses,
     interactiveClasses,
     shine && "shine-effect",
     className,

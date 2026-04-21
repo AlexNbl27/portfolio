@@ -22,3 +22,7 @@ pnpm-debug.log*
 Thumbs.db
 .vscode/
 .idea/
+
+# Claude Code local config and installed skills
+.claude/settings.local.json
+.claude/skills/

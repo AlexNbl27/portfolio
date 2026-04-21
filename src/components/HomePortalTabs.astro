@@ -1,0 +1,136 @@
+---
+import type { Locale } from "../i18n/config";
+import Card from "./ui/Card.astro";
+
+interface PortalItem {
+  title: string;
+  description: string;
+  href: string;
+}
+
+interface PortalTab {
+  id: string;
+  label: string;
+  items: PortalItem[];
+  viewAllLabel: string;
+  viewAllHref: string;
+}
+
+interface Props {
+  locale: Locale;
+  tabs: PortalTab[];
+}
+
+const { locale, tabs } = Astro.props as Props;
+const isEn = locale === "en";
+---
+
+<Card as="section" class="portal-tabs-card p-5 md:p-6">
+  <div class="flex flex-wrap gap-2" role="tablist" aria-label={isEn ? "Portfolio sections" : "Sections du portfolio"}>
+    {tabs.map((tab, index) => (
+      <button
+        type="button"
+        role="tab"
+        id={`portal-tab-${tab.id}`}
+        data-portal-tab={tab.id}
+        aria-controls={`portal-panel-${tab.id}`}
+        aria-selected={index === 0 ? "true" : "false"}
+        tabindex={index === 0 ? "0" : "-1"}
+        class:list={[
+          "focus-ring rounded-full px-4 py-2 text-xs md:text-sm border transition",
+          index === 0
+            ? "border-cosmic-gold text-cosmic-gold"
+            : "border-white/15 text-white/70 hover:border-cosmic-gold/50 hover:text-white",
+        ]}
+      >
+        {tab.label}
+      </button>
+    ))}
+  </div>
+
+  <div class="mt-5">
+    {tabs.map((tab, index) => (
+      <div
+        id={`portal-panel-${tab.id}`}
+        data-portal-panel={tab.id}
+        role="tabpanel"
+        aria-labelledby={`portal-tab-${tab.id}`}
+        class:list={[index === 0 ? "block" : "hidden"]}
+      >
+        <div class="grid gap-3 md:grid-cols-2">
+          {tab.items.slice(0, 2).map((item) => (
+            <Card as="a" href={item.href} interactive class="portal-tabs-item-card p-4">
+              <h3 class="text-cosmic-gold font-semibold">{item.title}</h3>
+              <p class="mt-2 text-sm text-white/75">{item.description}</p>
+            </Card>
+          ))}
+        </div>
+        <div class="mt-4 flex items-center justify-between gap-3">
+          <a
+            href={tab.viewAllHref}
+            class="focus-ring inline-flex rounded-xl border border-cosmic-gold/40 px-4 py-2 text-xs md:text-sm text-cosmic-gold hover:bg-cosmic-gold/10 transition"
+          >
+            {tab.viewAllLabel}
+          </a>
+          <a
+            href={isEn ? "/en/chat" : "/chat"}
+            class="text-xs md:text-sm text-white/70 hover:text-cosmic-pink transition"
+          >
+            {isEn ? "Ask Astral to guide you →" : "Demander à Astral de vous guider →"}
+          </a>
+        </div>
+      </div>
+    ))}
+  </div>
+</Card>
+
+<script is:inline>
+  document.addEventListener("astro:page-load", () => {
+    const tabButtons = document.querySelectorAll("[data-portal-tab]");
+    const panels = document.querySelectorAll("[data-portal-panel]");
+
+    const activate = (id) => {
+      tabButtons.forEach((button) => {
+        const active = button.dataset.portalTab === id;
+        button.setAttribute("aria-selected", active ? "true" : "false");
+        button.setAttribute("tabindex", active ? "0" : "-1");
+        button.classList.toggle("border-cosmic-gold", active);
+        button.classList.toggle("text-cosmic-gold", active);
+        button.classList.toggle("border-white/15", !active);
+        button.classList.toggle("text-white/70", !active);
+      });
+
+      panels.forEach((panel) => {
+        const active = panel.dataset.portalPanel === id;
+        panel.classList.toggle("hidden", !active);
+      });
+    };
+
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        if (!button.dataset.portalTab) return;
+        activate(button.dataset.portalTab);
+      });
+
+      button.addEventListener("keydown", (event) => {
+        const currentIndex = Array.from(tabButtons).indexOf(button);
+        if (currentIndex < 0) return;
+
+        const move = (offset) => {
+          const nextIndex = (currentIndex + offset + tabButtons.length) % tabButtons.length;
+          const next = tabButtons[nextIndex];
+          next.focus();
+          if (next.dataset.portalTab) activate(next.dataset.portalTab);
+        };
+
+        if (event.key === "ArrowRight") {
+          event.preventDefault();
+          move(1);
+        } else if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          move(-1);
+        }
+      });
+    });
+  });
+</script>

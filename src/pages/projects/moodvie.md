@@ -36,4 +36,3 @@ Ce projet a été conçu avec la stack **.NET / C#**, utilisant **WPF (Windows P
 ## Impact & Apprentissages
 
 Développé durant mon cursus en **DUT GEII**, Moodvie a été un projet pivot pour consolider mes bases en programmation orientée objet. Il témoigne de ma capacité à concevoir des outils desktop robustes tout en plaçant la psychologie de l'utilisateur au coeur de la réflexion technique.
-

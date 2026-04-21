@@ -1,0 +1,59 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Card from "../components/ui/Card.astro";
+import ServicePackCard from "../components/ServicePackCard.astro";
+import ProcessStep from "../components/ProcessStep.astro";
+import TestimonialCard from "../components/TestimonialCard.astro";
+import { getLocaleFromPathname, localizePath } from "../i18n/utils";
+import { getServicePacks, getProcessSteps } from "../data/services";
+import { getTestimonials } from "../data/testimonials";
+
+const locale = getLocaleFromPathname(Astro.url.pathname);
+const isEn = locale === "en";
+const packs = getServicePacks(locale);
+const steps = getProcessSteps(locale);
+const testimonials = getTestimonials(locale).slice(0, 2);
+---
+
+<BaseLayout
+  title={isEn ? "Services · Alexandre Noblet" : "Services · Alexandre Noblet"}
+  description={isEn ? "Service offers and delivery process for freelance collaboration." : "Offres de services et process de delivery pour une collaboration freelance."}
+>
+  <section class="cosmic-container pt-8">
+    <h1 class="section-title">{isEn ? "Services" : "Services"} <span class="highlight">& Process</span></h1>
+    <p class="muted mt-4 max-w-3xl text-lg">
+      {isEn
+        ? "Clear packs, predictable delivery, and practical communication at each step."
+        : "Des packs clairs, un delivery prévisible et une communication pratique à chaque étape."}
+    </p>
+  </section>
+
+  <section class="cosmic-container mt-10 grid gap-6 lg:grid-cols-3">
+    {packs.map((pack) => <ServicePackCard pack={pack} />)}
+  </section>
+
+  <section class="cosmic-container mt-14">
+    <h2 class="font-display text-3xl text-cosmic-gold">{isEn ? "How we work" : "Comment je travaille"}</h2>
+    <div class="mt-5 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      {steps.map((step, index) => <ProcessStep step={step} index={index} />)}
+    </div>
+  </section>
+
+  <section class="cosmic-container mt-14">
+    <h2 class="font-display text-3xl text-cosmic-gold">{isEn ? "Recommendations" : "Recommandations"}</h2>
+    <div class="mt-5 grid gap-4 md:grid-cols-2">
+      {testimonials.map((item) => <TestimonialCard {...item} />)}
+    </div>
+  </section>
+
+  <section class="cosmic-container mt-12 mb-4">
+    <Card class="services-cta-card p-6">
+      <h2 class="font-display text-2xl text-cosmic-gold">{isEn ? "Ready to discuss your project?" : "Prêt à discuter de votre projet ?"}</h2>
+      <p class="mt-2 text-white/80">{isEn ? "Let's scope your constraints and define the fastest useful first milestone." : "Cadrons vos contraintes et définissons le premier jalon utile le plus rapidement possible."}</p>
+      <div class="mt-4 flex flex-wrap gap-3">
+        <a href={localizePath("/contact", locale)} class="focus-ring rounded-xl border border-cosmic-gold/40 px-4 py-2 text-cosmic-gold hover:bg-cosmic-gold/10 transition">{isEn ? "Contact me" : "Me contacter"}</a>
+        <a href={localizePath("/projects", locale)} class="focus-ring rounded-xl border border-white/20 px-4 py-2 text-white/85 hover:border-cosmic-gold/30 transition">{isEn ? "See projects" : "Voir les projets"}</a>
+      </div>
+    </Card>
+  </section>
+</BaseLayout>
