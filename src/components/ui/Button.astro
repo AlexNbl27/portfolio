@@ -1,15 +1,5 @@
 ---
-import type { HTMLAttributes } from "astro/types";
 import { Icon } from "astro-icon/components";
-
-interface Props {
-  as?: "a" | "button" | "span" | "div";
-  variant?: "primary" | "ghost" | "outline";
-  href?: string;
-  class?: string;
-  icon?: string;
-  [key: string]: any;
-}
 
 const {
   as: Component = Astro.props.href ? "a" : "button",

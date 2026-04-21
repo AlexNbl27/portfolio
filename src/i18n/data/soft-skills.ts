@@ -8,7 +8,6 @@ const enData: SoftSkillsData = {
   page: {
     title: "Alexandre Noblet | Soft skills",
     description: "Soft skills and human strengths of Alexandre Noblet.",
-    heading: "My soft skills",
     intro:
       "Beyond technical expertise, I rely on organization, autonomy, creativity, and teamwork to move projects forward efficiently.",
   },
@@ -18,40 +17,40 @@ const enData: SoftSkillsData = {
       label: "Organization",
       movieRef: "The Martian",
       example:
-        "Planning IoT projects with sprint cycles, weekly roadmaps, and progress tracking through Kanban boards.",
+        "I like creating a clear framework so everyone can move forward with confidence: readable sprints, a shared roadmap, and simple progress tracking over time.",
     },
     {
       ...frData.planets[1],
       label: "Creativity",
       example:
-        "Writing long-form science-fiction movie scripts to train narrative and concept framing.",
+        "I keep creativity alive by writing science-fiction stories, which is a great playground for connecting ideas, imagining new worlds, and opening fresh directions.",
     },
     {
       ...frData.planets[2],
       label: "Autonomy",
       movieRef: "Valerian",
       example:
-        "Building a complete IoT monitoring system solo, from architecture decisions to production rollout.",
+        "When a topic needs momentum, I can take ownership from the first idea to a clean, useful production release.",
     },
     {
       ...frData.planets[3],
       label: "Team spirit",
       movieRef: "The Fifth Element",
       example:
-        "Facilitating retrospectives and knowledge-sharing sessions inside cross-functional agile teams.",
+        "I genuinely enjoy creating momentum inside a team, whether through retrospectives, knowledge sharing, or simply helping everyone move forward together.",
     },
     {
       ...frData.planets[4],
       label: "Communication",
       movieRef: "Guardians of the Galaxy",
       example:
-        "Presenting product demos to non-technical stakeholders and writing clear documentation for multidisciplinary teams.",
+        "I like making things easy to understand, with clear demos, simple conversations, and documentation that genuinely helps both technical and non-technical people.",
     },
     {
       ...frData.planets[5],
       label: "Curiosity",
       example:
-        "Weekly technology watch and exploration across AI, embedded systems, and UX design.",
+        "I stay actively curious through regular tech exploration and a real appetite for discovering fields ranging from AI to embedded systems and UX design.",
     },
   ],
   reperes: [
@@ -59,12 +58,6 @@ const enData: SoftSkillsData = {
     { label: "Collaboration", value: "Daily" },
     { label: "Initiative", value: "Natural" },
   ],
-  contact: {
-    ...frData.contact,
-    title: "Discuss a project",
-    description: "Always happy to discuss product, software engineering, and IoT.",
-    buttonText: "Contact me",
-  },
 };
 
 const softSkillsByLocale: Record<Locale, SoftSkillsData> = {

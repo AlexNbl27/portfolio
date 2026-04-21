@@ -1,0 +1,321 @@
+---
+interface Props {
+  calLink: string;
+  title?: string;
+  loadingLabel?: string;
+  helperLabel?: string;
+  ctaLabel?: string;
+}
+
+const {
+  calLink,
+  title = "Booking calendar",
+  loadingLabel = "Loading calendar...",
+  helperLabel = "If the widget takes too long to appear, open the booking page directly.",
+  ctaLabel = "Open Cal.com",
+} = Astro.props as Props;
+
+const embedId = `cal-inline-${calLink.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}`;
+const namespace = `ns-${embedId}`;
+const directUrl = `https://cal.com/${calLink}`;
+---
+
+<div
+  class="cal-embed-shell is-loading"
+  data-cal-shell
+  data-cal-link={calLink}
+  data-cal-namespace={namespace}
+  data-cal-title={title}
+>
+  <div id={embedId} class="cal-embed-target" data-cal-target></div>
+
+  <div class="cal-embed-placeholder" data-cal-placeholder aria-hidden="true">
+    <div class="cal-embed-shimmer"></div>
+    <div class="cal-embed-copy">
+      <span class="cal-embed-kicker">Cal.com</span>
+      <p>{loadingLabel}</p>
+    </div>
+  </div>
+</div>
+
+<div class="cal-embed-helper">
+  <span>{helperLabel}</span>
+  <a href={directUrl} target="_blank" rel="noreferrer">{ctaLabel}</a>
+</div>
+
+<noscript>
+  <p class="cal-embed-noscript">
+    <a href={directUrl} target="_blank" rel="noreferrer">{ctaLabel}</a>
+  </p>
+</noscript>
+
+<style>
+  .cal-embed-shell {
+    --cal-embed-height: clamp(44rem, 80vh, 60rem);
+    position: relative;
+    height: var(--cal-embed-height);
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 1px solid rgba(246, 212, 13, 0.16);
+    background:
+      radial-gradient(circle at top, rgba(246, 212, 13, 0.1), transparent 42%),
+      rgba(4, 9, 22, 0.64);
+  }
+
+  .cal-embed-target {
+    height: 100%;
+    overflow: auto;
+  }
+
+  .cal-embed-placeholder {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 2rem;
+    background:
+      linear-gradient(135deg, rgba(9, 15, 36, 0.96), rgba(7, 12, 28, 0.82)),
+      rgba(9, 15, 36, 0.92);
+    transition:
+      opacity 0.35s ease,
+      visibility 0.35s ease;
+  }
+
+  .cal-embed-shell.is-ready .cal-embed-placeholder {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .cal-embed-shimmer {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      115deg,
+      transparent 12%,
+      rgba(246, 212, 13, 0.06) 32%,
+      rgba(246, 212, 13, 0.12) 48%,
+      transparent 68%
+    );
+    transform: translateX(-100%);
+    animation: cal-embed-shimmer 1.8s ease-in-out infinite;
+  }
+
+  .cal-embed-copy {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 18rem;
+  }
+
+  .cal-embed-kicker {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    border: 1px solid rgba(246, 212, 13, 0.28);
+    color: rgba(246, 212, 13, 0.88);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-size: 0.68rem;
+  }
+
+  .cal-embed-copy p {
+    margin: 1rem 0 0;
+    color: rgba(255, 255, 255, 0.72);
+    line-height: 1.6;
+  }
+
+  .cal-embed-helper {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .cal-embed-helper a,
+  .cal-embed-noscript a {
+    color: #f6d40d;
+    text-decoration: none;
+  }
+
+  .cal-embed-helper a:hover,
+  .cal-embed-noscript a:hover {
+    text-decoration: underline;
+  }
+
+  .cal-embed-noscript {
+    margin: 0;
+  }
+
+  @keyframes cal-embed-shimmer {
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .cal-embed-shell {
+      --cal-embed-height: min(78vh, 46rem);
+    }
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    const ensureCalBootstrap = () => {
+      if (typeof window === "undefined") return;
+      if (typeof window.Cal === "function" && window.Cal.loaded) return;
+
+      ((C, A, L) => {
+        const p = (a, ar) => {
+          a.q.push(ar);
+        };
+        const d = C.document;
+
+        C.Cal =
+          C.Cal ||
+          function () {
+            const cal = C.Cal;
+            const ar = arguments;
+
+            if (!cal.loaded) {
+              cal.ns = {};
+              cal.q = cal.q || [];
+
+              const script = d.createElement("script");
+              script.src = A;
+              script.async = true;
+              d.head.appendChild(script);
+
+              cal.loaded = true;
+            }
+
+            if (ar[0] === L) {
+              const api = (...args) => {
+                p(api, args);
+              };
+              const namespace = ar[1];
+              api.q = api.q || [];
+
+              if (typeof namespace === "string") {
+                cal.ns[namespace] = cal.ns[namespace] || api;
+                p(cal.ns[namespace], ar);
+                p(cal, ["initNamespace", namespace]);
+              } else {
+                p(cal, ar);
+              }
+              return;
+            }
+
+            p(cal, ar);
+          };
+      })(window, "https://app.cal.com/embed/embed.js", "init");
+    };
+
+    const revealWhenReady = (shell, target) => {
+      const markReady = () => shell.classList.add("is-ready");
+
+      if (target.childElementCount > 0) {
+        markReady();
+        return;
+      }
+
+      const observer = new MutationObserver(() => {
+        if (target.childElementCount > 0) {
+          observer.disconnect();
+          markReady();
+        }
+      });
+
+      observer.observe(target, { childList: true, subtree: true });
+
+      window.setTimeout(() => {
+        observer.disconnect();
+        markReady();
+      }, 4000);
+    };
+
+    const mountEmbed = (shell) => {
+      if (shell.dataset.calMounted === "true") return;
+
+      const target = shell.querySelector("[data-cal-target]");
+      const calLink = shell.dataset.calLink;
+      const namespace = shell.dataset.calNamespace;
+
+      if (!(target instanceof HTMLElement) || !calLink || !namespace) return;
+
+      shell.dataset.calMounted = "true";
+      revealWhenReady(shell, target);
+      ensureCalBootstrap();
+
+      const cal = window.Cal;
+      if (typeof cal !== "function") return;
+
+      cal("init", namespace, { origin: "https://app.cal.com" });
+
+      const scopedCal =
+        cal.ns && typeof cal.ns[namespace] === "function"
+          ? cal.ns[namespace]
+          : null;
+
+      if (!scopedCal) return;
+
+      scopedCal("inline", {
+        elementOrSelector: `#${target.id}`,
+        calLink,
+        config: {
+          layout: "month_view",
+          useSlotsViewOnSmallScreen: true,
+        },
+      });
+
+      scopedCal("ui", {
+        hideEventTypeDetails: false,
+        layout: "month_view",
+        styles: {
+          body: {
+            background: "transparent",
+          },
+          eventTypeListItem: {
+            background: "transparent",
+          },
+        },
+      });
+    };
+
+    const initCalEmbeds = () => {
+      const shells = document.querySelectorAll("[data-cal-shell]");
+
+      shells.forEach((shell) => {
+        if (!(shell instanceof HTMLElement)) return;
+        if (shell.dataset.calObserverAttached === "true") return;
+
+        shell.dataset.calObserverAttached = "true";
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              observer.disconnect();
+              mountEmbed(shell);
+            });
+          },
+          { rootMargin: "160px 0px" },
+        );
+
+        observer.observe(shell);
+      });
+    };
+
+    if (!window.__calEmbedPageHookRegistered) {
+      document.addEventListener("astro:page-load", initCalEmbeds);
+      window.__calEmbedPageHookRegistered = true;
+    }
+
+    initCalEmbeds();
+  })();
+</script>
