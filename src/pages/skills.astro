@@ -13,12 +13,15 @@ const isEn = locale === "en";
 
 <BaseLayout
   title={isEn ? "Alexandre Noblet | Skills" : "Alexandre Noblet | Compétences"}
-  description={isEn ? "Technical skills in development, data, DevOps, and industrial automation." : "Compétences techniques d’Alexandre Noblet en développement, data, DevOps et automatisme."}
+  description={isEn
+    ? "Technical skills in development, data, DevOps, and industrial automation."
+    : "Compétences techniques d’Alexandre Noblet en développement, data, DevOps et automatisme."}
 >
   <section class="cosmic-container pt-8 relative">
     <div class="vibe-active-bg rounded-3xl pointer-events-none"></div>
     <h1 class="section-title relative z-10">
-      {isEn ? "My" : "Mes"} <span class="highlight">{isEn ? "skills" : "compétences"}</span>
+      {isEn ? "My" : "Mes"}
+      <span class="highlight">{isEn ? "skills" : "compétences"}</span>
     </h1>
 
     <div class="my-6">
@@ -29,7 +32,11 @@ const isEn = locale === "en";
       id="skills-desc"
       class="muted mt-4 max-w-2xl text-lg transition-all duration-500 min-h-[4rem]"
     >
-      {isEn ? "A technical foundation built around web/mobile development, databases, DevOps practices, and industrial automation." : "Un socle technique construit autour du développement web et mobile, des bases de données, des outils DevOps et de l’automatisme industriel."}
+      {
+        isEn
+          ? "A technical foundation built around web/mobile development, databases, DevOps practices, and industrial automation."
+          : "Un socle technique construit autour du développement web et mobile, des bases de données, des outils DevOps et de l’automatisme industriel."
+      }
     </p>
 
     <SkillFilter categories={categories} locale={locale} />
@@ -58,10 +65,18 @@ const isEn = locale === "en";
       class="hidden mt-12 py-12 text-center rounded-[2.5rem] border border-cosmic-gold/10 bg-slate-900/20 backdrop-blur-sm"
     >
       <p class="text-cosmic-gold/60 text-lg italic font-display">
-        {isEn ? "No skills match your search... 🌌" : "Aucune compétence ne correspond à votre recherche... 🌌"}
+        {
+          isEn
+            ? "No skills match your search... 🌌"
+            : "Aucune compétence ne correspond à votre recherche... 🌌"
+        }
       </p>
       <p class="muted text-sm mt-2">
-        {isEn ? "Try different keywords or filters." : "Réessayez avec d'autres mots-clés ou filtres."}
+        {
+          isEn
+            ? "Try different keywords or filters."
+            : "Réessayez avec d'autres mots-clés ou filtres."
+        }
       </p>
     </div>
   </section>
@@ -299,10 +314,8 @@ const isEn = locale === "en";
     filterButtons.forEach((button) => {
       button.addEventListener("click", () => {
         activeCategory = button.getAttribute("data-category") || "all";
-        filterButtons.forEach((btn) =>
-          btn.classList.remove("border-cosmic-gold/60", "text-cosmic-gold"),
-        );
-        button.classList.add("border-cosmic-gold/60", "text-cosmic-gold");
+        filterButtons.forEach((btn) => btn.classList.remove("is-active"));
+        button.classList.add("is-active");
         updateUI();
       });
     });
@@ -314,26 +327,22 @@ const isEn = locale === "en";
       });
     }
 
-    document.addEventListener(
-      "portfolio:recruiter-mode",
-      (event) => {
-        const customEvent = event as CustomEvent<{ mode: "on" | "off" }>;
-        isRecruiterMode = customEvent.detail?.mode === "on";
+    document.addEventListener("portfolio:recruiter-mode", (event) => {
+      const customEvent = event as CustomEvent<{ mode: "on" | "off" }>;
+      isRecruiterMode = customEvent.detail?.mode === "on";
 
-        if (activeTypeInterval) clearInterval(activeTypeInterval);
-        revelationTimeouts.forEach((t) => clearTimeout(t));
-        revelationTimeouts = [];
-        skillItems.forEach((item) => item.classList.remove("is-generating"));
+      if (activeTypeInterval) clearInterval(activeTypeInterval);
+      revelationTimeouts.forEach((t) => clearTimeout(t));
+      revelationTimeouts = [];
+      skillItems.forEach((item) => item.classList.remove("is-generating"));
 
-        updateUI();
-        if (isVibeMode) animateBoost(true);
-      },
-    );
+      updateUI();
+      if (isVibeMode) animateBoost(true);
+    });
 
     // Initial state
     const allBtn = document.querySelector('[data-category="all"]');
-    if (allBtn)
-      allBtn.classList.add("border-cosmic-gold/60", "text-cosmic-gold");
+    if (allBtn) allBtn.classList.add("is-active");
     updateUI();
   });
 </script>
