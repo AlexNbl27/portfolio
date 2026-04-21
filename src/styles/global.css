@@ -90,6 +90,14 @@
   transition: opacity 0.38s ease;
 }
 
+#hyperspace-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 
 @layer components {
   .cosmic-container {

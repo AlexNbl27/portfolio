@@ -50,50 +50,6 @@
     "recruiterFeatured": true
   },
   {
-    "title": "Mindcares",
-    "description": "Une plateforme d'entraide dédiée au bien-être mental et à l'écoute bienveillante.",
-    "details": "Projet d’année interdisciplinaire réalisé en équipe. Mindcares propose une 'safe place' numérique où les utilisateurs accèdent à du soutien, des ressources qualifiées et des espaces d'échange avec des pairs partageant des expériences de vie similaires.",
-    "technologies": [
-      "Flutter",
-      "Firebase",
-      "Laravel",
-      "Symfony",
-      "Figma"
-    ],
-    "imageUrl": "/images/mindcares.png",
-    "category": "mobile",
-    "recruiterFeatured": false
-  },
-  {
-    "title": "TrouveTaLoc",
-    "description": "Plateforme de gestion locative développée en PHP natif, alliant robustesse et simplicité.",
-    "details": "Défi technique réalisé chez Ynov : concevoir un site immobilier complet en PHP natif sans framework en seulement 4 semaines. Le projet intègre un moteur de template Twig et une gestion de base de données MySQL pour offrir une expérience fluide de publication et de réservation de biens.",
-    "technologies": [
-      "PHP",
-      "MySQL",
-      "Bootstrap",
-      "Twig",
-      "HTML"
-    ],
-    "imageUrl": "/images/digital-art-neon-bubbles.webp",
-    "category": "web",
-    "recruiterFeatured": false
-  },
-  {
-    "title": "SoundSphere",
-    "description": "L'application sociale qui transforme l'écoute musicale en une expérience collaborative.",
-    "details": "SoundSphere permet de créer des files d'attente musicales partagées en temps réel. Que ce soit pour organiser une soirée à distance ou explorer des espaces publics, l'application synchronise les goûts de tous les participants via une stack Flutter/Firebase performante.",
-    "technologies": [
-      "Flutter",
-      "Firebase",
-      "Bootstrap",
-      "HTML"
-    ],
-    "imageUrl": "/images/digital-art-neon-bubbles.jpg",
-    "category": "mobile",
-    "recruiterFeatured": false
-  },
-  {
     "title": "Moodvie",
     "description": "Interface desktop innovante suggérant des contenus selon l'état émotionnel de l'utilisateur.",
     "details": "Développé en architecture C# / XAML (WPF), Moodvie analyse l'humeur sélectionnée pour filtrer et recommander les films ou séries les plus adaptés. Un projet qui explore la psychologie utilisateur au service du divertissement.",

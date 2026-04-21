@@ -13,55 +13,41 @@ const testimonials: Record<Locale, Testimonial[]> = {
   fr: [
     {
       quote:
-        "Alexandre comprend vite les enjeux métier et transforme des besoins flous en livrables concrets.",
-      author: "Manager IoT",
-      role: "Responsable projet",
+        "Alexandre sait adapter son discours à son interlocuteur, comprendre et clarifier son besoin et proposer rapidement une solution efficace et adaptée.",
+      author: "Charles Linsolas",
+      role: "Chef de projet",
       company: "Orange Business",
-      sourceLabel: "Recommandation LinkedIn",
-      sourceUrl: "https://www.linkedin.com/in/alexnbl27",
+      sourceLabel: "Profil LinkedIn",
+      sourceUrl: "https://www.linkedin.com/in/charles-linsolas/",
     },
     {
       quote:
-        "Fiable, proactif et structuré : il sait autant prototyper vite que stabiliser une solution en production.",
-      author: "Lead technique",
-      role: "Encadrant",
-      sourceLabel: "Voir le profil",
-      sourceUrl: "https://www.linkedin.com/in/alexnbl27",
-    },
-    {
-      quote:
-        "Un profil hybride rare web + IoT + produit, avec un vrai sens de la collaboration.",
-      author: "Partenaire projet",
-      role: "Chef de produit",
-      sourceLabel: "LinkedIn",
-      sourceUrl: "https://www.linkedin.com/in/alexnbl27",
+        "Ambassadeur de choix pour représenter l'apprentissage chez Orange Business. Quand les compétences techniques rejoignent les qualités humaines. Merci Alexandre ! You rock !",
+      author: "Cécile Déléry",
+      role: "Manager - chaîne d'approvisionnement et des flux d'information",
+      company: "Orange Business",
+      sourceLabel: "Profil LinkedIn",
+      sourceUrl: "https://www.linkedin.com/in/c%C3%A9cile-d%C3%A9l%C3%A9ry-88101b42/",
     },
   ],
   en: [
     {
       quote:
-        "Alexandre quickly understands business constraints and turns fuzzy requests into concrete deliverables.",
-      author: "IoT Manager",
-      role: "Project lead",
+        "Alexandre knows how to adapt his speech to his interlocutor, understand and clarify their needs, and quickly propose an effective and appropriate solution.",
+      author: "Charles Linsolas",
+      role: "Project Manager",
       company: "Orange Business",
-      sourceLabel: "LinkedIn recommendation",
-      sourceUrl: "https://www.linkedin.com/in/alexnbl27",
+      sourceLabel: "LinkedIn profile",
+      sourceUrl: "https://www.linkedin.com/in/charles-linsolas/",
     },
     {
       quote:
         "Reliable, proactive, and structured — he can both prototype fast and harden production-grade solutions.",
-      author: "Tech lead",
-      role: "Mentor",
-      sourceLabel: "See profile",
-      sourceUrl: "https://www.linkedin.com/in/alexnbl27",
-    },
-    {
-      quote:
-        "A rare hybrid profile combining web, IoT, and product mindset with strong team collaboration.",
-      author: "Project partner",
-      role: "Product manager",
-      sourceLabel: "LinkedIn",
-      sourceUrl: "https://www.linkedin.com/in/alexnbl27",
+      author: "Cécile Déléry",
+      role: "Manager - supply chain and information flows",
+      company: "Orange Business",
+      sourceLabel: "LinkedIn profile",
+      sourceUrl: "https://www.linkedin.com/in/c%C3%A9cile-d%C3%A9l%C3%A9ry-88101b42/",
     },
   ],
 };
