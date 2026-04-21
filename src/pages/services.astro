@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Card from "../components/ui/Card.astro";
 import ServicePackCard from "../components/ServicePackCard.astro";
 import ProcessStep from "../components/ProcessStep.astro";
 import TestimonialCard from "../components/TestimonialCard.astro";
@@ -46,13 +47,13 @@ const testimonials = getTestimonials(locale).slice(0, 2);
   </section>
 
   <section class="cosmic-container mt-12 mb-4">
-    <div class="rounded-card border border-cosmic-gold/25 bg-cosmic-gold/10 p-6">
+    <Card class="services-cta-card p-6">
       <h2 class="font-display text-2xl text-cosmic-gold">{isEn ? "Ready to discuss your project?" : "Prêt à discuter de votre projet ?"}</h2>
       <p class="mt-2 text-white/80">{isEn ? "Let's scope your constraints and define the fastest useful first milestone." : "Cadrons vos contraintes et définissons le premier jalon utile le plus rapidement possible."}</p>
       <div class="mt-4 flex flex-wrap gap-3">
         <a href={localizePath("/contact", locale)} class="focus-ring rounded-xl border border-cosmic-gold/40 px-4 py-2 text-cosmic-gold hover:bg-cosmic-gold/10 transition">{isEn ? "Contact me" : "Me contacter"}</a>
         <a href={localizePath("/projects", locale)} class="focus-ring rounded-xl border border-white/20 px-4 py-2 text-white/85 hover:border-cosmic-gold/30 transition">{isEn ? "See projects" : "Voir les projets"}</a>
       </div>
-    </div>
+    </Card>
   </section>
 </BaseLayout>

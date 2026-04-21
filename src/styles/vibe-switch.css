@@ -1,6 +1,26 @@
 /* ── VibeSwitch — imported globally in BaseLayout so it works on all routes
    including /en/skills where the component is loaded via page-as-component.  ── */
 
+.vibe-switch {
+  --switch-width: 16rem;
+  --switch-height: 3.5rem;
+  --switch-knob-size: 2.75rem;
+  --switch-pad: 0.375rem;
+  width: var(--switch-width);
+  height: var(--switch-height);
+}
+
+.switch-knob {
+  top: var(--switch-pad);
+  left: var(--switch-pad);
+  width: var(--switch-knob-size);
+  height: var(--switch-knob-size);
+}
+
+.peer:checked ~ .switch-knob {
+  left: calc(100% - var(--switch-pad) - var(--switch-knob-size));
+}
+
 .track-off {
   background: radial-gradient(ellipse at 55% 45%, #0f0a1e 0%, #04040f 100%);
 }
@@ -122,7 +142,12 @@
 }
 
 @media (max-width: 480px) {
-  .vibe-switch        { width: 14.5rem; height: 3rem; }
+  .vibe-switch {
+    --switch-width: 14.5rem;
+    --switch-height: 3.125rem;
+    --switch-knob-size: 2.25rem;
+    --switch-pad: 0.3125rem;
+  }
   .switch-label-off,
   .switch-label-on    { font-size: 0.55rem; letter-spacing: 0.16em; }
 }

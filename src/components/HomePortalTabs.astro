@@ -1,5 +1,6 @@
 ---
 import type { Locale } from "../i18n/config";
+import Card from "./ui/Card.astro";
 
 interface PortalItem {
   title: string;
@@ -24,7 +25,7 @@ const { locale, tabs } = Astro.props as Props;
 const isEn = locale === "en";
 ---
 
-<section class="rounded-card border border-white/10 bg-[#0c1230]/70 p-5 md:p-6 backdrop-blur-md">
+<Card as="section" class="portal-tabs-card p-5 md:p-6">
   <div class="flex flex-wrap gap-2" role="tablist" aria-label={isEn ? "Portfolio sections" : "Sections du portfolio"}>
     {tabs.map((tab, index) => (
       <button
@@ -58,10 +59,10 @@ const isEn = locale === "en";
       >
         <div class="grid gap-3 md:grid-cols-2">
           {tab.items.slice(0, 2).map((item) => (
-            <a href={item.href} class="rounded-xl border border-white/10 p-4 hover:border-cosmic-gold/45 transition block">
+            <Card as="a" href={item.href} interactive class="portal-tabs-item-card p-4">
               <h3 class="text-cosmic-gold font-semibold">{item.title}</h3>
               <p class="mt-2 text-sm text-white/75">{item.description}</p>
-            </a>
+            </Card>
           ))}
         </div>
         <div class="mt-4 flex items-center justify-between gap-3">
@@ -81,7 +82,7 @@ const isEn = locale === "en";
       </div>
     ))}
   </div>
-</section>
+</Card>
 
 <script is:inline>
   document.addEventListener("astro:page-load", () => {

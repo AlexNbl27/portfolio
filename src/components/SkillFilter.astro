@@ -1,9 +1,13 @@
 ---
-import SearchBadge from './ui/SearchBadge.astro';
-import type { Locale } from '../i18n/config';
+import SearchBadge from "./ui/SearchBadge.astro";
+import FilterBadge from "./ui/FilterBadge.astro";
+import type { Locale } from "../i18n/config";
 
-const { categories, locale = 'fr' } = Astro.props as { categories: string[]; locale?: Locale };
-const isEn = locale === 'en';
+const { categories, locale = "fr" } = Astro.props as {
+  categories: string[];
+  locale?: Locale;
+};
+const isEn = locale === "en";
 
 const categoryLabelsEn: Record<string, string> = {
   "Mobile & logiciel": "Mobile & software",
@@ -14,13 +18,22 @@ const categoryLabelsEn: Record<string, string> = {
   "Automatisme & industrie": "Automation & industry",
   "AI & Agentic Coding": "AI & Agentic coding",
 };
-
 ---
 
-<div class="mb-8 pt-4 flex flex-wrap items-center gap-3" role="toolbar" aria-label={isEn ? 'Filter skills' : 'Filtrer les compétences'}>
-  <button class="focus-ring skill-filter rounded-full border border-cosmic-gold/50 px-4 py-2 text-xs uppercase tracking-[0.2em] transition-all" data-category="all">{isEn ? 'All' : 'Toutes'}</button>
-  {categories.map((category) => (
-    <button class="focus-ring skill-filter rounded-full border border-cosmic-gold/20 px-4 py-2 text-xs uppercase tracking-[0.2em] transition-all" data-category={category}>{isEn ? (categoryLabelsEn[category] ?? category) : category}</button>
-  ))}
+<div
+  class="filter-toolbar mb-8 pt-4"
+  role="toolbar"
+  aria-label={isEn ? "Filter skills" : "Filtrer les compétences"}
+>
+  <FilterBadge class="focus-ring skill-filter" active data-category="all"
+    >{isEn ? "All" : "Toutes"}</FilterBadge
+  >
+  {
+    categories.map((category) => (
+      <FilterBadge class="focus-ring skill-filter" data-category={category}>
+        {isEn ? (categoryLabelsEn[category] ?? category) : category}
+      </FilterBadge>
+    ))
+  }
   <SearchBadge locale={locale} />
 </div>

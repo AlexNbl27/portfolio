@@ -1,0 +1,23 @@
+---
+const {
+  as: Component = "button",
+  class: className,
+  active = false,
+  type = "button",
+  ...rest
+} = Astro.props;
+
+const elementProps = Component === "button" ? { type } : {};
+---
+
+<Component
+  class:list={[
+    "filter-badge",
+    active && "is-active",
+    className,
+  ]}
+  {...elementProps}
+  {...rest}
+>
+  <slot />
+</Component>

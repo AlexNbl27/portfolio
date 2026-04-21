@@ -33,18 +33,18 @@ const isEn = locale === "en";
     </section>
 
     <section class="cosmic-container mt-8 flex flex-col gap-4">
-      <a href={localizePath('/soft-skills', locale)} class="mobile-skill-card mobile-skill-card--pink">
+      <Card as="a" href={localizePath('/soft-skills', locale)} interactive class="mobile-skill-card mobile-skill-card--pink">
         <span class="msc-tag">{isEn ? "Human" : "Humain"}</span>
         <span class="msc-title">Soft Skills</span>
         <span class="msc-desc">{isEn ? "Communication, collaboration, autonomy." : "Communication, collaboration, autonomie."}</span>
         <span class="msc-arrow">→</span>
-      </a>
-      <a href={localizePath('/skills', locale)} class="mobile-skill-card mobile-skill-card--gold">
+      </Card>
+      <Card as="a" href={localizePath('/skills', locale)} interactive class="mobile-skill-card mobile-skill-card--gold">
         <span class="msc-tag">{isEn ? "Technical" : "Technique"}</span>
         <span class="msc-title">{isEn ? "Technical Skills" : "Compétences techniques"}</span>
         <span class="msc-desc">{isEn ? "Frameworks, languages, infrastructure." : "Frameworks, langages, infrastructure."}</span>
         <span class="msc-arrow">→</span>
-      </a>
+      </Card>
     </section>
 
     <section class="cosmic-container mt-10 mb-4">
@@ -67,41 +67,4 @@ const isEn = locale === "en";
     justify-content: center;
     padding: 0 2rem;
   }
-
-  /* Mobile cards */
-  .mobile-skill-card {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 22px 20px;
-    border-radius: 1.2rem;
-    background: rgba(9, 15, 36, 0.7);
-    backdrop-filter: blur(16px);
-    border: 1px solid transparent;
-    text-decoration: none;
-    transition: border-color 0.3s, background 0.3s;
-    position: relative;
-  }
-  .mobile-skill-card--pink { border-color: rgba(242, 180, 223, 0.25); }
-  .mobile-skill-card--gold  { border-color: rgba(246, 212, 13, 0.25); }
-  .mobile-skill-card--pink:hover { border-color: rgba(242, 180, 223, 0.6); background: rgba(242,180,223,0.05); }
-  .mobile-skill-card--gold:hover  { border-color: rgba(246, 212, 13, 0.6);  background: rgba(246,212,13,0.05); }
-
-  .msc-tag { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; opacity: 0.65; }
-  .msc-title { font-family: var(--font-display, 'Cormorant Garamond', serif); font-size: 30px; font-weight: 600; line-height: 1.1; }
-  .msc-desc  { font-size: 14px; opacity: 0.65; }
-  .msc-arrow {
-    position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
-    font-size: 20px; opacity: 0.4; transition: opacity 0.3s, right 0.3s;
-  }
-  .mobile-skill-card:hover .msc-arrow { opacity: 0.9; right: 14px; }
-
-  .mobile-skill-card--pink .msc-tag,
-  .mobile-skill-card--pink .msc-title,
-  .mobile-skill-card--pink .msc-arrow { color: #f2b4df; }
-  .mobile-skill-card--gold .msc-tag,
-  .mobile-skill-card--gold .msc-title,
-  .mobile-skill-card--gold .msc-arrow { color: #f6d40d; }
-  .mobile-skill-card--pink .msc-desc,
-  .mobile-skill-card--gold .msc-desc  { color: rgba(255,255,255,0.65); }
 </style>

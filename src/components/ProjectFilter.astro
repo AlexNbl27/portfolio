@@ -1,4 +1,5 @@
 ---
+import FilterBadge from "./ui/FilterBadge.astro";
 import type { Locale } from "../i18n/config";
 
 interface Props {
@@ -7,27 +8,38 @@ interface Props {
 
 const { locale } = Astro.props;
 
-const categories = locale === "en"
-  ? [
-      { value: "all", label: "All" },
-      { value: "saas", label: "SaaS" },
-      { value: "web", label: "Web" },
-      { value: "mobile", label: "Mobile" },
-      { value: "desktop", label: "Desktop" },
-    ]
-  : [
-      { value: "all", label: "Tous" },
-      { value: "saas", label: "SaaS" },
-      { value: "web", label: "Web" },
-      { value: "mobile", label: "Mobile" },
-      { value: "desktop", label: "Desktop" },
-    ];
+const categories =
+  locale === "en"
+    ? [
+        { value: "all", label: "All" },
+        { value: "saas", label: "SaaS" },
+        { value: "web", label: "Web" },
+        { value: "mobile", label: "Mobile" },
+        { value: "desktop", label: "Desktop" },
+      ]
+    : [
+        { value: "all", label: "Tous" },
+        { value: "saas", label: "SaaS" },
+        { value: "web", label: "Web" },
+        { value: "mobile", label: "Mobile" },
+        { value: "desktop", label: "Desktop" },
+      ];
 ---
 
-<div class="mb-8 pt-4 flex flex-wrap gap-3" role="toolbar" aria-label={locale === "en" ? "Filter projects" : "Filtrer les projets"}>
-  {categories.map((category) => (
-    <button class="focus-ring filter-btn rounded-full border border-cosmic-gold/25 bg-slate-900/70 px-4 py-2 text-xs uppercase tracking-[0.2em] hover:border-cosmic-gold hover:text-cosmic-gold" data-category={category.value}>
-      {category.label}
-    </button>
-  ))}
+<div
+  class="filter-toolbar mb-8 pt-4"
+  role="toolbar"
+  aria-label={locale === "en" ? "Filter projects" : "Filtrer les projets"}
+>
+  {
+    categories.map((category) => (
+      <FilterBadge
+        class="focus-ring filter-btn"
+        active={category.value === "all"}
+        data-category={category.value}
+      >
+        {category.label}
+      </FilterBadge>
+    ))
+  }
 </div>
