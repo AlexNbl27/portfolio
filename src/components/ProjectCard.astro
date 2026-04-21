@@ -8,11 +8,14 @@ import Card from "./ui/Card.astro";
 import type { ProjectItem } from "../i18n/data/types";
 import type { Locale } from "../i18n/config";
 
-const { project, locale } = Astro.props as { project: ProjectItem; locale: Locale };
+const { project, locale } = Astro.props as {
+  project: ProjectItem;
+  locale: Locale;
+};
 
 const images = import.meta.glob<{ default: ImageMetadata }>(
   "/src/assets/images/*.{jpeg,jpg,png,gif,webp,avif}",
-  { eager: true }
+  { eager: true },
 );
 const imagePath = `/src/assets${project.imageUrl}`;
 const imageSrc = images[imagePath];
@@ -25,13 +28,15 @@ const imageSrc = images[imagePath];
   data-category={project.category}
   data-detail-page={project.detailPage}
 >
-  <div class="relative w-full overflow-hidden shrink-0 aspect-video bg-slate-800/60">
+  <div
+    class="relative w-full overflow-hidden shrink-0 aspect-video bg-slate-800/60"
+  >
     {
       imageSrc ? (
         <Image
           src={imageSrc.default}
           alt={project.title}
-          class="project-card-img h-full w-full object-cover transition duration-700 group-hover:scale-115 rounded-card"
+          class="project-card-img h-full w-full object-cover transition duration-700 group-hover:scale-112 rounded-card"
           data-fade-image
           transition:name={`project-image-${project.title}`}
           decoding="async"
@@ -45,9 +50,28 @@ const imageSrc = images[imagePath];
 
   <div class="flex flex-col flex-grow p-5">
     <div class="space-y-3 flex-grow z-10">
-      <p class="text-xs uppercase tracking-[0.25em] text-cosmic-pink">
-        {project.category}
-      </p>
+      <div class="flex items-center justify-between gap-2">
+        <div>
+          <p class="text-xs uppercase tracking-[0.25em] text-cosmic-pink">
+            {project.category}
+          </p>
+          {
+            project.company && (
+              <p class="text-[10px] uppercase tracking-widest text-white/40 mt-0.5">
+                {project.company}
+              </p>
+            )
+          }
+        </div>
+        {
+          project.inProduction && (
+            <span class="flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-widest text-cosmic-gold shrink-0">
+              <span class="h-1.5 w-1.5 rounded-full bg-cosmic-gold animate-pulse" />
+              {locale === "en" ? "Live" : "En prod"}
+            </span>
+          )
+        }
+      </div>
       <h3 class="font-display text-3xl text-cosmic-gold">
         {project.title}
       </h3>
@@ -70,7 +94,7 @@ const imageSrc = images[imagePath];
             variant="primary"
             aria-label={`${locale === "en" ? "Learn more about" : "En savoir plus sur"} ${project.title}`}
           >
-            {locale === "en" ? "Learn more" : "En savoir plus"}
+            {locale === "en" ? "Learn more" : "En savoir +"}
           </Button>
         )
       }
@@ -82,9 +106,15 @@ const imageSrc = images[imagePath];
             rel="noreferrer"
             variant="outline"
             icon="lucide:external-link"
-            aria-label={`${locale === "en" ? "Live demo for" : "Démo live du projet"} ${project.title}`}
+            aria-label={`${locale === "en" ? "Visit site for" : "Voir le site du projet"} ${project.title}`}
           >
-            {locale === "en" ? "Demo" : "Démo"}
+            {project.inProduction
+              ? locale === "en"
+                ? "Visit site"
+                : "Voir le site"
+              : locale === "en"
+                ? "Demo"
+                : "Démo"}
           </Button>
         )
       }

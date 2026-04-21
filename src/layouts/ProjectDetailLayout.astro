@@ -143,7 +143,9 @@ const isEn = locale === "en";
                 ? "lucide:github"
                 : link.label.toLowerCase().includes("site")
                   ? "lucide:external-link"
-                  : undefined
+                  : link.label.toLowerCase().includes("journal") || link.label.toLowerCase().includes("blog")
+                    ? "lucide:book-open"
+                    : undefined
             }
           >
             {link.label}

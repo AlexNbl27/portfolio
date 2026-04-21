@@ -22,18 +22,28 @@ const isEn = locale === "en";
 
 <BaseLayout
   title={isEn ? "Alexandre Noblet | Blog" : "Alexandre Noblet | Blogs"}
-  description={isEn ? "Articles and experience notes by Alexandre Noblet." : "Articles et retours d’expérience d’Alexandre Noblet."}
+  description={isEn
+    ? "Articles and experience notes by Alexandre Noblet."
+    : "Articles et retours d’expérience d’Alexandre Noblet."}
 >
   <section class="cosmic-container pt-8">
-    <h1 class="section-title">{isEn ? "My" : "Mes"} <span class="highlight">blogs</span></h1>
+    <h1 class="section-title">
+      {isEn ? "My" : "Mes"}
+      <span class="highlight">blogs</span>
+    </h1>
     <p class="muted mt-4 max-w-3xl text-lg">
-      {isEn ? "Here I collect experience feedback, internship write-ups, and apprenticeship notes. Each blog has dedicated sub-pages." : "J’y regroupe mes retours d’expérience, mes articles de stage et mes notes d’alternance. Chaque blog dispose maintenant de ses propres sous-pages."}
+      {
+        isEn
+          ? "Here I collect experience feedback, internship write-ups, and apprenticeship notes. Each blog has dedicated sub-pages."
+          : "J’y regroupe mes retours d’expérience, mes articles de stage et mes notes d’alternance. Chaque blog dispose maintenant de ses propres sous-pages."
+      }
     </p>
 
     <div class="mt-8 grid gap-4 xl:grid-cols-2">
       {
         blogs.map((blog) => {
-          const recentPosts = [...blog.posts].slice(-2).reverse();
+          const recentPosts = blog.posts.slice(0, 2);
+          const latestPost = blog.posts[0];
 
           return (
             <Card as="article" interactive shine class="h-full p-4 md:p-5">
@@ -52,8 +62,8 @@ const isEn = locale === "en";
                     <p class="text-[11px] uppercase tracking-[0.25em] text-cosmic-pink">
                       {blog.subtitle}
                     </p>
-                    <Badge variant="outline" class="text-[10px] text-slate-300">
-                      {blog.posts.length} {isEn ? `article${blog.posts.length > 1 ? "s" : ""}` : `article${blog.posts.length > 1 ? "s" : ""}`}
+                    <Badge variant="gold" class="text-[10px]">
+                      {`${blog.posts.length} article${blog.posts.length > 1 ? "s" : ""}`}
                     </Badge>
                   </div>
 
@@ -64,7 +74,7 @@ const isEn = locale === "en";
 
                   <div class="flex flex-wrap gap-2 text-[11px]">
                     {blog.skills.slice(0, 4).map((skill) => (
-                      <Badge variant="default">{skill}</Badge>
+                      <Badge variant="tech">{skill}</Badge>
                     ))}
                   </div>
 
@@ -90,12 +100,14 @@ const isEn = locale === "en";
                     <Button href={`/blogs/${blog.slug}`} variant="primary">
                       {isEn ? "Open" : "Ouvrir"}
                     </Button>
-                    <Button
-                      href={`/blogs/${blog.slug}/${blog.posts[blog.posts.length - 1].slug}`}
-                      variant="outline"
-                    >
-                      {isEn ? "Latest post" : "Dernier article"}
-                    </Button>
+                    {latestPost && (
+                      <Button
+                        href={`/blogs/${blog.slug}/${latestPost.slug}`}
+                        variant="outline"
+                      >
+                        {isEn ? "Latest post" : "Dernier article"}
+                      </Button>
+                    )}
                   </div>
                 </div>
               </div>

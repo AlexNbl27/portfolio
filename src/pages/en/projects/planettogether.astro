@@ -1,0 +1,63 @@
+---
+import ProjectDetailLayout from '../../../layouts/ProjectDetailLayout.astro';
+
+const frontmatter = {
+  title: 'PlanetTogether',
+  description: 'Industrial integration pipeline connecting SAP and SQL Server to automate production scheduling via PlanetTogether — built during my apprenticeship at Orange Business.',
+  heroImage: '/images/planettogether.png',
+  projectCategory: 'Industrial integration · In production',
+  technologies: ['Python', 'SQL Server', 'SQLAlchemy', 'GitLab CI', 'Pytest', 'PlanetTogether'],
+  links: [{ label: 'Read the apprenticeship blog', url: '/en/blogs/alternance-obs', variant: 'primary' }],
+  parentLink: '/en/projects',
+  theme: {
+    accent: "#1AABE4",
+    accentSoft: "#d0eef9",
+    glowA: "rgba(26, 171, 228, 0.28)",
+    glowB: "rgba(26, 171, 228, 0.14)",
+    titleFont: "'Poppins', 'Manrope', sans-serif",
+    bodyFont: "'Manrope', sans-serif",
+  },
+};
+---
+
+<ProjectDetailLayout frontmatter={frontmatter}>
+  <h2>The Project</h2>
+  <p><strong>PlanetTogether</strong> is the core of a Python monorepo built during my apprenticeship at <strong>Orange Business</strong> within a three-developer team. The goal: automate the production scheduling chain for industrial clients by connecting their SAP systems to the <strong>PlanetTogether</strong> scheduling tool.</p>
+  <p>Confidential project — deployed and running in production.</p>
+
+  <h2>The Integration Chain</h2>
+  <p>The architecture relies on a critical dependency between three links:</p>
+  <pre><code>PythonTemplateExtraction → PlanetTogether → PythonPublishToSAP → SAP</code></pre>
+  <p>Each link is independent, but a failure in the first one blocks the entire production chain.</p>
+
+  <h3>PythonTemplateExtraction — Upstream ETL</h3>
+  <p>An ETL pipeline that reads data from Excel files and SQL Server staging tables, transforms it according to business constraints, then writes it to the destination database that PlanetTogether consumes to generate its schedule.</p>
+  <ul>
+    <li>Multi-source reading: Excel (operators, resources) + SQL Server (manufacturing orders)</li>
+    <li>Typed domain models (<code>Machine</code>, <code>HumanResources</code>, <code>Routings</code>, <code>ManufacturingOrders</code>…)</li>
+    <li>Business data validation with <code>ErrorCodes</code> (code, message, display in PT)</li>
+    <li>Configurable rotating logging (<code>RotatingFileHandler</code>)</li>
+  </ul>
+
+  <h3>PythonPublishToSAP — Downstream Publication</h3>
+  <p>Once PlanetTogether has generated the optimized schedule, this module writes the results back into SAP manufacturing orders — closing the loop between the scheduling tool and the ERP system.</p>
+
+  <h2>Technical Architecture</h2>
+  <ul>
+    <li>Dataclasses with <code>slots=True</code> for memory performance</li>
+    <li>Each model exposes <code>read(df)</code> and <code>write(writer, ...)</code> — consistent interface across the entire domain</li>
+    <li><code>DataWriter</code> abstracts SQLAlchemy writes — single change point if the ORM evolves</li>
+    <li>Safe Pandas access via <code>get_val(row, key, cast_type, default)</code> — no silent KeyErrors</li>
+  </ul>
+
+  <h2>Deployment</h2>
+  <ul>
+    <li><strong>Windows Task Scheduler</strong> — scheduled Python script execution aligned with production cycles</li>
+    <li><strong>SQL Server Agent</strong> — stored procedures triggered database-side</li>
+    <li><strong>GitLab CI</strong> — automated test pipeline on every Merge Request (<code>python:3.12-slim</code>)</li>
+  </ul>
+
+  <h2>What I Learned</h2>
+  <p>This project exposed me to challenges that web development doesn't cover: <strong>industrial business logic</strong>, constraints from <strong>heterogeneous data sources</strong> (field Excel ↔ SQL Server ↔ ERP), and the criticality of a system where a regression can halt an entire production chain.</p>
+  <p>Working on a tool like PlanetTogether, deployed at major industrial groups, taught me to truly measure the real-world impact of a technical decision.</p>
+</ProjectDetailLayout>

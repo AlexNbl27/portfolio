@@ -1,6 +1,5 @@
 const DAILY_LIMIT = 20;
 const STORAGE_KEY = "astral-chat-quota";
-const HISTORY_KEY = "astral-chat-history";
 const MODE_KEY = "astral-chat-mode";
 const MAX_CHARS = 800;
 
@@ -128,6 +127,8 @@ function initAstralChat() {
       nova: "greetingNova",
     };
 
+    const historyKey = (mode: Mode) => `astral-chat-history-${mode}`;
+
     const getCurrentMode = (): Mode => {
       const selectedInput = Array.from(personalityInputs).find(
         (input) => input.checked,
@@ -151,9 +152,9 @@ function initAstralChat() {
       else window.scrollTo({ top: document.body.scrollHeight, behavior });
     };
 
-    const loadHistory = () => {
+    const loadHistory = (mode: Mode) => {
       try {
-        const raw = sessionStorage.getItem(HISTORY_KEY);
+        const raw = sessionStorage.getItem(historyKey(mode));
         return raw ? JSON.parse(raw) : [];
       } catch {
         return [];
@@ -161,14 +162,15 @@ function initAstralChat() {
     };
 
     const saveHistory = () => {
-      sessionStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+      sessionStorage.setItem(historyKey(getCurrentMode()), JSON.stringify(history));
     };
 
+    const savedMode = toMode(sessionStorage.getItem(MODE_KEY));
     const history: Array<{
       role: "user" | "model";
       parts: Array<{ text: string }>;
       _ctas?: Cta[];
-    }> = loadHistory();
+    }> = loadHistory(savedMode);
 
     const disableChat = () => {
       root.classList.remove("astral-chat--booting");
@@ -281,7 +283,7 @@ function initAstralChat() {
       blog: `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`,
     };
 
-    class FatalChatError extends Error {}
+    class FatalChatError extends Error { }
 
     const sendWithServerRoute = async (
       prompt: string,
@@ -411,19 +413,41 @@ function initAstralChat() {
       ".astral-chat__clear",
     ) as HTMLButtonElement;
     const resetConversation = () => {
-      sessionStorage.removeItem(HISTORY_KEY);
+      sessionStorage.removeItem(historyKey(getCurrentMode()));
       history.length = 0;
       if (messages) messages.innerHTML = "";
       appendMessage("assistant", getGreeting(), false, false);
     };
     clearBtn?.addEventListener("click", resetConversation);
 
+    const switchToMode = (newMode: Mode) => {
+      setCurrentMode(newMode);
+      history.length = 0;
+      history.push(...loadHistory(newMode));
+      if (messages) messages.innerHTML = "";
+      if (history.length > 0) {
+        history.forEach((item) => {
+          appendMessage(
+            item.role === "model" ? "assistant" : "user",
+            item.parts[0].text,
+            false,
+            true,
+          );
+          if (item.role === "model" && item._ctas?.length) {
+            renderCtas(item._ctas);
+          }
+        });
+      } else {
+        appendMessage("assistant", getGreeting(), false, false);
+      }
+      scrollToBottom("auto");
+    };
+
     if (personalityInputs.length > 0) {
-      setCurrentMode(getCurrentMode());
+      setCurrentMode(savedMode);
       personalityInputs.forEach((input) => {
         input.addEventListener("change", () => {
-          setCurrentMode(toMode(input.value));
-          resetConversation();
+          switchToMode(toMode(input.value));
         });
       });
     }

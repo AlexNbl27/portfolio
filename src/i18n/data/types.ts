@@ -1,4 +1,4 @@
-export type ProjectCategory = "saas" | "web" | "mobile" | "desktop";
+export type ProjectCategory = "saas" | "web" | "mobile" | "desktop" | "integration";
 
 export interface ProjectItem {
   title: string;
@@ -11,6 +11,9 @@ export interface ProjectItem {
   detailPage?: string;
   category: ProjectCategory;
   recruiterFeatured: boolean;
+  inProduction?: boolean;
+  company?: string;
+  year?: number;
 }
 
 export interface ExperienceItem {
@@ -22,4 +25,5 @@ export interface ExperienceItem {
   description: string;
   achievements: string[];
   technologies: string[];
+  blogSlug?: string;
 }
