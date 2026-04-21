@@ -9,52 +9,34 @@
   {
     "name": "C#",
     "category": "Mobile & logiciel",
-    "proficiency": 70,
-    "yearsOfExperience": 2
-  },
-  {
-    "name": "XAML",
-    "category": "Mobile & logiciel",
-    "proficiency": 68,
+    "proficiency": 60,
     "yearsOfExperience": 2
   },
   {
     "name": "Python",
     "category": "Mobile & logiciel",
-    "proficiency": 78,
+    "proficiency": 75,
     "yearsOfExperience": 2
   },
   {
     "name": "PHP",
     "category": "Développement web",
-    "proficiency": 85,
+    "proficiency": 70,
     "yearsOfExperience": 3,
     "recruiterCore": true
   },
   {
     "name": "JavaScript",
     "category": "Développement web",
-    "proficiency": 82,
+    "proficiency": 80,
     "yearsOfExperience": 3
   },
   {
     "name": "TypeScript",
     "category": "Développement web",
-    "proficiency": 74,
+    "proficiency": 80,
     "yearsOfExperience": 2,
     "recruiterCore": true
-  },
-  {
-    "name": "HTML",
-    "category": "Développement web",
-    "proficiency": 86,
-    "yearsOfExperience": 4
-  },
-  {
-    "name": "CSS",
-    "category": "Développement web",
-    "proficiency": 75,
-    "yearsOfExperience": 4
   },
   {
     "name": "Twig",
@@ -65,114 +47,108 @@
   {
     "name": "Astro",
     "category": "Développement web",
-    "proficiency": 80,
+    "proficiency": 90,
     "yearsOfExperience": 1,
     "recruiterCore": true
   },
   {
-    "name": "Tailwind CSS",
-    "category": "Développement web",
-    "proficiency": 75,
-    "yearsOfExperience": 1
-  },
-  {
     "name": "React",
     "category": "Développement web",
-    "proficiency": 68,
+    "proficiency": 70,
     "yearsOfExperience": 1
   },
   {
     "name": "Vue.js 3",
     "category": "Développement web",
-    "proficiency": 72,
+    "proficiency": 80,
     "yearsOfExperience": 1
   },
   {
     "name": "Laravel",
     "category": "Backend & frameworks",
-    "proficiency": 70,
+    "proficiency": 60,
     "yearsOfExperience": 1,
     "recruiterCore": true
   },
   {
     "name": "Strapi",
     "category": "Backend & frameworks",
-    "proficiency": 68,
+    "proficiency": 80,
     "yearsOfExperience": 1
   },
   {
     "name": "Symfony",
     "category": "Backend & frameworks",
-    "proficiency": 68,
+    "proficiency": 60,
     "yearsOfExperience": 1
   },
   {
     "name": "Stripe",
     "category": "Backend & frameworks",
-    "proficiency": 65,
+    "proficiency": 70,
     "yearsOfExperience": 1
   },
   {
     "name": "MySQL",
     "category": "Base de données",
-    "proficiency": 84,
+    "proficiency": 85,
     "yearsOfExperience": 3,
     "recruiterCore": true
   },
   {
     "name": "PostgreSQL",
     "category": "Base de données",
-    "proficiency": 82,
+    "proficiency": 85,
     "yearsOfExperience": 2
   },
   {
     "name": "Firebase",
     "category": "Base de données",
-    "proficiency": 82,
+    "proficiency": 75,
     "yearsOfExperience": 2
   },
   {
     "name": "Supabase",
     "category": "Base de données",
-    "proficiency": 78,
+    "proficiency": 90,
     "yearsOfExperience": 1
   },
   {
     "name": "Git",
     "category": "DevOps & outils",
-    "proficiency": 84,
+    "proficiency": 90,
     "yearsOfExperience": 4,
     "recruiterCore": true
   },
   {
     "name": "Docker",
     "category": "DevOps & outils",
-    "proficiency": 70,
+    "proficiency": 80,
     "yearsOfExperience": 1,
     "recruiterCore": true
   },
   {
     "name": "GitLab",
     "category": "DevOps & outils",
-    "proficiency": 76,
+    "proficiency": 85,
     "yearsOfExperience": 2
   },
   {
     "name": "CI/CD",
     "category": "DevOps & outils",
-    "proficiency": 72,
+    "proficiency": 65,
     "yearsOfExperience": 1
   },
   {
     "name": "Red Hat OpenShift",
     "category": "DevOps & outils",
-    "proficiency": 69,
+    "proficiency": 60,
     "yearsOfExperience": 1
   },
   {
     "name": "Figma",
     "category": "DevOps & outils",
-    "proficiency": 78,
+    "proficiency": 75,
     "yearsOfExperience": 2
   },
   {
@@ -190,36 +166,29 @@
   {
     "name": "Siemens TIA Portal",
     "category": "Automatisme & industrie",
-    "proficiency": 84,
+    "proficiency": 65,
     "yearsOfExperience": 2
   },
   {
-    "name": "Schneider Control Expert",
+    "name": "SE Control Expert",
     "category": "Automatisme & industrie",
-    "proficiency": 82,
+    "proficiency": 60,
     "yearsOfExperience": 2
   },
   {
     "name": "Node-RED",
     "category": "Automatisme & industrie",
-    "proficiency": 76,
+    "proficiency": 70,
     "yearsOfExperience": 1
   },
   {
     "name": "PlanetTogether",
     "category": "Automatisme & industrie",
-    "proficiency": 65,
-    "yearsOfExperience": 1
+    "proficiency": 90,
+    "yearsOfExperience": 2
   },
   {
-    "name": "Gemini",
-    "category": "AI & Agentic Coding",
-    "proficiency": 80,
-    "yearsOfExperience": 1,
-    "isVibeOnly": true
-  },
-  {
-    "name": "Antigravity",
+    "name": "Gemini & Antigravity",
     "category": "AI & Agentic Coding",
     "proficiency": 85,
     "yearsOfExperience": 1,
@@ -228,21 +197,14 @@
   {
     "name": "Claude Code",
     "category": "AI & Agentic Coding",
-    "proficiency": 85,
-    "yearsOfExperience": 1,
-    "isVibeOnly": true
-  },
-  {
-    "name": "Cursor",
-    "category": "AI & Agentic Coding",
-    "proficiency": 82,
+    "proficiency": 95,
     "yearsOfExperience": 1,
     "isVibeOnly": true
   },
   {
     "name": "GitHub Copilot",
     "category": "AI & Agentic Coding",
-    "proficiency": 88,
+    "proficiency": 70,
     "yearsOfExperience": 2,
     "isVibeOnly": true
   }

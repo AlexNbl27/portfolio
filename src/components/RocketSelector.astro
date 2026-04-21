@@ -10,7 +10,6 @@ const { softSkillsUrl, skillsUrl, isEn } = Astro.props;
 <!-- Desktop: interactive rocket -->
 <div class="rocket-wrapper" id="rocket-wrapper">
   <div class="rocket-scene" id="rocket-scene">
-
     <svg
       id="rocket-svg"
       viewBox="0 0 800 540"
@@ -19,75 +18,104 @@ const { softSkillsUrl, skillsUrl, isEn } = Astro.props;
       aria-hidden="true"
     >
       <defs>
-        <!-- Body gradient -->
+        <!-- Hull gradient: deep navy -->
         <linearGradient id="bodyGrad" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%"   stop-color="#090f24"/>
-          <stop offset="40%"  stop-color="#1a2347"/>
-          <stop offset="60%"  stop-color="#1a2347"/>
-          <stop offset="100%" stop-color="#090f24"/>
+          <stop offset="0%" stop-color="#07101e"></stop>
+          <stop offset="28%" stop-color="#152035"></stop>
+          <stop offset="50%" stop-color="#1c2c46"></stop>
+          <stop offset="72%" stop-color="#152035"></stop>
+          <stop offset="100%" stop-color="#07101e"></stop>
         </linearGradient>
 
-        <!-- Nose cone -->
-        <linearGradient id="noseGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%"   stop-color="#2c2a5f"/>
-          <stop offset="100%" stop-color="#0f1735"/>
+        <!-- Hull centre chrome highlight -->
+        <linearGradient id="hullHighlight" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#3a5080" stop-opacity="0"></stop>
+          <stop offset="50%" stop-color="#4a6898" stop-opacity="0.45"></stop>
+          <stop offset="100%" stop-color="#3a5080" stop-opacity="0"></stop>
         </linearGradient>
 
-        <!-- Porthole -->
-        <radialGradient id="portholeGrad" cx="38%" cy="35%">
-          <stop offset="0%"   stop-color="#5ba3d9"/>
-          <stop offset="50%"  stop-color="#1a4a7a"/>
-          <stop offset="100%" stop-color="#050e22"/>
+        <!-- Hab ring metallic -->
+        <linearGradient id="habGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#3a5278"></stop>
+          <stop offset="40%" stop-color="#506888"></stop>
+          <stop offset="60%" stop-color="#2c4060"></stop>
+          <stop offset="100%" stop-color="#1a2c44"></stop>
+        </linearGradient>
+
+        <!-- Left radiator panel — Soft Skills pink -->
+        <linearGradient id="lwGrad" x1="1" y1="0.5" x2="0" y2="0.5">
+          <stop offset="0%" stop-color="#f2b4df" stop-opacity="0.85"></stop>
+          <stop offset="65%" stop-color="#f2b4df" stop-opacity="0.22"></stop>
+          <stop offset="100%" stop-color="#f2b4df" stop-opacity="0.03"></stop>
+        </linearGradient>
+
+        <!-- Right radiator panel — Technical gold -->
+        <linearGradient id="rwGrad" x1="0" y1="0.5" x2="1" y2="0.5">
+          <stop offset="0%" stop-color="#f6d40d" stop-opacity="0.85"></stop>
+          <stop offset="65%" stop-color="#f6d40d" stop-opacity="0.22"></stop>
+          <stop offset="100%" stop-color="#f6d40d" stop-opacity="0.03"></stop>
+        </linearGradient>
+
+        <!-- Astrophage engine — blue-white -->
+        <radialGradient id="astroGrad" cx="50%" cy="5%">
+          <stop offset="0%" stop-color="#ffffff"></stop>
+          <stop offset="15%" stop-color="#cce8ff"></stop>
+          <stop offset="42%" stop-color="#50a0ff"></stop>
+          <stop offset="75%" stop-color="#1848e8"></stop>
+          <stop offset="100%" stop-color="rgba(8,20,160,0)"></stop>
         </radialGradient>
 
-        <!-- Flame main -->
-        <radialGradient id="flameGrad" cx="50%" cy="15%">
-          <stop offset="0%"   stop-color="#ffffff"/>
-          <stop offset="22%"  stop-color="#f6d40d"/>
-          <stop offset="58%"  stop-color="#ff7d2b"/>
-          <stop offset="100%" stop-color="rgba(255,100,0,0)"/>
+        <!-- Astrophage wide bloom -->
+        <radialGradient id="astroBloomGrad" cx="50%" cy="25%">
+          <stop offset="0%" stop-color="#7ac4ff" stop-opacity="0.55"></stop>
+          <stop offset="100%" stop-color="#1428aa" stop-opacity="0"></stop>
         </radialGradient>
 
-        <!-- Flame core -->
-        <radialGradient id="flameCoreGrad" cx="50%" cy="5%">
-          <stop offset="0%"   stop-color="#ffffff"/>
-          <stop offset="45%"  stop-color="#f6d40d"/>
-          <stop offset="100%" stop-color="rgba(246,212,13,0)"/>
+        <!-- Viewport -->
+        <radialGradient id="portGrad" cx="38%" cy="35%">
+          <stop offset="0%" stop-color="#9de0ff"></stop>
+          <stop offset="45%" stop-color="#2878aa"></stop>
+          <stop offset="100%" stop-color="#040e1a"></stop>
         </radialGradient>
 
-        <!-- Left wing: pink -->
-        <linearGradient id="lwGrad" x1="1" y1="0" x2="0" y2="1">
-          <stop offset="0%"   stop-color="#f2b4df" stop-opacity="0.9"/>
-          <stop offset="100%" stop-color="#f2b4df" stop-opacity="0.1"/>
-        </linearGradient>
-
-        <!-- Right wing: gold -->
-        <linearGradient id="rwGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%"   stop-color="#f6d40d" stop-opacity="0.9"/>
-          <stop offset="100%" stop-color="#f6d40d" stop-opacity="0.1"/>
-        </linearGradient>
-
-        <!-- Glow filters -->
+        <!-- KEEP exact IDs — referenced by existing CSS hover rules -->
         <filter id="glow-pink" x="-40%" y="-40%" width="180%" height="180%">
-          <feGaussianBlur stdDeviation="14" result="b"/>
-          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          <feGaussianBlur stdDeviation="14" result="b"></feGaussianBlur>
+          <feMerge
+            ><feMergeNode in="b"></feMergeNode><feMergeNode in="SourceGraphic"
+            ></feMergeNode></feMerge
+          >
         </filter>
         <filter id="glow-gold" x="-40%" y="-40%" width="180%" height="180%">
-          <feGaussianBlur stdDeviation="14" result="b"/>
-          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          <feGaussianBlur stdDeviation="14" result="b"></feGaussianBlur>
+          <feMerge
+            ><feMergeNode in="b"></feMergeNode><feMergeNode in="SourceGraphic"
+            ></feMergeNode></feMerge
+          >
         </filter>
-        <filter id="flame-blur" x="-60%" y="-10%" width="220%" height="140%">
-          <feGaussianBlur stdDeviation="9"/>
+        <filter id="astro-bloom" x="-80%" y="-30%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="16"></feGaussianBlur>
         </filter>
-        <filter id="body-glow" x="-10%" y="-5%" width="120%" height="115%">
-          <feDropShadow dx="0" dy="6" stdDeviation="16" flood-color="#f6d40d" flood-opacity="0.18"/>
+        <filter id="astro-core" x="-60%" y="-20%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="6"></feGaussianBlur>
         </filter>
-        <filter id="nose-tip-glow" x="-200%" y="-200%" width="500%" height="500%">
-          <feGaussianBlur stdDeviation="4"/>
+        <filter id="body-glow" x="-14%" y="-5%" width="128%" height="116%">
+          <feDropShadow
+            dx="0"
+            dy="4"
+            stdDeviation="14"
+            flood-color="#4a9eff"
+            flood-opacity="0.20"></feDropShadow>
+        </filter>
+        <filter id="hab-glow" x="-20%" y="-80%" width="140%" height="260%">
+          <feGaussianBlur stdDeviation="4"></feGaussianBlur>
+        </filter>
+        <filter id="sensor-glow" x="-200%" y="-200%" width="500%" height="500%">
+          <feGaussianBlur stdDeviation="3"></feGaussianBlur>
         </filter>
       </defs>
 
-      <!-- ═══════════════ LEFT WING (Soft Skills) ═══════════════ -->
+      <!-- ═══════════════ LEFT RADIATOR PANEL — Soft Skills ═══════════════ -->
       <g
         id="left-wing"
         class="wing"
@@ -97,32 +125,133 @@ const { softSkillsUrl, skillsUrl, isEn } = Astro.props;
         data-url={softSkillsUrl}
         data-dir="left"
       >
-        <!-- Wing fill -->
+        <!-- Panel fill -->
         <path
-          d="M 315,182 L 55,168 L 18,520 L 315,372 Z"
+          d="M 364,148 L 56,128 L 52,408 L 364,385 Z"
           fill="url(#lwGrad)"
           stroke="#f2b4df"
           stroke-width="1.5"
-          class="wing-fill lw-fill"
-        />
-        <!-- Hover glow overlay (always present, opacity toggled) -->
+          class="wing-fill lw-fill"></path>
+        <!-- Hover glow -->
         <path
-          d="M 315,182 L 55,168 L 18,520 L 315,372 Z"
+          d="M 364,148 L 56,128 L 52,408 L 364,385 Z"
           fill="#f2b4df"
-          class="wing-glow lw-glow"
-        />
-        <!-- Leading edge accent -->
-        <path d="M 315,182 L 55,168" stroke="#f2b4df" stroke-width="2.5" opacity="0.55" stroke-linecap="round"/>
-        <!-- Trailing edge -->
-        <path d="M 315,372 L 18,520" stroke="#f2b4df" stroke-width="1" opacity="0.2" stroke-linecap="round"/>
-        <!-- Rib lines -->
-        <path d="M 295,210 L 75,390" stroke="#f2b4df" stroke-width="0.6" opacity="0.2"/>
-        <path d="M 295,275 L 48,445" stroke="#f2b4df" stroke-width="0.6" opacity="0.15"/>
-        <!-- Tip dot -->
-        <circle cx="18" cy="520" r="3.5" fill="#f2b4df" opacity="0.4" class="wing-tip-dot"/>
+          class="wing-glow lw-glow"></path>
+        <!-- Radiator fins (horizontal heat-dissipation grid) -->
+        <line
+          x1="58"
+          y1="158"
+          x2="363"
+          y2="170"
+          stroke="#f2b4df"
+          stroke-width="0.7"
+          opacity="0.20"></line>
+        <line
+          x1="57"
+          y1="192"
+          x2="363"
+          y2="201"
+          stroke="#f2b4df"
+          stroke-width="0.7"
+          opacity="0.20"></line>
+        <line
+          x1="56"
+          y1="226"
+          x2="363"
+          y2="232"
+          stroke="#f2b4df"
+          stroke-width="0.7"
+          opacity="0.20"></line>
+        <line
+          x1="55"
+          y1="260"
+          x2="363"
+          y2="263"
+          stroke="#f2b4df"
+          stroke-width="0.7"
+          opacity="0.20"></line>
+        <line
+          x1="54"
+          y1="294"
+          x2="363"
+          y2="294"
+          stroke="#f2b4df"
+          stroke-width="0.7"
+          opacity="0.20"></line>
+        <line
+          x1="53"
+          y1="328"
+          x2="363"
+          y2="325"
+          stroke="#f2b4df"
+          stroke-width="0.7"
+          opacity="0.20"></line>
+        <line
+          x1="52"
+          y1="362"
+          x2="363"
+          y2="356"
+          stroke="#f2b4df"
+          stroke-width="0.7"
+          opacity="0.17"></line>
+        <line
+          x1="52"
+          y1="394"
+          x2="363"
+          y2="381"
+          stroke="#f2b4df"
+          stroke-width="0.5"
+          opacity="0.12"></line>
+        <!-- Mounting bracket -->
+        <rect
+          x="350"
+          y="154"
+          width="14"
+          height="231"
+          rx="3"
+          fill="none"
+          stroke="#f2b4df"
+          stroke-width="1.0"
+          opacity="0.35"></rect>
+        <rect
+          x="353"
+          y="168"
+          width="8"
+          height="203"
+          rx="2"
+          fill="#f2b4df"
+          opacity="0.05"></rect>
+        <!-- Leading edge -->
+        <path
+          d="M 364,148 L 56,128"
+          stroke="#f2b4df"
+          stroke-width="2.2"
+          opacity="0.60"
+          stroke-linecap="round"></path>
+        <path
+          d="M 364,385 L 52,408"
+          stroke="#f2b4df"
+          stroke-width="0.8"
+          opacity="0.18"
+          stroke-linecap="round"></path>
+        <!-- Running light (tip) -->
+        <circle
+          cx="54"
+          cy="268"
+          r="4.5"
+          fill="#f2b4df"
+          opacity="0.40"
+          class="wing-tip-dot"></circle>
+        <circle
+          cx="54"
+          cy="268"
+          r="2.0"
+          fill="#fce4f4"
+          opacity="0.85"
+          class="wing-tip-dot"></circle>
       </g>
 
-      <!-- ═══════════════ RIGHT WING (Technical Skills) ═══════════════ -->
+      <!-- ═══════════════ RIGHT RADIATOR PANEL — Technical Skills ═══════════════ -->
       <g
         id="right-wing"
         class="wing"
@@ -133,86 +262,441 @@ const { softSkillsUrl, skillsUrl, isEn } = Astro.props;
         data-dir="right"
       >
         <path
-          d="M 485,182 L 745,168 L 782,520 L 485,372 Z"
+          d="M 436,148 L 744,128 L 748,408 L 436,385 Z"
           fill="url(#rwGrad)"
           stroke="#f6d40d"
           stroke-width="1.5"
-          class="wing-fill rw-fill"
-        />
+          class="wing-fill rw-fill"></path>
         <path
-          d="M 485,182 L 745,168 L 782,520 L 485,372 Z"
+          d="M 436,148 L 744,128 L 748,408 L 436,385 Z"
           fill="#f6d40d"
-          class="wing-glow rw-glow"
-        />
-        <path d="M 485,182 L 745,168" stroke="#f6d40d" stroke-width="2.5" opacity="0.55" stroke-linecap="round"/>
-        <path d="M 485,372 L 782,520" stroke="#f6d40d" stroke-width="1" opacity="0.2" stroke-linecap="round"/>
-        <path d="M 505,210 L 725,390" stroke="#f6d40d" stroke-width="0.6" opacity="0.2"/>
-        <path d="M 505,275 L 752,445" stroke="#f6d40d" stroke-width="0.6" opacity="0.15"/>
-        <circle cx="782" cy="520" r="3.5" fill="#f6d40d" opacity="0.4" class="wing-tip-dot"/>
+          class="wing-glow rw-glow"></path>
+        <!-- Radiator fins -->
+        <line
+          x1="437"
+          y1="170"
+          x2="742"
+          y2="158"
+          stroke="#f6d40d"
+          stroke-width="0.7"
+          opacity="0.20"></line>
+        <line
+          x1="437"
+          y1="201"
+          x2="743"
+          y2="192"
+          stroke="#f6d40d"
+          stroke-width="0.7"
+          opacity="0.20"></line>
+        <line
+          x1="437"
+          y1="232"
+          x2="744"
+          y2="226"
+          stroke="#f6d40d"
+          stroke-width="0.7"
+          opacity="0.20"></line>
+        <line
+          x1="437"
+          y1="263"
+          x2="745"
+          y2="260"
+          stroke="#f6d40d"
+          stroke-width="0.7"
+          opacity="0.20"></line>
+        <line
+          x1="437"
+          y1="294"
+          x2="746"
+          y2="294"
+          stroke="#f6d40d"
+          stroke-width="0.7"
+          opacity="0.20"></line>
+        <line
+          x1="437"
+          y1="325"
+          x2="747"
+          y2="328"
+          stroke="#f6d40d"
+          stroke-width="0.7"
+          opacity="0.20"></line>
+        <line
+          x1="437"
+          y1="356"
+          x2="748"
+          y2="362"
+          stroke="#f6d40d"
+          stroke-width="0.7"
+          opacity="0.17"></line>
+        <line
+          x1="437"
+          y1="381"
+          x2="748"
+          y2="394"
+          stroke="#f6d40d"
+          stroke-width="0.5"
+          opacity="0.12"></line>
+        <rect
+          x="436"
+          y="154"
+          width="14"
+          height="231"
+          rx="3"
+          fill="none"
+          stroke="#f6d40d"
+          stroke-width="1.0"
+          opacity="0.35"></rect>
+        <rect
+          x="439"
+          y="168"
+          width="8"
+          height="203"
+          rx="2"
+          fill="#f6d40d"
+          opacity="0.05"></rect>
+        <path
+          d="M 436,148 L 744,128"
+          stroke="#f6d40d"
+          stroke-width="2.2"
+          opacity="0.60"
+          stroke-linecap="round"></path>
+        <path
+          d="M 436,385 L 748,408"
+          stroke="#f6d40d"
+          stroke-width="0.8"
+          opacity="0.18"
+          stroke-linecap="round"></path>
+        <circle
+          cx="746"
+          cy="268"
+          r="4.5"
+          fill="#f6d40d"
+          opacity="0.40"
+          class="wing-tip-dot"></circle>
+        <circle
+          cx="746"
+          cy="268"
+          r="2.0"
+          fill="#fef7aa"
+          opacity="0.85"
+          class="wing-tip-dot"></circle>
       </g>
 
-      <!-- ═══════════════ ROCKET BODY ═══════════════ -->
+      <!-- ═══════════════ SHIP BODY ═══════════════ -->
       <g id="rocket-body" filter="url(#body-glow)">
-        <!-- Main body -->
-        <rect x="315" y="144" width="170" height="242" rx="5" fill="url(#bodyGrad)"/>
+        <!-- Main hull cylinder -->
+        <rect
+          x="364"
+          y="72"
+          width="72"
+          height="363"
+          rx="7"
+          fill="url(#bodyGrad)"></rect>
+        <!-- Centre chrome highlight -->
+        <rect
+          x="364"
+          y="72"
+          width="72"
+          height="363"
+          rx="7"
+          fill="url(#hullHighlight)"
+          opacity="0.45"></rect>
 
-        <!-- Nose cone -->
-        <path d="M 400,22 L 315,149 L 485,149 Z" fill="url(#noseGrad)"/>
-        <!-- Nose highlight -->
-        <path d="M 400,22 L 358,120 L 373,120 Z" fill="white" opacity="0.06"/>
+        <!-- Module separation rings -->
+        <rect
+          x="364"
+          y="72"
+          width="72"
+          height="3"
+          rx="1.5"
+          fill="#4a9eff"
+          opacity="0.60"></rect>
+        <rect
+          x="364"
+          y="166"
+          width="72"
+          height="1.5"
+          fill="#4a9eff"
+          opacity="0.22"></rect>
+        <rect
+          x="364"
+          y="310"
+          width="72"
+          height="1.5"
+          fill="#4a9eff"
+          opacity="0.22"></rect>
+        <rect
+          x="364"
+          y="432"
+          width="72"
+          height="2"
+          rx="1"
+          fill="#4a9eff"
+          opacity="0.40"></rect>
+        <!-- Side edge rails -->
+        <rect
+          x="364"
+          y="72"
+          width="3"
+          height="363"
+          rx="1.5"
+          fill="#4a9eff"
+          opacity="0.22"></rect>
+        <rect
+          x="433"
+          y="72"
+          width="3"
+          height="363"
+          rx="1.5"
+          fill="#4a9eff"
+          opacity="0.22"></rect>
 
-        <!-- Nose tip glow -->
-        <circle cx="400" cy="26" r="5" fill="#f6d40d" opacity="0.3" filter="url(#nose-tip-glow)"/>
-        <circle cx="400" cy="26" r="2.5" fill="#f6d40d" opacity="0.8"/>
+        <!-- ── Hab ring (rotating habitat section) ── -->
+        <!-- Shadow depth -->
+        <path
+          d="M 318,241 Q 400,260 482,241 L 482,252 Q 400,271 318,252 Z"
+          fill="#060e1c"
+          opacity="0.65"></path>
+        <!-- Ring body -->
+        <path
+          d="M 318,228 Q 400,212 482,228 L 482,252 Q 400,268 318,252 Z"
+          fill="url(#habGrad)"></path>
+        <!-- Top edge glow -->
+        <path
+          d="M 318,228 Q 400,212 482,228"
+          fill="none"
+          stroke="#6898c0"
+          stroke-width="1.8"
+          opacity="0.70"></path>
+        <path
+          d="M 318,228 Q 400,212 482,228"
+          fill="none"
+          stroke="#8ab8e0"
+          stroke-width="3"
+          opacity="0.45"
+          filter="url(#hab-glow)"></path>
+        <!-- Bottom edge -->
+        <path
+          d="M 318,252 Q 400,268 482,252"
+          fill="none"
+          stroke="#22384e"
+          stroke-width="1"
+          opacity="0.45"></path>
+        <!-- Ring viewport windows -->
+        <circle cx="334" cy="240" r="2.5" fill="#a0d4ff" opacity="0.55"
+        ></circle>
+        <circle cx="350" cy="235" r="2.5" fill="#a0d4ff" opacity="0.50"
+        ></circle>
+        <circle cx="450" cy="235" r="2.5" fill="#a0d4ff" opacity="0.50"
+        ></circle>
+        <circle cx="466" cy="240" r="2.5" fill="#a0d4ff" opacity="0.55"
+        ></circle>
+        <!-- Struts -->
+        <line
+          x1="367"
+          y1="236"
+          x2="321"
+          y2="240"
+          stroke="#1e3050"
+          stroke-width="3.5"
+          opacity="0.75"></line>
+        <line
+          x1="433"
+          y1="236"
+          x2="479"
+          y2="240"
+          stroke="#1e3050"
+          stroke-width="3.5"
+          opacity="0.75"></line>
 
-        <!-- Gold accent stripes -->
-        <rect x="315" y="144" width="170" height="3"   rx="1.5" fill="#f6d40d" opacity="0.75"/>
-        <rect x="315" y="383" width="170" height="2"   rx="1"   fill="#f6d40d" opacity="0.45"/>
-        <rect x="315" y="222" width="170" height="1.5"          fill="#f6d40d" opacity="0.15"/>
-        <rect x="315" y="322" width="170" height="1.5"          fill="#f6d40d" opacity="0.15"/>
+        <!-- ── Observation viewport ── -->
+        <circle
+          cx="400"
+          cy="350"
+          r="28"
+          fill="#040e1a"
+          stroke="#4a9eff"
+          stroke-width="2"></circle>
+        <circle cx="400" cy="350" r="23" fill="url(#portGrad)"></circle>
+        <ellipse
+          cx="392"
+          cy="342"
+          rx="7"
+          ry="4.5"
+          fill="white"
+          opacity="0.09"
+          transform="rotate(-25 392 342)"></ellipse>
+        <circle cx="390" cy="342" r="2.5" fill="white" opacity="0.14"></circle>
+        <!-- Bolt ring -->
+        <circle cx="375" cy="331" r="2.2" fill="#4a9eff" opacity="0.38"
+        ></circle>
+        <circle cx="425" cy="331" r="2.2" fill="#4a9eff" opacity="0.38"
+        ></circle>
+        <circle cx="375" cy="369" r="2.2" fill="#4a9eff" opacity="0.38"
+        ></circle>
+        <circle cx="425" cy="369" r="2.2" fill="#4a9eff" opacity="0.38"
+        ></circle>
 
-        <!-- Side rails -->
-        <rect x="315" y="144" width="3"   height="242" rx="1.5" fill="#f6d40d" opacity="0.2"/>
-        <rect x="482" y="144" width="3"   height="242" rx="1.5" fill="#f6d40d" opacity="0.2"/>
+        <!-- ── Forward science module ── -->
+        <!-- Fairing -->
+        <path d="M 400,28 L 373,75 L 427,75 Z" fill="#0d1828"></path>
+        <path d="M 400,28 L 385,56 L 400,56 Z" fill="white" opacity="0.04"
+        ></path>
+        <!-- Primary dish -->
+        <ellipse
+          cx="400"
+          cy="62"
+          rx="13"
+          ry="5.5"
+          fill="#132038"
+          stroke="#4a9eff"
+          stroke-width="1.2"
+          opacity="0.85"></ellipse>
+        <ellipse cx="400" cy="62" rx="8" ry="3" fill="#4a9eff" opacity="0.28"
+        ></ellipse>
+        <!-- Mast -->
+        <line
+          x1="400"
+          y1="28"
+          x2="400"
+          y2="12"
+          stroke="#4a9eff"
+          stroke-width="1.5"
+          opacity="0.70"></line>
+        <!-- Tip light -->
+        <circle
+          cx="400"
+          cy="10"
+          r="4"
+          fill="#4a9eff"
+          opacity="0.35"
+          filter="url(#sensor-glow)"></circle>
+        <circle cx="400" cy="10" r="2" fill="#b8e0ff" opacity="0.95"></circle>
+        <!-- Secondary sensor nodes -->
+        <circle
+          cx="382"
+          cy="53"
+          r="3.5"
+          fill="#132038"
+          stroke="#4a9eff"
+          stroke-width="1"
+          opacity="0.65"></circle>
+        <circle
+          cx="418"
+          cy="53"
+          r="3.5"
+          fill="#132038"
+          stroke="#4a9eff"
+          stroke-width="1"
+          opacity="0.65"></circle>
+        <!-- Cross strut -->
+        <line
+          x1="378"
+          y1="70"
+          x2="422"
+          y2="70"
+          stroke="#1e3050"
+          stroke-width="1.5"
+          opacity="0.45"></line>
 
-        <!-- Porthole -->
-        <circle cx="400" cy="268" r="41" fill="#050e22" stroke="#f6d40d" stroke-width="2.5"/>
-        <circle cx="400" cy="268" r="36" fill="url(#portholeGrad)"/>
-        <ellipse cx="386" cy="255" rx="11" ry="6.5" fill="white" opacity="0.1" transform="rotate(-30 386 255)"/>
-        <circle  cx="388"  cy="254" r="3.5" fill="white" opacity="0.18"/>
-
-        <!-- Porthole rivets -->
-        <circle cx="362" cy="235" r="3" fill="#f6d40d" opacity="0.45"/>
-        <circle cx="438" cy="235" r="3" fill="#f6d40d" opacity="0.45"/>
-        <circle cx="362" cy="301" r="3" fill="#f6d40d" opacity="0.45"/>
-        <circle cx="438" cy="301" r="3" fill="#f6d40d" opacity="0.45"/>
-
-        <!-- Nozzle block -->
-        <path d="M 348,382 L 452,382 L 440,458 L 360,458 Z"
-              fill="#060c1e" stroke="#f6d40d" stroke-width="1" stroke-opacity="0.35"/>
-        <rect  x="375" y="412" width="50" height="6"  rx="3" fill="#131d38"/>
-        <rect  x="382" y="423" width="36" height="9"  rx="4.5"
-               fill="#0a1428" stroke="#f6d40d" stroke-width="0.7" stroke-opacity="0.35"/>
-        <circle cx="400" cy="445" r="5" fill="#f6d40d" opacity="0.25"/>
+        <!-- ── Engine skirt ── -->
+        <path
+          d="M 350,434 L 450,434 L 460,454 L 340,454 Z"
+          fill="#080f1e"
+          stroke="#4a9eff"
+          stroke-width="0.8"
+          stroke-opacity="0.35"></path>
+        <rect
+          x="360"
+          y="434"
+          width="80"
+          height="4"
+          rx="2"
+          fill="#4a9eff"
+          opacity="0.28"></rect>
       </g>
 
-      <!-- ═══════════════ FLAME ═══════════════ -->
-      <g id="flame-group">
-        <!-- Bloom -->
-        <ellipse cx="400" cy="500" rx="30" ry="54"
-                 fill="#ff6b2b" opacity="0.28" filter="url(#flame-blur)" class="flame-bloom"/>
-        <!-- Main flame -->
-        <ellipse cx="400" cy="490" rx="17" ry="44"
-                 fill="url(#flameGrad)" class="flame-main"/>
-        <!-- Core -->
-        <ellipse cx="400" cy="470" rx="7.5" ry="22"
-                 fill="url(#flameCoreGrad)" class="flame-core"/>
-        <!-- Side petals -->
-        <ellipse cx="385" cy="496" rx="9" ry="29"
-                 fill="#ff8c3a" opacity="0.52" class="flame-side-l"/>
-        <ellipse cx="415" cy="496" rx="9" ry="29"
-                 fill="#ff8c3a" opacity="0.52" class="flame-side-r"/>
-      </g>
+      <!-- ═══════════════ ASTROPHAGE ENGINES ═══════════════ -->
+      <!-- Left engine bell -->
+      <path
+        d="M 367,454 L 362,492 L 383,492 L 378,454 Z"
+        fill="#060b1a"
+        stroke="#4a9eff"
+        stroke-width="1"
+        stroke-opacity="0.55"></path>
+      <ellipse
+        cx="372"
+        cy="492"
+        rx="10.5"
+        ry="3.5"
+        fill="#4a9eff"
+        opacity="0.40"></ellipse>
+      <!-- Centre engine bell (largest) -->
+      <path
+        d="M 382,454 L 377,498 L 423,498 L 418,454 Z"
+        fill="#060b1a"
+        stroke="#4a9eff"
+        stroke-width="1.2"
+        stroke-opacity="0.65"></path>
+      <ellipse cx="400" cy="498" rx="23" ry="5" fill="#4a9eff" opacity="0.45"
+      ></ellipse>
+      <!-- Right engine bell -->
+      <path
+        d="M 422,454 L 417,492 L 438,492 L 433,454 Z"
+        fill="#060b1a"
+        stroke="#4a9eff"
+        stroke-width="1"
+        stroke-opacity="0.55"></path>
+      <ellipse
+        cx="428"
+        cy="492"
+        rx="10.5"
+        ry="3.5"
+        fill="#4a9eff"
+        opacity="0.40"></ellipse>
+
+      <!-- Astrophage glow — steady blue-white (not orange fire) -->
+      <ellipse
+        cx="400"
+        cy="528"
+        rx="72"
+        ry="44"
+        fill="url(#astroBloomGrad)"
+        class="flame-bloom"
+        filter="url(#astro-bloom)"></ellipse>
+      <ellipse
+        cx="372"
+        cy="512"
+        rx="10"
+        ry="24"
+        fill="url(#astroGrad)"
+        opacity="0.72"
+        class="flame-side-l"
+        filter="url(#astro-core)"></ellipse>
+      <ellipse
+        cx="428"
+        cy="512"
+        rx="10"
+        ry="24"
+        fill="url(#astroGrad)"
+        opacity="0.72"
+        class="flame-side-r"
+        filter="url(#astro-core)"></ellipse>
+      <ellipse
+        cx="400"
+        cy="520"
+        rx="21"
+        ry="38"
+        fill="url(#astroGrad)"
+        class="flame-main"
+        filter="url(#astro-core)"></ellipse>
+      <ellipse
+        cx="400"
+        cy="500"
+        rx="9"
+        ry="15"
+        fill="url(#astroGrad)"
+        class="flame-core"></ellipse>
     </svg>
 
     <!-- HTML label overlays (pointer-events: none so SVG handles clicks) -->
@@ -223,20 +707,22 @@ const { softSkillsUrl, skillsUrl, isEn } = Astro.props;
     </div>
 
     <div class="wing-label right-label" id="right-label" aria-hidden="true">
-      <span class="wl-arrow" aria-hidden="true">→</span>
-      <span class="wl-title">{isEn ? "Technical" : "Technique"}</span>
       <span class="wl-tag">{isEn ? "Skills" : "Compétences"}</span>
+      <span class="wl-title">{isEn ? "Technical" : "Technique"}</span>
+      <span class="wl-arrow" aria-hidden="true">→</span>
     </div>
   </div>
 
   <p class="rocket-hint" id="rocket-hint">
-    {isEn ? "Click a wing · the rocket will take you there" : "Clique sur une aile · la fusée t'emmène"}
+    {
+      isEn
+        ? "Click a panel · the ship will take you there"
+        : "Clique sur un panneau · le vaisseau t'emmène"
+    }
   </p>
 </div>
 
-
 <style>
-
   /* ─── Layout ─── */
   .rocket-wrapper {
     display: flex;
@@ -248,8 +734,7 @@ const { softSkillsUrl, skillsUrl, isEn } = Astro.props;
   .rocket-scene {
     position: relative;
     width: 100%;
-    max-width: 780px;
-    /* Maintain SVG aspect ratio 800:540 */
+    max-width: 880px;
     aspect-ratio: 800 / 540;
   }
 
@@ -266,68 +751,107 @@ const { softSkillsUrl, skillsUrl, isEn } = Astro.props;
     outline: none;
   }
 
-  .wing-glow   { opacity: 0;    transition: opacity 0.35s ease; }
-  .wing-fill   { transition: filter 0.35s ease; }
-  .wing-tip-dot { transition: opacity 0.35s ease, r 0.35s ease; }
+  .wing-glow {
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+  .wing-fill {
+    transition: filter 0.35s ease;
+  }
+  .wing-tip-dot {
+    transition:
+      opacity 0.35s ease,
+      r 0.35s ease;
+  }
 
   /* ─── Left wing hover ─── */
   #left-wing:hover .lw-glow,
-  #left-wing:focus-visible .lw-glow  { opacity: 0.07; }
+  #left-wing:focus-visible .lw-glow {
+    opacity: 0.07;
+  }
 
   #left-wing:hover .lw-fill,
-  #left-wing:focus-visible .lw-fill  { filter: url(#glow-pink) brightness(1.35); }
+  #left-wing:focus-visible .lw-fill {
+    filter: url(#glow-pink) brightness(1.35);
+  }
 
   #left-wing:hover .wing-tip-dot,
-  #left-wing:focus-visible .wing-tip-dot { opacity: 0.9; }
+  #left-wing:focus-visible .wing-tip-dot {
+    opacity: 0.9;
+  }
 
   /* ─── Right wing hover ─── */
   #right-wing:hover .rw-glow,
-  #right-wing:focus-visible .rw-glow  { opacity: 0.07; }
+  #right-wing:focus-visible .rw-glow {
+    opacity: 0.07;
+  }
 
   #right-wing:hover .rw-fill,
-  #right-wing:focus-visible .rw-fill  { filter: url(#glow-gold) brightness(1.35); }
+  #right-wing:focus-visible .rw-fill {
+    filter: url(#glow-gold) brightness(1.35);
+  }
 
   #right-wing:hover .wing-tip-dot,
-  #right-wing:focus-visible .wing-tip-dot { opacity: 0.9; }
+  #right-wing:focus-visible .wing-tip-dot {
+    opacity: 0.9;
+  }
 
-  /* ─── Flame animations ─── */
+  /* ─── Astrophage engine pulse (slow, steady — not a candle flicker) ─── */
   .flame-main {
     transform-box: fill-box;
     transform-origin: center top;
-    animation: flicker 0.11s ease-in-out infinite alternate;
+    animation: astro-pulse 1.8s ease-in-out infinite alternate;
   }
   .flame-core {
     transform-box: fill-box;
     transform-origin: center top;
-    animation: flicker 0.08s ease-in-out infinite alternate;
+    animation: astro-core-pulse 1.4s ease-in-out infinite alternate;
   }
   .flame-side-l {
     transform-box: fill-box;
     transform-origin: center top;
-    animation: flicker-l 0.13s ease-in-out infinite alternate;
+    animation: astro-pulse 2.1s ease-in-out infinite alternate;
   }
   .flame-side-r {
     transform-box: fill-box;
     transform-origin: center top;
-    animation: flicker-r 0.10s ease-in-out infinite alternate;
+    animation: astro-pulse 1.9s ease-in-out 0.3s infinite alternate;
   }
   .flame-bloom {
     transform-box: fill-box;
     transform-origin: center top;
-    animation: flicker 0.15s ease-in-out infinite alternate;
+    animation: astro-bloom-pulse 2.5s ease-in-out infinite alternate;
   }
 
-  @keyframes flicker {
-    from { transform: scaleX(0.82) scaleY(0.92); opacity: 0.88; }
-    to   { transform: scaleX(1.18) scaleY(1.08); opacity: 1; }
+  @keyframes astro-pulse {
+    from {
+      transform: scaleX(0.88) scaleY(0.93);
+      opacity: 0.78;
+    }
+    to {
+      transform: scaleX(1.12) scaleY(1.07);
+      opacity: 1;
+    }
   }
-  @keyframes flicker-l {
-    from { transform: scaleX(0.75) scaleY(0.88) rotate(-4deg); }
-    to   { transform: scaleX(1.25) scaleY(1.12) rotate(2deg); }
+  @keyframes astro-core-pulse {
+    from {
+      transform: scaleX(0.82) scaleY(0.9);
+      opacity: 0.88;
+    }
+    to {
+      transform: scaleX(1.18) scaleY(1.1);
+      opacity: 1;
+    }
   }
-  @keyframes flicker-r {
-    from { transform: scaleX(0.75) scaleY(0.88) rotate(4deg); }
-    to   { transform: scaleX(1.25) scaleY(1.12) rotate(-2deg); }
+  @keyframes astro-bloom-pulse {
+    from {
+      transform: scale(0.86);
+      opacity: 0.5;
+    }
+    to {
+      transform: scale(1.14);
+      opacity: 0.82;
+    }
   }
 
   /* ─── Launch animations ─── */
@@ -339,16 +863,32 @@ const { softSkillsUrl, skillsUrl, isEn } = Astro.props;
   }
 
   @keyframes launch-left {
-    0%   { transform: translateY(0)    rotate(0deg);   }
-    12%  { transform: translateY(12px) rotate(-2.5deg); }
-    28%  { transform: translateY(-14px) rotate(-6deg); }
-    100% { transform: translateY(-130vh) rotate(-10deg); }
+    0% {
+      transform: translateY(0) rotate(0deg);
+    }
+    12% {
+      transform: translateY(12px) rotate(-2.5deg);
+    }
+    28% {
+      transform: translateY(-14px) rotate(-6deg);
+    }
+    100% {
+      transform: translateY(-130vh) rotate(-10deg);
+    }
   }
   @keyframes launch-right {
-    0%   { transform: translateY(0)    rotate(0deg);  }
-    12%  { transform: translateY(12px) rotate(2.5deg); }
-    28%  { transform: translateY(-14px) rotate(6deg); }
-    100% { transform: translateY(-130vh) rotate(10deg); }
+    0% {
+      transform: translateY(0) rotate(0deg);
+    }
+    12% {
+      transform: translateY(12px) rotate(2.5deg);
+    }
+    28% {
+      transform: translateY(-14px) rotate(6deg);
+    }
+    100% {
+      transform: translateY(-130vh) rotate(10deg);
+    }
   }
 
   /* ─── HTML wing label overlays ─── */
@@ -359,7 +899,9 @@ const { softSkillsUrl, skillsUrl, isEn } = Astro.props;
     align-items: center;
     gap: 5px;
     pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
     /* frosted pill background for readability */
     background: rgba(4, 9, 22, 0.55);
     backdrop-filter: blur(8px);
@@ -370,29 +912,29 @@ const { softSkillsUrl, skillsUrl, isEn } = Astro.props;
   }
 
   .left-label {
-    left: 22%;
-    top: 57%;
-    transform: translate(-50%, -50%) rotate(-20deg);
+    left: 26%;
+    top: 49%;
+    transform: translate(-50%, -50%) rotate(-5deg);
     opacity: 0.72;
     border-color: rgba(242, 180, 223, 0.2);
   }
   .left-label.hovered {
     opacity: 1;
     border-color: rgba(242, 180, 223, 0.55);
-    transform: translate(-50%, -50%) rotate(-20deg) scale(1.06);
+    transform: translate(-50%, -50%) rotate(-5deg) scale(1.06);
   }
 
   .right-label {
-    left: 78%;
-    top: 57%;
-    transform: translate(-50%, -50%) rotate(20deg);
+    left: 74%;
+    top: 49%;
+    transform: translate(-50%, -50%) rotate(5deg);
     opacity: 0.72;
     border-color: rgba(246, 212, 13, 0.2);
   }
   .right-label.hovered {
     opacity: 1;
     border-color: rgba(246, 212, 13, 0.55);
-    transform: translate(-50%, -50%) rotate(20deg) scale(1.06);
+    transform: translate(-50%, -50%) rotate(5deg) scale(1.06);
   }
 
   .wl-tag {
@@ -403,12 +945,12 @@ const { softSkillsUrl, skillsUrl, isEn } = Astro.props;
     opacity: 0.7;
   }
   .wl-title {
-    font-family: var(--font-display, 'Cormorant Garamond', serif);
+    font-family: var(--font-display, "Cormorant Garamond", serif);
     font-size: clamp(18px, 3vw, 30px);
     font-weight: 700;
     line-height: 1;
     white-space: nowrap;
-    text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
   }
   .wl-arrow {
     font-size: 13px;
@@ -416,13 +958,17 @@ const { softSkillsUrl, skillsUrl, isEn } = Astro.props;
     margin-top: 1px;
   }
 
-  .left-label  .wl-tag,
-  .left-label  .wl-title,
-  .left-label  .wl-arrow  { color: #f2b4df; }
+  .left-label .wl-tag,
+  .left-label .wl-title,
+  .left-label .wl-arrow {
+    color: #f2b4df;
+  }
 
   .right-label .wl-tag,
   .right-label .wl-title,
-  .right-label .wl-arrow  { color: #f6d40d; }
+  .right-label .wl-arrow {
+    color: #f6d40d;
+  }
 
   /* ─── Hint text ─── */
   .rocket-hint {
@@ -430,47 +976,52 @@ const { softSkillsUrl, skillsUrl, isEn } = Astro.props;
     font-size: 11px;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.28);
+    color: rgba(255, 255, 255, 0.28);
     margin-top: 8px;
     user-select: none;
     transition: opacity 0.3s;
   }
 
-
   /* ─── Reduced motion ─── */
   @media (prefers-reduced-motion: reduce) {
-    .flame-main, .flame-core,
-    .flame-side-l, .flame-side-r,
-    .flame-bloom { animation: none; }
+    .flame-main,
+    .flame-core,
+    .flame-side-l,
+    .flame-side-r,
+    .flame-bloom {
+      animation: none;
+    }
     .rocket-scene.launching-left,
-    .rocket-scene.launching-right { animation: none; }
+    .rocket-scene.launching-right {
+      animation: none;
+    }
   }
 </style>
 
 <script define:vars={{ softSkillsUrl, skillsUrl }}>
   function initRocket() {
-    const leftWing  = document.getElementById('left-wing');
-    const rightWing = document.getElementById('right-wing');
+    const leftWing = document.getElementById("left-wing");
+    const rightWing = document.getElementById("right-wing");
     if (!leftWing || !rightWing) return;
 
-    const leftLabel  = document.getElementById('left-label');
-    const rightLabel = document.getElementById('right-label');
-    const scene      = document.getElementById('rocket-scene');
-    const hint       = document.getElementById('rocket-hint');
+    const leftLabel = document.getElementById("left-label");
+    const rightLabel = document.getElementById("right-label");
+    const scene = document.getElementById("rocket-scene");
+    const hint = document.getElementById("rocket-hint");
 
     function setHover(label, on) {
-      label?.classList.toggle('hovered', on);
+      label?.classList.toggle("hovered", on);
     }
 
-    leftWing.addEventListener('mouseenter', () => setHover(leftLabel, true));
-    leftWing.addEventListener('mouseleave', () => setHover(leftLabel, false));
-    leftWing.addEventListener('focus',      () => setHover(leftLabel, true));
-    leftWing.addEventListener('blur',       () => setHover(leftLabel, false));
+    leftWing.addEventListener("mouseenter", () => setHover(leftLabel, true));
+    leftWing.addEventListener("mouseleave", () => setHover(leftLabel, false));
+    leftWing.addEventListener("focus", () => setHover(leftLabel, true));
+    leftWing.addEventListener("blur", () => setHover(leftLabel, false));
 
-    rightWing.addEventListener('mouseenter', () => setHover(rightLabel, true));
-    rightWing.addEventListener('mouseleave', () => setHover(rightLabel, false));
-    rightWing.addEventListener('focus',      () => setHover(rightLabel, true));
-    rightWing.addEventListener('blur',       () => setHover(rightLabel, false));
+    rightWing.addEventListener("mouseenter", () => setHover(rightLabel, true));
+    rightWing.addEventListener("mouseleave", () => setHover(rightLabel, false));
+    rightWing.addEventListener("focus", () => setHover(rightLabel, true));
+    rightWing.addEventListener("blur", () => setHover(rightLabel, false));
 
     let launched = false;
 
@@ -478,33 +1029,39 @@ const { softSkillsUrl, skillsUrl, isEn } = Astro.props;
       if (launched) return;
       launched = true;
 
-      if (hint) hint.style.opacity = '0';
+      if (hint) hint.style.opacity = "0";
       scene?.classList.add(`launching-${dir}`);
 
-      const overlay = document.getElementById('page-transition-overlay');
-
-      // Fade overlay IN after rocket starts lifting (~350ms)
+      // After rocket lift-off, trigger hyperspace then navigate when it resolves
       setTimeout(() => {
-        if (overlay) overlay.style.opacity = '1';
+        const done =
+          typeof window.startHyperspace === "function"
+            ? window.startHyperspace()
+            : Promise.resolve();
+
+        Promise.resolve(done).then(() => {
+          sessionStorage.setItem("rocket-transition", "1");
+          window.location.href = url;
+        });
       }, 350);
-
-      // Flag the next page to fade the overlay OUT on load
-      setTimeout(() => {
-        sessionStorage.setItem('rocket-transition', '1');
-        window.location.href = url;
-      }, 700);
     }
 
-    leftWing.addEventListener('click',  () => launch(softSkillsUrl, 'left'));
-    rightWing.addEventListener('click', () => launch(skillsUrl, 'right'));
+    leftWing.addEventListener("click", () => launch(softSkillsUrl, "left"));
+    rightWing.addEventListener("click", () => launch(skillsUrl, "right"));
 
-    leftWing.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); launch(softSkillsUrl, 'left'); }
+    leftWing.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        launch(softSkillsUrl, "left");
+      }
     });
-    rightWing.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); launch(skillsUrl, 'right'); }
+    rightWing.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        launch(skillsUrl, "right");
+      }
     });
   }
 
-  document.addEventListener('astro:page-load', initRocket);
+  document.addEventListener("astro:page-load", initRocket);
 </script>

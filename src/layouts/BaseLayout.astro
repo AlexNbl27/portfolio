@@ -30,7 +30,9 @@ const locale = getLocaleFromPathname(Astro.url.pathname);
 const enPath = localizePath(Astro.url.pathname, "en");
 const frPath = localizePath(Astro.url.pathname, "fr");
 const origin = Astro.site?.toString() || Astro.url.origin;
-const canonicalUrl = canonical ? new URL(canonical, origin).toString() : Astro.url.toString();
+const canonicalUrl = canonical
+  ? new URL(canonical, origin).toString()
+  : Astro.url.toString();
 const ogImageUrl = new URL(ogImage, origin).toString();
 ---
 
@@ -59,10 +61,16 @@ const ogImageUrl = new URL(ogImage, origin).toString();
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://fonts.cdnfonts.com" />
     <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/blanka" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Manrope:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Manrope:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap"
+    />
     <ClientRouter />
     <script is:inline>
-      if (typeof navigator !== 'undefined' && /firefox/i.test(navigator.userAgent)) {
+      if (
+        typeof navigator !== "undefined" &&
+        /firefox/i.test(navigator.userAgent)
+      ) {
         document.startViewTransition = undefined;
       }
     </script>
@@ -92,14 +100,24 @@ const ogImageUrl = new URL(ogImage, origin).toString();
         };
 
         const currentPath = window.location.pathname;
-        const browserPreference = navigator.language.toLowerCase().startsWith("en") ? "en" : defaultLocale;
-        const preferredLocale = getCookieLocale() || localStorage.getItem("preferredLocale") || browserPreference;
+        const browserPreference = navigator.language
+          .toLowerCase()
+          .startsWith("en")
+          ? "en"
+          : defaultLocale;
+        const preferredLocale =
+          getCookieLocale() ||
+          localStorage.getItem("preferredLocale") ||
+          browserPreference;
 
         if (!supportedLocales.includes(preferredLocale)) return;
 
         const hasLocalePrefix = /^\/(fr|en)(\/|$)/.test(currentPath);
         const basePath = normalize(currentPath);
-        const targetPath = preferredLocale === defaultLocale ? basePath : `/${preferredLocale}${basePath === "/" ? "" : basePath}`;
+        const targetPath =
+          preferredLocale === defaultLocale
+            ? basePath
+            : `/${preferredLocale}${basePath === "/" ? "" : basePath}`;
 
         const isTopLevelPath = basePath === "/" || /^\/[^/]+$/.test(basePath);
 
@@ -111,12 +129,14 @@ const ogImageUrl = new URL(ogImage, origin).toString();
     <slot name="head" />
   </head>
   <body>
-    <div id="page-transition-overlay" aria-hidden="true"></div>
+    <div id="page-transition-overlay" aria-hidden="true">
+      <canvas id="hyperspace-canvas"></canvas>
+    </div>
     <!-- Script synchrone : s'exécute AVANT le premier paint, évite le flash -->
     <script is:inline>
-      if (sessionStorage.getItem('rocket-transition')) {
-        var o = document.getElementById('page-transition-overlay');
-        if (o) o.style.opacity = '1';
+      if (sessionStorage.getItem("rocket-transition")) {
+        var o = document.getElementById("page-transition-overlay");
+        if (o) o.style.opacity = "1";
       }
     </script>
     <CosmicBackground />
@@ -131,52 +151,55 @@ const ogImageUrl = new URL(ogImage, origin).toString();
     </main>
     <Footer locale={locale} />
     <script>
-      // Preserve CSS <link> tags across ClientRouter navigations.
-      // When Astro's ClientRouter swaps pages (e.g. locale switch /fr ↔ /en),
-      // it compares <link rel="stylesheet"> hrefs between old and new pages and
-      // removes any that are absent from the new page — causing a CSS flash or
-      // full CSS loss. This copies every stylesheet from the current page into
-      // the incoming document before the swap so ClientRouter always keeps them.
-      document.addEventListener('astro:before-swap', (e: any) => {
+      document.addEventListener("astro:before-swap", (e: any) => {
         const newHead = e.newDocument.head;
-        document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]').forEach((link) => {
-          const href = link.getAttribute('href');
-          if (!href) return;
-          if (!newHead.querySelector(`link[rel="stylesheet"][href="${href}"]`)) {
-            const clone = document.createElement('link');
-            clone.rel = 'stylesheet';
-            clone.setAttribute('href', href);
-            newHead.prepend(clone);
-          }
-        });
+        document
+          .querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')
+          .forEach((link) => {
+            const href = link.getAttribute("href");
+            if (!href) return;
+            if (
+              !newHead.querySelector(`link[rel="stylesheet"][href="${href}"]`)
+            ) {
+              const clone = document.createElement("link");
+              clone.rel = "stylesheet";
+              clone.setAttribute("href", href);
+              newHead.prepend(clone);
+            }
+          });
       });
     </script>
 
     <script>
       // Smoothly reveal images only once the browser has fully loaded them.
       function initFadeImages() {
-        document.querySelectorAll<HTMLImageElement>('[data-fade-image]').forEach((img) => {
-          if (img.dataset.fadeReady === '1') return;
+        document
+          .querySelectorAll<HTMLImageElement>("[data-fade-image]")
+          .forEach((img) => {
+            if (img.dataset.fadeReady === "1") return;
 
-          const reveal = () => {
-            img.classList.add('is-loaded');
-            const skeleton = img.previousElementSibling as HTMLElement | null;
-            if (skeleton?.classList.contains('hero-skeleton') || skeleton?.classList.contains('hero-img-skeleton')) {
-              skeleton.style.display = 'none';
+            const reveal = () => {
+              img.classList.add("is-loaded");
+              const skeleton = img.previousElementSibling as HTMLElement | null;
+              if (
+                skeleton?.classList.contains("hero-skeleton") ||
+                skeleton?.classList.contains("hero-img-skeleton")
+              ) {
+                skeleton.style.display = "none";
+              }
+              img.dataset.fadeReady = "1";
+            };
+
+            if (img.complete && img.naturalWidth > 0) {
+              reveal();
+            } else {
+              img.addEventListener("load", reveal, { once: true });
             }
-            img.dataset.fadeReady = '1';
-          };
-
-          if (img.complete && img.naturalWidth > 0) {
-            reveal();
-          } else {
-            img.addEventListener('load', reveal, { once: true });
-          }
-        });
+          });
       }
 
       if (!(window as any).__fadeImagesBound) {
-        document.addEventListener('astro:page-load', initFadeImages);
+        document.addEventListener("astro:page-load", initFadeImages);
         (window as any).__fadeImagesBound = true;
       }
 
@@ -185,8 +208,9 @@ const ogImageUrl = new URL(ogImage, origin).toString();
 
     <script>
       function updateAstralChatVisibility() {
-        const isOnChat =
-          ["/chat", "/en/chat"].includes(window.location.pathname.replace(/\/$/, ""));
+        const isOnChat = ["/chat", "/en/chat"].includes(
+          window.location.pathname.replace(/\/$/, ""),
+        );
         const widget = document.querySelector(
           "[data-astral-chat-root][data-mode='floating']",
         ) as HTMLElement | null;
@@ -197,60 +221,92 @@ const ogImageUrl = new URL(ogImage, origin).toString();
 
       document.addEventListener("astro:after-swap", () => {
         updateAstralChatVisibility();
-
-        // Sync locale-dependent text in persisted AstralChat widget.
-        // The widget is kept alive by transition:persist but its HTML is baked at
-        // build time — update the visible strings whenever the lang attribute changes.
         const en = document.documentElement.lang === "en";
-        const widget = document.querySelector<HTMLElement>("[data-astral-chat-root]");
+        const widget = document.querySelector<HTMLElement>(
+          "[data-astral-chat-root]",
+        );
         if (!widget) return;
 
         const kicker = widget.querySelector(".astral-chat__kicker");
-        if (kicker) kicker.textContent = en ? "Stellar companion" : "Compagnon stellaire";
+        if (kicker)
+          kicker.textContent = en ? "Stellar companion" : "Compagnon stellaire";
 
-        const heading = widget.querySelector<HTMLElement>(".astral-chat__header h2");
-        if (heading) heading.textContent = en ? "Astral · AI assistant" : "Astral · Assistant IA";
+        const heading = widget.querySelector<HTMLElement>(
+          ".astral-chat__header h2",
+        );
+        if (heading)
+          heading.textContent = en
+            ? "Astral · AI assistant"
+            : "Astral · Assistant IA";
 
-        const fs = widget.querySelector<HTMLAnchorElement>(".astral-chat__fullscreen");
+        const fs = widget.querySelector<HTMLAnchorElement>(
+          ".astral-chat__fullscreen",
+        );
         if (fs) {
           fs.href = en ? "/en/chat" : "/chat";
-          fs.setAttribute("aria-label", en ? "Open fullscreen" : "Ouvrir en plein écran");
+          fs.setAttribute(
+            "aria-label",
+            en ? "Open fullscreen" : "Ouvrir en plein écran",
+          );
           fs.title = en ? "Open fullscreen" : "Ouvrir en plein écran";
         }
 
-        const clearBtn = widget.querySelector<HTMLButtonElement>(".astral-chat__clear");
+        const clearBtn = widget.querySelector<HTMLButtonElement>(
+          ".astral-chat__clear",
+        );
         if (clearBtn) {
-          clearBtn.setAttribute("aria-label", en ? "New conversation" : "Nouvelle conversation");
+          clearBtn.setAttribute(
+            "aria-label",
+            en ? "New conversation" : "Nouvelle conversation",
+          );
           clearBtn.title = en ? "New conversation" : "Nouvelle conversation";
         }
 
-        const closeBtn = widget.querySelector<HTMLButtonElement>(".astral-chat__close");
-        if (closeBtn) closeBtn.setAttribute("aria-label", en ? "Close chat" : "Fermer le chat");
+        const closeBtn = widget.querySelector<HTMLButtonElement>(
+          ".astral-chat__close",
+        );
+        if (closeBtn)
+          closeBtn.setAttribute(
+            "aria-label",
+            en ? "Close chat" : "Fermer le chat",
+          );
 
         const textarea = widget.querySelector<HTMLTextAreaElement>("textarea");
-        if (textarea) textarea.placeholder = en ? "Write your message…" : "Écrivez votre message…";
+        if (textarea)
+          textarea.placeholder = en
+            ? "Write your message…"
+            : "Écrivez votre message…";
 
-        const triggerLabel = widget.querySelector<HTMLElement>(".astral-chat__trigger .sr-only");
-        if (triggerLabel) triggerLabel.textContent = en ? "Open Astral chat" : "Ouvrir le chat Astral";
+        const triggerLabel = widget.querySelector<HTMLElement>(
+          ".astral-chat__trigger .sr-only",
+        );
+        if (triggerLabel)
+          triggerLabel.textContent = en
+            ? "Open Astral chat"
+            : "Ouvrir le chat Astral";
       });
 
       // Fade out overlay after rocket transition (overlay already at opacity:1 via inline script)
       document.addEventListener("astro:page-load", () => {
-        if (sessionStorage.getItem('rocket-transition')) {
-          sessionStorage.removeItem('rocket-transition');
-          const overlay = document.getElementById('page-transition-overlay');
+        if (sessionStorage.getItem("rocket-transition")) {
+          sessionStorage.removeItem("rocket-transition");
+          const overlay = document.getElementById("page-transition-overlay");
           if (overlay) {
-            requestAnimationFrame(() => requestAnimationFrame(() => {
-              overlay.style.transition = 'opacity 0.45s ease';
-              overlay.style.opacity = '0';
-            }));
+            requestAnimationFrame(() =>
+              requestAnimationFrame(() => {
+                overlay.style.transition = "opacity 0.45s ease";
+                overlay.style.opacity = "0";
+              }),
+            );
           }
         }
       });
 
       document.addEventListener("astro:page-load", () => {
         updateAstralChatVisibility();
-        const isRecruiterPage = ["/recruiter", "/en/recruiter"].includes(window.location.pathname);
+        const isRecruiterPage = ["/recruiter", "/en/recruiter"].includes(
+          window.location.pathname,
+        );
         const nextMode = isRecruiterPage ? "on" : "off";
         document.body.setAttribute("data-recruiter-mode", nextMode);
         document.dispatchEvent(
@@ -259,6 +315,188 @@ const ogImageUrl = new URL(ogImage, origin).toString();
           }),
         );
       });
+
+      // Star Wars lightspeed transition — 3-phase animation
+      function startHyperspace(): Promise<void> {
+        return new Promise((resolve) => {
+        const overlay = document.getElementById("page-transition-overlay");
+        const canvas = document.getElementById(
+          "hyperspace-canvas",
+        ) as HTMLCanvasElement | null;
+
+        if (!overlay) { resolve(); return; }
+        overlay.style.transition = "none";
+        overlay.style.opacity = "1";
+
+        if (
+          !canvas ||
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ) { resolve(); return; }
+
+        const maybeCtx = canvas.getContext("2d");
+        if (!maybeCtx) { resolve(); return; }
+        const ctx: CanvasRenderingContext2D = maybeCtx;
+
+        const cw = (canvas.width = window.innerWidth);
+        const ch = (canvas.height = window.innerHeight);
+        const cx = cw / 2,
+          cy = ch / 2;
+        const maxDist = Math.hypot(cx, cy) * 1.15;
+
+        // Timeline (normalised t)
+        const DURATION = 3200;
+        const ACCEL_END = 0.32;
+        const CRUISE_END = 0.8;
+        const FADE_END = 1.0;
+
+        type StaticStar = { angle: number; speed: number; brightness: number; width: number };
+        type CruiseStar = { angle: number; dist: number; spd: number; brightness: number; width: number };
+
+        const staticStars: StaticStar[] = Array.from({ length: 300 }, () => ({
+          angle: Math.random() * Math.PI * 2,
+          speed: 0.35 + Math.random() * 1.65,
+          brightness: 0.5 + Math.random() * 0.5,
+          width: 0.3 + Math.random() * 1.4,
+        }));
+
+        const spawnCruise = (scatter = 0): CruiseStar => ({
+          angle: Math.random() * Math.PI * 2,
+          dist: scatter * maxDist * Math.random(),
+          spd: (maxDist / DURATION) * (5 + Math.random() * 6),
+          brightness: 0.55 + Math.random() * 0.45,
+          width: 0.5 + Math.random() * 1.8,
+        });
+        const cruiseStars: CruiseStar[] = Array.from({ length: 190 }, () =>
+          spawnCruise(0.88),
+        );
+
+        // --- Drawing helpers ---
+        function streak(
+          angle: number,
+          tail: number,
+          head: number,
+          alpha: number,
+          lw: number,
+        ) {
+          if (head < 1 || alpha <= 0) return;
+          const x1 = cx + Math.cos(angle) * tail,
+            y1 = cy + Math.sin(angle) * tail;
+          const x2 = cx + Math.cos(angle) * head,
+            y2 = cy + Math.sin(angle) * head;
+          const g = ctx.createLinearGradient(x1, y1, x2, y2);
+          g.addColorStop(0, `rgba(80, 130, 255, ${alpha * 0.2})`);
+          g.addColorStop(0.5, `rgba(170, 205, 255, ${alpha * 0.6})`);
+          g.addColorStop(1, `rgba(255, 255, 255, ${alpha})`);
+          ctx.strokeStyle = g;
+          ctx.lineWidth = lw;
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+          ctx.stroke();
+        }
+
+        function glow(intensity: number, radius: number) {
+          const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+          g.addColorStop(0, `rgba(190, 220, 255, ${intensity})`);
+          g.addColorStop(0.4, `rgba(90, 140, 255, ${intensity * 0.4})`);
+          g.addColorStop(1, "rgba(0, 0, 30, 0)");
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 0, cw, ch);
+        }
+
+        let startTime: number | null = null;
+        let lastTs: number | null = null;
+
+        function draw(ts: number) {
+          if (!startTime) startTime = ts;
+          const elapsed = ts - startTime;
+          const dt = lastTs ? Math.min(ts - lastTs, 32) : 16; // cap at 32ms
+          lastTs = ts;
+          const t = Math.min(1, elapsed / DURATION);
+
+          ctx.fillStyle = "#030713";
+          ctx.fillRect(0, 0, cw, ch);
+
+          // ── Phase 1: acceleration (cubic ease-in) ──────────────────────────
+          if (t <= ACCEL_END) {
+            const pt = t / ACCEL_END;
+            const accel = pt * pt * pt;
+            staticStars.forEach((s) => {
+              const head = accel * maxDist * s.speed;
+              const tail = Math.max(0, head - accel * maxDist * 0.13 * s.speed);
+              streak(
+                s.angle,
+                tail,
+                head,
+                Math.min(1, pt * 4) * s.brightness,
+                s.width * (1 + accel * 1.8),
+              );
+            });
+            glow(accel * 0.8, 15 + accel * 75);
+
+            // ── Phase 2: hyperspace tunnel ─────────────────────────────────────
+          } else if (t <= CRUISE_END) {
+            const pt = (t - ACCEL_END) / (CRUISE_END - ACCEL_END);
+
+            // Advance & respawn cruise stars
+            for (let i = 0; i < cruiseStars.length; i++) {
+              cruiseStars[i].dist += cruiseStars[i].spd * dt;
+              if (cruiseStars[i].dist > maxDist * 1.15)
+                cruiseStars[i] = spawnCruise(0.02);
+            }
+            cruiseStars.forEach((s) => {
+              const tailLen = Math.min(s.dist * 0.55, maxDist * 0.2);
+              streak(
+                s.angle,
+                Math.max(0, s.dist - tailLen),
+                s.dist,
+                s.brightness,
+                s.width * 1.5,
+              );
+            });
+
+            // Pulsing center glow
+            const pulse = 0.75 + 0.25 * Math.sin(elapsed * 0.018);
+            glow(0.72 * pulse, 28 + pt * 60);
+
+            // Tunnel vignette — darkens edges to simulate depth
+            const vR = Math.max(cw, ch) * (0.72 - pt * 0.18);
+            const vg = ctx.createRadialGradient(cx, cy, vR * 0.3, cx, cy, vR);
+            vg.addColorStop(0, "rgba(0, 0, 0, 0)");
+            vg.addColorStop(1, `rgba(3, 7, 19, ${0.4 + pt * 0.4})`);
+            ctx.fillStyle = vg;
+            ctx.fillRect(0, 0, cw, ch);
+
+            // ── Phase 3: slow fade to black ───────────────────────────────────
+          } else {
+            const pt = (t - CRUISE_END) / (FADE_END - CRUISE_END); // 0→1
+            const residual = 1 - pt * pt; // quad ease-out fade
+            staticStars.forEach((s) => {
+              streak(
+                s.angle,
+                maxDist * s.speed * 0.82,
+                maxDist * s.speed,
+                s.brightness * residual,
+                s.width * 2,
+              );
+            });
+            // Glow also fades
+            glow(0.5 * residual, 50);
+          }
+
+          if (t < 1) {
+            requestAnimationFrame(draw);
+          } else {
+            ctx.clearRect(0, 0, cw, ch);
+            resolve();
+          }
+        }
+
+        requestAnimationFrame(draw);
+        }); // end Promise
+      }
+
+      (window as any).startHyperspace = startHyperspace;
     </script>
   </body>
 </html>
