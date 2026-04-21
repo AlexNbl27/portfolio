@@ -315,45 +315,66 @@ function normalizeHistory(history) {
     .slice(-20);
 }
 
-async function callGemini(prompt, history, personalityMode = "pro") {
+function buildGeminiPayload(
+  prompt,
+  history,
+  personalityMode = "astro",
+  structured = true,
+) {
+  const generationConfig = {
+    temperature: 0.7,
+    maxOutputTokens: 600,
+  };
+
+  if (structured) {
+    generationConfig.responseMimeType = "application/json";
+    generationConfig.responseSchema = {
+      type: "object",
+      properties: {
+        text: { type: "string" },
+        ctas: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              label: { type: "string" },
+              href: { type: "string" },
+              type: { type: "string" },
+            },
+            required: ["label", "href"],
+          },
+        },
+      },
+      required: ["text", "ctas"],
+    };
+  }
+
+  return {
+    systemInstruction: {
+      parts: [{ text: buildSystemInstruction(personalityMode) }],
+    },
+    contents: [
+      ...normalizeHistory(history),
+      { role: "user", parts: [{ text: prompt }] },
+    ],
+    generationConfig,
+  };
+}
+
+async function requestGemini(
+  prompt,
+  history,
+  personalityMode,
+  structured = true,
+) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
 
   const response = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      systemInstruction: {
-        parts: [{ text: buildSystemInstruction(personalityMode) }],
-      },
-      contents: [
-        ...normalizeHistory(history),
-        { role: "user", parts: [{ text: prompt }] },
-      ],
-      generationConfig: {
-        temperature: 0.7,
-        maxOutputTokens: 600,
-        responseMimeType: "application/json",
-        responseSchema: {
-          type: "object",
-          properties: {
-            text: { type: "string" },
-            ctas: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  label: { type: "string" },
-                  href: { type: "string" },
-                  type: { type: "string" },
-                },
-                required: ["label", "href"],
-              },
-            },
-          },
-          required: ["text", "ctas"],
-        },
-      },
-    }),
+    body: JSON.stringify(
+      buildGeminiPayload(prompt, history, personalityMode, structured),
+    ),
   });
 
   if (!response.ok) {
@@ -361,9 +382,16 @@ async function callGemini(prompt, history, personalityMode = "pro") {
     throw new Error(`Gemini API error (${response.status}): ${errorText}`);
   }
 
-  const payload = await response.json();
+  return response.json();
+}
+
+function parseGeminiResponse(payload, structured = true) {
   const raw = payload?.candidates?.[0]?.content?.parts?.[0]?.text;
   if (!raw) throw new Error("Gemini a renvoyé une réponse vide.");
+
+  if (!structured) {
+    return { text: raw, ctas: [] };
+  }
 
   let parsed;
   try {
@@ -378,13 +406,34 @@ async function callGemini(prompt, history, personalityMode = "pro") {
   };
 }
 
+async function callGemini(prompt, history, personalityMode = "astro") {
+  try {
+    const payload = await requestGemini(prompt, history, personalityMode, true);
+    return parseGeminiResponse(payload, true);
+  } catch (error) {
+    console.warn(
+      "[astral-chat] Structured Gemini response failed, retrying with plain text:",
+      error instanceof Error ? error.message : error,
+    );
+
+    const payload = await requestGemini(
+      prompt,
+      history,
+      personalityMode,
+      false,
+    );
+    return parseGeminiResponse(payload, false);
+  }
+}
+
 async function callGeminiWithRetry(
   prompt,
   history,
-  personalityMode = "pro",
-  maxAttempts = 2,
+  personalityMode = "astro",
+  maxAttempts = 4,
 ) {
   let lastError;
+  const retryDelaysMs = [800, 1800, 3500];
 
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
     try {
@@ -392,7 +441,12 @@ async function callGeminiWithRetry(
     } catch (error) {
       lastError = error;
       if (attempt >= maxAttempts) break;
-      await new Promise((resolve) => setTimeout(resolve, 300 * attempt));
+      const delay =
+        retryDelaysMs[attempt - 1] ?? retryDelaysMs[retryDelaysMs.length - 1];
+      console.warn(
+        `[astral-chat] Retry ${attempt}/${maxAttempts - 1} in ${delay}ms`,
+      );
+      await new Promise((resolve) => setTimeout(resolve, delay));
     }
   }
 
@@ -497,6 +551,7 @@ const server = http.createServer(async (req, res) => {
       );
       return json(res, 200, { text, ctas });
     } catch (error) {
+      console.error("[astral-chat] Request failed:", error);
       return json(res, 500, {
         error:
           error instanceof Error

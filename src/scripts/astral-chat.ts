@@ -128,16 +128,40 @@ function initAstralChat() {
     };
 
     const historyKey = (mode: Mode) => `astral-chat-history-${mode}`;
+    const getModeFromUrl = (): Mode | null => {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const mode = params.get("mode");
+        return VALID_MODES.has(mode ?? "") ? (mode as Mode) : null;
+      } catch {
+        return null;
+      }
+    };
+    const syncModeInUrl = (mode: Mode) => {
+      try {
+        const url = new URL(window.location.href);
+        if (url.searchParams.get("mode") === mode) return;
+        url.searchParams.set("mode", mode);
+        window.history.replaceState({}, "", url);
+      } catch {
+        // Ignore URL sync failures
+      }
+    };
 
     const getCurrentMode = (): Mode => {
       const selectedInput = Array.from(personalityInputs).find(
         (input) => input.checked,
       );
-      return toMode(selectedInput?.value || sessionStorage.getItem(MODE_KEY));
+      return toMode(
+        selectedInput?.value ||
+          getModeFromUrl() ||
+          sessionStorage.getItem(MODE_KEY),
+      );
     };
 
     const setCurrentMode = (mode: Mode) => {
       sessionStorage.setItem(MODE_KEY, mode);
+      syncModeInUrl(mode);
       personalityInputs.forEach((input) => {
         input.checked = input.value === mode;
       });
@@ -165,7 +189,7 @@ function initAstralChat() {
       sessionStorage.setItem(historyKey(getCurrentMode()), JSON.stringify(history));
     };
 
-    const savedMode = toMode(sessionStorage.getItem(MODE_KEY));
+    const savedMode = toMode(getModeFromUrl() || sessionStorage.getItem(MODE_KEY));
     const history: Array<{
       role: "user" | "model";
       parts: Array<{ text: string }>;
@@ -498,6 +522,7 @@ function initAstralChat() {
         await typewriter(streamingBubble, text);
         renderCtas(ctas);
       } catch (error) {
+        console.error("Astral chat request failed:", error);
         if (error instanceof FatalChatError) disableChat();
         streamingBubble.classList.remove("is-streaming");
         streamingBubble.classList.add("astral-chat__bubble--error");
