@@ -1,4 +1,6 @@
 ---
+import Card from "./ui/Card.astro";
+
 interface Props {
   quote: string;
   author: string;
@@ -8,12 +10,15 @@ interface Props {
   sourceUrl?: string;
 }
 
-const { quote, author, role, company, sourceLabel, sourceUrl } = Astro.props as Props;
+const { quote, author, role, company, sourceLabel, sourceUrl } =
+  Astro.props as Props;
 ---
 
-<article class="rounded-card border border-white/10 bg-[#0f1430]/70 p-5 backdrop-blur-md">
+<Card as="article" hoverable shine class="testimonial-card p-5">
   <p class="text-cosmic-gold text-xl leading-none">“</p>
-  <blockquote class="mt-2 text-sm md:text-base text-white/90 leading-relaxed">{quote}</blockquote>
+  <blockquote class="mt-2 text-sm md:text-base text-white/90 leading-relaxed">
+    {quote}
+  </blockquote>
   <footer class="mt-4 border-t border-white/10 pt-3">
     <p class="text-sm font-semibold text-white">{author}</p>
     <p class="text-xs text-white/65">{role}{company ? ` · ${company}` : ""}</p>
@@ -30,4 +35,4 @@ const { quote, author, role, company, sourceLabel, sourceUrl } = Astro.props as 
       )
     }
   </footer>
-</article>
+</Card>

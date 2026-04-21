@@ -998,7 +998,7 @@ const { softSkillsUrl, skillsUrl, isEn } = Astro.props;
   }
 </style>
 
-<script define:vars={{ softSkillsUrl, skillsUrl }}>
+<script is:inline define:vars={{ softSkillsUrl, skillsUrl }}>
   function initRocket() {
     const leftWing = document.getElementById("left-wing");
     const rightWing = document.getElementById("right-wing");

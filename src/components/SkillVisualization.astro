@@ -1,46 +1,29 @@
 ---
 import Card from "./ui/Card.astro";
-import Button from "./ui/Button.astro";
 import type { Locale } from "../i18n/config";
 import { getSoftSkillsData } from "../i18n/data/soft-skills";
 
 const { locale = "fr" } = Astro.props as { locale?: Locale };
 const isEn = locale === "en";
 const softSkillsData = getSoftSkillsData(locale);
-const { planets, reperes, contact } = softSkillsData;
-
-const accentStars = [
-  { left: "5%", top: "20%", size: "0.28rem", opacity: 0.7 },
-  { left: "12%", top: "60%", size: "0.18rem", opacity: 0.45 },
-  { left: "25%", top: "14%", size: "0.22rem", opacity: 0.5 },
-  { left: "35%", top: "75%", size: "0.18rem", opacity: 0.4 },
-  { left: "42%", top: "30%", size: "0.2rem", opacity: 0.5 },
-  { left: "48%", top: "80%", size: "0.16rem", opacity: 0.35 },
-  { left: "58%", top: "18%", size: "0.24rem", opacity: 0.55 },
-  { left: "65%", top: "68%", size: "0.18rem", opacity: 0.42 },
-  { left: "78%", top: "25%", size: "0.3rem", opacity: 0.75 },
-  { left: "85%", top: "70%", size: "0.22rem", opacity: 0.6 },
-  { left: "92%", top: "40%", size: "0.34rem", opacity: 0.8 },
-];
+const { planets, reperes } = softSkillsData;
+type PlanetWithMobilePosition = (typeof planets)[number] & {
+  leftMobile?: string;
+  topMobile?: string;
+};
 ---
 
-<div class="soft-viz-wrapper">
-  <div class="soft-constellation-container">
+<div class="soft-viz-wrapper" data-soft-skills-root>
+  <div class="soft-viz-stage">
     <div class="soft-constellation-banner">
       <div class="soft-constellation__nebula" aria-hidden="true"></div>
 
-      {accentStars.map((star, index) => (
-        <span
-          class:list={["soft-constellation__star", index % 3 === 0 ? "twinkle" : ""]}
-          style={`left:${star.left};top:${star.top};width:${star.size};height:${star.size};opacity:${star.opacity};animation-delay:${index * 280}ms;`}
-          aria-hidden="true"
-        />
-      ))}
-
-      {planets.map((skill) => (
+      {planets.map((planet) => {
+        const skill = planet as PlanetWithMobilePosition;
+        return (
         <button
           class={`soft-skill-node ${skill.planetClass}`}
-          style={`--left: ${skill.left}; --top: ${skill.top};${"leftMobile" in skill ? ` --left-mobile: ${(skill as any).leftMobile};` : ""}${"topMobile" in skill ? ` --top-mobile: ${(skill as any).topMobile};` : ""}`}
+          style={`--left: ${skill.left}; --top: ${skill.top};${skill.leftMobile ? ` --left-mobile: ${skill.leftMobile};` : ""}${skill.topMobile ? ` --top-mobile: ${skill.topMobile};` : ""}`}
           data-skill-label={skill.label}
           data-skill-example={skill.example}
           data-skill-theme={skill.theme}
@@ -54,7 +37,7 @@ const accentStars = [
           </span>
           <span class="soft-skill-node__label">{skill.label}</span>
         </button>
-      ))}
+      )})}
 
       <button class="soft-skill-core sun-glow" id="skill-core-btn" type="button" aria-label={isEn ? "Reset key markers" : "Réinitialiser les repères clés"}>
         {Array.from({ length: 8 }).map((_, i) => (
@@ -66,9 +49,7 @@ const accentStars = [
 
       <p class="constellation-hint">✦ {isEn ? "Click a planet to discover a concrete example" : "Cliquez sur une planète pour découvrir un exemple"}</p>
     </div>
-  </div>
 
-  <div class="soft-viz-cards">
     <Card id="skill-info-card" class="skill-info-card p-5">
       <div class="skill-info-content">
         <div class="skill-info-default">
@@ -84,75 +65,82 @@ const accentStars = [
         </div>
 
         <div class="skill-info-detail" aria-hidden="true">
-          <div class="flex items-center justify-between gap-4 mb-2">
-            <p class="skill-info-detail__tag m-0">✦ {isEn ? "Concrete example" : "Exemple concret"}</p>
-            <p class="skill-info-detail__movie m-0 text-[10px] uppercase tracking-widest text-cosmic-gold/60 italic"></p>
+          <p class="skill-info-detail__tag m-0">✦ {isEn ? "Concrete example" : "Exemple concret"}</p>
+          <div class="skill-info-detail__body">
+            <div class="skill-info-detail__copy">
+              <h3 class="skill-info-detail__title font-display"></h3>
+              <p class="skill-info-detail__text muted"></p>
+            </div>
+            <div class="skill-info-detail__movie-block">
+              <p class="skill-info-detail__movie-kicker m-0">{isEn ? "Film reference" : "Référence ciné"}</p>
+              <p class="skill-info-detail__movie-title m-0"></p>
+              <p class="skill-info-detail__movie-note m-0">
+                {isEn ? "A cinematic universe that echoes this way of working." : "Un univers ciné qui fait écho à cette façon de travailler."}
+              </p>
+            </div>
           </div>
-          <h3 class="skill-info-detail__title font-display"></h3>
-          <p class="skill-info-detail__text muted"></p>
         </div>
       </div>
-    </Card>
-
-    <Card class="p-5">
-      <h3 class="font-display text-3xl">{contact.title}</h3>
-      <p class="muted mb-4 mt-2">{contact.description}</p>
-      <Button href={`mailto:${contact.email}`} variant="primary">{contact.buttonText}</Button>
     </Card>
   </div>
 </div>
 
-<script define:vars={{ isEn }}>
+<script is:inline define:vars={{ isEn }}>
   function initSoftSkills() {
-    const infoCard = document.getElementById("skill-info-card");
-    const coreBtn = document.getElementById("skill-core-btn");
-    const detailTitle = infoCard?.querySelector(".skill-info-detail__title");
-    const detailText = infoCard?.querySelector(".skill-info-detail__text");
-    const detailMovie = infoCard?.querySelector(".skill-info-detail__movie");
-    const detailEl = infoCard?.querySelector(".skill-info-detail");
+    document.querySelectorAll("[data-soft-skills-root]").forEach((root) => {
+      if (!(root instanceof HTMLElement) || root.dataset.initialized === "true") return;
 
-    let activeNode = null;
+      const infoCard = root.querySelector("#skill-info-card");
+      const coreBtn = root.querySelector("#skill-core-btn");
+      const detailTitle = infoCard?.querySelector(".skill-info-detail__title");
+      const detailText = infoCard?.querySelector(".skill-info-detail__text");
+      const detailMovie = infoCard?.querySelector(".skill-info-detail__movie-title");
+      const detailMovieBlock = infoCard?.querySelector(".skill-info-detail__movie-block");
+      const detailEl = infoCard?.querySelector(".skill-info-detail");
 
-    function flashCard() {
-      if (!infoCard) return;
-      infoCard.classList.remove("is-flashing");
-      void infoCard.offsetWidth;
-      infoCard.classList.add("is-flashing");
-    }
-
-    function showSkill(label, example, theme, movie) {
       if (!infoCard || !detailTitle || !detailText || !detailEl) return;
 
-      detailTitle.textContent = label;
-      detailText.textContent = example;
-      if (detailMovie) detailMovie.textContent = movie ? `${isEn ? "Inspiration" : "Inspiration"} : ${movie}` : "";
+      let activeNode = null;
 
-      detailEl.setAttribute("aria-hidden", "false");
-      infoCard.classList.add("is-detail");
-      document.body.dataset.softSkillTheme = theme;
-      flashCard();
-    }
+      function flashCard() {
+        infoCard.classList.remove("is-flashing");
+        void infoCard.offsetWidth;
+        infoCard.classList.add("is-flashing");
+      }
 
-    function resetToDefault() {
-      if (!infoCard || !detailEl) return;
-      detailEl.setAttribute("aria-hidden", "true");
-      infoCard.classList.remove("is-detail");
-      delete document.body.dataset.softSkillTheme;
-      flashCard();
-      activeNode?.classList.remove("is-active");
-      activeNode = null;
-    }
+      function showSkill(label, example, theme, movie) {
+        detailTitle.textContent = label;
+        detailText.textContent = example;
+        if (detailMovie) detailMovie.textContent = movie || (isEn ? "Still loading the reel" : "Référence à venir");
+        detailMovieBlock?.classList.toggle("is-empty", !movie);
 
-    document.querySelectorAll(".soft-skill-node[data-skill-label]").forEach((node) => {
-      node.addEventListener("click", () => {
+        detailEl.setAttribute("aria-hidden", "false");
+        infoCard.classList.add("is-detail");
+        document.body.dataset.softSkillTheme = theme;
+        flashCard();
+      }
+
+      function resetToDefault() {
+        detailEl.setAttribute("aria-hidden", "true");
+        infoCard.classList.remove("is-detail");
+        delete document.body.dataset.softSkillTheme;
+        flashCard();
         activeNode?.classList.remove("is-active");
-        activeNode = node;
-        node.classList.add("is-active");
-        showSkill(node.dataset.skillLabel ?? "", node.dataset.skillExample ?? "", node.dataset.skillTheme ?? "", node.dataset.skillMovie ?? "");
-      });
-    });
+        activeNode = null;
+      }
 
-    coreBtn?.addEventListener("click", resetToDefault);
+      root.querySelectorAll(".soft-skill-node[data-skill-label]").forEach((node) => {
+        node.addEventListener("click", () => {
+          activeNode?.classList.remove("is-active");
+          activeNode = node;
+          node.classList.add("is-active");
+          showSkill(node.dataset.skillLabel ?? "", node.dataset.skillExample ?? "", node.dataset.skillTheme ?? "", node.dataset.skillMovie ?? "");
+        });
+      });
+
+      coreBtn?.addEventListener("click", resetToDefault);
+      root.dataset.initialized = "true";
+    });
   }
 
   initSoftSkills();

@@ -1,4 +1,5 @@
 ---
+import Card from "./ui/Card.astro";
 import type { ProcessStep as Step } from "../data/services";
 
 interface Props {
@@ -9,8 +10,10 @@ interface Props {
 const { index, step } = Astro.props as Props;
 ---
 
-<div class="rounded-xl border border-white/10 p-4 bg-white/5">
-  <p class="text-xs uppercase tracking-[0.14em] text-cosmic-pink">{String(index + 1).padStart(2, "0")}</p>
+<Card as="article" hoverable class="process-step-card p-4">
+  <p class="text-xs uppercase tracking-[0.14em] text-cosmic-pink">
+    {String(index + 1).padStart(2, "0")}
+  </p>
   <h3 class="mt-2 text-cosmic-gold font-semibold">{step.title}</h3>
   <p class="mt-2 text-sm text-white/75">{step.description}</p>
-</div>
+</Card>

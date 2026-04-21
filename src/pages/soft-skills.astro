@@ -9,13 +9,14 @@ const data = getSoftSkillsData(locale);
 ---
 
 <BaseLayout title={data.page.title} description={data.page.description}>
-  <section class="cosmic-container pt-8 pb-16">
+  <section class="cosmic-container pt-8 pb-4">
     <div class="mb-6 text-left">
       <h1 class="section-title mb-2">
         {locale === "en" ? "My" : "Mes"} <span class="highlight">soft skills</span>
       </h1>
       <p class="muted max-w-3xl text-lg leading-relaxed">{data.page.intro}</p>
     </div>
-    <SkillVisualization locale={locale} />
   </section>
+  <SkillVisualization locale={locale} />
+  <div class="pb-16"></div>
 </BaseLayout>

@@ -71,7 +71,6 @@ const isEn = locale === "en";
   document.addEventListener("astro:page-load", () => {
     const filterButtons = document.querySelectorAll(".skill-filter");
     const skillItems = document.querySelectorAll(".skill-item");
-    const skillGrid = document.getElementById("skill-grid");
     const vibeToggle = document.getElementById(
       "vibe-toggle",
     ) as HTMLInputElement;
@@ -181,7 +180,6 @@ const isEn = locale === "en";
         cardEl.classList.toggle("vibe-boost", active);
 
         // Counter animation
-        let current = start;
         const duration = 1000;
         const startTime = performance.now();
 
