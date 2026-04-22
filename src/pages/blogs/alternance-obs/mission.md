@@ -32,3 +32,17 @@ Ces trois années d'alternance représentent une opportunité unique de parfaire
 
 C'est le début d'un chapitre ambitieux au sein d'OBS, que j'aurai à cœur de partager ici au fil de mes découvertes.
 
+---
+
+> « Dans le cadre de son apprentissage, au sein d'une équipe spécialisée dans l'IoT, Alexandre a su prendre sa place et s'est montré suffisamment audacieux pour prendre, en sus de ses sujets cœur, d'autres problématiques, plus complexes, en lien avec l'optimisation de la production.
+>
+> Il nous démontre tous les jours que ses qualités humaines, sa capacité d'analyse et sa curiosité technique sont trois forces qui lui permettent de trouver des solutions adaptées à des besoins client complexes.
+>
+> Ainsi, il fait maintenant parti de nos référents dans le domaine de la RFID et de l'intégration de la planification intelligente chez des clients industriels clef. Pour ce second sujet, il est, à la fois, capable de comprendre l'approche fonctionnelle, les contraintes métiers, les leviers à utiliser dans l'outils ad hoc, et les exigences d'un projet d'intégration IT/OT.
+>
+> Pour ne rien gâcher, il est très agréable de travailler avec Alexandre car il est force de propositions techniques, adaptable et témoigne du même respect à tous ses interlocuteurs.
+>
+> Il apporte à l'équipe son sérieux et sa bonne compagnie. »
+>
+> — **Cécile Déléry**, Manager - chaîne d'approvisionnement et des flux d'information, Orange Business
+

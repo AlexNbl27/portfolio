@@ -6,13 +6,13 @@ import ProcessStep from "../components/ProcessStep.astro";
 import TestimonialCard from "../components/TestimonialCard.astro";
 import { getLocaleFromPathname, localizePath } from "../i18n/utils";
 import { getServicePacks, getProcessSteps } from "../data/services";
-import { getTestimonials } from "../data/testimonials";
+import { getShortTestimonials } from "../data/testimonials";
 
 const locale = getLocaleFromPathname(Astro.url.pathname);
 const isEn = locale === "en";
 const packs = getServicePacks(locale);
 const steps = getProcessSteps(locale);
-const testimonials = getTestimonials(locale).slice(0, 2);
+const testimonials = getShortTestimonials(locale);
 ---
 
 <BaseLayout

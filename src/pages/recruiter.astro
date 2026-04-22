@@ -10,7 +10,7 @@ import skills from "../data/skills.json";
 import { getLocaleFromPathname, localizePath } from "../i18n/utils";
 import { getProjects } from "../i18n/data/projects";
 import { getExperiences } from "../i18n/data/experiences";
-import { getTestimonials } from "../data/testimonials";
+import { getLongTestimonials } from "../data/testimonials";
 
 const locale = getLocaleFromPathname(Astro.url.pathname);
 const isEn = locale === "en";
@@ -21,7 +21,7 @@ const experiences = getExperiences(locale);
 const featuredProjects = projects.filter((p) => p.recruiterFeatured);
 const featuredSkills = skills.filter((s) => s.recruiterCore);
 const featuredExperience = experiences.filter((e) => e.recruiterVisible);
-const recruiterTestimonials = getTestimonials(locale).slice(0, 1);
+const recruiterTestimonials = getLongTestimonials(locale);
 
 const categoryLabelsEn: Record<string, string> = {
   "Mobile & logiciel": "Mobile & software",
