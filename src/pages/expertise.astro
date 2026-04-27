@@ -3,9 +3,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import RocketSelector from "../components/RocketSelector.astro";
 import Card from "../components/ui/Card.astro";
 import { getLocaleFromPathname, localizePath } from "../i18n/utils";
+import { getSoftSkillsData } from "../i18n/data/soft-skills";
+import skillsData from "../data/skills.json";
 
 const locale = getLocaleFromPathname(Astro.url.pathname);
 const isEn = locale === "en";
+const softSkillsCount = getSoftSkillsData(locale).planets.length;
+const technicalSkillsCount = skillsData.length;
 ---
 
 <BaseLayout
@@ -27,6 +31,16 @@ const isEn = locale === "en";
       <h1 class="section-title">{isEn ? "My" : "Mon"} <span class="highlight">Expertise</span></h1>
       <p class="muted fluid-lead mt-3 max-w-2xl">
         {isEn
+      <div class="mt-2 grid grid-cols-2 gap-2">
+        <div class="expertise-stat expertise-stat--pink">
+          <strong>{softSkillsCount}</strong>
+          <span>{isEn ? "human strengths" : "forces humaines"}</span>
+        </div>
+        <div class="expertise-stat expertise-stat--gold">
+          <strong>{technicalSkillsCount}</strong>
+          <span>{isEn ? "technical skills" : "compétences techniques"}</span>
+        </div>
+      </div>
           ? "T-minus zero. Two wings, one trajectory — which one do you board?"
           : "T-moins zéro. Deux ailes, une trajectoire — laquelle tu embarques ?"}
       </p>
@@ -68,3 +82,35 @@ const isEn = locale === "en";
     padding: 0 2rem;
   }
 </style>
+
+  .expertise-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    border-radius: 0.8rem;
+    border: 1px solid transparent;
+    padding: 0.45rem 0.6rem;
+    background: rgba(8, 12, 28, 0.35);
+  }
+
+  .expertise-stat strong {
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  .expertise-stat span {
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.75;
+  }
+
+  .expertise-stat--pink {
+    border-color: rgba(242, 180, 223, 0.24);
+    color: rgba(242, 180, 223, 0.92);
+  }
+
+  .expertise-stat--gold {
+    border-color: rgba(246, 212, 13, 0.24);
+    color: rgba(246, 212, 13, 0.92);
+  }
