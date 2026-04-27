@@ -20,9 +20,9 @@ const tabs = getHomePortalTabs(locale);
 
   <section class="cosmic-container mt-8">
     <div class="recruiter-cta-wrap">
-      <Card class="p-5 md:p-6 relative group selection-card">
+      <Card class="p-4 md:p-6 relative group selection-card">
         <p class="text-xs uppercase tracking-[0.26em] text-cosmic-pink mb-2">{isEn ? "Personalized space" : "Espace personnalisé"}</p>
-        <h2 class="font-display text-3xl md:text-4xl text-cosmic-gold">
+        <h2 class="fluid-display-xl text-cosmic-gold">
           {isEn ? "Choose your pathway." : "Choisissez votre parcours."}
         </h2>
         <p class="muted mt-3 max-w-2xl text-base">
@@ -31,7 +31,7 @@ const tabs = getHomePortalTabs(locale);
             : "Identifiez-vous pour accéder instantanément aux constellations de projets et expertises pensées pour vos besoins."}
         </p>
         
-        <div class="mt-6 flex flex-wrap gap-4">
+        <div class="mt-4 flex flex-wrap gap-2.5 md:mt-6 md:gap-4">
           <a class="profile-btn profile-btn--gold" href={localizePath('/recruiter', locale)}>
             <span>{isEn ? "Recruiter" : "Espace recruteur"} 🤝</span>
           </a>
@@ -50,7 +50,7 @@ const tabs = getHomePortalTabs(locale);
   </section>
 
   <section id="stellar-compass" class="cosmic-container mt-10">
-    <h2 class="font-display text-3xl text-cosmic-gold">{isEn ? "Stellar Compass" : "Boussole Stellaire"}</h2>
+    <h2 class="fluid-display-lg text-cosmic-gold">{isEn ? "Stellar Compass" : "Boussole Stellaire"}</h2>
     <p class="muted mt-3 max-w-3xl">{isEn ? "Chart your course through the constellations of my projects and expertise." : "Tracez votre route à travers les constellations de mes projets et compétences."}</p>
     <div class="mt-5">
       <HomePortalTabs locale={locale} tabs={tabs} />
@@ -117,5 +117,20 @@ const tabs = getHomePortalTabs(locale);
   .profile-btn--white:hover {
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  @media (max-width: 767px) {
+    .selection-card {
+      padding: 0.95rem !important;
+    }
+
+    .profile-btn {
+      flex: 1 1 calc(50% - 0.4rem);
+      justify-content: center;
+      min-height: 42px;
+      padding: 0.6rem 0.75rem;
+      font-size: 0.78rem;
+      border-radius: 0.7rem;
+    }
   }
 </style>

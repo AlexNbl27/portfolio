@@ -11,7 +11,7 @@ const { locale } = Astro.props;
 const t = useTranslations(locale);
 ---
 
-<footer class="relative z-10 pb-12 pt-8 text-center text-xs uppercase tracking-[0.2em] text-slate-500">
+<footer class="relative z-10 pb-10 pt-7 text-center text-[10px] uppercase tracking-[0.14em] text-slate-500 md:text-xs md:tracking-[0.18em]">
   <div class="cosmic-container">
     <div class="mb-3 flex flex-wrap justify-center gap-4">
       <a href="https://www.linkedin.com/in/alexnbl27" target="_blank" rel="noreferrer" class="focus-ring hover:text-cosmic-gold">LinkedIn</a>
@@ -28,7 +28,7 @@ const t = useTranslations(locale);
       </div>
     </div>
 
-    <p>{t("footer").copyright}</p>
+    <p class="text-[10px] tracking-[0.1em] text-slate-500/90 md:text-[11px]">{t("footer").copyright}</p>
   </div>
 </footer>
 

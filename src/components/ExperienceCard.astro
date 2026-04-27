@@ -18,7 +18,7 @@ const { item, locale } = Astro.props as { item: ExperienceItem; locale: Locale }
       >{item.type === "formation" ? (locale === "en" ? "Studies" : "Formation") : (locale === "en" ? "Work experience" : "Expérience pro")}</Badge
     >
   </div>
-  <h3 class="font-display text-4xl text-cosmic-gold md:text-5xl mt-2">
+  <h3 class="fluid-display-xl text-cosmic-gold mt-2">
     {item.role}
   </h3>
   <p class="mt-1.5 text-sm italic text-cosmic-pink md:text-base">
