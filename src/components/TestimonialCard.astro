@@ -15,7 +15,7 @@ const { quote, author, role, company, sourceLabel, sourceUrl, long } =
   Astro.props as Props;
 ---
 
-<Card as="article" hoverable shine class="testimonial-card p-5">
+<Card as="article" hoverable shine class="testimonial-card mobile-card p-4 md:p-5">
   <p class="text-cosmic-gold text-xl leading-none">"</p>
   <blockquote
     class:list={[
@@ -29,7 +29,7 @@ const { quote, author, role, company, sourceLabel, sourceUrl, long } =
     long && (
       <button
         type="button"
-        class="testimonial-toggle mt-2 text-xs text-cosmic-gold hover:text-cosmic-pink transition"
+        class="testimonial-toggle tap-feedback mt-2 inline-flex min-h-11 items-center text-xs text-cosmic-gold hover:text-cosmic-pink transition"
       />
     )
   }
@@ -54,6 +54,7 @@ const { quote, author, role, company, sourceLabel, sourceUrl, long } =
 <script>
   document.addEventListener("astro:page-load", () => {
     document.querySelectorAll<HTMLButtonElement>(".testimonial-toggle").forEach((btn) => {
+      if (btn.dataset.bound === "1") return;
       const quote = btn.previousElementSibling as HTMLElement;
       const lang = document.documentElement.lang || "fr";
       const moreLabel = lang.startsWith("en") ? "Read more" : "Lire la suite";
@@ -67,6 +68,7 @@ const { quote, author, role, company, sourceLabel, sourceUrl, long } =
         quote.classList.toggle("line-clamp-4", !expanded);
         btn.textContent = expanded ? lessLabel : moreLabel;
       });
+      btn.dataset.bound = "1";
     });
   });
 </script>

@@ -32,6 +32,11 @@
     --muted: #b4b8ca;
     --gold: #f6d40d;
     --pink: #e3a4d6;
+    --fluid-step--1: clamp(0.93rem, 0.89rem + 0.22vw, 1rem);
+    --fluid-step-0: clamp(1rem, 0.95rem + 0.35vw, 1.125rem);
+    --fluid-step-1: clamp(1.35rem, 1.05rem + 1.3vw, 2rem);
+    --fluid-step-2: clamp(1.8rem, 1.3rem + 2.4vw, 2.85rem);
+    --fluid-step-3: clamp(2.25rem, 1.55rem + 3.5vw, 4rem);
   }
 
   * {
@@ -41,6 +46,8 @@
   html {
     scroll-behavior: smooth;
     background-color: #040916 !important;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: rgba(246, 212, 13, 0.18);
   }
 
   body::after {
@@ -67,6 +74,29 @@
     font-family: "Manrope", sans-serif;
     min-height: 100vh;
     transition: background 320ms ease;
+    overflow-x: clip;
+    text-wrap: pretty;
+    font-size: var(--fluid-step-0);
+    line-height: 1.6;
+  }
+
+  h1,
+  .fluid-h1 {
+    font-size: var(--fluid-step-3);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+  }
+
+  h2,
+  .fluid-h2 {
+    font-size: var(--fluid-step-2);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+  }
+
+  p,
+  li {
+    font-size: var(--fluid-step-0);
   }
 }
 
@@ -118,14 +148,21 @@
     margin-left: auto;
     margin-right: auto;
     max-width: 72rem;
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  @supports (padding: max(0px)) {
+    .cosmic-container {
+      padding-left: max(1rem, env(safe-area-inset-left));
+      padding-right: max(1rem, env(safe-area-inset-right));
+    }
   }
 
   @media (min-width: 768px) {
     .cosmic-container {
-      padding-left: 2rem;
-      padding-right: 2rem;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
     }
   }
 
@@ -157,6 +194,11 @@
     box-shadow: var(--shadow-glass-card);
   }
 
+  .mobile-card {
+    content-visibility: auto;
+    contain-intrinsic-size: 340px;
+  }
+
   .card-hoverable {
     transition:
       transform 260ms ease,
@@ -174,6 +216,28 @@
   .card-interactive {
     display: block;
     cursor: pointer;
+  }
+
+  @media (max-width: 767px) {
+    .mobile-card {
+      border-radius: 1.15rem;
+    }
+
+    .card-hoverable:hover {
+      transform: none;
+    }
+
+    .card-interactive:active {
+      transform: translateY(1px);
+    }
+
+    .project-card h3 {
+      overflow-wrap: anywhere;
+    }
+
+    .service-pack-card__list {
+      padding-left: 1.1rem;
+    }
   }
 
   .service-pack-card,
@@ -320,8 +384,8 @@
 
   .section-title {
     font-family: "Cormorant Garamond", serif;
-    font-size: clamp(2rem, 4vw, 4rem);
-    line-height: 0.95;
+    font-size: var(--fluid-step-3);
+    line-height: 0.98;
   }
 
   .highlight {
@@ -346,6 +410,26 @@
     [role="link"] {
       min-height: 44px;
     }
+  }
+
+  .tap-feedback {
+    transition:
+      transform 120ms ease,
+      filter 120ms ease,
+      background-color 120ms ease;
+    touch-action: manipulation;
+  }
+
+  .tap-feedback:active {
+    transform: scale(0.98);
+    filter: brightness(1.1);
+  }
+
+  .prevent-overflow,
+  .page-shell,
+  main {
+    max-width: 100%;
+    overflow-x: clip;
   }
 
   .animate-in {
