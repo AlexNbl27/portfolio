@@ -419,6 +419,14 @@
     margin-right: auto;
   }
 
+  .page-hero {
+    padding-top: 2rem;
+  }
+
+  .page-hero__title {
+    margin-bottom: 0;
+  }
+
   .highlight {
     color: var(--gold);
     font-style: italic;
