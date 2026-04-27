@@ -39,20 +39,20 @@ const isEn = locale === "en";
       }
     </p>
 
-    <div class="mt-8 grid gap-4 xl:grid-cols-2">
+    <div class="mt-6 grid gap-3.5 xl:grid-cols-2">
       {
         blogs.map((blog) => {
           const recentPosts = blog.posts.slice(0, 2);
           const latestPost = blog.posts[0];
 
           return (
-            <Card as="article" interactive shine class="h-full p-4 md:p-5">
+            <Card as="article" interactive shine class="h-full p-3.5 md:p-5">
               <div class="grid gap-4 md:grid-cols-[190px_1fr] md:items-start">
                 {blog.coverImage && resolveImage(blog.coverImage) && (
                   <Image
                     src={resolveImage(blog.coverImage)!}
                     alt={blog.title}
-                    class="project-card-img h-40 w-full rounded-2xl object-cover md:h-full md:min-h-[190px]"
+                    class="project-card-img h-32 w-full rounded-2xl object-cover md:h-full md:min-h-[190px]"
                     data-fade-image
                   />
                 )}
@@ -67,10 +67,10 @@ const isEn = locale === "en";
                     </Badge>
                   </div>
 
-                  <h2 class="fluid-display-xl text-cosmic-gold">
+                  <h2 class="fluid-display-lg text-cosmic-gold">
                     {blog.title}
                   </h2>
-                  <p class="muted text-sm">{blog.summary}</p>
+                  <p class="muted line-clamp-2 text-[0.86rem] md:text-sm">{blog.summary}</p>
 
                   <div class="flex flex-wrap gap-2 text-[11px]">
                     {blog.skills.slice(0, 4).map((skill) => (
@@ -78,7 +78,7 @@ const isEn = locale === "en";
                     ))}
                   </div>
 
-                  <div class="rounded-2xl border border-cosmic-gold/15 p-3">
+                  <div class="hidden rounded-2xl border border-cosmic-gold/15 p-3 md:block">
                     <p class="mb-2 text-[11px] uppercase tracking-[0.2em] text-cosmic-pink">
                       {isEn ? "Latest posts" : "Derniers articles"}
                     </p>
@@ -96,7 +96,7 @@ const isEn = locale === "en";
                     </ul>
                   </div>
 
-                  <div class="flex flex-wrap gap-3 pt-1 relative z-10">
+                  <div class="flex flex-wrap gap-2 pt-1 relative z-10">
                     <Button href={`/blogs/${blog.slug}`} variant="primary">
                       {isEn ? "Open" : "Ouvrir"}
                     </Button>
@@ -104,6 +104,7 @@ const isEn = locale === "en";
                       <Button
                         href={`/blogs/${blog.slug}/${latestPost.slug}`}
                         variant="outline"
+                        class="hidden sm:inline-flex"
                       >
                         {isEn ? "Latest post" : "Dernier article"}
                       </Button>

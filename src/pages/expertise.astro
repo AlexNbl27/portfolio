@@ -25,14 +25,14 @@ const isEn = locale === "en";
   <div class="md:hidden">
     <section class="cosmic-container pt-8">
       <h1 class="section-title">{isEn ? "My" : "Mon"} <span class="highlight">Expertise</span></h1>
-      <p class="muted mt-4 max-w-2xl text-lg">
+      <p class="muted fluid-lead mt-3 max-w-2xl">
         {isEn
           ? "T-minus zero. Two wings, one trajectory — which one do you board?"
           : "T-moins zéro. Deux ailes, une trajectoire — laquelle tu embarques ?"}
       </p>
     </section>
 
-    <section class="cosmic-container mt-8 flex flex-col gap-4">
+    <section class="cosmic-container mt-6 flex flex-col gap-3">
       <Card as="a" href={localizePath('/soft-skills', locale)} interactive class="mobile-skill-card mobile-skill-card--pink">
         <span class="msc-tag">{isEn ? "Human" : "Humain"}</span>
         <span class="msc-title">Soft Skills</span>
@@ -47,11 +47,11 @@ const isEn = locale === "en";
       </Card>
     </section>
 
-    <section class="cosmic-container mt-10 mb-4">
-      <Card class="p-6">
-        <h2 class="font-display text-2xl text-cosmic-gold">{isEn ? "Need a guided tour?" : "Besoin d'un parcours guidé ?"}</h2>
-        <p class="mt-2 text-white/80">{isEn ? "Use Astral chat for a role-based summary." : "Utilisez Astral pour un résumé orienté rôle."}</p>
-        <a href={localizePath('/chat', locale)} class="mt-4 inline-flex rounded-xl border border-cosmic-gold/40 px-4 py-2 text-cosmic-gold hover:bg-cosmic-gold/10 transition">{isEn ? "Open Astral" : "Ouvrir Astral"}</a>
+    <section class="cosmic-container mt-8 mb-3">
+      <Card class="p-4">
+        <h2 class="fluid-display-md text-cosmic-gold">{isEn ? "Need a guided tour?" : "Besoin d'un parcours guidé ?"}</h2>
+        <p class="mt-2 text-sm text-white/80">{isEn ? "Use Astral chat for a role-based summary." : "Utilisez Astral pour un résumé orienté rôle."}</p>
+        <a href={localizePath('/chat', locale)} class="mt-3 inline-flex rounded-xl border border-cosmic-gold/40 px-3.5 py-2 text-sm text-cosmic-gold hover:bg-cosmic-gold/10 transition">{isEn ? "Open Astral" : "Ouvrir Astral"}</a>
       </Card>
     </section>
   </div>
