@@ -31,6 +31,9 @@ const technicalSkillsCount = skillsData.length;
       <h1 class="section-title">{isEn ? "My" : "Mon"} <span class="highlight">Expertise</span></h1>
       <p class="muted fluid-lead mt-3 max-w-2xl">
         {isEn
+          ? "T-minus zero. Two wings, one trajectory — which one do you board?"
+          : "T-moins zéro. Deux ailes, une trajectoire — laquelle tu embarques ?"}
+      </p>
       <div class="mt-2 grid grid-cols-2 gap-2">
         <div class="expertise-stat expertise-stat--pink">
           <strong>{softSkillsCount}</strong>
@@ -41,9 +44,6 @@ const technicalSkillsCount = skillsData.length;
           <span>{isEn ? "technical skills" : "compétences techniques"}</span>
         </div>
       </div>
-          ? "T-minus zero. Two wings, one trajectory — which one do you board?"
-          : "T-moins zéro. Deux ailes, une trajectoire — laquelle tu embarques ?"}
-      </p>
     </section>
 
     <section class="cosmic-container mt-5 flex flex-col gap-2.5">
@@ -81,7 +81,6 @@ const technicalSkillsCount = skillsData.length;
     justify-content: center;
     padding: 0 2rem;
   }
-</style>
 
   .expertise-stat {
     display: flex;
@@ -114,3 +113,4 @@ const technicalSkillsCount = skillsData.length;
     border-color: rgba(246, 212, 13, 0.24);
     color: rgba(246, 212, 13, 0.92);
   }
+</style>
