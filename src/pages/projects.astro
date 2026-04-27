@@ -28,7 +28,7 @@ const projects = getProjects(locale).map((project) => ({
     <h1 class="section-title">
       <span class="highlight">{t("projects").title}</span>
     </h1>
-    <p class="muted mt-4 max-w-3xl text-lg">{t("projects").subtitle}</p>
+    <p class="muted page-hero__desc mt-4">{t("projects").subtitle}</p>
     <ProjectFilter locale={locale} />
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="project-grid">
       {

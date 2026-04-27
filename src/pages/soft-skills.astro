@@ -14,7 +14,7 @@ const data = getSoftSkillsData(locale);
       <h1 class="section-title mb-2">
         {locale === "en" ? "My" : "Mes"} <span class="highlight">soft skills</span>
       </h1>
-      <p class="muted max-w-3xl text-lg leading-relaxed">{data.page.intro}</p>
+      <p class="muted page-hero__desc">{data.page.intro}</p>
     </div>
   </section>
   <SkillVisualization locale={locale} />

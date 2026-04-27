@@ -408,6 +408,17 @@
     line-height: 1.6;
   }
 
+  .page-hero__desc {
+    max-width: 48rem;
+    font-size: clamp(0.92rem, 0.88rem + 0.45vw, 1.05rem);
+    line-height: 1.65;
+  }
+
+  .page-hero__desc--center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .highlight {
     color: var(--gold);
     font-style: italic;
