@@ -656,6 +656,62 @@
     border-radius: var(--radius-card);
   }
 
+  .selection-card {
+    background: rgba(9, 15, 36, 0.75) !important;
+    backdrop-filter: blur(12px) !important;
+  }
+
+  .profile-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.8rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(8px);
+    color: rgba(255, 255, 255, 0.9);
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .profile-btn--gold {
+    border-color: rgba(246, 212, 13, 0.3);
+    color: #f6d40d;
+  }
+
+  .profile-btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+  }
+
+  .profile-btn:hover::before {
+    transform: translateX(100%);
+  }
+
+  .profile-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .profile-btn--gold:hover {
+    background: rgba(246, 212, 13, 0.1);
+    border-color: #f6d40d;
+    box-shadow: 0 0 15px rgba(246, 212, 13, 0.25);
+  }
+
+  .profile-btn--white:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
   .recruiter-cta-wrap::before,
   .recruiter-cta-wrap::after {
     content: '';
@@ -708,6 +764,21 @@
         transparent 360deg);
     filter: blur(14px);
     z-index: -1;
+  }
+
+  @media (max-width: 767px) {
+    .selection-card {
+      padding: 0.95rem !important;
+    }
+
+    .profile-btn {
+      flex: 1 1 calc(50% - 0.4rem);
+      justify-content: center;
+      min-height: 42px;
+      padding: 0.6rem 0.75rem;
+      font-size: 0.78rem;
+      border-radius: 0.7rem;
+    }
   }
 
   .experience-badge {
