@@ -388,6 +388,29 @@
     line-height: 0.98;
   }
 
+  .fluid-display-xl {
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(1.9rem, 1.45rem + 2.4vw, 3rem);
+    line-height: 1.05;
+  }
+
+  .fluid-display-lg {
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(1.55rem, 1.2rem + 1.8vw, 2.35rem);
+    line-height: 1.1;
+  }
+
+  .fluid-display-md {
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(1.3rem, 1.05rem + 1.2vw, 1.85rem);
+    line-height: 1.15;
+  }
+
+  .fluid-lead {
+    font-size: clamp(1rem, 0.96rem + 0.45vw, 1.2rem);
+    line-height: 1.65;
+  }
+
   .highlight {
     color: var(--gold);
     font-style: italic;

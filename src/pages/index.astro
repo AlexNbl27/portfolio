@@ -22,7 +22,7 @@ const tabs = getHomePortalTabs(locale);
     <div class="recruiter-cta-wrap">
       <Card class="p-5 md:p-6 relative group selection-card">
         <p class="text-xs uppercase tracking-[0.26em] text-cosmic-pink mb-2">{isEn ? "Personalized space" : "Espace personnalisé"}</p>
-        <h2 class="font-display text-3xl md:text-4xl text-cosmic-gold">
+        <h2 class="fluid-display-xl text-cosmic-gold">
           {isEn ? "Choose your pathway." : "Choisissez votre parcours."}
         </h2>
         <p class="muted mt-3 max-w-2xl text-base">
@@ -50,7 +50,7 @@ const tabs = getHomePortalTabs(locale);
   </section>
 
   <section id="stellar-compass" class="cosmic-container mt-10">
-    <h2 class="font-display text-3xl text-cosmic-gold">{isEn ? "Stellar Compass" : "Boussole Stellaire"}</h2>
+    <h2 class="fluid-display-lg text-cosmic-gold">{isEn ? "Stellar Compass" : "Boussole Stellaire"}</h2>
     <p class="muted mt-3 max-w-3xl">{isEn ? "Chart your course through the constellations of my projects and expertise." : "Tracez votre route à travers les constellations de mes projets et compétences."}</p>
     <div class="mt-5">
       <HomePortalTabs locale={locale} tabs={tabs} />
