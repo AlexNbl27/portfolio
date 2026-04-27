@@ -7,7 +7,7 @@ interface Props {
 const { variant = "default", class: className, ...rest } = Astro.props;
 
 const baseClasses =
-  "rounded-badge px-3 py-1 text-xs uppercase tracking-[0.15em]";
+  "rounded-badge px-2 py-0.5 text-[10px] uppercase tracking-[0.12em] md:px-3 md:py-1 md:text-xs md:tracking-[0.15em]";
 
 const variants = {
   tech: "border border-cosmic-gold/15 bg-linear-to-b from-[#0a0f22]/80 to-[#0e162d]/70 text-[#efe7c4] transition-all hover:-translate-y-0.5 hover:border-cosmic-gold/40 hover:from-[#1a2242]/90 hover:to-[#121a31]/80",

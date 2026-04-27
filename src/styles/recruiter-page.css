@@ -106,9 +106,7 @@
 
 @media (max-width: 640px) {
   .rec-time-badge {
-    margin-left: 0;
-    width: 100%;
-    text-align: center;
+    display: none;
   }
 }
 

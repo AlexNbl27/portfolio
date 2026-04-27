@@ -34,13 +34,13 @@ const { blog } = Astro.props as { blog: BlogMeta };
       Retour aux blogs
     </Button>
 
-    <div class="mt-6 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+    <div class="mt-5 grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
       <div class="space-y-5">
         <p class="text-xs uppercase tracking-[0.25em] text-cosmic-pink">
           {blog.subtitle}
         </p>
         <h1 class="section-title">{blog.title}</h1>
-        <p class="muted text-lg">{blog.summary}</p>
+        <p class="muted fluid-lead max-w-2xl">{blog.summary}</p>
 
         <div class="flex flex-wrap gap-2 text-xs">
           {blog.skills.map((skill) => <Badge variant="tech">{skill}</Badge>)}
@@ -63,25 +63,25 @@ const { blog } = Astro.props as { blog: BlogMeta };
     </div>
 
     <section class="mt-8">
-      <h2 class="font-display text-4xl text-cosmic-gold">
+      <h2 class="fluid-display-lg text-cosmic-gold">
         Toutes les publications
       </h2>
-      <div class="mt-4 grid gap-4 md:grid-cols-2">
+      <div class="mt-3 grid gap-3.5 md:grid-cols-2">
         {
           blog.posts.map((post) => (
             <Card
               as="a"
               href={`/blogs/${blog.slug}/${post.slug}`}
               interactive
-              class="group/card p-5 flex flex-col items-start relative z-10 hover:no-underline"
+              class="group/card p-3.5 md:p-5 flex flex-col items-start relative z-10 hover:no-underline"
             >
               <time class="text-xs uppercase tracking-[0.2em] text-cosmic-pink">
                 {post.date}
               </time>
-              <h3 class="mt-2 font-display text-3xl transition-colors group-hover/card:text-cosmic-gold">
+              <h3 class="mt-2 fluid-display-md transition-colors group-hover/card:text-cosmic-gold">
                 {post.title}
               </h3>
-              <p class="muted mt-2 mb-4">{post.excerpt}</p>
+              <p class="muted mt-2 mb-3 line-clamp-2 md:line-clamp-none">{post.excerpt}</p>
               <Button
                 as="span"
                 variant="outline"

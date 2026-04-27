@@ -13,13 +13,13 @@ const isEn = locale === "en";
 >
   <section class="cosmic-container pt-8">
     <h1 class="section-title">{isEn ? "Astral" : "Canal"} <span class="highlight">Astral</span></h1>
-    <p class="muted mt-4 max-w-3xl text-lg">
+    <p class="muted fluid-lead mt-3 max-w-3xl">
       {isEn
         ? "An AI-powered conversational interface to explore my profile, projects, and technical approach in an interactive way."
         : "Une interface conversationnelle alimentée par l'IA pour explorer mon profil, mes projets et mon approche technique de manière interactive et immersive."}
     </p>
 
-    <div class="mt-8">
+    <div class="mt-5 md:mt-8">
       <AstralChatContent locale={locale} />
     </div>
   </section>
