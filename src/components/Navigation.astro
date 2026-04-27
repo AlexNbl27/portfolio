@@ -230,33 +230,35 @@ const isActive = (href: string) =>
         }
       };
 
+      const onMenuClick = (event: Event) => {
+        const target = event.target as HTMLElement | null;
+        const link = target?.closest("a");
+        if (!link) return;
+        const href = link.getAttribute("href");
+        const currentPath = window.location.pathname;
+        const normalize = (p: string) => (p === "/" ? p : p.replace(/\/$/, ""));
+        if (normalize(href || "") === normalize(currentPath)) {
+          event.preventDefault();
+          if (navCard.getAttribute("data-mobile-open") === "true") {
+            closeMenu();
+          }
+        }
+      };
+
       menuToggle.addEventListener("click", onToggleClick);
       window.addEventListener("scroll", onScroll, { passive: true });
       window.addEventListener("resize", onResize, { passive: true });
       document.addEventListener("keydown", onKeydown);
+      menu.addEventListener("click", onMenuClick);
 
       (window as any).__mobileNavCleanup = () => {
         menuToggle.removeEventListener("click", onToggleClick);
         window.removeEventListener("scroll", onScroll);
         window.removeEventListener("resize", onResize);
         document.removeEventListener("keydown", onKeydown);
+        menu.removeEventListener("click", onMenuClick);
       };
     }
-
-    const navLinks = document.querySelectorAll("#menu a");
-    navLinks.forEach((link) => {
-      link.addEventListener("click", (e) => {
-        const href = (link as HTMLAnchorElement).getAttribute("href");
-        const currentPath = window.location.pathname;
-        const normalize = (p: string) => (p === "/" ? p : p.replace(/\/$/, ""));
-        if (normalize(href || "") === normalize(currentPath)) {
-          e.preventDefault();
-          if (navCard?.getAttribute("data-mobile-open") === "true") {
-            menuToggle?.click();
-          }
-        }
-      });
-    });
   });
 </script>
 
