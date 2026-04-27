@@ -46,10 +46,10 @@ const isActive = (href: string) =>
       class="flex flex-col items-center justify-between px-4 py-2.5 shadow-[0_18px_40px_rgba(4,9,22,0.28)] !rounded-none border-x-0 border-t-0 transition-all duration-500 ease-in-out data-[mobile-open=true]:h-[100dvh] data-[mobile-open=true]:overflow-y-auto md:px-5 md:py-5 md:!rounded-card md:border-x md:border-t md:flex-row md:data-[mobile-open=true]:h-auto md:data-[mobile-open=true]:overflow-visible"
       aria-label={locale === "en" ? "Main navigation" : "Navigation principale"}
     >
-      <div class="flex w-full items-center justify-between md:w-auto shrink-0">
+      <div class="flex min-h-11 w-full items-center justify-between md:w-auto shrink-0">
         <a
           href={homeHref}
-          class="focus-ring font-blanka text-lg tracking-[0.22em] text-white transition-colors duration-300 hover:text-cosmic-gold md:text-2xl md:tracking-widest md:-translate-y-[5px]"
+          class="focus-ring inline-flex min-h-11 items-center font-blanka text-base leading-none tracking-[0.2em] text-white transition-colors duration-300 hover:text-cosmic-gold md:text-2xl md:tracking-widest md:-translate-y-[5px]"
           >Alexandre Noblet</a
         >
         <button
@@ -80,7 +80,7 @@ const isActive = (href: string) =>
 
       <ul
         id="menu"
-        class="hidden w-full flex-1 flex-col items-center justify-center gap-4 pt-4 pb-10 text-base uppercase tracking-[0.18em] md:!flex md:w-auto md:flex-none md:flex-row md:ml-auto md:gap-5 md:p-0 md:text-xs md:tracking-[0.15em] data-[mobile-open=true]:flex"
+        class="hidden w-full flex-1 flex-col items-center justify-center gap-4 pt-4 pb-10 text-base uppercase tracking-[0.18em] md:!flex md:w-auto md:flex-none md:flex-row md:ml-auto md:gap-5 md:p-0 md:text-[11px] md:tracking-[0.14em] data-[mobile-open=true]:flex"
       >
         {
           links.map((link, index) => (
@@ -95,7 +95,7 @@ const isActive = (href: string) =>
                 href={link.href}
                 aria-current={isActive(link.href) ? "page" : undefined}
                 class:list={[
-                  "focus-ring tap-feedback inline-flex min-h-11 items-center border-b px-2 py-1 transition hover:text-cosmic-gold",
+                  "focus-ring tap-feedback inline-flex min-h-11 items-center border-b px-2 py-1 transition hover:text-cosmic-gold md:min-h-0",
                   isActive(link.href)
                     ? "border-cosmic-gold text-cosmic-gold"
                     : "border-transparent",

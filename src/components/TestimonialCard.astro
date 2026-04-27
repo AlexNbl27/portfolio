@@ -15,11 +15,11 @@ const { quote, author, role, company, sourceLabel, sourceUrl, long } =
   Astro.props as Props;
 ---
 
-<Card as="article" hoverable shine class="testimonial-card mobile-card p-4 md:p-5">
+<Card as="article" hoverable shine class="testimonial-card mobile-card p-3.5 md:p-5">
   <p class="text-cosmic-gold text-xl leading-none">"</p>
   <blockquote
     class:list={[
-      "mt-2 text-sm md:text-base text-white/90 leading-relaxed testimonial-quote whitespace-pre-line",
+      "mt-2 text-[0.9rem] md:text-base text-white/90 leading-relaxed testimonial-quote whitespace-pre-line",
       long && "line-clamp-4",
     ]}
   >

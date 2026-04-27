@@ -9,11 +9,11 @@ interface Props {
 const { pack } = Astro.props as Props;
 ---
 
-<Card as="article" hoverable shine class="service-pack-card mobile-card p-4 md:p-5">
+<Card as="article" hoverable shine class="service-pack-card mobile-card p-3.5 md:p-5">
   <p class="text-xs uppercase tracking-[0.18em] text-cosmic-pink">
     {pack.priceHint}
   </p>
-  <h3 class="mt-2 text-cosmic-gold text-[1.65rem] leading-tight font-display md:text-2xl">{pack.name}</h3>
+  <h3 class="mt-2 text-cosmic-gold text-[1.45rem] leading-tight font-display md:text-2xl">{pack.name}</h3>
   <p class="mt-2 text-sm text-white/75">{pack.subtitle}</p>
 
   <ul

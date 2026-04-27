@@ -76,27 +76,8 @@
     transition: background 320ms ease;
     overflow-x: clip;
     text-wrap: pretty;
-    font-size: var(--fluid-step-0);
-    line-height: 1.6;
-  }
-
-  h1,
-  .fluid-h1 {
-    font-size: var(--fluid-step-3);
-    line-height: 1.02;
-    letter-spacing: -0.02em;
-  }
-
-  h2,
-  .fluid-h2 {
-    font-size: var(--fluid-step-2);
-    line-height: 1.1;
-    letter-spacing: -0.015em;
-  }
-
-  p,
-  li {
-    font-size: var(--fluid-step-0);
+    font-size: 1rem;
+    line-height: 1.55;
   }
 }
 
@@ -196,7 +177,7 @@
 
   .mobile-card {
     content-visibility: auto;
-    contain-intrinsic-size: 340px;
+    contain-intrinsic-size: 300px;
   }
 
   .card-hoverable {
@@ -305,7 +286,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.375rem;
-    padding: 1.375rem 1.25rem;
+    padding: 1rem 1rem;
     text-decoration: none;
   }
 
@@ -340,7 +321,7 @@
 
   .msc-title {
     font-family: var(--font-display, "Cormorant Garamond", serif);
-    font-size: 1.875rem;
+    font-size: clamp(1.35rem, 1.1rem + 1.2vw, 1.65rem);
     font-weight: 600;
     line-height: 1.1;
   }
