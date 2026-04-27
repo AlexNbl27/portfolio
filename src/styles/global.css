@@ -341,6 +341,17 @@
     transition: opacity 0.3s, right 0.3s;
   }
 
+  @media (max-width: 420px) {
+    .msc-desc {
+      display: none;
+    }
+
+    .msc-arrow {
+      font-size: 1rem;
+      right: 0.85rem;
+    }
+  }
+
   .mobile-skill-card:hover .msc-arrow {
     opacity: 0.9;
     right: 0.875rem;
