@@ -200,8 +200,13 @@
   }
 
   @media (max-width: 767px) {
+    .glass-card,
+    .card-shell {
+      border-radius: 1rem;
+    }
+
     .mobile-card {
-      border-radius: 1.15rem;
+      border-radius: 0.95rem;
     }
 
     .card-hoverable:hover {

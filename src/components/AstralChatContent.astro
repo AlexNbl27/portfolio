@@ -70,6 +70,7 @@ const isEn = locale === "en";
     background: rgba(15, 20, 45, 0.45);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
+    overflow-x: clip;
   }
 
   .astral-chat__messages-header { display: flex; justify-content: space-between; gap: 1rem; align-items: center; flex-wrap: wrap; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 1rem; margin-bottom: 0.5rem; }
@@ -77,4 +78,24 @@ const isEn = locale === "en";
   .astral-chat__panel.is-page .astral-chat__clear:hover { color: #f6d40d; background: rgba(246, 212, 13, 0.06); }
   .astral-chat__panel.is-page .astral-chat__messages { overflow-y: visible; padding-bottom: 1rem; }
   .astral-chat__panel.is-page .astral-chat__composer { position: sticky; bottom: 1.5rem; background: rgba(8, 12, 26, 0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-radius: 1.2rem; padding: 0.75rem; border: 1px solid rgba(246, 212, 13, 0.2); z-index: 10; }
+
+  @media (max-width: 767px) {
+    .astral-chat__panel.is-page {
+      padding: 0.9rem;
+      border-radius: 0.95rem;
+      gap: 0.75rem;
+    }
+
+    .astral-chat__messages-header {
+      gap: 0.6rem;
+      padding-bottom: 0.6rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .astral-chat__panel.is-page .astral-chat__composer {
+      bottom: 0.6rem;
+      border-radius: 0.95rem;
+      padding: 0.5rem;
+    }
+  }
 </style>
