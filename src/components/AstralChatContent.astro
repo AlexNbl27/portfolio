@@ -93,7 +93,7 @@ const isEn = locale === "en";
     }
 
     .astral-chat__panel.is-page .astral-chat__composer {
-      bottom: 0.6rem;
+      bottom: max(0.6rem, env(safe-area-inset-bottom));
       border-radius: 0.95rem;
       padding: 0.5rem;
     }
