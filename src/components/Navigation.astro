@@ -43,17 +43,17 @@ const isActive = (href: string) =>
     <Card
       as="nav"
       id="nav-card"
-      class="flex flex-col items-center justify-between px-3.5 py-2 shadow-[0_18px_40px_rgba(4,9,22,0.28)] !rounded-none border-x-0 border-t-0 transition-all duration-500 ease-in-out data-[mobile-open=true]:h-[100dvh] data-[mobile-open=true]:overflow-y-auto md:px-5 md:py-3.5 md:!rounded-card md:border-x md:border-t md:flex-row md:data-[mobile-open=true]:h-auto md:data-[mobile-open=true]:overflow-visible"
+      class="flex flex-col items-center justify-between px-4 py-2.5 shadow-[0_18px_40px_rgba(4,9,22,0.28)] !rounded-none border-x-0 border-t-0 transition-all duration-500 ease-in-out data-[mobile-open=true]:h-[100dvh] data-[mobile-open=true]:overflow-y-auto md:px-5 md:py-3.5 md:!rounded-card md:border-x md:border-t md:flex-row md:data-[mobile-open=true]:h-auto md:data-[mobile-open=true]:overflow-visible"
       aria-label={locale === "en" ? "Main navigation" : "Navigation principale"}
     >
       <div class="flex min-h-11 w-full items-center justify-between md:w-auto shrink-0">
         <a
           href={homeHref}
-        class="focus-ring inline-flex min-h-11 items-center font-blanka text-sm leading-none tracking-[0.17em] text-white transition-colors duration-300 hover:text-cosmic-gold md:text-2xl md:tracking-widest md:-translate-y-[5px]"
+          class="focus-ring inline-flex min-h-11 items-center font-blanka text-base leading-none tracking-[0.2em] text-white transition-colors duration-300 hover:text-cosmic-gold md:text-2xl md:tracking-widest md:-translate-y-[5px]"
           >Alexandre Noblet</a
         >
         <button
-          class="focus-ring tap-feedback group relative h-11 w-11 rounded-full border border-white/10 bg-white/5 md:hidden"
+          class="focus-ring tap-feedback group relative h-11 w-11 md:hidden"
           id="menu-toggle"
           aria-expanded="false"
           aria-controls="menu"
@@ -80,7 +80,7 @@ const isActive = (href: string) =>
 
       <ul
         id="menu"
-        class="hidden w-full flex-1 flex-col items-start justify-end gap-2.5 pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] text-sm uppercase tracking-[0.15em] md:!flex md:w-auto md:flex-none md:flex-row md:items-center md:justify-center md:ml-auto md:gap-5 md:p-0 md:text-xs md:tracking-[0.14em] data-[mobile-open=true]:flex"
+        class="hidden w-full flex-1 flex-col items-center justify-center gap-4 pt-4 pb-10 text-base uppercase tracking-[0.18em] md:!flex md:w-auto md:flex-none md:flex-row md:ml-auto md:gap-5 md:p-0 md:text-xs md:tracking-[0.14em] data-[mobile-open=true]:flex"
       >
         {
           links.map((link, index) => (
@@ -95,10 +95,10 @@ const isActive = (href: string) =>
                 href={link.href}
                 aria-current={isActive(link.href) ? "page" : undefined}
                 class:list={[
-                "focus-ring tap-feedback inline-flex w-full min-h-11 items-center rounded-xl border border-white/10 bg-white/3 px-3 py-2 transition hover:text-cosmic-gold md:w-auto md:min-h-0 md:rounded-none md:border-x-0 md:border-t-0 md:border-b md:border-b-transparent md:bg-transparent md:px-2 md:py-0.5",
+                  "focus-ring tap-feedback inline-flex min-h-11 items-center border-b px-2 py-1 transition hover:text-cosmic-gold md:min-h-0 md:py-0.5",
                   isActive(link.href)
-                    ? "!border-cosmic-gold text-cosmic-gold"
-                    : "",
+                    ? "border-cosmic-gold text-cosmic-gold"
+                    : "border-transparent",
                 ]}
               >
                 {link.label}
@@ -107,14 +107,10 @@ const isActive = (href: string) =>
           ))
         }
         <li
-          class="nav-item opacity-0 translate-y-8 md:opacity-100 md:translate-y-0 mt-3 w-full md:mt-0 md:w-auto"
+          class="nav-item opacity-0 translate-y-8 md:opacity-100 md:translate-y-0 mt-2 md:mt-0"
           style={`transition-delay: ${links.length * 70}ms`}
         >
-          <Button
-            href={localizePath("/contact", locale)}
-            variant="primary"
-            class="w-full md:w-auto"
-          >
+          <Button href={localizePath("/contact", locale)} variant="primary">
             {contactLabel}
           </Button>
         </li>
@@ -144,8 +140,9 @@ const isActive = (href: string) =>
             expertiseSubRoutes.some((r) => norm(current) === r)) ||
           (href.endsWith("/blogs") && current.includes("/blogs"));
 
-        link.classList.toggle("!border-cosmic-gold", active);
+        link.classList.toggle("border-cosmic-gold", active);
         link.classList.toggle("text-cosmic-gold", active);
+        link.classList.toggle("border-transparent", !active);
         if (active) {
           link.setAttribute("aria-current", "page");
         } else {
