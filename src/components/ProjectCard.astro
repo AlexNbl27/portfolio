@@ -41,9 +41,6 @@ const imageSrc = images[imagePath];
           transition:name={`project-image-${project.title}`}
           decoding="async"
           loading="lazy"
-          widths={[480, 720, 960]}
-          sizes="(max-width: 767px) 88vw, (max-width: 1023px) 46vw, 30vw"
-          formats={["avif", "webp"]}
         />
       ) : (
         <div class="h-full w-full object-cover bg-slate-800" />

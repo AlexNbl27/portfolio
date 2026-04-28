@@ -95,10 +95,10 @@ const isActive = (href: string) =>
                 href={link.href}
                 aria-current={isActive(link.href) ? "page" : undefined}
                 class:list={[
-                "focus-ring tap-feedback inline-flex w-full min-h-11 items-center rounded-xl border border-white/10 bg-white/3 px-3 py-2 transition hover:text-cosmic-gold md:w-auto md:min-h-0 md:rounded-none md:border-x-0 md:border-t-0 md:border-b md:bg-transparent md:px-2 md:py-0.5",
+                "focus-ring tap-feedback inline-flex w-full min-h-11 items-center rounded-xl border border-white/10 bg-white/3 px-3 py-2 transition hover:text-cosmic-gold md:w-auto md:min-h-0 md:rounded-none md:border-x-0 md:border-t-0 md:border-b md:border-b-transparent md:bg-transparent md:px-2 md:py-0.5",
                   isActive(link.href)
-                    ? "border-cosmic-gold text-cosmic-gold"
-                    : "border-transparent",
+                    ? "!border-cosmic-gold text-cosmic-gold"
+                    : "",
                 ]}
               >
                 {link.label}
@@ -144,9 +144,8 @@ const isActive = (href: string) =>
             expertiseSubRoutes.some((r) => norm(current) === r)) ||
           (href.endsWith("/blogs") && current.includes("/blogs"));
 
-        link.classList.toggle("border-cosmic-gold", active);
+        link.classList.toggle("!border-cosmic-gold", active);
         link.classList.toggle("text-cosmic-gold", active);
-        link.classList.toggle("border-transparent", !active);
         if (active) {
           link.setAttribute("aria-current", "page");
         } else {
