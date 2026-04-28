@@ -92,7 +92,6 @@
     min-height: 100vh;
     transition: background 320ms ease;
     overflow-x: clip;
-    text-wrap: pretty;
     font-size: 1rem;
     line-height: 1.55;
   }
@@ -115,11 +114,6 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #f6d40d;
-}
-
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #2c2a5f #090f24;
 }
 
 #page-transition-overlay {
@@ -963,8 +957,8 @@
     position: relative !important;
     width: 100%;
     z-index: 10;
-    backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
     align-self: stretch;
   }
 

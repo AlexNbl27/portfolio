@@ -151,8 +151,8 @@
 /* Désactive le backdrop-filter, les ombres et les transitions pendant les transitions de secours pour éviter le rendu en carré blanc et les lags sur Firefox */
 [data-astro-transition-fallback],
 [data-astro-transition-fallback] * {
-  backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
   box-shadow: none !important;
   transition: none !important;
   mix-blend-mode: normal !important;
