@@ -23,13 +23,11 @@ import { StarsBackground } from "./ui/Stars";
     >
     </div>
     <div
-      class="absolute right-[5%] top-[35%] h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl float"
-      style="animation-delay:1.5s"
+      class="absolute right-[5%] top-[35%] h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl float float-delay-1500"
     >
     </div>
     <div
-      class="absolute left-[42%] top-[70%] h-64 w-64 rounded-full bg-amber-300/10 blur-3xl float"
-      style="animation-delay:3s"
+      class="absolute left-[42%] top-[70%] h-64 w-64 rounded-full bg-amber-300/10 blur-3xl float float-delay-3000"
     >
     </div>
   </div>
@@ -105,6 +103,16 @@ import { StarsBackground } from "./ui/Stars";
   // (though transition:persist helps)
   document.addEventListener('astro:page-load', initShootingStars);
 </script>
+
+<style>
+  .float-delay-1500 {
+    animation-delay: 1.5s;
+  }
+
+  .float-delay-3000 {
+    animation-delay: 3s;
+  }
+</style>
 
 <style is:global>
   .shooting-star-dynamic {

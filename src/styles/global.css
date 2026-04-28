@@ -1073,9 +1073,19 @@
     background: linear-gradient(to top, rgba(255, 220, 40, 0.9), transparent);
     border-radius: 2px;
     transform-origin: 50% 4.55rem;
-    transform: rotate(var(--ray-angle));
+    transform: rotate(calc(var(--ray-index, 0) * 45deg));
     animation: ray-pulse 2.8s ease-in-out infinite;
+    animation-delay: calc(var(--ray-index, 0) * 180ms);
   }
+
+  .soft-skill-core__ray[data-ray-index="0"] { --ray-index: 0; }
+  .soft-skill-core__ray[data-ray-index="1"] { --ray-index: 1; }
+  .soft-skill-core__ray[data-ray-index="2"] { --ray-index: 2; }
+  .soft-skill-core__ray[data-ray-index="3"] { --ray-index: 3; }
+  .soft-skill-core__ray[data-ray-index="4"] { --ray-index: 4; }
+  .soft-skill-core__ray[data-ray-index="5"] { --ray-index: 5; }
+  .soft-skill-core__ray[data-ray-index="6"] { --ray-index: 6; }
+  .soft-skill-core__ray[data-ray-index="7"] { --ray-index: 7; }
 
   .soft-skill-core__ring {
     position: absolute;

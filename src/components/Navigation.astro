@@ -83,13 +83,12 @@ const isActive = (href: string) =>
         class="hidden w-full flex-1 flex-col items-center justify-center gap-4 pt-4 pb-10 text-base uppercase tracking-[0.18em] md:!flex md:w-auto md:flex-none md:flex-row md:ml-auto md:gap-5 md:p-0 md:text-xs md:tracking-[0.14em] data-[mobile-open=true]:flex"
       >
         {
-          links.map((link, index) => (
+          links.map((link) => (
             <li
               class:list={[
                 "nav-item opacity-0 translate-y-8 flex items-center md:opacity-100 md:translate-y-0",
                 link.mobileOnly ? "md:hidden" : "",
               ]}
-              style={`transition-delay: ${index * 70}ms`}
             >
               <a
                 href={link.href}
@@ -108,7 +107,6 @@ const isActive = (href: string) =>
         }
         <li
           class="nav-item opacity-0 translate-y-8 md:opacity-100 md:translate-y-0 mt-2 md:mt-0"
-          style={`transition-delay: ${links.length * 70}ms`}
         >
           <Button href={localizePath("/contact", locale)} variant="primary">
             {contactLabel}
