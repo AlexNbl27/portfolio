@@ -44,6 +44,8 @@
     --space-lg: clamp(1.25rem, 1rem + 1.05vw, 2rem);
     --space-xl: clamp(1.75rem, 1.32rem + 1.8vw, 3rem);
     --space-2xl: clamp(2.25rem, 1.7rem + 2.45vw, 4rem);
+    --section-gap: clamp(2rem, 1.5rem + 2.2vw, 4rem);
+    --section-gap-tight: clamp(1.4rem, 1.1rem + 1.2vw, 2.4rem);
   }
 
   * {
@@ -428,6 +430,14 @@
 
   .page-hero {
     padding-top: var(--space-xl);
+  }
+
+  .section-gap {
+    margin-top: var(--section-gap);
+  }
+
+  .section-gap-tight {
+    margin-top: var(--section-gap-tight);
   }
 
   .page-hero__title {
