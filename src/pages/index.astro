@@ -18,7 +18,7 @@ const tabs = getHomePortalTabs(locale);
 >
   <Hero locale={locale} />
 
-  <section class="cosmic-container mt-8">
+  <section class="cosmic-container section-gap-tight">
     <div class="recruiter-cta-wrap">
       <Card class="p-4 md:p-6 relative group selection-card">
         <p class="text-xs uppercase tracking-[0.26em] text-cosmic-pink mb-2">{isEn ? "Personalized space" : "Espace personnalisé"}</p>
@@ -49,7 +49,7 @@ const tabs = getHomePortalTabs(locale);
     </div>
   </section>
 
-  <section id="stellar-compass" class="cosmic-container mt-10">
+  <section id="stellar-compass" class="cosmic-container section-gap">
     <h2 class="fluid-display-lg text-cosmic-gold">{isEn ? "Stellar Compass" : "Boussole Stellaire"}</h2>
     <p class="muted mt-3 max-w-3xl">{isEn ? "Chart your course through the constellations of my projects and expertise." : "Tracez votre route à travers les constellations de mes projets et compétences."}</p>
     <div class="mt-5">
@@ -57,7 +57,7 @@ const tabs = getHomePortalTabs(locale);
     </div>
   </section>
 
-  <section class="cosmic-container mt-10 mb-4">
+  <section class="cosmic-container section-gap mb-4">
     <HomeProofStrip locale={locale} />
   </section>
 </BaseLayout>

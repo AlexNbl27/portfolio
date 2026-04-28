@@ -37,6 +37,23 @@
     --fluid-step-1: clamp(1.35rem, 1.05rem + 1.3vw, 2rem);
     --fluid-step-2: clamp(1.8rem, 1.3rem + 2.4vw, 2.85rem);
     --fluid-step-3: clamp(2.25rem, 1.55rem + 3.5vw, 4rem);
+    --space-2xs: clamp(0.375rem, 0.32rem + 0.24vw, 0.55rem);
+    --space-xs: clamp(0.5rem, 0.42rem + 0.35vw, 0.75rem);
+    --space-sm: clamp(0.75rem, 0.64rem + 0.48vw, 1rem);
+    --space-md: clamp(1rem, 0.82rem + 0.8vw, 1.5rem);
+    --space-lg: clamp(1.25rem, 1rem + 1.05vw, 2rem);
+    --space-xl: clamp(1.75rem, 1.32rem + 1.8vw, 3rem);
+    --space-2xl: clamp(2.25rem, 1.7rem + 2.45vw, 4rem);
+    --section-gap: clamp(2rem, 1.5rem + 2.2vw, 4rem);
+    --section-gap-tight: clamp(1.4rem, 1.1rem + 1.2vw, 2.4rem);
+    --duration-fast: 140ms;
+    --duration-base: 220ms;
+    --duration-slow: 320ms;
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+    --surface-glass: rgba(8, 13, 31, 0.45);
+    --surface-glass-strong: rgba(8, 13, 31, 0.56);
+    --border-subtle: rgba(246, 212, 13, 0.2);
+    --border-strong: rgba(246, 212, 13, 0.6);
   }
 
   * {
@@ -75,7 +92,6 @@
     min-height: 100vh;
     transition: background 320ms ease;
     overflow-x: clip;
-    text-wrap: pretty;
     font-size: 1rem;
     line-height: 1.55;
   }
@@ -98,11 +114,6 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #f6d40d;
-}
-
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #2c2a5f #090f24;
 }
 
 #page-transition-overlay {
@@ -420,7 +431,33 @@
   }
 
   .page-hero {
-    padding-top: 2rem;
+    padding-top: var(--space-xl);
+  }
+
+  .section-gap {
+    margin-top: var(--section-gap);
+  }
+
+  .section-gap-tight {
+    margin-top: var(--section-gap-tight);
+  }
+
+  .ui-kicker {
+    font-size: clamp(0.62rem, 0.6rem + 0.18vw, 0.72rem);
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+  }
+
+  .ui-meta {
+    font-size: clamp(0.6rem, 0.58rem + 0.16vw, 0.68rem);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  .ui-body-sm {
+    font-size: clamp(0.84rem, 0.81rem + 0.22vw, 1rem);
+    line-height: 1.55;
   }
 
   .page-hero__title {
@@ -441,27 +478,51 @@
     outline-offset: 2px;
   }
 
-  @media (max-width: 767px) {
-
-    a,
-    button,
-    [role="button"],
-    [role="link"] {
-      min-height: 44px;
-    }
+  a,
+  button,
+  [role="button"],
+  [role="link"] {
+    min-height: 44px;
   }
 
   .tap-feedback {
     transition:
-      transform 120ms ease,
-      filter 120ms ease,
-      background-color 120ms ease;
+      transform var(--duration-fast) var(--ease-standard),
+      filter var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
     touch-action: manipulation;
   }
 
   .tap-feedback:active {
     transform: scale(0.98);
     filter: brightness(1.1);
+  }
+
+  @media (hover: none) {
+    .tap-feedback {
+      transition:
+        transform var(--duration-fast) var(--ease-standard),
+        opacity var(--duration-fast) var(--ease-standard),
+        filter var(--duration-fast) var(--ease-standard),
+        background-color var(--duration-fast) var(--ease-standard);
+    }
+
+    .tap-feedback:active {
+      transform: scale(0.97);
+      opacity: 0.92;
+      filter: brightness(1.06);
+    }
+
+    .card-interactive:active,
+    .project-item--detail:active {
+      transform: scale(0.985);
+    }
+  }
+
+  @media (hover: hover) {
+    .tap-feedback:active {
+      transform: scale(0.985);
+    }
   }
 
   .prevent-overflow,
@@ -896,8 +957,8 @@
     position: relative !important;
     width: 100%;
     z-index: 10;
-    backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
     align-self: stretch;
   }
 
@@ -1032,9 +1093,19 @@
     background: linear-gradient(to top, rgba(255, 220, 40, 0.9), transparent);
     border-radius: 2px;
     transform-origin: 50% 4.55rem;
-    transform: rotate(var(--ray-angle));
+    transform: rotate(calc(var(--ray-index, 0) * 45deg));
     animation: ray-pulse 2.8s ease-in-out infinite;
+    animation-delay: calc(var(--ray-index, 0) * 180ms);
   }
+
+  .soft-skill-core__ray[data-ray-index="0"] { --ray-index: 0; }
+  .soft-skill-core__ray[data-ray-index="1"] { --ray-index: 1; }
+  .soft-skill-core__ray[data-ray-index="2"] { --ray-index: 2; }
+  .soft-skill-core__ray[data-ray-index="3"] { --ray-index: 3; }
+  .soft-skill-core__ray[data-ray-index="4"] { --ray-index: 4; }
+  .soft-skill-core__ray[data-ray-index="5"] { --ray-index: 5; }
+  .soft-skill-core__ray[data-ray-index="6"] { --ray-index: 6; }
+  .soft-skill-core__ray[data-ray-index="7"] { --ray-index: 7; }
 
   .soft-skill-core__ring {
     position: absolute;
@@ -2062,19 +2133,30 @@ body[data-recruiter-mode="on"] {
 
 .filter-toolbar {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
   align-items: center;
-  gap: 0.75rem;
+  gap: var(--space-xs);
+  padding-bottom: 0.25rem;
+}
+
+.filter-toolbar::-webkit-scrollbar {
+  display: none;
 }
 
 .filter-badge {
-  min-height: 2.5rem;
-  border: 1px solid rgba(246, 212, 13, 0.2);
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  min-height: 2.75rem;
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-badge);
-  background: rgba(8, 13, 31, 0.45);
+  background: var(--surface-glass);
   color: rgba(243, 240, 226, 0.74);
-  padding: 0.625rem 1rem;
-  font-size: 0.72rem;
+  padding: 0.625rem 0.95rem;
+  font-size: clamp(0.66rem, 0.62rem + 0.25vw, 0.75rem);
   font-weight: 600;
   line-height: 1;
   letter-spacing: 0.16em;
@@ -2096,23 +2178,34 @@ body[data-recruiter-mode="on"] {
 }
 
 .filter-badge.is-active {
-  border-color: rgba(246, 212, 13, 0.6);
+  border-color: var(--border-strong);
   color: var(--gold);
   background:
     linear-gradient(180deg, rgba(246, 212, 13, 0.1), rgba(246, 212, 13, 0.03)),
-    rgba(8, 13, 31, 0.56);
+    var(--surface-glass-strong);
   box-shadow: inset 0 0 0 1px rgba(246, 212, 13, 0.12);
 }
 
 @media (max-width: 767px) {
+  .filter-badge {
+    min-height: 2.75rem;
+    padding: 0.5rem 0.78rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+  }
+}
+
+@media (min-width: 768px) {
   .filter-toolbar {
-    gap: 0.5rem;
+    flex-wrap: wrap;
+    overflow: visible;
+    scroll-snap-type: none;
+    gap: 0.75rem;
+    padding-bottom: 0;
   }
 
   .filter-badge {
-    min-height: 2.15rem;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.64rem;
-    letter-spacing: 0.12em;
+    min-height: 2.5rem;
+    padding: 0.625rem 1rem;
   }
 }
