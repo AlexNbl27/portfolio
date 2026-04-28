@@ -41,6 +41,9 @@ const imageSrc = images[imagePath];
           transition:name={`project-image-${project.title}`}
           decoding="async"
           loading="lazy"
+          widths={[480, 720, 960]}
+          sizes="(max-width: 767px) 88vw, (max-width: 1023px) 46vw, 30vw"
+          formats={["avif", "webp"]}
         />
       ) : (
         <div class="h-full w-full object-cover bg-slate-800" />
@@ -48,16 +51,16 @@ const imageSrc = images[imagePath];
     }
   </div>
 
-  <div class="flex flex-col flex-grow p-3 md:p-5">
-    <div class="space-y-3 flex-grow z-10">
+  <div class="flex flex-col flex-grow p-3.5 md:p-5">
+    <div class="space-y-2.5 md:space-y-3 flex-grow z-10">
       <div class="flex items-center justify-between gap-2">
         <div>
-          <p class="text-[11px] uppercase tracking-[0.21em] text-cosmic-pink">
+          <p class="text-[10px] md:text-[11px] uppercase tracking-[0.19em] md:tracking-[0.21em] text-cosmic-pink">
             {project.category}
           </p>
           {
             project.company && (
-              <p class="text-[10px] uppercase tracking-widest text-white/40 mt-0.5">
+              <p class="text-[10px] uppercase tracking-[0.16em] md:tracking-widest text-white/40 mt-0.5">
                 {project.company}
               </p>
             )
@@ -72,10 +75,10 @@ const imageSrc = images[imagePath];
           )
         }
       </div>
-      <h3 class="font-display text-[1.35rem] leading-tight text-cosmic-gold md:text-3xl">
+      <h3 class="font-display text-[1.16rem] leading-tight text-cosmic-gold md:text-3xl">
         {project.title}
       </h3>
-      <p class="muted line-clamp-2 md:line-clamp-3 text-[0.85rem] md:text-base">{project.description}</p>
+      <p class="muted line-clamp-3 md:line-clamp-3 text-[0.84rem] md:text-base">{project.description}</p>
 
       <div class="flex flex-wrap gap-2 text-xs">
         {
@@ -88,7 +91,7 @@ const imageSrc = images[imagePath];
       </div>
     </div>
 
-    <div class="flex flex-wrap gap-2 pt-2.5 mt-auto z-10 relative md:gap-3 md:pt-4">
+    <div class="flex flex-wrap gap-2 pt-2 mt-auto z-10 relative md:gap-3 md:pt-4">
       {
         project.detailPage && (
           <Button

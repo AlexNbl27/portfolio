@@ -28,9 +28,12 @@ const projects = getProjects(locale).map((project) => ({
     <h1 class="section-title page-hero__title">
       <span class="highlight">{t("projects").title}</span>
     </h1>
-    <p class="muted page-hero__desc mt-4">{t("projects").subtitle}</p>
+    <p class="muted page-hero__desc mt-3 md:mt-4">{t("projects").subtitle}</p>
     <ProjectFilter locale={locale} />
-    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="project-grid">
+    <div
+      class="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 md:pb-0 md:grid md:gap-6 md:overflow-visible md:snap-none md:grid-cols-2 lg:grid-cols-3"
+      id="project-grid"
+    >
       {
         projects.map((project) => (
           <div
@@ -38,7 +41,7 @@ const projects = getProjects(locale).map((project) => ({
             data-featured={project.recruiterFeatured ? "true" : "false"}
             data-detail-page={project.detailPage ?? ""}
             class:list={[
-              "project-item",
+              "project-item shrink-0 w-[86vw] max-w-[22rem] snap-start md:shrink md:w-auto md:max-w-none",
               project.detailPage
                 ? "project-item--detail cursor-pointer"
                 : "cursor-default",
