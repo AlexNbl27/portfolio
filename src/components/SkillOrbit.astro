@@ -54,7 +54,7 @@ const boosted = Math.round(skill.proficiency + (100 - skill.proficiency) * 0.5);
       <!-- Base Progress & Gradient Overlay -->
       <div
         class="skill-progress h-full rounded-full bg-cosmic-gold transition-all duration-1000 ease-out relative"
-        style={`width: ${skill.proficiency}%`}
+        data-progress-value={skill.proficiency}
       >
         <!-- The gradient is now INSIDE the progress bar so it follows its width -->
         <div
@@ -80,6 +80,22 @@ const boosted = Math.round(skill.proficiency + (100 - skill.proficiency) * 0.5);
     </div>
   </div>
 </Card>
+
+<script is:inline>
+  function initSkillOrbitProgress() {
+    document.querySelectorAll(".skill-card[data-proficiency]").forEach((card) => {
+      if (!(card instanceof HTMLElement)) return;
+      const progress = card.querySelector(".skill-progress");
+      if (!(progress instanceof HTMLElement)) return;
+      const value = card.dataset.proficiency ?? progress.dataset.progressValue;
+      if (!value) return;
+      progress.style.width = `${value}%`;
+    });
+  }
+
+  initSkillOrbitProgress();
+  document.addEventListener("astro:page-load", initSkillOrbitProgress);
+</script>
 
 <style>
   @keyframes vibe-gradient {

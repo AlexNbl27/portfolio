@@ -23,7 +23,10 @@ type PlanetWithMobilePosition = (typeof planets)[number] & {
         return (
         <button
           class={`soft-skill-node ${skill.planetClass}`}
-          style={`--left: ${skill.left}; --top: ${skill.top};${skill.leftMobile ? ` --left-mobile: ${skill.leftMobile};` : ""}${skill.topMobile ? ` --top-mobile: ${skill.topMobile};` : ""}`}
+          data-left={skill.left}
+          data-top={skill.top}
+          data-left-mobile={skill.leftMobile}
+          data-top-mobile={skill.topMobile}
           data-skill-label={skill.label}
           data-skill-example={skill.example}
           data-skill-theme={skill.theme}
@@ -41,7 +44,7 @@ type PlanetWithMobilePosition = (typeof planets)[number] & {
 
       <button class="soft-skill-core sun-glow" id="skill-core-btn" type="button" aria-label={isEn ? "Reset key markers" : "Réinitialiser les repères clés"}>
         {Array.from({ length: 8 }).map((_, i) => (
-          <span class="soft-skill-core__ray" style={`--ray-angle: ${i * 45}deg; animation-delay: ${i * 180}ms;`} aria-hidden="true" />
+          <span class="soft-skill-core__ray" data-ray-index={i} aria-hidden="true" />
         ))}
         <span class="soft-skill-core__ring" aria-hidden="true"></span>
         <span class="soft-skill-core__label">{isEn ? "Human" : "Humain"}</span>
@@ -130,6 +133,17 @@ type PlanetWithMobilePosition = (typeof planets)[number] & {
       }
 
       root.querySelectorAll(".soft-skill-node[data-skill-label]").forEach((node) => {
+        if (node instanceof HTMLElement) {
+          const left = node.dataset.left;
+          const top = node.dataset.top;
+          const leftMobile = node.dataset.leftMobile;
+          const topMobile = node.dataset.topMobile;
+          if (left) node.style.setProperty("--left", left);
+          if (top) node.style.setProperty("--top", top);
+          if (leftMobile) node.style.setProperty("--left-mobile", leftMobile);
+          if (topMobile) node.style.setProperty("--top-mobile", topMobile);
+        }
+
         node.addEventListener("click", () => {
           activeNode?.classList.remove("is-active");
           activeNode = node;

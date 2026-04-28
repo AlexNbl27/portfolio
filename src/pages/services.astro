@@ -29,25 +29,25 @@ const testimonials = getShortTestimonials(locale);
     </p>
   </section>
 
-  <section class="cosmic-container mt-10 grid gap-6 lg:grid-cols-3">
+  <section class="cosmic-container section-gap grid gap-6 lg:grid-cols-3">
     {packs.map((pack) => <ServicePackCard pack={pack} />)}
   </section>
 
-  <section class="cosmic-container mt-14">
+  <section class="cosmic-container section-gap">
     <h2 class="fluid-display-lg text-cosmic-gold">{isEn ? "How we work" : "Comment je travaille"}</h2>
     <div class="mt-5 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       {steps.map((step, index) => <ProcessStep step={step} index={index} />)}
     </div>
   </section>
 
-  <section class="cosmic-container mt-14">
+  <section class="cosmic-container section-gap">
     <h2 class="fluid-display-lg text-cosmic-gold">{isEn ? "Recommendations" : "Recommandations"}</h2>
     <div class="mt-5 grid gap-4 md:grid-cols-2">
       {testimonials.map((item) => <TestimonialCard {...item} />)}
     </div>
   </section>
 
-  <section class="cosmic-container mt-12 mb-4">
+  <section class="cosmic-container section-gap mb-4">
     <Card class="services-cta-card p-6">
       <h2 class="fluid-display-md text-cosmic-gold">{isEn ? "Ready to discuss your project?" : "Prêt à discuter de votre projet ?"}</h2>
       <p class="mt-2 text-white/80">{isEn ? "Let's scope your constraints and define the fastest useful first milestone." : "Cadrons vos contraintes et définissons le premier jalon utile le plus rapidement possible."}</p>

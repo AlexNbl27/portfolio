@@ -36,7 +36,7 @@ const imageSrc = images[imagePath];
         <Image
           src={imageSrc.default}
           alt={project.title}
-          class="project-card-img h-full w-full object-cover transition duration-700 group-hover:scale-112 rounded-card"
+          class="project-card-img h-full w-full object-cover transition duration-700 group-hover:scale-112 rounded-[0.95rem] md:rounded-card"
           data-fade-image
           transition:name={`project-image-${project.title}`}
           decoding="async"
@@ -48,16 +48,16 @@ const imageSrc = images[imagePath];
     }
   </div>
 
-  <div class="flex flex-col flex-grow p-3 md:p-5">
-    <div class="space-y-3 flex-grow z-10">
+  <div class="flex flex-col flex-grow p-3.5 md:p-5">
+    <div class="space-y-2.5 md:space-y-3 flex-grow z-10">
       <div class="flex items-center justify-between gap-2">
         <div>
-          <p class="text-[11px] uppercase tracking-[0.21em] text-cosmic-pink">
+          <p class="ui-kicker text-cosmic-pink">
             {project.category}
           </p>
           {
             project.company && (
-              <p class="text-[10px] uppercase tracking-widest text-white/40 mt-0.5">
+              <p class="ui-meta text-white/70 mt-0.5">
                 {project.company}
               </p>
             )
@@ -72,10 +72,10 @@ const imageSrc = images[imagePath];
           )
         }
       </div>
-      <h3 class="font-display text-[1.35rem] leading-tight text-cosmic-gold md:text-3xl">
+      <h3 class="font-display text-[1.16rem] leading-tight text-cosmic-gold md:text-3xl">
         {project.title}
       </h3>
-      <p class="muted line-clamp-2 md:line-clamp-3 text-[0.85rem] md:text-base">{project.description}</p>
+      <p class="muted ui-body-sm line-clamp-3 md:line-clamp-3">{project.description}</p>
 
       <div class="flex flex-wrap gap-2 text-xs">
         {
@@ -88,7 +88,7 @@ const imageSrc = images[imagePath];
       </div>
     </div>
 
-    <div class="flex flex-wrap gap-2 pt-2.5 mt-auto z-10 relative md:gap-3 md:pt-4">
+    <div class="flex flex-wrap gap-2 pt-2 mt-auto z-10 relative md:gap-3 md:pt-4">
       {
         project.detailPage && (
           <Button

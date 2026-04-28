@@ -25,7 +25,6 @@ const { experiences, locale } = Astro.props as { experiences: ExperienceItem[]; 
           data-role={item.role}
           data-company={item.company}
           data-description={item.description}
-          style={`animation-delay: ${idx * 110}ms;`}
         >
           <div class="experience-node relative py-4 pl-10 pr-0 md:p-0">
             <ExperienceCard item={item} locale={locale} />
