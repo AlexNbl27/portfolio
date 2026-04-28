@@ -46,6 +46,14 @@
     --space-2xl: clamp(2.25rem, 1.7rem + 2.45vw, 4rem);
     --section-gap: clamp(2rem, 1.5rem + 2.2vw, 4rem);
     --section-gap-tight: clamp(1.4rem, 1.1rem + 1.2vw, 2.4rem);
+    --duration-fast: 140ms;
+    --duration-base: 220ms;
+    --duration-slow: 320ms;
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+    --surface-glass: rgba(8, 13, 31, 0.45);
+    --surface-glass-strong: rgba(8, 13, 31, 0.56);
+    --border-subtle: rgba(246, 212, 13, 0.2);
+    --border-strong: rgba(246, 212, 13, 0.6);
   }
 
   * {
@@ -440,6 +448,24 @@
     margin-top: var(--section-gap-tight);
   }
 
+  .ui-kicker {
+    font-size: clamp(0.62rem, 0.6rem + 0.18vw, 0.72rem);
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+  }
+
+  .ui-meta {
+    font-size: clamp(0.6rem, 0.58rem + 0.16vw, 0.68rem);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  .ui-body-sm {
+    font-size: clamp(0.84rem, 0.81rem + 0.22vw, 1rem);
+    line-height: 1.55;
+  }
+
   .page-hero__title {
     margin-bottom: 0;
   }
@@ -467,9 +493,9 @@
 
   .tap-feedback {
     transition:
-      transform 120ms ease,
-      filter 120ms ease,
-      background-color 120ms ease;
+      transform var(--duration-fast) var(--ease-standard),
+      filter var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
     touch-action: manipulation;
   }
 
@@ -481,10 +507,10 @@
   @media (hover: none) {
     .tap-feedback {
       transition:
-        transform 120ms ease,
-        opacity 120ms ease,
-        filter 120ms ease,
-        background-color 120ms ease;
+        transform var(--duration-fast) var(--ease-standard),
+        opacity var(--duration-fast) var(--ease-standard),
+        filter var(--duration-fast) var(--ease-standard),
+        background-color var(--duration-fast) var(--ease-standard);
     }
 
     .tap-feedback:active {
@@ -2131,9 +2157,9 @@ body[data-recruiter-mode="on"] {
   flex: 0 0 auto;
   scroll-snap-align: start;
   min-height: 2.75rem;
-  border: 1px solid rgba(246, 212, 13, 0.2);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-badge);
-  background: rgba(8, 13, 31, 0.45);
+  background: var(--surface-glass);
   color: rgba(243, 240, 226, 0.74);
   padding: 0.625rem 0.95rem;
   font-size: clamp(0.66rem, 0.62rem + 0.25vw, 0.75rem);
@@ -2158,11 +2184,11 @@ body[data-recruiter-mode="on"] {
 }
 
 .filter-badge.is-active {
-  border-color: rgba(246, 212, 13, 0.6);
+  border-color: var(--border-strong);
   color: var(--gold);
   background:
     linear-gradient(180deg, rgba(246, 212, 13, 0.1), rgba(246, 212, 13, 0.03)),
-    rgba(8, 13, 31, 0.56);
+    var(--surface-glass-strong);
   box-shadow: inset 0 0 0 1px rgba(246, 212, 13, 0.12);
 }
 

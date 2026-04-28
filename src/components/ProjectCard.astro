@@ -52,12 +52,12 @@ const imageSrc = images[imagePath];
     <div class="space-y-2.5 md:space-y-3 flex-grow z-10">
       <div class="flex items-center justify-between gap-2">
         <div>
-          <p class="text-[10px] md:text-[11px] uppercase tracking-[0.19em] md:tracking-[0.21em] text-cosmic-pink">
+          <p class="ui-kicker text-cosmic-pink">
             {project.category}
           </p>
           {
             project.company && (
-              <p class="text-[10px] uppercase tracking-[0.16em] md:tracking-widest text-white/40 mt-0.5">
+              <p class="ui-meta text-white/70 mt-0.5">
                 {project.company}
               </p>
             )
@@ -75,7 +75,7 @@ const imageSrc = images[imagePath];
       <h3 class="font-display text-[1.16rem] leading-tight text-cosmic-gold md:text-3xl">
         {project.title}
       </h3>
-      <p class="muted line-clamp-3 md:line-clamp-3 text-[0.84rem] md:text-base">{project.description}</p>
+      <p class="muted ui-body-sm line-clamp-3 md:line-clamp-3">{project.description}</p>
 
       <div class="flex flex-wrap gap-2 text-xs">
         {
